@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:PayButton="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/color_bg_banner"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/x71"
+            android:layout_height="@dimen/y71"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginStart="@dimen/x9"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_settlement"
+            android:textSize="@dimen/text_size"
+            android:textColor="@color/color_text_white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_back"/>
+
+        <ImageView
+            android:id="@+id/iv_help"
+            android:layout_width="@dimen/x49"
+            android:layout_height="@dimen/y49"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginEnd="@dimen/x36"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="收银员：工号"
+            android:textSize="@dimen/text_size"
+            android:textColor="@color/color_text_white"
+            android:layout_marginEnd="@dimen/x32"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_help"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    
+    <CheckBox
+        android:id="@+id/cb_combine_payment"
+        android:layout_width="@dimen/x233"
+        android:layout_height="@dimen/y81"
+        android:text="@string/text_combined_payment"
+        style="@style/TextStyle"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_frame"
+        android:button="@null"
+        android:drawableStart="@drawable/check_box"
+        android:drawablePadding="@dimen/x20"
+        android:paddingStart="@dimen/x25"
+        android:layout_marginStart="@dimen/x27"
+        android:layout_marginTop="@dimen/y27"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_title"
+        />
+
+    <!--现金-->
+    <com.easygo.cashier.widget.PayButton
+        android:id="@+id/iv_cash"
+        android:layout_width="@dimen/pay_btn_width"
+        android:layout_height="@dimen/pay_btn_height"
+        android:text="@string/text_cash"
+        style="@style/PayButtonStyle"
+        PayButton:color_text_selected="@color/color_text_white"
+        PayButton:color_text_no_selected="@color/color_text_black"
+        PayButton:color_bg="@drawable/bg_pay_button_selected"
+        app:layout_constraintTop_toTopOf="@id/cb_combine_payment"
+        app:layout_constraintBottom_toBottomOf="@id/cb_combine_payment"
+        app:layout_constraintStart_toEndOf="@id/cb_combine_payment"/>
+
+    <!--支付宝-->
+    <com.easygo.cashier.widget.PayButton
+        android:id="@+id/iv_alipay"
+        android:layout_width="@dimen/pay_btn_width"
+        android:layout_height="@dimen/pay_btn_height"
+        android:text="@string/text_alipay"
+        style="@style/PayButtonStyle"
+        PayButton:color_text_selected="@color/color_text_white"
+        PayButton:color_text_no_selected="@color/color_text_black"
+        PayButton:color_bg="@drawable/bg_pay_button_selected"
+        app:layout_constraintTop_toTopOf="@id/cb_combine_payment"
+        app:layout_constraintBottom_toBottomOf="@id/cb_combine_payment"
+        app:layout_constraintStart_toEndOf="@id/iv_cash"/>
+
+    <!--微信-->
+    <com.easygo.cashier.widget.PayButton
+        android:id="@+id/iv_wechat"
+        android:text="@string/text_wechat"
+        android:layout_width="@dimen/pay_btn_width"
+        android:layout_height="@dimen/pay_btn_height"
+        style="@style/PayButtonStyle"
+        PayButton:color_text_selected="@color/color_text_white"
+        PayButton:color_text_no_selected="@color/color_text_black"
+        PayButton:color_bg="@drawable/bg_pay_button_selected"
+        app:layout_constraintTop_toTopOf="@id/cb_combine_payment"
+        app:layout_constraintBottom_toBottomOf="@id/cb_combine_payment"
+        app:layout_constraintStart_toEndOf="@id/iv_alipay"/>
+
+    <!--银行卡-->
+    <com.easygo.cashier.widget.PayButton
+        android:id="@+id/iv_bank_card"
+        android:layout_width="@dimen/pay_btn_width"
+        android:layout_height="@dimen/pay_btn_height"
+        android:text="@string/text_bank_card"
+        style="@style/PayButtonStyle"
+        PayButton:color_text_selected="@color/color_text_white"
+        PayButton:color_text_no_selected="@color/color_text_black"
+        PayButton:color_bg="@drawable/bg_pay_button_selected"
+        app:layout_constraintTop_toTopOf="@id/cb_combine_payment"
+        app:layout_constraintBottom_toBottomOf="@id/cb_combine_payment"
+        app:layout_constraintStart_toEndOf="@id/iv_wechat"/>
+
+    <!--其他支付（八达通）-->
+    <com.easygo.cashier.widget.PayButton
+        android:id="@+id/iv_other"
+        android:layout_width="@dimen/pay_btn_width"
+        android:layout_height="@dimen/pay_btn_height"
+        android:text="@string/text_other"
+        style="@style/PayButtonStyle"
+        PayButton:color_text_selected="@color/color_text_white"
+        PayButton:color_text_no_selected="@color/color_text_black"
+        PayButton:color_bg="@drawable/bg_pay_button_selected"
+        app:layout_constraintTop_toTopOf="@id/cb_combine_payment"
+        app:layout_constraintBottom_toBottomOf="@id/cb_combine_payment"
+        app:layout_constraintStart_toEndOf="@id/iv_bank_card"/>
+
+    <!--应收-->
+    <TextView
+        android:id="@+id/tv_text_receivable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_receivable"
+        style="@style/TextStyle"
+        android:layout_marginStart="@dimen/x51"
+        android:layout_marginTop="@dimen/y47"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cb_combine_payment"/>
+
+    <TextView
+        android:id="@+id/tv_receivable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥6.00"
+        android:textSize="@dimen/text_size_large"
+        android:textColor="@color/color_text"
+        android:layout_marginTop="@dimen/y13"
+        app:layout_constraintStart_toStartOf="@id/tv_text_receivable"
+        app:layout_constraintTop_toBottomOf="@id/tv_text_receivable"/>
+
+    <!--优惠-->
+    <TextView
+        android:id="@+id/tv_coupon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="优惠：￥0.00"
+        android:textSize="@dimen/text_size_middle"
+        android:textColor="@color/color_text"
+        android:layout_marginEnd="@dimen/x44"
+        app:layout_constraintTop_toTopOf="@id/tv_receivable"
+        app:layout_constraintBottom_toBottomOf="@id/tv_receivable"
+        app:layout_constraintEnd_toStartOf="@id/ikb" />
+
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y10"
+        android:background="@color/color_line"
+        android:layout_marginStart="@dimen/x33"
+        android:layout_marginEnd="@dimen/x34"
+        android:layout_marginTop="@dimen/y5"
+        app:layout_constraintTop_toBottomOf="@id/tv_receivable"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/ikb" />
+
+    <!--实收-->
+    <TextView
+        android:id="@+id/tv_text_receipts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_receipts"
+        style="@style/TextStyle"
+        android:layout_marginStart="@dimen/x51"
+        android:layout_marginTop="@dimen/y19"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line1"/>
+
+    <TextView
+        android:id="@+id/tv_text_receipts_way"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="：现金"
+        android:textColor="@color/color_bg_btn_selected"
+        android:textSize="@dimen/text_size"
+        android:layout_marginStart="@dimen/x1"
+        app:layout_constraintStart_toEndOf="@id/tv_text_receipts"
+        app:layout_constraintTop_toTopOf="@id/tv_text_receipts"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_receipts"/>
+
+    <!--实收-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_receipts"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y67"
+        android:layout_marginTop="@dimen/y13"
+        android:background="@drawable/bg_frame"
+        app:layout_constraintStart_toStartOf="@id/tv_text_receipts"
+        app:layout_constraintTop_toBottomOf="@id/tv_text_receipts">
+
+        <TextView
+            android:id="@+id/tv_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥"
+            android:textSize="@dimen/text_size_large"
+            android:textColor="@color/color_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_receipts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="6.00"
+            android:textSize="@dimen/text_size_large"
+            android:textColor="@color/color_text"
+            android:background="@null"
+            app:layout_constraintStart_toEndOf="@id/tv_sign"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y10"
+        android:background="@color/color_line"
+        android:layout_marginTop="@dimen/y2"
+        app:layout_constraintTop_toBottomOf="@id/cl_receipts"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintEnd_toEndOf="@id/line1" />
+
+    <com.easygo.cashier.widget.InputKeyBoard
+        android:id="@+id/ikb"
+        android:layout_width="@dimen/x541"
+        android:layout_height="@dimen/y547"
+        android:background="@color/color_bg_input_keyboard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    </com.easygo.cashier.widget.InputKeyBoard>
+
+    <TextView
+        android:id="@+id/tv_print"
+        android:layout_width="@dimen/x233"
+        android:layout_height="@dimen/y81"
+        android:text="@string/text_print"
+        style="@style/TextStyle"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_frame"
+        android:button="@null"
+        android:drawableStart="@drawable/check_box"
+        android:drawablePadding="@dimen/x20"
+        android:paddingStart="@dimen/x25"
+        android:layout_marginStart="@dimen/x27"
+        android:layout_marginTop="@dimen/y27"
+        android:layout_marginBottom="@dimen/y27"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <!--现金相关-->
+    <View
+        android:id="@+id/line3"
+        android:layout_width="@dimen/x10"
+        android:layout_height="@dimen/y97"
+        android:background="@color/color_line"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintTop_toTopOf="@id/line1"
+        app:layout_constraintBottom_toBottomOf="@id/line2"/>
+
+    <!--找零-->
+    <TextView
+        android:id="@+id/tv_text_change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_change"
+        style="@style/TextStyle"
+        android:layout_marginStart="@dimen/x46"
+        app:layout_constraintStart_toStartOf="@id/line3"
+        app:layout_constraintTop_toTopOf="@id/tv_text_receipts"
+        />
+
+    <TextView
+        android:id="@+id/tv_change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥6.00"
+        android:textSize="@dimen/text_size_large"
+        android:textColor="@color/color_text"
+        app:layout_constraintStart_toStartOf="@id/tv_text_change"
+        app:layout_constraintTop_toTopOf="@id/cl_receipts"
+        app:layout_constraintBottom_toBottomOf="@id/cl_receipts"/>
+    <!--现金相关-->
+
+    <!--微信、支付宝 扫码-->
+    <ImageView
+        android:id="@+id/iv_scan"
+        android:layout_width="@dimen/x67"
+        android:layout_height="@dimen/y67"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginEnd="@dimen/x34"
+        android:layout_marginBottom="@dimen/y6"
+        app:layout_constraintEnd_toEndOf="@id/line2"
+        app:layout_constraintBottom_toTopOf="@id/line2"/>
+
+    <TextView
+        android:layout_width="@dimen/x150"
+        android:layout_height="@dimen/y51"
+        android:background="@color/color_frame"
+        android:text="@string/text_already_receive"
+        android:textColor="@color/color_text_white"
+        android:textSize="@dimen/text_size_small"
+        android:gravity="center"
+        android:layout_marginEnd="@dimen/x19"
+        android:layout_marginBottom="@dimen/y3"
+        app:layout_constraintEnd_toEndOf="@id/line2"
+        app:layout_constraintBottom_toTopOf="@id/line2"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

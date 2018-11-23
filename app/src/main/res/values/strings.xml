@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">CashDesk</string>
+
+    <string name="text_no_barcode_goods">无码商品</string>
+    <string name="text_pop_money_box">弹出钱箱</string>
+
+    <string name="text_barcode">条码</string>
+    <string name="text_goods_name">品名</string>
+    <string name="text_price">单价</string>
+    <string name="text_coupon">优惠</string>
+    <string name="text_subtotal">小计</string>
+    <string name="text_count">数量</string>
+
+    <string name="text_goods_count">件数</string>
+    <string name="text_total_money">总额</string>
+    <string name="text_clear">清空</string>
+    <string name="text_settlement">收银</string>
+
+
+    <string name="text_combined_payment">组合支付</string>
+    <string name="text_cash">现金</string>
+    <string name="text_wechat">微信</string>
+    <string name="text_alipay">支付宝</string>
+    <string name="text_bank_card">银行卡</string>
+    <string name="text_other">八达通</string>
+    <string name="text_receivable">应收</string>
+    <string name="text_receipts">实收</string>
+    <string name="text_print">打印单据</string>
+    <string name="text_change">找零</string>
+
+
+    <string name="text_scan_code">请扫描付款码</string>
+    <string name="text_scanning_code">正在识别二维码...</string>
+    <string name="text_successful_receipt">收款成功</string>
+    <string name="text_already_receive">已收款</string>
+    <string name="text_help">请致电客服020-1231231</string>
+
+
+</resources>
