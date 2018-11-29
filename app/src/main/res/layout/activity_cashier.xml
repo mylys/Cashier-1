@@ -10,7 +10,7 @@
         android:id="@+id/cl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
-        android:background="@color/color_bg_banner"
+        android:background="@color/color_cc565a"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
@@ -148,126 +148,16 @@
         app:layout_constraintBottom_toBottomOf="@id/cb_combine_payment"
         app:layout_constraintStart_toEndOf="@id/iv_bank_card"/>
 
-    <!--应收-->
-    <TextView
-        android:id="@+id/tv_text_receivable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_receivable"
-        style="@style/TextStyle"
-        android:layout_marginStart="@dimen/x51"
-        android:layout_marginTop="@dimen/y47"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cb_combine_payment"/>
-
-    <TextView
-        android:id="@+id/tv_receivable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="￥6.00"
-        android:textSize="@dimen/text_size_large"
-        android:textColor="@color/color_text"
-        android:layout_marginTop="@dimen/y13"
-        app:layout_constraintStart_toStartOf="@id/tv_text_receivable"
-        app:layout_constraintTop_toBottomOf="@id/tv_text_receivable"/>
-
-    <!--优惠-->
-    <TextView
-        android:id="@+id/tv_coupon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="优惠：￥0.00"
-        android:textSize="@dimen/text_size_middle"
-        android:textColor="@color/color_text"
-        android:layout_marginEnd="@dimen/x44"
-        app:layout_constraintTop_toTopOf="@id/tv_receivable"
-        app:layout_constraintBottom_toBottomOf="@id/tv_receivable"
-        app:layout_constraintEnd_toStartOf="@id/ikb" />
-
-
-    <View
-        android:id="@+id/line1"
+    <FrameLayout
+        android:id="@+id/framelayout"
         android:layout_width="0dp"
-        android:layout_height="@dimen/y10"
-        android:background="@color/color_line"
-        android:layout_marginStart="@dimen/x33"
-        android:layout_marginEnd="@dimen/x34"
-        android:layout_marginTop="@dimen/y5"
-        app:layout_constraintTop_toBottomOf="@id/tv_receivable"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/ikb" />
+        app:layout_constraintEnd_toStartOf="@id/ikb"
+        app:layout_constraintTop_toBottomOf="@id/iv_cash"
+        app:layout_constraintBottom_toTopOf="@id/tv_print">
 
-    <!--实收-->
-    <TextView
-        android:id="@+id/tv_text_receipts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_receipts"
-        style="@style/TextStyle"
-        android:layout_marginStart="@dimen/x51"
-        android:layout_marginTop="@dimen/y19"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/line1"/>
-
-    <TextView
-        android:id="@+id/tv_text_receipts_way"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="：现金"
-        android:textColor="@color/color_bg_btn_selected"
-        android:textSize="@dimen/text_size"
-        android:layout_marginStart="@dimen/x1"
-        app:layout_constraintStart_toEndOf="@id/tv_text_receipts"
-        app:layout_constraintTop_toTopOf="@id/tv_text_receipts"
-        app:layout_constraintBottom_toBottomOf="@id/tv_text_receipts"/>
-
-    <!--实收-->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_receipts"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/y67"
-        android:layout_marginTop="@dimen/y13"
-        android:background="@drawable/bg_frame"
-        app:layout_constraintStart_toStartOf="@id/tv_text_receipts"
-        app:layout_constraintTop_toBottomOf="@id/tv_text_receipts">
-
-        <TextView
-            android:id="@+id/tv_sign"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="￥"
-            android:textSize="@dimen/text_size_large"
-            android:textColor="@color/color_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-        <EditText
-            android:id="@+id/et_receipts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="6.00"
-            android:textSize="@dimen/text_size_large"
-            android:textColor="@color/color_text"
-            android:background="@null"
-            app:layout_constraintStart_toEndOf="@id/tv_sign"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <View
-        android:id="@+id/line2"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/y10"
-        android:background="@color/color_line"
-        android:layout_marginTop="@dimen/y2"
-        app:layout_constraintTop_toBottomOf="@id/cl_receipts"
-        app:layout_constraintStart_toStartOf="@id/line1"
-        app:layout_constraintEnd_toEndOf="@id/line1" />
+    </FrameLayout>
 
     <com.easygo.cashier.widget.InputKeyBoard
         android:id="@+id/ikb"
@@ -283,7 +173,7 @@
         android:id="@+id/tv_print"
         android:layout_width="@dimen/x233"
         android:layout_height="@dimen/y81"
-        android:text="@string/text_print"
+        android:text="@string/text_print_paper"
         style="@style/TextStyle"
         android:gravity="center_vertical"
         android:background="@drawable/bg_frame"

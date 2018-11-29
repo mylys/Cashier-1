@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_subtitle"
+    app:layout_constraintTop_toBottomOf="@+id/cl_title"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y113">
+
+    <!--搜索框-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="@dimen/x507"
+        android:layout_height="@dimen/y70"
+        android:layout_marginStart="@dimen/x23"
+        android:background="@drawable/bg_frame">
+
+        <ImageView
+            android:id="@+id/iv_search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="@dimen/x35"
+            android:layout_height="@dimen/y35"
+            android:layout_marginStart="@dimen/x16"
+            android:src="@mipmap/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/iv_delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="@dimen/x37"
+            android:layout_height="@dimen/y37"
+            android:layout_marginEnd="@dimen/x23"
+            android:src="@mipmap/ic_launcher" />
+
+        <EditText
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_delete"
+            app:layout_constraintStart_toEndOf="@+id/iv_search"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/x16"
+            android:layout_marginEnd="@dimen/x23"
+            android:background="@null"
+            android:hint="输入条形码、商品名或编码"
+            android:textColor="@color/color_text_search"
+            android:textSize="@dimen/x28" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--无码商品-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_no_barcode_goods"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cl_search"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x14">
+
+        <ImageView
+            android:id="@+id/iv_no_barcode"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="@dimen/x46"
+            android:layout_height="@dimen/y46"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_no_barcode"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x9"
+            android:text="@string/text_no_barcode_goods"
+            android:textColor="@color/color_text_black"
+            android:textSize="@dimen/text_size_middle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/line1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cl_no_barcode_goods"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="@dimen/line_width"
+        android:layout_height="@dimen/y51"
+        android:layout_marginStart="@dimen/x13"
+        android:background="@color/color_line" />
+
+    <!--弹出钱箱-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_pop_money_box"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/line1"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x3">
+
+        <ImageView
+            android:id="@+id/iv_pop_money_box"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="@dimen/x46"
+            android:layout_height="@dimen/y46"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_pop_money_box"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x9"
+            android:text="@string/text_pop_money_box"
+            android:textColor="@color/color_text_black"
+            android:textSize="@dimen/text_size_middle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

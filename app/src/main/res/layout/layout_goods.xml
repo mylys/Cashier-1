@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+
+    <!--搜索栏-->
+    <include
+        android:id="@+id/cl_subtitle"
+        layout="@layout/include_subtitle_search_layout" />
+
+    <View
+        android:id="@+id/line2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/color_line" />
+
+    <!--商品标题名-->
+    <include
+        android:id="@+id/cl_goods_title"
+        layout="@layout/include_goods_title_layout" />
+
+    <View
+        android:id="@+id/line3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_goods_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:layout_marginStart="@dimen/x39"
+        android:layout_marginEnd="@dimen/x39"
+        android:background="@color/color_line" />
+
+    <View
+        android:id="@+id/line4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/color_line" />
+
+
+    <!--底部清单-->
+    <include
+        android:id="@+id/cl_bottom_layout"
+        layout="@layout/include_settlement_bottom_layout" />
+
+    <View
+        android:id="@+id/line5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cl_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/color_line" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_goods"
+        app:layout_constraintBottom_toTopOf="@+id/line5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+
+    </android.support.v7.widget.RecyclerView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

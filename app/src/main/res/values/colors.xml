@@ -5,23 +5,26 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="color_frame">#bbbbbb</color>
-    <color name="color_line">#000000</color>
+    <color name="color_line">@color/color_frame</color>
 
     <color name="color_text">#101010</color>
     <color name="color_text_white">#ffffff</color>
     <color name="color_text_black">#000000</color>
-    <color name="color_bg_banner">#cc565a</color>
+    <color name="color_cc565a">#cc565a</color>
     <color name="color_bg_detail">#455991</color>
+    <color name="color_text_search">#888888</color>
+    <color name="color_text_3899d9">#3899D9</color>
 
     <color name="color_bg_btn_clear">#7f000000</color>
 
     <!--选中-->
-    <color name="color_bg_btn_selected">#CC565A</color>
+    <color name="color_bg_cc565a">#CC565A</color>
     <color name="color_text_70_alpha">#9e101010</color>
     <color name="color_text_80_alpha">#cc101010</color>
 
 
     <!--数字键盘底色-->
     <color name="color_bg_input_keyboard">#D0D5DB</color>
+    <color name="color_bg_d0d5db_47_alpha">#78D0D5DB</color>
 
 </resources>

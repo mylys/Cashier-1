@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:top="@dimen/y1" android:right="@dimen/x1" android:bottom="@dimen/y1" android:left="@dimen/x1">
-        <color android:color="@color/color_bg_btn_selected"/>
+        <color android:color="@color/color_bg_cc565a"/>
     </item>
 
     <item android:drawable="@drawable/bg_frame">

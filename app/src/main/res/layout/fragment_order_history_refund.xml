@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_search"
+        android:layout_width="@dimen/x461"
+        android:layout_height="@dimen/y69"
+        android:layout_marginStart="@dimen/x30"
+        android:layout_marginTop="@dimen/y14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_cashier_acount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="收银员：工号"
+        style="@style/MiddleTextStyle"
+        android:layout_marginEnd="@dimen/x36"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cl_search"
+        app:layout_constraintBottom_toBottomOf="@id/cl_search"/>
+    
+    <View
+        android:id="@+id/line1"
+        android:layout_width="@dimen/line_width"
+        android:layout_height="@dimen/y60"
+        android:background="@color/color_frame"
+        android:layout_marginEnd="@dimen/x33"
+        app:layout_constraintEnd_toStartOf="@id/tv_cashier_acount"
+        app:layout_constraintTop_toTopOf="@id/cl_search"
+        app:layout_constraintBottom_toBottomOf="@id/cl_search"/>
+
+    <TextView
+        android:id="@+id/tv_order_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="订单单号：20180701123456789012"
+        style="@style/MiddleTextStyle"
+        android:layout_marginEnd="@dimen/x25"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintTop_toTopOf="@id/cl_search"
+        app:layout_constraintBottom_toBottomOf="@id/cl_search"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_goods_title"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y71"
+        android:layout_marginStart="@dimen/x20"
+        android:layout_marginEnd="@dimen/x20"
+        android:layout_marginTop="@dimen/y16"
+        android:background="@drawable/bg_fill_frame"
+        app:layout_constraintTop_toBottomOf="@id/cl_search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="@dimen/x113"
+        android:layout_height="@dimen/y57"
+        android:text="@string/text_cancel"
+        style="@style/TextStyle"
+        android:background="@drawable/bg_frame"
+        android:layout_marginStart="@dimen/x30"
+        android:layout_marginBottom="@dimen/y14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:id="@+id/btn_refund"
+        android:layout_width="@dimen/x113"
+        android:layout_height="@dimen/y57"
+        android:text="@string/text_cancel"
+        style="@style/WhiteTextStyle"
+        android:background="@color/color_bg_cc565a"
+        android:layout_marginEnd="@dimen/x20"
+        android:layout_marginBottom="@dimen/y14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/tv_total_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥6.00"
+        style="@style/RedTextStyle"
+        android:layout_marginEnd="@dimen/x49"
+        app:layout_constraintEnd_toStartOf="@id/btn_refund"
+        app:layout_constraintTop_toTopOf="@id/btn_refund"
+        app:layout_constraintBottom_toBottomOf="@id/btn_refund"/>
+
+    <TextView
+        android:id="@+id/tv_text_total_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="件，总额:"
+        style="@style/TextStyle"
+        app:layout_constraintEnd_toStartOf="@id/tv_total_money"
+        app:layout_constraintTop_toTopOf="@id/btn_refund"
+        app:layout_constraintBottom_toBottomOf="@id/btn_refund"/>
+
+    <TextView
+        android:id="@+id/tv_return_of_goods_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        style="@style/RedTextStyle"
+        app:layout_constraintEnd_toStartOf="@id/tv_text_total_money"
+        app:layout_constraintTop_toTopOf="@id/btn_refund"
+        app:layout_constraintBottom_toBottomOf="@id/btn_refund"/>
+
+    <TextView
+        android:id="@+id/tv_text_return_of_goods"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="共退货"
+        style="@style/TextStyle"
+        app:layout_constraintEnd_toStartOf="@id/tv_return_of_goods_count"
+        app:layout_constraintTop_toTopOf="@id/btn_refund"
+        app:layout_constraintBottom_toBottomOf="@id/btn_refund"/>
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_goods"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/y25"
+        app:layout_constraintTop_toBottomOf="@id/cl_goods_title"
+        app:layout_constraintBottom_toTopOf="@id/btn_refund"
+        app:layout_constraintStart_toStartOf="@id/cl_goods_title"
+        app:layout_constraintEnd_toEndOf="@id/cl_goods_title">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

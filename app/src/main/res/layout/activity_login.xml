@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.niubility.library.widget.imageview.CircleImageView
@@ -18,9 +20,12 @@
     <EditText
         android:id="@+id/et_account"
         android:layout_width="@dimen/x385"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y58"
         android:layout_marginTop="@dimen/y54"
         android:hint="请输入工号"
+        android:paddingStart="@dimen/x10"
+        android:textSize="@dimen/x28"
+        android:background="@drawable/bg_frame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
@@ -28,9 +33,12 @@
     <EditText
         android:id="@+id/et_password"
         android:layout_width="@dimen/x385"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y58"
         android:layout_marginTop="@dimen/y44"
         android:hint="请输入密码"
+        android:paddingStart="@dimen/x10"
+        android:textSize="@dimen/x28"
+        android:background="@drawable/bg_frame"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,6 +75,20 @@
         app:layout_constraintBottom_toBottomOf="@+id/et_password"
         app:layout_constraintEnd_toEndOf="@+id/et_password"
         app:layout_constraintTop_toTopOf="@+id/et_password" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="@dimen/x153"
+        android:layout_height="@dimen/y57"
+        android:layout_marginTop="@dimen/y96"
+        android:text="@string/text_login"
+        android:textColor="@color/color_text_white"
+        android:textSize="@dimen/text_size"
+        android:background="@drawable/bg_btn_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_password"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

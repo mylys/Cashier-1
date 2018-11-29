@@ -7,4 +7,8 @@
 
     <dimen name="pay_btn_width">@dimen/x119</dimen>
     <dimen name="pay_btn_height">@dimen/y81</dimen>
+
+
+    <dimen name="line_width">@dimen/x1</dimen>
+    <dimen name="line_height">@dimen/y1</dimen>
 </resources>

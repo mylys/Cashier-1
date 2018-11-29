@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_bottom_layout"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y108"
+    android:layout_marginBottom="@dimen/y6">
+
+    <!--件数-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_goods_count"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="@dimen/x160"
+        android:layout_height="@dimen/y102"
+        android:layout_marginStart="@dimen/x60"
+        android:background="@color/color_bg_detail">
+
+        <TextView
+            android:id="@+id/tv_goods_count"
+            app:layout_constraintBottom_toTopOf="@+id/tv_text_goods_count"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/y3"
+            android:text="1"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:id="@+id/tv_text_goods_count"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/y5"
+            android:padding="@dimen/y5"
+            android:text="@string/text_goods_count"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/text_size_small" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--总额-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_total_money"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cl_goods_count"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="@dimen/x160"
+        android:layout_height="@dimen/y102"
+        android:layout_marginStart="@dimen/x10"
+        android:background="@color/color_bg_detail">
+
+        <TextView
+            android:id="@+id/tv_total_money"
+            app:layout_constraintBottom_toTopOf="@+id/tv_text_total_money"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/y3"
+            android:text="￥6.00"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:id="@+id/tv_text_total_money"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/y5"
+            android:padding="@dimen/y5"
+            android:text="@string/text_total_money"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/text_size_small" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--优惠-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cl_total_money"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="@dimen/x160"
+        android:layout_height="@dimen/y102"
+        android:layout_marginStart="@dimen/x10"
+        android:background="@color/color_bg_detail">
+
+        <TextView
+            android:id="@+id/tv_coupon"
+            app:layout_constraintBottom_toTopOf="@+id/tv_text_coupon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/y3"
+            android:text="￥0.00"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:id="@+id/tv_text_coupon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/y5"
+            android:padding="@dimen/y5"
+            android:text="@string/text_coupon"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/text_size_small" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btn_clear"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_settlement"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="@dimen/x190"
+        android:layout_height="@dimen/y72"
+        android:layout_marginEnd="@dimen/x15"
+        android:background="@color/color_bg_btn_clear"
+        android:text="清空"
+        android:textColor="@color/color_text_white"
+        android:textSize="@dimen/text_size" />
+
+    <Button
+        android:id="@+id/btn_settlement"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y72"
+        android:layout_marginEnd="@dimen/x37"
+        android:background="@color/color_cc565a"
+        android:paddingStart="@dimen/x25"
+        android:paddingEnd="@dimen/x25"
+        android:text="收银：  ￥6.00"
+        android:textColor="@color/color_text_white"
+        android:textSize="@dimen/text_size" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">CashDesk</string>
+    <string name="app_name">Cashier</string>
+
+    <string name="text_login">登录</string>
 
     <string name="text_no_barcode_goods">无码商品</string>
     <string name="text_pop_money_box">弹出钱箱</string>
@@ -15,6 +17,8 @@
     <string name="text_total_money">总额</string>
     <string name="text_clear">清空</string>
     <string name="text_settlement">收银</string>
+    <string name="text_refund">退款</string>
+    <string name="text_cancel">取消</string>
 
 
     <string name="text_combined_payment">组合支付</string>
@@ -25,7 +29,8 @@
     <string name="text_other">八达通</string>
     <string name="text_receivable">应收</string>
     <string name="text_receipts">实收</string>
-    <string name="text_print">打印单据</string>
+    <string name="text_print_paper">打印单据</string>
+    <string name="text_print">打印</string>
     <string name="text_change">找零</string>
 
 
@@ -34,6 +39,11 @@
     <string name="text_successful_receipt">收款成功</string>
     <string name="text_already_receive">已收款</string>
     <string name="text_help">请致电客服020-1231231</string>
+
+    <!--历史订单详情-->
+    <string name="text_order_no">订单单号：</string>
+    <string name="text_cashier">收银员：</string>
+    <string name="text_function_list">功能列表</string>
 
 
 </resources>

@@ -22,7 +22,7 @@ public class HelpDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_help_dialog);
 
-        findViewById(R.id.help).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dismiss();

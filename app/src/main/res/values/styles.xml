@@ -8,9 +8,42 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MyAppTheme" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="android:screenOrientation">landscape</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="TextStyle">
         <item name="android:textColor">@color/color_text</item>
         <item name="android:textSize">@dimen/text_size</item>
+    </style>
+
+    <style name="RedTextStyle" parent="TextStyle">
+        <item name="android:textColor">@color/color_cc565a</item>
+    </style>
+
+    <style name="WhiteTextStyle">
+        <item name="android:textColor">@color/color_text_white</item>
+        <item name="android:textSize">@dimen/text_size</item>
+    </style>
+
+    <style name="MiddleTextStyle">
+        <item name="android:textColor">@color/color_text</item>
+        <item name="android:textSize">@dimen/text_size_middle</item>
+    </style>
+
+
+    <style name="SmallTextStyle">
+        <item name="android:textColor">@color/color_text</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="SmallRedTextStyle" parent="SmallTextStyle">
+        <item name="android:textColor">@color/color_cc565a</item>
+    </style>
+    <style name="SmallBlueTextStyle" parent="SmallTextStyle">
+        <item name="android:textColor">@color/color_text_3899d9</item>
     </style>
 
     <style name="PayButtonStyle" parent="TextStyle">
