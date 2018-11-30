@@ -2,10 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:MyTitleBar="http://schemas.android.com/tools">
 
-    <include layout="@layout/include_title_bar"
-        android:id="@+id/cl_title"/>
+    <!--标题栏-->
+    <com.easygo.cashier.widget.MyTitleBar
+        android:id="@+id/cl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        MyTitleBar:status="1"
+        MyTitleBar:show_right_acount="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.easygo.cashier.widget.MyTitleBar>
 
     <FrameLayout
         android:id="@+id/framelayout"

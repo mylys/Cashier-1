@@ -33,7 +33,7 @@
 
     <!--工号-->
     <TextView
-        android:id="@+id/tv_cashier_acount"
+        android:id="@+id/tv_cashier_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="工号"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:text="@string/text_cashier"
         style="@style/TextStyle"
-        app:layout_constraintEnd_toStartOf="@id/tv_cashier_acount"
+        app:layout_constraintEnd_toStartOf="@id/tv_cashier_account"
         app:layout_constraintTop_toTopOf="@id/tv_text_order_no"
         app:layout_constraintBottom_toBottomOf="@id/tv_text_order_no"
         />
@@ -62,7 +62,7 @@
         android:background="@drawable/bg_fill_frame"
         android:layout_marginTop="@dimen/y11"
         app:layout_constraintStart_toStartOf="@id/tv_text_order_no"
-        app:layout_constraintEnd_toEndOf="@id/tv_cashier_acount"
+        app:layout_constraintEnd_toEndOf="@id/tv_cashier_account"
         app:layout_constraintTop_toBottomOf="@id/tv_text_order_no">
 
         <TextView
@@ -137,7 +137,7 @@
         style="@style/TextStyle"
         android:layout_marginBottom="@dimen/y45"
         android:background="@drawable/bg_frame"
-        app:layout_constraintEnd_toEndOf="@id/tv_cashier_acount"
+        app:layout_constraintEnd_toEndOf="@id/tv_cashier_account"
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
@@ -161,7 +161,7 @@
         android:text="退款金额：￥6.00"
         style="@style/SmallRedTextStyle"
         android:layout_marginBottom="@dimen/y12"
-        app:layout_constraintEnd_toEndOf="@id/tv_cashier_acount"
+        app:layout_constraintEnd_toEndOf="@id/tv_cashier_account"
         app:layout_constraintBottom_toTopOf="@id/btn_print" />
 
     <TextView
@@ -183,7 +183,7 @@
         android:background="@color/color_line"
         android:layout_marginBottom="@dimen/y10"
         app:layout_constraintStart_toStartOf="@id/tv_text_order_no"
-        app:layout_constraintEnd_toEndOf="@id/tv_cashier_acount"
+        app:layout_constraintEnd_toEndOf="@id/tv_cashier_account"
         app:layout_constraintBottom_toTopOf="@id/tv_refund"
         />
 
@@ -194,7 +194,7 @@
         android:text="= 实收：￥6.00"
         style="@style/SmallBlueTextStyle"
         android:layout_marginBottom="@dimen/y12"
-        app:layout_constraintEnd_toEndOf="@id/tv_cashier_acount"
+        app:layout_constraintEnd_toEndOf="@id/tv_cashier_account"
         app:layout_constraintBottom_toTopOf="@id/line3" />
 
     <TextView
@@ -216,7 +216,7 @@
         android:background="@color/color_line"
         android:layout_marginBottom="@dimen/y10"
         app:layout_constraintStart_toStartOf="@id/tv_text_order_no"
-        app:layout_constraintEnd_toEndOf="@id/tv_cashier_acount"
+        app:layout_constraintEnd_toEndOf="@id/tv_cashier_account"
         app:layout_constraintBottom_toTopOf="@id/tv_receipts"
         />
 
@@ -240,7 +240,7 @@
         android:text="= 应收：￥6.00"
         style="@style/SmallBlueTextStyle"
         android:layout_marginBottom="@dimen/y12"
-        app:layout_constraintEnd_toEndOf="@id/tv_cashier_acount"
+        app:layout_constraintEnd_toEndOf="@id/tv_cashier_account"
         app:layout_constraintBottom_toTopOf="@id/line2" />
 
     <TextView
@@ -265,7 +265,7 @@
        android:background="@drawable/bg_frame"
        android:layout_marginBottom="@dimen/y10"
        app:layout_constraintStart_toStartOf="@id/tv_text_order_no"
-       app:layout_constraintEnd_toEndOf="@id/tv_cashier_acount"
+       app:layout_constraintEnd_toEndOf="@id/tv_cashier_account"
        app:layout_constraintTop_toBottomOf="@id/cl_goods_title"
        app:layout_constraintBottom_toTopOf="@id/tv_receivable">
 

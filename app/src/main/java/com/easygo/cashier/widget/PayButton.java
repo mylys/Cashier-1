@@ -50,6 +50,9 @@ public class PayButton extends android.support.v7.widget.AppCompatTextView {
     }
 
     private void initAttr(Context context, AttributeSet attrs) {
+        if(attrs == null) {
+            return;
+        }
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.PayButton);
         if(ta != null) {
             mSelectedBgDrawable = ta.getDrawable(R.styleable.PayButton_color_bg);

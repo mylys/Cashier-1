@@ -3,63 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:PayButton="http://schemas.android.com/tools">
+    xmlns:PayButton="http://schemas.android.com/apk/res-auto"
+    xmlns:MyTitleBar="http://schemas.android.com/apk/res-auto">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!--标题栏-->
+    <com.easygo.cashier.widget.MyTitleBar
         android:id="@+id/cl_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/color_cc565a"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        android:layout_height="@dimen/title_bar_height"
+        MyTitleBar:status="1"
+        MyTitleBar:show_right_account="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="@dimen/x71"
-            android:layout_height="@dimen/y71"
-            android:src="@mipmap/ic_launcher"
-            android:layout_marginStart="@dimen/x9"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    </com.easygo.cashier.widget.MyTitleBar>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_settlement"
-            android:textSize="@dimen/text_size"
-            android:textColor="@color/color_text_white"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_back"/>
-
-        <ImageView
-            android:id="@+id/iv_help"
-            android:layout_width="@dimen/x49"
-            android:layout_height="@dimen/y49"
-            android:src="@mipmap/ic_launcher"
-            android:layout_marginEnd="@dimen/x36"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="收银员：工号"
-            android:textSize="@dimen/text_size"
-            android:textColor="@color/color_text_white"
-            android:layout_marginEnd="@dimen/x32"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/iv_help"/>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    
     <CheckBox
         android:id="@+id/cb_combine_payment"
         android:layout_width="@dimen/x233"
@@ -187,65 +147,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
-
-    <!--现金相关-->
-    <View
-        android:id="@+id/line3"
-        android:layout_width="@dimen/x10"
-        android:layout_height="@dimen/y97"
-        android:background="@color/color_line"
-        app:layout_constraintStart_toStartOf="@id/line1"
-        app:layout_constraintEnd_toEndOf="@id/line1"
-        app:layout_constraintTop_toTopOf="@id/line1"
-        app:layout_constraintBottom_toBottomOf="@id/line2"/>
-
-    <!--找零-->
-    <TextView
-        android:id="@+id/tv_text_change"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_change"
-        style="@style/TextStyle"
-        android:layout_marginStart="@dimen/x46"
-        app:layout_constraintStart_toStartOf="@id/line3"
-        app:layout_constraintTop_toTopOf="@id/tv_text_receipts"
-        />
-
-    <TextView
-        android:id="@+id/tv_change"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="￥6.00"
-        android:textSize="@dimen/text_size_large"
-        android:textColor="@color/color_text"
-        app:layout_constraintStart_toStartOf="@id/tv_text_change"
-        app:layout_constraintTop_toTopOf="@id/cl_receipts"
-        app:layout_constraintBottom_toBottomOf="@id/cl_receipts"/>
-    <!--现金相关-->
-
-    <!--微信、支付宝 扫码-->
-    <ImageView
-        android:id="@+id/iv_scan"
-        android:layout_width="@dimen/x67"
-        android:layout_height="@dimen/y67"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginEnd="@dimen/x34"
-        android:layout_marginBottom="@dimen/y6"
-        app:layout_constraintEnd_toEndOf="@id/line2"
-        app:layout_constraintBottom_toTopOf="@id/line2"/>
-
-    <TextView
-        android:layout_width="@dimen/x150"
-        android:layout_height="@dimen/y51"
-        android:background="@color/color_frame"
-        android:text="@string/text_already_receive"
-        android:textColor="@color/color_text_white"
-        android:textSize="@dimen/text_size_small"
-        android:gravity="center"
-        android:layout_marginEnd="@dimen/x19"
-        android:layout_marginBottom="@dimen/y3"
-        app:layout_constraintEnd_toEndOf="@id/line2"
-        app:layout_constraintBottom_toTopOf="@id/line2"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

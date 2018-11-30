@@ -3,6 +3,7 @@
 
     <string name="text_login">登录</string>
 
+    <!--主页面-->
     <string name="text_no_barcode_goods">无码商品</string>
     <string name="text_pop_money_box">弹出钱箱</string>
 
@@ -21,6 +22,7 @@
     <string name="text_cancel">取消</string>
 
 
+    <!--结算页面-->
     <string name="text_combined_payment">组合支付</string>
     <string name="text_cash">现金</string>
     <string name="text_wechat">微信</string>
@@ -33,7 +35,6 @@
     <string name="text_print">打印</string>
     <string name="text_change">找零</string>
 
-
     <string name="text_scan_code">请扫描付款码</string>
     <string name="text_scanning_code">正在识别二维码...</string>
     <string name="text_successful_receipt">收款成功</string>
@@ -44,6 +45,10 @@
     <string name="text_order_no">订单单号：</string>
     <string name="text_cashier">收银员：</string>
     <string name="text_function_list">功能列表</string>
+
+    <!--搜索框-->
+    <string name="text_search_hint_barcode">输入条形码、商品名或编码</string>
+    <string name="text_search_hint_order">输入订单单号</string>
 
 
 </resources>

@@ -3,7 +3,6 @@ package com.easygo.cashier.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
 
     @BindView(R.id.tv_order_no)
     TextView tvOrderNo;
-    @BindView(R.id.tv_cashier_acount)
+    @BindView(R.id.tv_cashier_account)
     TextView tvCashierAcount;
     @BindView(R.id.tv_return_of_goods_count)
     TextView tvReturnOfGoodsCount;

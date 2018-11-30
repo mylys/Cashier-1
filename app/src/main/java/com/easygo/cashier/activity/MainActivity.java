@@ -27,7 +27,7 @@ public class MainActivity extends BaseAppActivity {
     private final String TAG_FUNCTION_LIST = "tag_function_list";
     @BindView(R.id.civ)
     CircleImageView civ;
-    @BindView(R.id.tv_cashier_acount)
+    @BindView(R.id.tv_cashier_account)
     TextView tvCashierAcount;
     @BindView(R.id.help)
     ImageView help;

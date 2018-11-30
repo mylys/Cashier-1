@@ -10,14 +10,31 @@ import android.view.ViewGroup;
 import com.easygo.cashier.R;
 import com.niubility.library.base.BaseFragment;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class RefundFragment extends BaseFragment {
+
+    private Unbinder unbinder;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order_history_detail, container, false);
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(unbinder != null)
+            unbinder.unbind();
+    }
+
+    public static RefundFragment newInstance() {
+        return new RefundFragment();
     }
 }

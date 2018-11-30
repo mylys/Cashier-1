@@ -8,17 +8,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.easygo.cashier.R;
 import com.easygo.cashier.activity.MainActivity;
+import com.easygo.cashier.activity.RefundActivity;
 import com.easygo.cashier.activity.Test;
 import com.easygo.cashier.adapter.GoodsAdapter;
 import com.easygo.cashier.bean.GoodsInfo;
 import com.niubility.library.base.BaseFragment;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -35,17 +38,37 @@ public class GoodsFragment extends BaseFragment {
     TextView tvCoupon;
     @BindView(R.id.rv_goods)
     RecyclerView rvGoods;
+    @BindView(R.id.btn_settlement)
+    Button btnSettlement;
+    @BindView(R.id.cl_pop_money_box)
+    ConstraintLayout clPopMoneyBox;
+    @BindView(R.id.line1)
+    View line1;
+
     private Unbinder unbinder;
 
+    public static final int TYPE_GOODS = 0;
+    public static final int TYPE_REFUND = 1;
+    public static final String KEY_TYPE = "key_type";
+    private int mType = TYPE_GOODS;
+
+
     public static GoodsFragment newInstance() {
-        return new GoodsFragment();
+        return newInstance(null);
+    }
+
+    public static GoodsFragment newInstance(Bundle bundle) {
+        GoodsFragment goodsFragment = new GoodsFragment();
+        if (bundle != null)
+            goodsFragment.setArguments(bundle);
+        return goodsFragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.layout_goods, container, false);
+        View view = inflater.inflate(R.layout.fragment_goods, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -67,12 +90,32 @@ public class GoodsFragment extends BaseFragment {
                 Toast.makeText(getContext(), goodsInfo.getName(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        Bundle data = getArguments();
+        if (data != null) {
+            mType = data.getInt(KEY_TYPE, TYPE_GOODS);
+
+        }
+        switch (mType) {
+            case TYPE_GOODS:
+                clPopMoneyBox.setVisibility(View.VISIBLE);
+                line1.setVisibility(View.VISIBLE);
+                btnSettlement.setText("收银：  ￥6.00");
+                break;
+            case TYPE_REFUND:
+                clPopMoneyBox.setVisibility(View.GONE);
+                line1.setVisibility(View.GONE);
+                btnSettlement.setText("退款：  ￥6.00");
+                break;
+        }
+
+        btnSettlement.setText(mType == TYPE_GOODS ? "收银：  ￥6.00" : "退款：  ￥6.00");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(unbinder != null)
+        if (unbinder != null)
             unbinder.unbind();
     }
 
@@ -85,10 +128,20 @@ public class GoodsFragment extends BaseFragment {
                 break;
             case R.id.btn_clear://清空
                 break;
-            case R.id.btn_settlement://收银
-                MainActivity activity = (MainActivity) getActivity();
-                if(activity != null)
-                    activity.toCashierActivity();
+            case R.id.btn_settlement://收银 or  退款
+                switch (mType) {
+                    case TYPE_GOODS:
+                        MainActivity mainActivity = (MainActivity) getActivity();
+                        if (mainActivity != null)
+                            mainActivity.toCashierActivity();
+                        break;
+                    case TYPE_REFUND:
+                        RefundActivity refundActivity = (RefundActivity) getActivity();
+                        if (refundActivity != null)
+                            refundActivity.toRefundFragment();
+                        break;
+                }
+
                 break;
         }
     }

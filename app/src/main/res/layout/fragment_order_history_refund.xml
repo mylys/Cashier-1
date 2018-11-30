@@ -16,7 +16,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/tv_cashier_acount"
+        android:id="@+id/tv_cashier_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="收银员：工号"
@@ -32,7 +32,7 @@
         android:layout_height="@dimen/y60"
         android:background="@color/color_frame"
         android:layout_marginEnd="@dimen/x33"
-        app:layout_constraintEnd_toStartOf="@id/tv_cashier_acount"
+        app:layout_constraintEnd_toStartOf="@id/tv_cashier_account"
         app:layout_constraintTop_toTopOf="@id/cl_search"
         app:layout_constraintBottom_toBottomOf="@id/cl_search"/>
 

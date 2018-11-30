@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="MyTitleBar">
+        <attr name="status" format="integer"/>
+        <attr name="show_right_account" format="boolean"/>
+    </declare-styleable>
+
+
     <declare-styleable name="PayButton">
         <attr name="color_text_selected" format="color"/>
         <attr name="color_text_no_selected" format="color"/>
         <attr name="color_bg" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="MySearchView">
+        <attr name="seach_drawable" format="reference"/>
+        <attr name="seach_width" format="integer"/>
+        <attr name="seach_height" format="integer"/>
+        <attr name="seach_margin_horizontal" format="integer"/>
+
+        <attr name="clear_drawable" format="reference"/>
+        <attr name="clear_width" format="integer"/>
+        <attr name="clear_height" format="integer"/>
+        <attr name="clear_margin_horizontal" format="integer"/>
+
+        <attr name="search_hint" format="string"/>
+
     </declare-styleable>
 </resources>

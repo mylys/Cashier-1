@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:MySearchView="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <!--左右两边分割线-->
@@ -21,7 +21,7 @@
 
 
     <!--搜索框-->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.easygo.cashier.widget.MySearchView
         android:id="@+id/cl_search"
         android:layout_width="0dp"
         android:layout_height="@dimen/y69"
@@ -29,12 +29,14 @@
         android:layout_marginBottom="@dimen/y16"
         android:layout_marginStart="@dimen/x19"
         android:layout_marginEnd="@dimen/x18"
+        android:background="@drawable/bg_frame"
+        MySearchView:search_hint="@string/text_search_hint_order"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="@id/line1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/rv_order_history">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.easygo.cashier.widget.MySearchView>
 
 
     <!--历史订单列表-->
