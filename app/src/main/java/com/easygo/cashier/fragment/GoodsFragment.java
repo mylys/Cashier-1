@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,9 @@ import com.easygo.cashier.activity.RefundActivity;
 import com.easygo.cashier.activity.Test;
 import com.easygo.cashier.adapter.GoodsAdapter;
 import com.easygo.cashier.bean.GoodsInfo;
+import com.easygo.cashier.widget.NoGoodsDialog;
 import com.niubility.library.base.BaseFragment;
+import com.niubility.library.utils.ToastUtils;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
@@ -51,7 +54,6 @@ public class GoodsFragment extends BaseFragment {
     public static final int TYPE_REFUND = 1;
     public static final String KEY_TYPE = "key_type";
     private int mType = TYPE_GOODS;
-
 
     public static GoodsFragment newInstance() {
         return newInstance(null);
@@ -123,6 +125,19 @@ public class GoodsFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cl_no_barcode_goods://无码商品
+                final NoGoodsDialog dialog = new NoGoodsDialog();
+                dialog.showCenter(getActivity());
+                dialog.setOnDialogClickListener(new NoGoodsDialog.OnDialogClickListener() {
+                    @Override
+                    public void onDialogClick(String content) {
+                        if (TextUtils.isEmpty(content)) {
+                            ToastUtils.showToast(getActivity(), "请输入金额");
+                            return;
+                        }
+                        ToastUtils.showToast(getActivity(), content);
+                        dialog.dismiss();
+                    }
+                });
                 break;
             case R.id.cl_pop_money_box://弹出钱箱
                 break;

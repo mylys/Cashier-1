@@ -7,9 +7,9 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../BaseLibrary/niubilitylibrary" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="D:/_Android/WorkSpace/BaseLibrary/niubilitylibrary" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

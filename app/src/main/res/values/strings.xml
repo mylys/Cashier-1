@@ -50,5 +50,9 @@
     <string name="text_search_hint_barcode">输入条形码、商品名或编码</string>
     <string name="text_search_hint_order">输入订单单号</string>
 
+    <!-- dialog -->
+    <string name="no_goods_text">无码商品</string>
+    <string name="input_price">请输入商品金额</string>
+
 
 </resources>
