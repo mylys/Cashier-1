@@ -31,6 +31,7 @@
     <string name="text_other">八达通</string>
     <string name="text_receivable">应收</string>
     <string name="text_receipts">实收</string>
+    <string name="text_receipts_colon">实收:</string>
     <string name="text_print_paper">打印单据</string>
     <string name="text_print">打印</string>
     <string name="text_change">找零</string>

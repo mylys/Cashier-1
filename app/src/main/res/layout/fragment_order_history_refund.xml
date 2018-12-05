@@ -2,18 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:MySearchView="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.easygo.cashier.widget.MySearchView
         android:id="@+id/cl_search"
         android:layout_width="@dimen/x461"
         android:layout_height="@dimen/y69"
+        android:background="@drawable/bg_frame"
+        MySearchView:search_hint="输入品名"
         android:layout_marginStart="@dimen/x30"
         android:layout_marginTop="@dimen/y14"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.easygo.cashier.widget.MySearchView>
 
     <TextView
         android:id="@+id/tv_cashier_account"

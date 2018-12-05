@@ -1,4 +1,4 @@
-package com.easygo.cashier.fragment;
+package com.easygo.cashier.module.order_history;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -74,6 +74,10 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.btn_refund:
                 Toast.makeText(getContext(), "退款", Toast.LENGTH_SHORT).show();
+
+                if (getActivity() != null) {
+                    ((OrderHistoryActivity) getActivity()).toOrderHistoryRefundFragment();
+                }
                 break;
             case R.id.btn_print:
                 Toast.makeText(getContext(), "打印单据", Toast.LENGTH_SHORT).show();

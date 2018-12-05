@@ -1,7 +1,6 @@
-package com.easygo.cashier.fragment;
+package com.easygo.cashier.module.order_history;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -11,11 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.easygo.cashier.R;
-import com.easygo.cashier.activity.Test;
+import com.easygo.cashier.Test;
 import com.easygo.cashier.adapter.OrderHistoryAdapter;
 import com.easygo.cashier.bean.OrderHistoryInfo;
 import com.niubility.library.base.BaseFragment;

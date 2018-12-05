@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.easygo.cashier">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:name=".MyApplication"
@@ -10,22 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
-        <activity android:name="com.easygo.cashier.activity.MainActivity"
+        <activity android:name="com.easygo.cashier.module.goods.MainActivity"
             android:screenOrientation="landscape" >
 
         </activity>
-        <activity android:name=".activity.LoginActivity"
+        <activity android:name=".module.login.LoginActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".base.BaseAppActivity" />
-        <activity android:name=".activity.CashierActivity" />
-        <activity android:name=".activity.OrderHistoryActivity" />
-        <activity android:name=".activity.RefundActivity" />
+        <activity android:name=".module.settlement.CashierActivity" />
+        <activity android:name=".module.order_history.OrderHistoryActivity" />
+        <activity android:name=".module.refund.RefundActivity" />
     </application>
 
 </manifest>

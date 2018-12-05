@@ -1,4 +1,4 @@
-package com.easygo.cashier.fragment;
+package com.easygo.cashier.module.settlement;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,12 +26,16 @@ public class SettlementFragment extends BaseFragment {
     TextView tvReceivable;
     @BindView(R.id.tv_coupon)
     TextView tvCoupon;
+    @BindView(R.id.tv_text_receipts_way)
+    TextView tvReceiptsWay;
     @BindView(R.id.et_receipts)
     EditText etReceipts;
     @BindView(R.id.cl_receipts)
     ConstraintLayout clReceipts;
     @BindView(R.id.line3)
     View line3;
+    @BindView(R.id.tv_text_change)
+    TextView tvTextChange;
     @BindView(R.id.tv_change)
     TextView tvChange;
     @BindView(R.id.iv_scan)
@@ -100,22 +104,55 @@ public class SettlementFragment extends BaseFragment {
     public void setPayType(int payType) {
         switch (payType) {
             case TYPE_CASH://现金
+                tvReceiptsWay.setText(R.string.text_cash);
+                showAlreadySettlement(false);
+                setScanVisibility(false);
+                setChangeVisibilty(true);
 
                 break;
             case TYPE_WECHAT://微信
+                tvReceiptsWay.setText(R.string.text_wechat);
+                showAlreadySettlement(false);
+                setScanVisibility(true);
+                setChangeVisibilty(false);
 
                 break;
             case TYPE_ALIPAY://支付宝
+                tvReceiptsWay.setText(R.string.text_alipay);
+                showAlreadySettlement(false);
+                setScanVisibility(true);
+                setChangeVisibilty(false);
 
                 break;
             case TYPE_BANK_CARD://银行卡
+                tvReceiptsWay.setText(R.string.text_bank_card);
+                showAlreadySettlement(false);
+                setScanVisibility(false);
+                setChangeVisibilty(false);
 
                 break;
             case TYPE_OTHER://其他
+                tvReceiptsWay.setText(R.string.text_other);
+                showAlreadySettlement(false);
+                setScanVisibility(false);
+                setChangeVisibilty(false);
 
                 break;
         }
     }
+
+    public void setChangeVisibilty(boolean visibilty) {
+        line3.setVisibility(visibilty? View.VISIBLE: View.GONE);
+        tvTextChange.setVisibility(visibilty? View.VISIBLE: View.GONE);
+        tvChange.setVisibility(visibilty? View.VISIBLE: View.GONE);
+    }
+    public void setScanVisibility(boolean visibilty) {
+        ivScan.setVisibility(visibilty? View.VISIBLE: View.VISIBLE);
+    }
+    public void showAlreadySettlement(boolean visibilty) {
+        tvAlreadySettlement.setVisibility(visibilty? View.VISIBLE: View.VISIBLE);
+    }
+
 
 
     @Override

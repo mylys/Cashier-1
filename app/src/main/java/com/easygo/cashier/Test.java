@@ -1,4 +1,4 @@
-package com.easygo.cashier.activity;
+package com.easygo.cashier;
 
 import com.easygo.cashier.bean.GoodsInfo;
 import com.easygo.cashier.bean.OrderHistoryInfo;

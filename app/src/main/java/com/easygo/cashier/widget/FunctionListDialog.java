@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.easygo.cashier.R;
-import com.easygo.cashier.activity.MainActivity;
+import com.easygo.cashier.module.goods.MainActivity;
 import com.easygo.cashier.adapter.FunctionListAdapter;
 
 import butterknife.BindView;

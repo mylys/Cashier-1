@@ -1,4 +1,4 @@
-package com.easygo.cashier.activity;
+package com.easygo.cashier.module.goods;
 
 
 import android.content.Intent;
@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.easygo.cashier.R;
 import com.easygo.cashier.base.BaseAppActivity;
-import com.easygo.cashier.fragment.GoodsFragment;
+import com.easygo.cashier.module.order_history.OrderHistoryActivity;
+import com.easygo.cashier.module.refund.RefundActivity;
+import com.easygo.cashier.module.settlement.CashierActivity;
 import com.easygo.cashier.widget.FunctionListDialog;
 import com.easygo.cashier.widget.HelpDialog;
 import com.niubility.library.widget.imageview.CircleImageView;

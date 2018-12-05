@@ -1,29 +1,26 @@
-package com.easygo.cashier.activity;
+package com.easygo.cashier.module.login;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextClock;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easygo.cashier.R;
+import com.easygo.cashier.bean.InitResponse;
+import com.easygo.cashier.bean.LoginResponse;
+import com.easygo.cashier.module.goods.MainActivity;
+import com.niubility.library.base.BaseRxActivity;
 import com.niubility.library.widget.imageview.CircleImageView;
 
+import java.util.Map;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseRxActivity<LoginContract.IView, LoginPresenter> implements LoginContract.IView {
 
     @BindView(R.id.circleImageView)
     CircleImageView circleImageView;
@@ -35,17 +32,25 @@ public class LoginActivity extends AppCompatActivity {
     ImageView ivPwd;
     private boolean isNeedShowPwd = false;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
 
-        init();
+    @Override
+    protected LoginPresenter createPresenter() {
+        return new LoginPresenter();
     }
 
-    private void init() {
+    @Override
+    protected LoginContract.IView createView() {
+        return this;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    protected void init() {
+
 
         ivPwd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +74,31 @@ public class LoginActivity extends AppCompatActivity {
     public void onClick() {
         Toast.makeText(this, "登录成功...", Toast.LENGTH_SHORT).show();
 
+//        mPresenter.init("200155");
+//        mPresenter.login(etAccount.getText().toString().trim(), etPassword.getText().toString().trim());
+
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void loginSuccess(LoginResponse result) {
+
+    }
+
+    @Override
+    public void loginFailed(Map<String, Object> map) {
+
+    }
+
+    @Override
+    public void initSuccess(InitResponse result) {
+
+    }
+
+    @Override
+    public void initFailed(Map<String, Object> map) {
+
     }
 }
