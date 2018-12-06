@@ -3,6 +3,7 @@ package com.easygo.cashier.module.goods;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,9 +21,11 @@ import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.request.CreateOrderRequestBody;
 import com.easygo.cashier.bean.request.RealMoneyRequestBody;
 import com.easygo.cashier.module.refund.RefundActivity;
+import com.easygo.cashier.widget.NoGoodsDialog;
 import com.niubility.library.base.BaseRxFragment;
 import com.niubility.library.http.HttpExceptionEngine;
 import com.niubility.library.utils.GsonUtils;
+import com.niubility.library.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,26 +134,19 @@ public class GoodsFragment extends BaseRxFragment<GoodsContract.IView, GoodsPres
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cl_no_barcode_goods://无码商品
-                CreateOrderRequestBody requestBody1 = new CreateOrderRequestBody();
-                requestBody1.setShop_id("308");
-                requestBody1.setOpenid("shanghai");
-                requestBody1.setTotal_money("1");
-                requestBody1.setReal_pay("1");
-                requestBody1.setAct_sn("");
-                requestBody1.setCoun_sn("");
-                requestBody1.setIntegral(1);
-                requestBody1.setWallet_pay(0);
-                requestBody1.setUnion_id("");
-                requestBody1.setCard_no("");
-                requestBody1.setMember_money(1);
-                CreateOrderRequestBody.GoodsBean goodsBean1 = new CreateOrderRequestBody.GoodsBean();
-                goodsBean1.setBarcode("6921168550111");
-                goodsBean1.setGoods_count(1);
-                List<CreateOrderRequestBody.GoodsBean> list1 = new ArrayList<>();
-                list1.add(goodsBean1);
-                requestBody1.setGoods(list1);
-
-                mPresenter.createOrder(GsonUtils.getInstance().getGson().toJson(requestBody1));
+                final NoGoodsDialog dialog = new NoGoodsDialog();
+                dialog.showCenter(getActivity());
+                dialog.setOnDialogClickListener(new NoGoodsDialog.OnDialogClickListener() {
+                    @Override
+                    public void onDialogClick(String content) {
+                        if (TextUtils.isEmpty(content)) {
+                            ToastUtils.showToast(getActivity(), "请输入金额");
+                            return;
+                        }
+                        ToastUtils.showToast(getActivity(), content);
+                        dialog.dismiss();
+                    }
+                });
 
 
                 break;
@@ -174,11 +170,6 @@ public class GoodsFragment extends BaseRxFragment<GoodsContract.IView, GoodsPres
             case R.id.btn_clear://清空
 
 
-                mPresenter.checkPayStatus("201812055c07c454c6faa845457");
-
-
-                mPresenter.getGoods("308","6921168550111");
-
                 break;
             case R.id.btn_settlement://收银 or  退款
                 switch (mType) {
@@ -197,6 +188,32 @@ public class GoodsFragment extends BaseRxFragment<GoodsContract.IView, GoodsPres
                 break;
         }
     }
+
+    public void createOrder() {
+        CreateOrderRequestBody requestBody1 = new CreateOrderRequestBody();
+        requestBody1.setShop_id("308");
+        requestBody1.setOpenid("shanghai");
+        requestBody1.setTotal_money("1");
+        requestBody1.setReal_pay("1");
+        requestBody1.setAct_sn("");
+        requestBody1.setCoun_sn("");
+        requestBody1.setIntegral(1);
+        requestBody1.setWallet_pay(0);
+        requestBody1.setUnion_id("");
+        requestBody1.setCard_no("");
+        requestBody1.setMember_money(1);
+        CreateOrderRequestBody.GoodsBean goodsBean1 = new CreateOrderRequestBody.GoodsBean();
+        goodsBean1.setBarcode("6921168550111");
+        goodsBean1.setGoods_count(1);
+        List<CreateOrderRequestBody.GoodsBean> list1 = new ArrayList<>();
+        list1.add(goodsBean1);
+        requestBody1.setGoods(list1);
+
+        mPresenter.createOrder(GsonUtils.getInstance().getGson().toJson(requestBody1));
+    }
+
+//    mPresenter.checkPayStatus("201812055c07c454c6faa845457");
+//    mPresenter.getGoods("308","6921168550111");
 
     @Override
     public void getGoodsSuccess(GoodsResponse goodsResponse) {
