@@ -21,5 +21,13 @@
     <dimen name="clear_drawable_width">@dimen/x37</dimen>
     <dimen name="clear_drawable_height">@dimen/y37</dimen>
 
+    <!--扫码框宽高-->
+    <dimen name="scan_dialog_width">@dimen/x259</dimen>
+    <dimen name="scan_dialog_height">@dimen/y238</dimen>
+
+    <!--扫码框宽高-->
+    <dimen name="keyboard_width">@dimen/x545</dimen>
+    <dimen name="keyboard_height">@dimen/y545</dimen>
+
 
 </resources>

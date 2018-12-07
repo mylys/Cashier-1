@@ -3,15 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:MyTitleBar="http://schemas.android.com/tools">
+    xmlns:MyTitleBar="http://schemas.android.com/apk/res-auto">
 
     <!--标题栏-->
     <com.easygo.cashier.widget.MyTitleBar
         android:id="@+id/cl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
+        MyTitleBar:title_text="@string/text_order_history"
         MyTitleBar:status="1"
-        MyTitleBar:show_right_acount="true"
+        MyTitleBar:show_right_account="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">

@@ -4,24 +4,29 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.module.goods.GoodsFragment;
 import com.easygo.cashier.module.order_history.OrderHistoryRefundFragment;
 import com.niubility.library.base.BaseActivity;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 功能列表弹框 退款选项进入的页面
  */
+@Route(path = ModulePath.refund)
 public class RefundActivity extends BaseActivity {
 
     private final String TAG_REFUND = "tag_refund";
-    private final String TAG_REFUND_SETTLEMENT = "tag_refund_settlement";
+    private final String TAG_REFUND_CASH = "tag_refund_cash";
 
     private GoodsFragment goodsFragment;
-    private OrderHistoryRefundFragment orderHistoryRefundFragment;
+    private RefundCashFragment refundCashFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,21 +53,30 @@ public class RefundActivity extends BaseActivity {
         super.onStart();
 
     }
+    @OnClick({R.id.iv_back})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back://返回
+                finish();
+                break;
+        }
+    }
 
-    public void toRefundFragment() {
 
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_REFUND_SETTLEMENT);
+    public void toRefundCashFragment() {
+
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_REFUND_CASH);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (fragment == null) {
-            orderHistoryRefundFragment = OrderHistoryRefundFragment.newInstance();
+            refundCashFragment = RefundCashFragment.newInstance();
 
-            transaction.add(R.id.framelayout, orderHistoryRefundFragment, TAG_REFUND_SETTLEMENT);
+            transaction.add(R.id.framelayout, refundCashFragment, TAG_REFUND_CASH);
 
         } else {
-            transaction.show(orderHistoryRefundFragment);
+            transaction.show(refundCashFragment);
         }
         transaction.hide(goodsFragment);
-        transaction.addToBackStack(TAG_REFUND_SETTLEMENT);
+        transaction.addToBackStack(TAG_REFUND_CASH);
         transaction.commit();
     }
 }

@@ -31,6 +31,7 @@ public class MyTitleBar extends ConstraintLayout {
     public static final int STATUS_MAIN = 0;
     public static final int STATUS_OTHER = 1;
     private int mStatus;
+    private String mTitleText;//标题文本
 
     //后退 页面描述 工号
     private ImageView mBack;
@@ -120,14 +121,19 @@ public class MyTitleBar extends ConstraintLayout {
         }
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MyTitleBar);
         if(ta != null) {
+            mTitleText = ta.getString(R.styleable.MyTitleBar_title_text);
             mStatus = ta.getInt(R.styleable.MyTitleBar_status, STATUS_MAIN);
             mShowRightAccount = ta.getBoolean(R.styleable.MyTitleBar_show_right_account, false);
 
             ta.recycle();
         }
+
+        mTitle.setText(mTitleText);
+
     }
 
     public void setTitle(String title) {
+        mTitleText = title;
         mTitle.setText(title);
     }
 

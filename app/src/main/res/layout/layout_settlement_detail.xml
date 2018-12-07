@@ -109,8 +109,10 @@
             android:textSize="@dimen/text_size_large"
             android:textColor="@color/color_text"
             android:background="@null"
-            android:inputType="none"
+            android:layout_marginEnd="@dimen/x5"
+            android:maxLength="15"
             app:layout_constraintStart_toEndOf="@id/tv_sign"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             />

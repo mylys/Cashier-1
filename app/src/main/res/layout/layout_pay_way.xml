@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:PayButton="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CheckBox
+        android:id="@+id/cb_combine_payment"
+        android:layout_width="@dimen/x233"
+        android:layout_height="@dimen/y81"
+        android:text="@string/text_combined_payment"
+        style="@style/TextStyle"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_frame"
+        android:button="@null"
+        android:visibility="visible"
+        android:drawableStart="@drawable/check_box"
+        android:drawablePadding="@dimen/x20"
+        android:paddingStart="@dimen/x25"
+        android:layout_marginStart="@dimen/x25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_cash"
+        app:layout_constraintTop_toTopOf="@id/btn_cash"
+        app:layout_constraintBottom_toBottomOf="@id/btn_cash"
+        />
+
+    <!--现金-->
+    <Button
+        android:id="@+id/btn_cash"
+        android:layout_width="@dimen/pay_btn_width"
+        android:layout_height="@dimen/pay_btn_height"
+        android:text="@string/text_cash"
+        style="@style/PayButtonStyle"
+        android:background="@drawable/bg_pay_way_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cb_combine_payment"/>
+
+    <!--支付宝-->
+    <Button
+        android:id="@+id/btn_alipay"
+        android:layout_width="@dimen/pay_btn_width"
+        android:layout_height="@dimen/pay_btn_height"
+        android:text="@string/text_alipay"
+        style="@style/PayButtonStyle"
+        android:background="@drawable/bg_pay_way_button"
+        app:layout_constraintTop_toTopOf="@id/btn_cash"
+        app:layout_constraintBottom_toBottomOf="@id/btn_cash"
+        app:layout_constraintStart_toEndOf="@id/btn_cash"/>
+
+    <!--微信-->
+    <Button
+        android:id="@+id/btn_wechat"
+        android:layout_width="@dimen/pay_btn_width"
+        android:layout_height="@dimen/pay_btn_height"
+        android:text="@string/text_wechat"
+        style="@style/PayButtonStyle"
+        android:background="@drawable/bg_pay_way_button"
+        app:layout_constraintTop_toTopOf="@id/btn_cash"
+        app:layout_constraintBottom_toBottomOf="@id/btn_cash"
+        app:layout_constraintStart_toEndOf="@id/btn_alipay"/>
+
+    <!--银行卡-->
+    <Button
+        android:id="@+id/btn_bank_card"
+        android:layout_width="@dimen/pay_btn_width"
+        android:layout_height="@dimen/pay_btn_height"
+        android:text="@string/text_bank_card"
+        style="@style/PayButtonStyle"
+        android:background="@drawable/bg_pay_way_button"
+        app:layout_constraintTop_toTopOf="@id/btn_cash"
+        app:layout_constraintBottom_toBottomOf="@id/btn_cash"
+        app:layout_constraintStart_toEndOf="@id/btn_wechat"/>
+
+    <!--其他支付（八达通）-->
+    <Button
+        android:id="@+id/btn_other"
+        android:layout_width="@dimen/pay_btn_width"
+        android:layout_height="@dimen/pay_btn_height"
+        android:text="@string/text_other"
+        style="@style/PayButtonStyle"
+        android:background="@drawable/bg_pay_way_button"
+        app:layout_constraintTop_toTopOf="@id/btn_cash"
+        app:layout_constraintBottom_toBottomOf="@id/btn_cash"
+        app:layout_constraintStart_toEndOf="@id/btn_bank_card"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

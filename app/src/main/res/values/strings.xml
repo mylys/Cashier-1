@@ -31,7 +31,7 @@
     <string name="text_other">八达通</string>
     <string name="text_receivable">应收</string>
     <string name="text_receipts">实收</string>
-    <string name="text_receipts_colon">实收:</string>
+    <string name="text_receipts_colon">实收： </string>
     <string name="text_print_paper">打印单据</string>
     <string name="text_print">打印</string>
     <string name="text_change">找零</string>
@@ -43,6 +43,7 @@
     <string name="text_help">请致电客服020-1231231</string>
 
     <!--历史订单详情-->
+    <string name="text_order_history">历史订单</string>
     <string name="text_order_no">订单单号：</string>
     <string name="text_cashier">收银员：</string>
     <string name="text_function_list">功能列表</string>

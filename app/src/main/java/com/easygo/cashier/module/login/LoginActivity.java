@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
@@ -78,8 +80,9 @@ public class LoginActivity extends BaseRxActivity<LoginContract.IView, LoginPres
 //        mPresenter.login(etAccount.getText().toString().trim(), etPassword.getText().toString().trim());
 
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
+        ARouter.getInstance().build(ModulePath.goods).navigation();
     }
 
     @Override

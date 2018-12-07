@@ -11,6 +11,7 @@
         android:id="@+id/cl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
+        MyTitleBar:title_text="@string/text_refund"
         MyTitleBar:status="1"
         MyTitleBar:show_right_account="true"
         app:layout_constraintStart_toStartOf="parent"

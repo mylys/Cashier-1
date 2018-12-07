@@ -4,6 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,5 +61,12 @@ public class ScanCodeDialog extends Dialog {
                 mTextView.setText(R.string.text_successful_receipt);
                 break;
         }
+    }
+
+    public int getDialogWidth() {
+        return (int) getContext().getResources().getDimension(R.dimen.scan_dialog_width);
+    }
+    public int getDialogHeight() {
+        return (int) getContext().getResources().getDimension(R.dimen.scan_dialog_height);
     }
 }

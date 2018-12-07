@@ -10,7 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.Test;
 import com.easygo.cashier.adapter.GoodsAdapter;
@@ -53,12 +55,11 @@ public class GoodsFragment extends BaseRxFragment<GoodsContract.IView, GoodsPres
     @BindView(R.id.line1)
     View line1;
 
-    private GoodsPresenter mGoodsPresenter;
-
     public static final int TYPE_GOODS = 0;
     public static final int TYPE_REFUND = 1;
     public static final String KEY_TYPE = "key_type";
     private int mType = TYPE_GOODS;
+    private GoodsAdapter mGoodsAdapter;
 
 
     public static GoodsFragment newInstance() {
@@ -95,12 +96,12 @@ public class GoodsFragment extends BaseRxFragment<GoodsContract.IView, GoodsPres
 
     private void initView() {
         rvGoods.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        final GoodsAdapter goodsAdapter = new GoodsAdapter();
-        rvGoods.setAdapter(goodsAdapter);
+        mGoodsAdapter = new GoodsAdapter();
+        rvGoods.setAdapter(mGoodsAdapter);
 
-        goodsAdapter.setNewData(Test.getGoodsInfos());
+        mGoodsAdapter.setNewData(Test.getGoodsInfos());
 
-        goodsAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        mGoodsAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 GoodsInfo goodsInfo = (GoodsInfo) (adapter.getData().get(position));
@@ -168,20 +169,22 @@ public class GoodsFragment extends BaseRxFragment<GoodsContract.IView, GoodsPres
 
                 break;
             case R.id.btn_clear://清空
-
+                mGoodsAdapter.setNewData(new ArrayList<GoodsInfo>());
 
                 break;
             case R.id.btn_settlement://收银 or  退款
                 switch (mType) {
                     case TYPE_GOODS:
-                        MainActivity mainActivity = (MainActivity) getActivity();
-                        if (mainActivity != null)
-                            mainActivity.toCashierActivity();
+                        ARouter.getInstance().build(ModulePath.settlement).navigation();
+//                        MainActivity mainActivity = (MainActivity) getActivity();
+//                        if (mainActivity != null)
+//                            mainActivity.toCashierActivity();
                         break;
                     case TYPE_REFUND:
+//                        ARouter.getInstance().build(ModulePath.refund).navigation();
                         RefundActivity refundActivity = (RefundActivity) getActivity();
                         if (refundActivity != null)
-                            refundActivity.toRefundFragment();
+                            refundActivity.toRefundCashFragment();
                         break;
                 }
 

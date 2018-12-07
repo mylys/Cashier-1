@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.module.goods.MainActivity;
 import com.easygo.cashier.adapter.FunctionListAdapter;
@@ -96,17 +98,19 @@ public class FunctionListDialog extends DialogFragment {
     }
 
     public void orderHistory() {
-        MainActivity activity = (MainActivity) getActivity();
-        if (activity != null) {
-            activity.toOrderHistoryActivity();
-        }
+        ARouter.getInstance().build(ModulePath.order_history).navigation();
+//        MainActivity activity = (MainActivity) getActivity();
+//        if (activity != null) {
+//            activity.toOrderHistoryActivity();
+//        }
     }
 
     public void refund() {
-        MainActivity activity = (MainActivity) getActivity();
-        if (activity != null) {
-            activity.toRefundActivity();
-        }
+        ARouter.getInstance().build(ModulePath.refund).navigation();
+//        MainActivity activity = (MainActivity) getActivity();
+//        if (activity != null) {
+//            activity.toRefundActivity();
+//        }
     }
 
     public void shift() {

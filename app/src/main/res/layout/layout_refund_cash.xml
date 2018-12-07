@@ -39,14 +39,24 @@
         />
 
 
-    <com.easygo.cashier.widget.InputKeyBoard
-        android:id="@+id/ikb"
-        android:layout_width="@dimen/x541"
-        android:layout_height="@dimen/y547"
+    <com.niubility.library.widget.keyboard.NumericKeyboard
+        android:id="@+id/kb"
+        android:layout_width="@dimen/keyboard_width"
+        android:layout_height="@dimen/keyboard_height"
+        android:background="@color/color_bg_input_keyboard"
+        android:keyBackground="@drawable/bg_keyboard"
+        android:keyTextColor="#101010"
+        android:keyTextSize="@dimen/x36"
+        android:labelTextSize="@dimen/x36"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:shadowColor="#BBBBBB"
+        android:shadowRadius="0.0"
+        android:padding="@dimen/x16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-    </com.easygo.cashier.widget.InputKeyBoard>
+    </com.niubility.library.widget.keyboard.NumericKeyboard>
 
     <FrameLayout
         android:id="@+id/framelayout"
@@ -56,7 +66,7 @@
         android:layout_marginBottom="@dimen/y150"
         app:layout_constraintTop_toBottomOf="@id/tv_cash"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/ikb"
+        app:layout_constraintEnd_toStartOf="@id/kb"
         app:layout_constraintBottom_toTopOf="@id/tv_print">
 
 

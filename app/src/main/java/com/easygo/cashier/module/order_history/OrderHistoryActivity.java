@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
 import android.widget.FrameLayout;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.module.order_history.OrderHistoryFragment;
 import com.easygo.cashier.module.order_history.OrderHistoryRefundFragment;
@@ -13,7 +16,9 @@ import com.niubility.library.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
+@Route(path = ModulePath.order_history)
 public class OrderHistoryActivity extends BaseActivity {
 
     private final String TAG_ORDER_HISTORY = "tag_order_history";
@@ -73,5 +78,14 @@ public class OrderHistoryActivity extends BaseActivity {
             transaction.replace(R.id.framelayout, fragment, TAG_ORDER_HISTORY);
         }
         transaction.commit();
+    }
+
+    @OnClick({R.id.iv_back})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back://返回
+                finish();
+                break;
+        }
     }
 }
