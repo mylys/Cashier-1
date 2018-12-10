@@ -5,7 +5,7 @@ import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
-import com.niubility.library.http.HttpResult;
+import com.niubility.library.http.base.HttpResult;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -67,7 +67,7 @@ public interface HttpService {
      */
     @FormUrlEncoded
     @POST("api/weixin/minapp/eq_s/pay/get_shop_by_asid")
-    Observable<HttpResult<InitResponse>> getShopId(@Field("asid") String asid);
+    Observable<Integer> getShopId(@Field("asid") String asid);
 
 
     /**

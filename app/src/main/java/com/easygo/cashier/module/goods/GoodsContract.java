@@ -4,7 +4,8 @@ import com.easygo.cashier.bean.CheckPayStatusResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.niubility.library.mvp.BaseContract;
-import com.niubility.library.mvp.BaseRxView;
+import com.niubility.library.mvp.BasePresenter;
+import com.niubility.library.mvp.BaseView;
 
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class GoodsContract {
 
     }
 
-    public interface IView extends BaseRxView {
+    interface IView extends BaseView {
         void getGoodsSuccess(GoodsResponse result);
         void getGoodsFailed(Map<String, Object> map);
 

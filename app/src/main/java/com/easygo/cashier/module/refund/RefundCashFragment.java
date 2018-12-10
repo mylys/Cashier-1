@@ -1,9 +1,9 @@
 package com.easygo.cashier.module.refund;
 
 import com.easygo.cashier.R;
-import com.niubility.library.base.BaseRxFragment;
+import com.niubility.library.base.BaseMvpFragment;
 
-public class RefundCashFragment extends BaseRxFragment<RefundCashContract.IView, RefundCashPresenter> implements RefundCashContract.IView {
+public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView, RefundCashPresenter> implements RefundCashContract.IView {
 
     public static RefundCashFragment newInstance() {
         return new RefundCashFragment();

@@ -2,10 +2,8 @@ package com.easygo.cashier.module.login;
 
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
-import com.niubility.library.http.RequestListener;
 import com.niubility.library.mvp.BaseContract;
-import com.niubility.library.mvp.BaseModel;
-import com.niubility.library.mvp.BaseRxView;
+import com.niubility.library.mvp.BaseView;
 
 import java.util.Map;
 
@@ -21,7 +19,7 @@ public class LoginContract {
          void init(String mac_adr);
     }
 
-    public interface IView extends BaseRxView {
+    interface IView extends BaseView {
         void loginSuccess(LoginResponse result);
         void loginFailed(Map<String, Object> map);
 

@@ -4,8 +4,8 @@ import com.easygo.cashier.bean.CheckPayStatusResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.http.HttpAPI;
-import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.http.base.HttpClient;
+import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
 
 import java.util.Map;
@@ -16,7 +16,7 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
     @Override
     public void getGoods(String shop_id, String barcode) {
-        subscribeBindLifecycle(
+        subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().getGoods(shop_id, barcode),
                 new BaseResultObserver<GoodsResponse>() {
 
@@ -34,7 +34,7 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
     @Override
     public void searchGoods(String shop_id, String barcode, String good_name) {
-        subscribeBindLifecycle(
+        subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().searchGoods(shop_id, barcode, good_name),
                 new BaseResultObserver<GoodsResponse>() {
 
@@ -55,7 +55,7 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
         RequestBody requestBody = HttpClient.getInstance().createRequestBody(json);
 
-        subscribeBindLifecycle(
+        subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().createOrder(requestBody),
                 new BaseResultObserver<String>() {
 
@@ -73,7 +73,7 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
     @Override
     public void checkPayStatus(String order_sn) {
-        subscribeBindLifecycle(
+        subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().checkPayStatus(order_sn),
                 new BaseResultObserver<CheckPayStatusResponse>() {
 
@@ -94,7 +94,7 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
         RequestBody requestBody = HttpClient.getInstance().createRequestBody(json);
 
-        subscribeBindLifecycle(
+        subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().getRealMoney(requestBody),
                 new BaseResultObserver<RealMoneyResponse>() {
 

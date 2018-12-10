@@ -1,20 +1,19 @@
 package com.easygo.cashier.module.order_history;
 
 import com.niubility.library.mvp.BaseContract;
-import com.niubility.library.mvp.BaseModel;
-import com.niubility.library.mvp.BaseRxView;
+import com.niubility.library.mvp.BaseView;
 
 public class OrderHistoryContract {
 
-    public interface IModel extends BaseModel {
-
-    }
+//    interface IModel extends BaseModel {
+//
+//    }
 
     public interface IPresenter extends BaseContract.Presenter {
 
     }
 
-    public interface IView extends BaseRxView {
+    interface IView extends BaseView {
 
     }
 }

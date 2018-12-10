@@ -5,9 +5,6 @@ import android.support.annotation.Nullable;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.niubility.library.base.BaseActivity;
-import com.niubility.library.base.BaseRxActivity;
-
-import butterknife.ButterKnife;
 
 public class BaseAppActivity extends BaseActivity {
 

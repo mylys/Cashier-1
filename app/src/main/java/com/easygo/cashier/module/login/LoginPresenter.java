@@ -13,7 +13,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
 
     @Override
     public void login(String account, String password) {
-        subscribeBindLifecycle(
+        subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().login(account, password),
                 new BaseResultObserver<LoginResponse>() {
             @Override
@@ -30,9 +30,9 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
 
     @Override
     public void init(String mac_adr) {
-        subscribeBindLifecycle(
-//                HttpAPI.getInstance().httpService().init(mac_adr),
-                HttpAPI.getInstance().httpService().getShopId(mac_adr),
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().init(mac_adr),
+//                HttpAPI.getInstance().httpService().getShopId(mac_adr),
                 new BaseResultObserver<InitResponse>() {
                     @Override
                     protected void onSuccess(InitResponse result) {

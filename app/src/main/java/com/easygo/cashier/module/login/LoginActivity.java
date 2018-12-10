@@ -1,6 +1,5 @@
 package com.easygo.cashier.module.login;
 
-import android.content.Intent;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -13,8 +12,7 @@ import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
-import com.easygo.cashier.module.goods.MainActivity;
-import com.niubility.library.base.BaseRxActivity;
+import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.widget.imageview.CircleImageView;
 
 import java.util.Map;
@@ -22,7 +20,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseRxActivity<LoginContract.IView, LoginPresenter> implements LoginContract.IView {
+public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPresenter> implements LoginContract.IView {
 
     @BindView(R.id.circleImageView)
     CircleImageView circleImageView;

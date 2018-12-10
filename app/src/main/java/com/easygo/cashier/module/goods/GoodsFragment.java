@@ -24,8 +24,8 @@ import com.easygo.cashier.bean.request.CreateOrderRequestBody;
 import com.easygo.cashier.bean.request.RealMoneyRequestBody;
 import com.easygo.cashier.module.refund.RefundActivity;
 import com.easygo.cashier.widget.NoGoodsDialog;
-import com.niubility.library.base.BaseRxFragment;
-import com.niubility.library.http.HttpExceptionEngine;
+import com.niubility.library.base.BaseMvpFragment;
+import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ToastUtils;
 
@@ -37,7 +37,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class GoodsFragment extends BaseRxFragment<GoodsContract.IView, GoodsPresenter> implements GoodsContract.IView{
+public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPresenter> implements GoodsContract.IView {
 
 
     @BindView(R.id.tv_goods_count)
