@@ -10,9 +10,9 @@
         android:id="@+id/cl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
-        MyTitleBar:title_text="@string/text_order_history"
-        MyTitleBar:status="1"
-        MyTitleBar:show_right_account="true"
+        app:title_text="@string/text_order_history"
+        app:show_title="true"
+        app:show_right_account="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">

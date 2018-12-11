@@ -4,6 +4,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.GoodsInfo;
+import com.easygo.cashier.widget.CountTextView;
 
 public class GoodsAdapter extends BaseQuickAdapter<GoodsInfo, BaseViewHolder> {
 
@@ -18,7 +19,15 @@ public class GoodsAdapter extends BaseQuickAdapter<GoodsInfo, BaseViewHolder> {
                 .setText(R.id.tv_goods_name, item.getName())
                 .setText(R.id.tv_price, String.valueOf(item.getPrice()))
                 .setText(R.id.tv_coupon, String.valueOf(item.getCoupon()))
-                .setText(R.id.tv_subtotal, String.valueOf(item.getSubtotal()))
-                .setText(R.id.tv_goods_count, String.valueOf(item.getCount()));
+                .setText(R.id.tv_subtotal, String.valueOf(item.getSubtotal()));
+
+        CountTextView count = ((CountTextView) helper.getView(R.id.count_view));
+        count.setCount(String.valueOf(item.getCount()));
+        count.setOnCountListener(new CountTextView.OnCountListener() {
+            @Override
+            public void onCountChanged(int count) {
+
+            }
+        });
     }
 }

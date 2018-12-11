@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="login_btn_width">@dimen/x492</dimen>
+    <dimen name="login_btn_height">@dimen/y80</dimen>
+    <dimen name="logo_width">@dimen/x220</dimen>
+    <dimen name="logo_height">@dimen/y60</dimen>
+
+    <!--文本大小-->
+    <dimen name="text_size_29">@dimen/x29</dimen>
+    <dimen name="text_size_30">@dimen/x30</dimen>
+    <dimen name="text_size_33">@dimen/x33</dimen>
+    <dimen name="text_size_38">@dimen/x38</dimen>
+    <dimen name="text_size_42">@dimen/x42</dimen>
+
+
+    <!--商品标题名称间距-->
+    <dimen name="margin_66">@dimen/x66</dimen>
+    <dimen name="margin_159">@dimen/x159</dimen>
+    <dimen name="margin_362">@dimen/x362</dimen>
+    <dimen name="margin_937">@dimen/x937</dimen>
+    <dimen name="margin_1131">@dimen/x1131</dimen>
+    <dimen name="margin_1327">@dimen/x1327</dimen>
+    <dimen name="margin_1645">@dimen/x1645</dimen>
+
+    <!--顶部标题栏高度-->
     <dimen name="title_bar_height">@dimen/y100</dimen>
 
     <dimen name="text_size_large">@dimen/x36</dimen>
@@ -8,10 +31,11 @@
     <dimen name="text_size_middle">@dimen/x25</dimen>
     <dimen name="text_size_small">@dimen/x20</dimen>
 
+    <!--支付方式按钮大小-->
     <dimen name="pay_btn_width">@dimen/x119</dimen>
     <dimen name="pay_btn_height">@dimen/y81</dimen>
 
-
+    <!--分割线大小-->
     <dimen name="line_width">@dimen/x1</dimen>
     <dimen name="line_height">@dimen/y1</dimen>
 

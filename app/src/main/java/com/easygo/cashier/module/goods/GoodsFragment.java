@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -50,10 +49,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     RecyclerView rvGoods;
     @BindView(R.id.btn_settlement)
     Button btnSettlement;
-    @BindView(R.id.cl_pop_money_box)
-    ConstraintLayout clPopMoneyBox;
-    @BindView(R.id.line1)
-    View line1;
+    @BindView(R.id.btn_pop_money_box)
+    Button clPopMoneyBox;
 
     public static final int TYPE_GOODS = 0;
     public static final int TYPE_REFUND = 1;
@@ -117,12 +114,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         switch (mType) {
             case TYPE_GOODS:
                 clPopMoneyBox.setVisibility(View.VISIBLE);
-                line1.setVisibility(View.VISIBLE);
                 btnSettlement.setText("收银：  ￥6.00");
                 break;
             case TYPE_REFUND:
                 clPopMoneyBox.setVisibility(View.GONE);
-                line1.setVisibility(View.GONE);
                 btnSettlement.setText("退款：  ￥6.00");
                 break;
         }
@@ -131,10 +126,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     }
 
 
-    @OnClick({R.id.cl_no_barcode_goods, R.id.cl_pop_money_box, R.id.btn_clear, R.id.btn_settlement})
+    @OnClick({R.id.btn_no_barcode, R.id.btn_pop_money_box, R.id.btn_clear, R.id.btn_settlement})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.cl_no_barcode_goods://无码商品
+            case R.id.btn_no_barcode://无码商品
                 final NoGoodsDialog dialog = new NoGoodsDialog();
                 dialog.showCenter(getActivity());
                 dialog.setOnDialogClickListener(new NoGoodsDialog.OnDialogClickListener() {
@@ -151,7 +146,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
 
                 break;
-            case R.id.cl_pop_money_box://弹出钱箱
+            case R.id.btn_pop_money_box://弹出钱箱
                 RealMoneyRequestBody requestBody = new RealMoneyRequestBody();
                 requestBody.setShop_id("16");
                 requestBody.setOpenid("上海");

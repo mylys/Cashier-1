@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
-import com.niubility.library.widget.imageview.CircleImageView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -17,20 +16,16 @@ public class MyTitleBar extends ConstraintLayout {
 
     private View mView;
     //主页面
-    private CircleImageView mCircleImageView;
+    private ImageView mLogo;
+    private View mLine;
     private TextView mCashierAccount;
-    private ImageView mHelp;
     private ImageView mSetting;
     private ImageView mNetwork;
     private ImageView mMenu;
 
-    private View mMainView[];
-    private View mOtherView[];
+    private View mRightIconView[];
+    private View mTitleView[];
 
-
-    public static final int STATUS_MAIN = 0;
-    public static final int STATUS_OTHER = 1;
-    private int mStatus;
     private String mTitleText;//标题文本
 
     //后退 页面描述 工号
@@ -38,6 +33,10 @@ public class MyTitleBar extends ConstraintLayout {
     private TextView mTitle;
     private TextView mCashierAccountRight;
 
+    private boolean mShowLogo;
+    private boolean mShowTitle;
+    private boolean mShowAccount;
+    private boolean mShowRightIcon;
     private boolean mShowRightAccount;
 
     public MyTitleBar(Context context) {
@@ -61,37 +60,29 @@ public class MyTitleBar extends ConstraintLayout {
     }
 
 
+    //设置图标可见性
     private void showUI() {
-        boolean showMain = true;
-        boolean showOther = false;
-        switch (mStatus) {
-            case STATUS_MAIN:
-                showMain = true;
-                showOther = false;
-                break;
-            case STATUS_OTHER:
-                showMain = false;
-                showOther = true;
-                break;
-        }
-        for (View view : mMainView) {
-            view.setVisibility(showMain ? VISIBLE : GONE);
-        }
-        for (View view : mOtherView) {
-            view.setVisibility(showOther ? VISIBLE : GONE);
-        }
+        mLogo.setVisibility(mShowLogo ? VISIBLE: GONE);
+        setVisibility(mTitleView, mShowTitle);
+        mCashierAccount.setVisibility(mShowAccount ? VISIBLE: GONE);
+        mLine.setVisibility(mShowAccount ? VISIBLE: GONE);
+        setVisibility(mRightIconView, mShowRightIcon);
         mCashierAccountRight.setVisibility(mShowRightAccount ? VISIBLE: GONE);
     }
 
-
+    private void setVisibility(View[] views, boolean visible) {
+        for (View view : views) {
+            view.setVisibility(visible ? VISIBLE : GONE);
+        }
+    }
 
 
     private void initView(Context context) {
         mView = LayoutInflater.from(context).inflate(R.layout.layout_title_bar, this, true);
-        mCircleImageView = (CircleImageView) mView.findViewById(R.id.civ);
+        mLogo = (ImageView) mView.findViewById(R.id.iv);
+        mLine = mView.findViewById(R.id.line);
         mCashierAccount = (TextView) mView.findViewById(R.id.tv_cashier_account);
 
-        mHelp = (ImageView) mView.findViewById(R.id.help);
         mSetting = (ImageView) mView.findViewById(R.id.setting);
         mNetwork = (ImageView) mView.findViewById(R.id.network);
         mMenu = (ImageView) mView.findViewById(R.id.menu);
@@ -100,18 +91,15 @@ public class MyTitleBar extends ConstraintLayout {
         mTitle = (TextView) mView.findViewById(R.id.tv_title);
         mCashierAccountRight = (TextView) mView.findViewById(R.id.tv_cashier);
 
-        mMainView = new View[]{
-                mCircleImageView,
-                mCashierAccount,
+        mRightIconView = new View[]{
                 mSetting,
                 mNetwork,
                 mMenu,
         };
-        mOtherView = new View[] {
+        mTitleView = new View[] {
                 mBack,
                 mTitle,
         };
-
 
     }
 
@@ -122,8 +110,15 @@ public class MyTitleBar extends ConstraintLayout {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MyTitleBar);
         if(ta != null) {
             mTitleText = ta.getString(R.styleable.MyTitleBar_title_text);
-            mStatus = ta.getInt(R.styleable.MyTitleBar_status, STATUS_MAIN);
+            mShowLogo = ta.getBoolean(R.styleable.MyTitleBar_show_logo, true);
+            mShowTitle = ta.getBoolean(R.styleable.MyTitleBar_show_title, false);
+            mShowAccount = ta.getBoolean(R.styleable.MyTitleBar_show_account, false);
             mShowRightAccount = ta.getBoolean(R.styleable.MyTitleBar_show_right_account, false);
+            mShowRightIcon = ta.getBoolean(R.styleable.MyTitleBar_show_right_icon, false);
+
+            if(mShowTitle)
+                mShowLogo = false;
+
 
             ta.recycle();
         }

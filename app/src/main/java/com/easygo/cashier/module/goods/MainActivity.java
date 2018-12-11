@@ -35,12 +35,8 @@ public class MainActivity extends BaseAppActivity {
 
     private final String TAG_MAIN = "tag_main";
     private final String TAG_FUNCTION_LIST = "tag_function_list";
-    @BindView(R.id.civ)
-    CircleImageView civ;
     @BindView(R.id.tv_cashier_account)
     TextView tvCashierAcount;
-    @BindView(R.id.help)
-    ImageView help;
     @BindView(R.id.setting)
     ImageView setting;
     @BindView(R.id.network)
@@ -78,13 +74,9 @@ public class MainActivity extends BaseAppActivity {
         transaction.commit();
     }
 
-    @OnClick({R.id.help, R.id.setting, R.id.menu, R.id.iv_back})
+    @OnClick({R.id.setting, R.id.menu, R.id.iv_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.help://帮助
-                HelpDialog helpDialog = new HelpDialog(this);
-                helpDialog.show();
-                break;
             case R.id.setting://设置
 
                 //临时代码

@@ -5,74 +5,76 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/line2"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/y73">
+    android:layout_width="@dimen/x1832"
+    android:layout_height="@dimen/y97"
+    android:layout_marginTop="@dimen/y43"
+    android:background="@drawable/bg_goods_title">
 
     <TextView
+        android:id="@+id/tv_barcode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/x73"
+        android:layout_marginStart="@dimen/margin_66"
         android:text="@string/text_barcode"
-        android:textColor="@color/color_text"
-        android:textSize="@dimen/text_size" />
+        style="@style/GoodsTitleStyle" />
 
     <TextView
+        android:id="@+id/tv_text_goods_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/x322"
+        android:layout_marginStart="@dimen/margin_362"
         android:text="@string/text_goods_name"
-        android:textColor="@color/color_text"
-        android:textSize="@dimen/text_size" />
+        style="@style/GoodsTitleStyle" />
 
     <TextView
+        android:id="@+id/tv_text_price"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x499"
+        android:layout_marginStart="@dimen/margin_937"
         android:text="@string/text_price"
-        android:textColor="@color/color_text"
-        android:textSize="@dimen/text_size" />
+        style="@style/GoodsTitleStyle" />
 
     <TextView
+        android:id="@+id/tv_text_coupon"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x362"
+        android:layout_marginStart="@dimen/margin_1131"
         android:text="@string/text_coupon"
-        android:textColor="@color/color_text"
-        android:textSize="@dimen/text_size" />
+        style="@style/GoodsTitleStyle" />
 
     <TextView
+        android:id="@+id/tv_text_subtotal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x226"
+        android:layout_marginStart="@dimen/margin_1327"
         android:text="@string/text_subtotal"
-        android:textColor="@color/color_text"
-        android:textSize="@dimen/text_size" />
+        style="@style/GoodsTitleStyle" />
 
     <TextView
+        android:id="@+id/tv_text_goods_count"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x89"
+        android:layout_marginEnd="@dimen/margin_159"
         android:text="@string/text_count"
-        android:textColor="@color/color_text"
-        android:textSize="@dimen/text_size" />
+        style="@style/GoodsTitleStyle" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

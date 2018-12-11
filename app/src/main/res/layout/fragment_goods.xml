@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/color_text_white">
 
 
     <!--搜索栏-->
@@ -19,24 +20,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cl_subtitle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/line_height"
-        android:background="@color/color_line" />
+        android:layout_height="@dimen/y21"
+        android:background="#F0F3F7" />
 
     <!--商品标题名-->
     <include
         android:id="@+id/cl_goods_title"
         layout="@layout/include_goods_title_layout" />
 
-    <View
-        android:id="@+id/line3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_goods_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/line_height"
-        android:layout_marginStart="@dimen/x39"
-        android:layout_marginEnd="@dimen/x39"
-        android:background="@color/color_line" />
 
     <View
         android:id="@+id/line4"
@@ -66,11 +57,12 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_goods"
         app:layout_constraintBottom_toTopOf="@+id/line5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
+        app:layout_constraintEnd_toEndOf="@id/cl_goods_title"
+        app:layout_constraintStart_toStartOf="@id/cl_goods_title"
+        app:layout_constraintTop_toBottomOf="@+id/cl_goods_title"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_frame">
 
 
     </android.support.v7.widget.RecyclerView>

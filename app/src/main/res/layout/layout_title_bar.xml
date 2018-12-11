@@ -7,76 +7,80 @@
     app:layout_constraintTop_toTopOf="parent"
     android:layout_width="match_parent"
     android:layout_height="@dimen/y100"
-    android:background="@color/color_cc565a">
+    android:background="@drawable/bg_title">
 
-    <com.niubility.library.widget.imageview.CircleImageView
-        android:id="@+id/civ"
+    <ImageView
+        android:id="@+id/iv"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="@dimen/x54"
-        android:layout_height="@dimen/y54"
-        android:layout_marginStart="@dimen/x23"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_width="@dimen/logo_width"
+        android:layout_height="@dimen/logo_height"
+        android:layout_marginStart="@dimen/x42"
+        android:src="@drawable/ic_title_logo" />
+    
+    <View
+        android:id="@+id/line"
+        android:layout_width="@dimen/line_width"
+        android:layout_height="@dimen/logo_height"
+        android:background="@color/color_text_white"
+        android:layout_marginStart="@dimen/x42"
+        app:layout_constraintStart_toEndOf="@id/iv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv_cashier_account"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/civ"
+        app:layout_constraintLeft_toRightOf="@id/line"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/x33"
+        android:layout_marginStart="@dimen/text_size_33"
         android:text="收银员： xxx"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:visibility="gone"/>
 
-    <ImageView
-        android:id="@+id/help"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="@dimen/x49"
-        android:layout_height="@dimen/y49"
-        android:layout_marginEnd="@dimen/x36"
-        android:background="@null"
-        android:contentDescription="帮助"
-        android:src="@mipmap/ic_launcher" />
 
     <ImageView
         android:id="@+id/setting"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/help"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="@dimen/x49"
-        android:layout_height="@dimen/y49"
-        android:layout_marginEnd="@dimen/x47"
+        android:layout_width="@dimen/x44"
+        android:layout_height="@dimen/y45"
+        android:layout_marginEnd="@dimen/x42"
         android:background="@null"
         android:contentDescription="设置"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/ic_setting"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/network"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/setting"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="@dimen/x49"
-        android:layout_height="@dimen/y49"
-        android:layout_marginEnd="@dimen/x47"
+        android:layout_width="@dimen/x61"
+        android:layout_height="@dimen/y44"
+        android:layout_marginEnd="@dimen/x71"
         android:background="@null"
         android:contentDescription="网络状态"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/ic_wifi"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/menu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/network"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="@dimen/x49"
-        android:layout_height="@dimen/y49"
-        android:layout_marginEnd="@dimen/x47"
+        android:layout_width="@dimen/x44"
+        android:layout_height="@dimen/y45"
+        android:layout_marginEnd="@dimen/x70"
         android:background="@null"
         android:contentDescription="菜单"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/ic_function_list"
+        android:visibility="gone"/>
 
 
 
@@ -110,13 +114,13 @@
     <TextView
         android:id="@+id/tv_cashier"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/help"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x32"
+        android:layout_marginEnd="@dimen/x61"
         android:text="收银员：工号"
-        android:textSize="@dimen/x28"
+        android:textSize="@dimen/text_size_33"
         android:textColor="@color/color_text_white"
         android:visibility="gone"/>
 

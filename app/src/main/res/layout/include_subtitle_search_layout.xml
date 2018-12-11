@@ -4,7 +4,7 @@
     android:id="@+id/cl_subtitle"
     app:layout_constraintTop_toBottomOf="@+id/cl_title"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y113">
+    android:layout_height="@dimen/y155">
 
     <!--搜索框-->
     <com.easygo.cashier.widget.MySearchView
@@ -12,85 +12,40 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="@dimen/x507"
-        android:layout_height="@dimen/y70"
-        android:layout_marginStart="@dimen/x23"
-        android:background="@drawable/bg_frame">
+        android:layout_width="@dimen/x773"
+        android:layout_height="@dimen/y98"
+        android:layout_marginStart="@dimen/x23">
 
 
     </com.easygo.cashier.widget.MySearchView>
 
     <!--无码商品-->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_no_barcode_goods"
+    <Button
+        android:id="@+id/btn_no_barcode"
+        android:layout_width="@dimen/x183"
+        android:layout_height="@dimen/y98"
+        android:text="@string/text_no_barcode_goods"
+        android:textSize="@dimen/text_size_29"
+        android:textColor="@color/color_4cbbac"
+        android:layout_marginStart="@dimen/x42"
+        android:background="@drawable/bg_btn_frame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cl_search"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/x14">
-
-        <ImageView
-            android:id="@+id/iv_no_barcode"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="@dimen/x46"
-            android:layout_height="@dimen/y46"
-            android:src="@mipmap/ic_launcher" />
-
-        <TextView
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_no_barcode"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/x9"
-            android:text="@string/text_no_barcode_goods"
-            android:textColor="@color/color_text_black"
-            android:textSize="@dimen/text_size_middle" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <View
-        android:id="@+id/line1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cl_no_barcode_goods"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="@dimen/line_width"
-        android:layout_height="@dimen/y51"
-        android:layout_marginStart="@dimen/x13"
-        android:background="@color/color_line" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <!--弹出钱箱-->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_pop_money_box"
+    <Button
+        android:id="@+id/btn_pop_money_box"
+        android:layout_width="@dimen/x183"
+        android:layout_height="@dimen/y98"
+        android:text="@string/text_pop_money_box"
+        android:textSize="@dimen/text_size_29"
+        android:textColor="@color/color_4cbbac"
+        android:layout_marginStart="@dimen/x42"
+        android:background="@drawable/bg_btn_frame"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/line1"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/x3">
-
-        <ImageView
-            android:id="@+id/iv_pop_money_box"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="@dimen/x46"
-            android:layout_height="@dimen/y46"
-            android:src="@mipmap/ic_launcher" />
-
-        <TextView
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_pop_money_box"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/x9"
-            android:text="@string/text_pop_money_box"
-            android:textColor="@color/color_text_black"
-            android:textSize="@dimen/text_size_middle" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintStart_toEndOf="@+id/btn_no_barcode"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

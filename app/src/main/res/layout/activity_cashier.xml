@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:MyTitleBar="http://schemas.android.com/apk/res-auto">
+    >
 
 
     <!--标题栏-->
@@ -11,9 +11,9 @@
         android:id="@+id/cl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
-        MyTitleBar:title_text="@string/text_settlement"
-        MyTitleBar:status="1"
-        MyTitleBar:show_right_account="true"
+        app:title_text="@string/text_settlement"
+        app:show_title="true"
+        app:show_right_account="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">

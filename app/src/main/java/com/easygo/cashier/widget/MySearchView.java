@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -16,21 +17,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class MySearchView extends ConstraintLayout {
 
-    private Drawable mSearchDrawable;
-    private int mSearchDrawableWidth;
-    private int mSearchDrawableHeight;
-    private int mSearchDrawableMarginHorizontal;
-
-    private Drawable mClearDrawable;
-    private int mClearDrawableWidth;
-    private int mClearDrawableHeight;
-    private int mClearDrawableMarginHorizontal;
 
     private String mHint;
+    private int mSearchBtnWidth;
+    private int mSearchBtnHeight;
     private View mView;
     private EditText mEditText;
-    private ImageView mSearchImageView;
-    private ImageView mClearImageView;
+    private Button mSearchBtn;
 
 
     public MySearchView(Context context) {
@@ -50,13 +43,22 @@ public class MySearchView extends ConstraintLayout {
 
         initAttr(context, attrs);
 
+        //设置搜索按钮大小
+        if(mSearchBtnWidth != -1 && mSearchBtnHeight != -1) {
+            LayoutParams lp = new LayoutParams(-2, -2);
+            lp.width = mSearchBtnWidth;
+            lp.height = mSearchBtnHeight;
+            mSearchBtn.setLayoutParams(lp);
+        }
+
 
         if(TextUtils.isEmpty(mHint)) {
             mHint = getResources().getString(R.string.text_search_hint_barcode);
         }
         mEditText.setHint(mHint);
 
-        mClearImageView.setOnClickListener(new OnClickListener() {
+        findViewById(R.id.cl_clear).setOnClickListener(new OnClickListener() {
+//        mClearImageView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 mEditText.setText("");
@@ -68,8 +70,8 @@ public class MySearchView extends ConstraintLayout {
     private void initView(Context context) {
         mView = LayoutInflater.from(context).inflate(R.layout.layout_search_view, this, true);
         mEditText = (EditText) mView.findViewById(R.id.et_search);
-        mSearchImageView = (ImageView) mView.findViewById(R.id.iv_search);
-        mClearImageView = (ImageView) mView.findViewById(R.id.iv_clear);
+//        mClearImageView = (ImageView) mView.findViewById(R.id.iv_clear);
+        mSearchBtn = (Button) mView.findViewById(R.id.btn_search);
     }
 
     private void initAttr(Context context, AttributeSet attrs) {
@@ -78,21 +80,11 @@ public class MySearchView extends ConstraintLayout {
         }
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MySearchView);
         if(ta != null) {
-            mSearchDrawable = ta.getDrawable(R.styleable.MySearchView_seach_drawable);
-            mSearchDrawableWidth = ta.getInt(R.styleable.MySearchView_seach_width,
-                    getResources().getDimensionPixelSize(R.dimen.search_drawable_width));
-            mSearchDrawableHeight = ta.getInt(R.styleable.MySearchView_seach_height,
-                    getResources().getDimensionPixelSize(R.dimen.search_drawable_height));
-            mSearchDrawableMarginHorizontal = ta.getInt(R.styleable.MySearchView_seach_margin_horizontal, 0);
 
-            mClearDrawable = ta.getDrawable(R.styleable.MySearchView_clear_drawable);
-            mClearDrawableWidth = ta.getInt(R.styleable.MySearchView_clear_width,
-                    getResources().getDimensionPixelSize(R.dimen.clear_drawable_width));
-            mClearDrawableHeight = ta.getInt(R.styleable.MySearchView_clear_height,
-                    getResources().getDimensionPixelSize(R.dimen.clear_drawable_height));
-            mClearDrawableMarginHorizontal = ta.getInt(R.styleable.MySearchView_clear_margin_horizontal, 0);
 
             mHint = ta.getString(R.styleable.MySearchView_search_hint);
+            mSearchBtnWidth = ta.getInt(R.styleable.MySearchView_search_btn_width, -1);
+            mSearchBtnHeight = ta.getInt(R.styleable.MySearchView_search_btn_height, -1);
 
             ta.recycle();
         }

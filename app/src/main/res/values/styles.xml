@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -56,5 +56,30 @@
         <!-- 禁止对话框的背景变暗 -->
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+
+    <!--商品标题名称-->
+    <style name="GoodsTitleStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_29</item>
+        <item name="android:textColor">@color/color_goods_title</item>
+    </style>
+    <!--商品列表-->
+    <style name="GoodsListStyle">
+        <item name="android:textSize">@dimen/text_size_29</item>
+        <item name="android:textColor">@color/color_505050</item>
+    </style>
+    <!--商品价格详情-->
+    <style name="GoodsSettlementDetailStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_42</item>
+        <item name="android:textColor">@color/color_505050</item>
+    </style>
+    <style name="GoodsSettlementDetailTextStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_30</item>
+        <item name="android:textColor">@color/color_505050</item>
+    </style>
+
+
 
 </resources>
