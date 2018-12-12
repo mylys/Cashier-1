@@ -15,11 +15,11 @@
         android:gravity="center_vertical"
         android:background="@drawable/bg_frame"
         android:button="@null"
-        android:visibility="visible"
+        android:visibility="gone"
         android:drawableStart="@drawable/check_box"
         android:drawablePadding="@dimen/x20"
         android:paddingStart="@dimen/x25"
-        android:layout_marginStart="@dimen/x25"
+        android:layout_marginStart="@dimen/x42"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_cash"
         app:layout_constraintTop_toTopOf="@id/btn_cash"
@@ -35,6 +35,7 @@
         style="@style/PayButtonStyle"
         android:background="@drawable/bg_pay_way_button"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/cb_combine_payment"/>
 
     <!--支付宝-->

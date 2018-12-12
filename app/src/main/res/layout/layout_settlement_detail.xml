@@ -4,18 +4,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/y47"
+    android:background="@color/color_text_white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <View
+        android:id="@id/line1"
+        android:layout_width="@dimen/x758"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y40"
+        app:layout_constraintTop_toBottomOf="@id/tv_text_receivable"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <View
+        android:id="@id/line2"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y125"
+        app:layout_constraintTop_toBottomOf="@id/line1"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintEnd_toEndOf="@id/line1"/>
+
+    <View
+        android:id="@id/line3"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y125"
+        app:layout_constraintTop_toBottomOf="@id/line2"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintEnd_toEndOf="@id/line1"/>
+
+    <View
+        android:id="@id/line4"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y125"
+        app:layout_constraintTop_toBottomOf="@id/line3"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintEnd_toEndOf="@id/line1"/>
+
+
 
     <!--应收-->
     <TextView
         android:id="@+id/tv_text_receivable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_receivable"
-        style="@style/TextStyle"
-        android:layout_marginStart="@dimen/x51"
-        android:layout_marginTop="@dimen/y47"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/text_receivable_colon"
+        style="@style/SettlementDetailTextStyle"
+        android:layout_marginStart="@dimen/x43"
+        android:layout_marginTop="@dimen/y95"
+        app:layout_constraintStart_toStartOf="@id/line1"
         app:layout_constraintTop_toBottomOf="@id/cb_combine_payment"/>
 
     <TextView
@@ -23,37 +66,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="￥6.00"
-        android:textSize="@dimen/text_size_large"
-        android:textColor="@color/color_text"
-        android:layout_marginTop="@dimen/y13"
-        app:layout_constraintStart_toStartOf="@id/tv_text_receivable"
-        app:layout_constraintTop_toBottomOf="@id/tv_text_receivable"/>
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_42"
+        android:textColor="@color/color_d64444"
+        android:layout_marginEnd="@dimen/y45"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintTop_toTopOf="@id/tv_text_receivable"/>
+
 
     <!--优惠-->
+    <TextView
+        android:id="@+id/tv_text_coupon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="优惠："
+        style="@style/SettlementDetailTextStyle"
+        app:layout_constraintStart_toStartOf="@id/tv_text_receivable"
+        app:layout_constraintTop_toBottomOf="@id/line1"
+        app:layout_constraintBottom_toTopOf="@id/line2"/>
+
     <TextView
         android:id="@+id/tv_coupon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="优惠：￥0.00"
-        android:textSize="@dimen/text_size_middle"
-        android:textColor="@color/color_text"
-        android:layout_marginEnd="@dimen/x44"
-        app:layout_constraintTop_toTopOf="@id/tv_receivable"
-        app:layout_constraintBottom_toBottomOf="@id/tv_receivable"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:text="￥0"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_42"
+        android:textColor="@color/color_505050"
+        android:layout_marginEnd="@dimen/y45"
+        app:layout_constraintEnd_toEndOf="@id/tv_receivable"
+        app:layout_constraintTop_toTopOf="@id/tv_text_coupon"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_coupon"
+        />
 
-
-    <View
-        android:id="@+id/line1"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/line_height"
-        android:layout_marginStart="@dimen/x33"
-        android:layout_marginTop="@dimen/y5"
-        android:layout_marginEnd="@dimen/x34"
-        android:background="@color/color_line"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_receivable" />
 
     <!--实收-->
     <TextView
@@ -61,97 +106,71 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_receipts_colon"
-        style="@style/TextStyle"
-        android:layout_marginStart="@dimen/x51"
-        android:layout_marginTop="@dimen/y19"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/line1"/>
+        style="@style/SettlementDetailTextStyle"
+        app:layout_constraintStart_toStartOf="@id/tv_text_receivable"
+        app:layout_constraintTop_toTopOf="@id/line2"
+        app:layout_constraintBottom_toBottomOf="@id/line3"/>
+
+    <TextView
+        android:id="@+id/tv_text_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  ("
+        android:textColor="@color/color_d64444"
+        android:textSize="@dimen/text_size_42"
+        android:layout_marginStart="@dimen/x1"
+        app:layout_constraintStart_toEndOf="@id/tv_text_receipts"
+        app:layout_constraintTop_toTopOf="@id/tv_text_receipts"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_receipts"/>
 
     <TextView
         android:id="@+id/tv_text_receipts_way"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="现金"
-        android:textColor="@color/color_bg_cc565a"
-        android:textSize="@dimen/text_size"
+        android:textColor="@color/color_d64444"
+        android:textSize="@dimen/text_size_42"
         android:layout_marginStart="@dimen/x1"
-        app:layout_constraintStart_toEndOf="@id/tv_text_receipts"
+        app:layout_constraintStart_toEndOf="@id/tv_text_left"
         app:layout_constraintTop_toTopOf="@id/tv_text_receipts"
         app:layout_constraintBottom_toBottomOf="@id/tv_text_receipts"/>
 
-    <!--实收-->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_receipts"
+    <TextView
+        android:id="@+id/tv_text_right"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/y67"
-        android:layout_marginTop="@dimen/y13"
-        android:background="@drawable/bg_frame"
-        app:layout_constraintStart_toStartOf="@id/tv_text_receipts"
-        app:layout_constraintTop_toBottomOf="@id/tv_text_receipts">
+        android:layout_height="wrap_content"
+        android:text=")"
+        android:textColor="@color/color_d64444"
+        android:textSize="@dimen/text_size_42"
+        android:layout_marginStart="@dimen/x1"
+        app:layout_constraintStart_toEndOf="@id/tv_text_receipts_way"
+        app:layout_constraintTop_toTopOf="@id/tv_text_receipts"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_receipts"/>
 
-        <TextView
-            android:id="@+id/tv_sign"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="￥"
-            android:textSize="@dimen/text_size_large"
-            android:textColor="@color/color_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+    <TextView
+        android:id="@+id/tv_receipts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥1000"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_42"
+        android:textColor="@color/color_505050"
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="@id/tv_receivable"
+        app:layout_constraintTop_toBottomOf="@id/line2"
+        app:layout_constraintBottom_toTopOf="@id/line3" />
 
-        <EditText
-            android:id="@+id/et_receipts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="6.00"
-            android:textSize="@dimen/text_size_large"
-            android:textColor="@color/color_text"
-            android:background="@null"
-            android:layout_marginEnd="@dimen/x5"
-            android:maxLength="15"
-            app:layout_constraintStart_toEndOf="@id/tv_sign"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <View
-        android:id="@+id/line2"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/line_height"
-        android:layout_marginTop="@dimen/y2"
-        android:background="@color/color_line"
-        app:layout_constraintEnd_toEndOf="@id/line1"
-        app:layout_constraintStart_toStartOf="@id/line1"
-        app:layout_constraintTop_toBottomOf="@id/cl_receipts" />
-
-
-    <!--现金相关-->
-    <View
-        android:id="@+id/line3"
-        android:layout_width="@dimen/line_width"
-        android:layout_height="@dimen/y97"
-        android:background="@color/color_line"
-        app:layout_constraintStart_toStartOf="@id/line1"
-        app:layout_constraintEnd_toEndOf="@id/line1"
-        app:layout_constraintTop_toTopOf="@id/line1"
-        app:layout_constraintBottom_toBottomOf="@id/line2"/>
 
     <!--找零-->
     <TextView
         android:id="@+id/tv_text_change"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_change"
-        style="@style/TextStyle"
-        android:layout_marginStart="@dimen/x46"
-        app:layout_constraintStart_toStartOf="@id/line3"
-        app:layout_constraintTop_toTopOf="@id/tv_text_receipts"
+        android:text="@string/text_change_colon"
+        style="@style/SettlementDetailTextStyle"
+        app:layout_constraintStart_toStartOf="@id/tv_text_receivable"
+        app:layout_constraintTop_toBottomOf="@id/line3"
+        app:layout_constraintBottom_toTopOf="@id/line4"
         />
 
     <TextView
@@ -159,65 +178,104 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="￥6.00"
-        android:textSize="@dimen/text_size_large"
-        android:textColor="@color/color_text"
-        app:layout_constraintStart_toStartOf="@id/tv_text_change"
-        app:layout_constraintTop_toTopOf="@id/cl_receipts"
-        app:layout_constraintBottom_toBottomOf="@id/cl_receipts"/>
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_42"
+        android:textColor="@color/color_505050"
+        app:layout_constraintEnd_toEndOf="@id/tv_receivable"
+        app:layout_constraintTop_toTopOf="@id/tv_text_change"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_change"/>
 
-
-    <TextView
-        android:id="@+id/tv_combine_way"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_alipay"
-        style="@style/RedTextStyle"
-        android:visibility="gone"
-        android:layout_marginStart="@dimen/x46"
-        app:layout_constraintStart_toStartOf="@id/line3"
-        app:layout_constraintTop_toTopOf="@id/tv_text_receipts"
-        />
-
-    <TextView
-        android:id="@+id/tv_combine_money"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="￥6.00"
-        android:textSize="@dimen/text_size_large"
-        android:textColor="@color/color_text"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/tv_combine_way"
-        app:layout_constraintTop_toTopOf="@id/cl_receipts"
-        app:layout_constraintBottom_toBottomOf="@id/cl_receipts"/>
-
-    <!--现金相关-->
 
     <!--微信、支付宝 扫码-->
-    <ImageView
-        android:id="@+id/iv_scan"
-        android:layout_width="@dimen/x67"
-        android:layout_height="@dimen/y67"
-        android:src="@mipmap/ic_launcher"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:visibility="gone"
-        android:layout_marginEnd="@dimen/x34"
-        android:layout_marginBottom="@dimen/y6"
-        app:layout_constraintEnd_toEndOf="@id/line2"
-        app:layout_constraintBottom_toTopOf="@id/line2"/>
+        android:layout_marginStart="@dimen/x39"
+        app:layout_constraintTop_toBottomOf="@id/line2"
+        app:layout_constraintStart_toEndOf="@id/line2"
+        app:layout_constraintBottom_toTopOf="@id/line3">
+
+        <ImageView
+            android:id="@+id/iv_scan"
+            android:layout_width="@dimen/x52"
+            android:layout_height="@dimen/y48"
+            android:src="@drawable/ic_scan"
+            android:layout_marginBottom="@dimen/y5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv_text_scan"
+            />
+
+        <TextView
+            android:id="@+id/tv_text_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="扫码收款"
+            android:textColor="@color/color_53c0b1"
+            android:textSize="@dimen/text_size_25"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/y10"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <TextView
         android:id="@+id/tv_already_settlement"
-        android:layout_width="@dimen/x150"
+        android:layout_width="@dimen/x130"
         android:layout_height="@dimen/y51"
-        android:background="@color/color_frame"
+        android:background="@drawable/bg_text_already_settlement"
         android:text="@string/text_already_receive"
-        android:textColor="@color/color_text_white"
-        android:textSize="@dimen/text_size_small"
-        android:visibility="gone"
+        android:textColor="@color/color_7e7e7e"
+        android:textSize="@dimen/text_size_25"
+        android:visibility="visible"
         android:gravity="center"
-        android:layout_marginEnd="@dimen/x19"
-        android:layout_marginBottom="@dimen/y3"
-        app:layout_constraintEnd_toEndOf="@id/line2"
-        app:layout_constraintBottom_toTopOf="@id/line2"/>
+        android:layout_marginStart="@dimen/x39"
+        app:layout_constraintStart_toEndOf="@id/line2"
+        app:layout_constraintTop_toBottomOf="@id/line2"
+        app:layout_constraintBottom_toTopOf="@id/line3"/>
+    
+    
+
+    <CheckBox
+        android:id="@+id/cb_print"
+        android:layout_width="@dimen/x225"
+        android:layout_height="@dimen/y98"
+        android:text="@string/text_print_paper"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_29"
+        android:textColor="@color/color_4cbbac"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_btn_frame"
+        android:button="@null"
+        android:drawableStart="@drawable/check_box"
+        android:drawablePadding="@dimen/x12"
+        android:paddingStart="@dimen/x31"
+        android:layout_marginStart="@dimen/x112"
+        android:layout_marginBottom="@dimen/y72"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <Button
+        android:id="@+id/btn_commit"
+        android:layout_width="@dimen/x225"
+        android:layout_height="@dimen/y98"
+        android:text="@string/text_commit_order"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_29"
+        android:textColor="@color/color_text_white"
+        android:background="@drawable/bg_btn_commit"
+        android:layout_marginEnd="@dimen/y112"
+        android:layout_marginBottom="@dimen/y72"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
 
 
 

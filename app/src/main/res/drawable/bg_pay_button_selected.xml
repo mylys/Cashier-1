@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:top="@dimen/y1" android:right="@dimen/x1" android:bottom="@dimen/y1" android:left="@dimen/x1">
-        <color android:color="@color/color_bg_cc565a"/>
-    </item>
+    <solid android:color="@color/color_4cbbac"/>
+    <corners android:radius="@dimen/x10"/>
+    <gradient android:type="linear" android:useLevel="true"
+        android:startColor="@color/color_4fbdae"
+        android:endColor="@color/color_61cbbd"
+        android:angle="90" />
 
-    <item android:drawable="@drawable/bg_frame">
-    </item>
-</layer-list>
+
+</shape>

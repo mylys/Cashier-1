@@ -12,11 +12,14 @@ import android.widget.TextView;
 
 import com.easygo.cashier.R;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 
 public class ScanCodeDialog extends Dialog {
 
     private ImageView mLogo;
     private TextView mTextView;
+    private ConstraintLayout mClose;
 
     public ScanCodeDialog(@NonNull Context context) {
         super(context);
@@ -34,6 +37,14 @@ public class ScanCodeDialog extends Dialog {
 
         mLogo = findViewById(R.id.iv_logo);
         mTextView = findViewById(R.id.tv_description);
+        mClose = findViewById(R.id.cl_close);
+
+        mClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
 
     }
 

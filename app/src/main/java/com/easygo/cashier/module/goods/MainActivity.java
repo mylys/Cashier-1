@@ -43,8 +43,6 @@ public class MainActivity extends BaseAppActivity {
     ImageView network;
     @BindView(R.id.menu)
     ImageView menu;
-    @BindView(R.id.iv_back)
-    ImageView ivBack;
     @BindView(R.id.tv_cashier)
     TextView tvCashier;
     @BindView(R.id.framelayout)
@@ -74,7 +72,7 @@ public class MainActivity extends BaseAppActivity {
         transaction.commit();
     }
 
-    @OnClick({R.id.setting, R.id.menu, R.id.iv_back})
+    @OnClick({R.id.setting, R.id.menu, R.id.cl_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.setting://设置
@@ -97,7 +95,7 @@ public class MainActivity extends BaseAppActivity {
                 FunctionListDialog functionListDialog = new FunctionListDialog();
                 functionListDialog.show(getSupportFragmentManager(), TAG_FUNCTION_LIST);
                 break;
-            case R.id.iv_back://返回
+            case R.id.cl_back://返回
                 break;
         }
     }

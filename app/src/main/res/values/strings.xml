@@ -31,12 +31,18 @@
     <string name="text_other">八达通</string>
     <string name="text_receivable">应收</string>
     <string name="text_receipts">实收</string>
-    <string name="text_receipts_colon">实收： </string>
     <string name="text_print_paper">打印单据</string>
     <string name="text_print">打印</string>
     <string name="text_change">找零</string>
+    <string name="text_commit_order">提交交易</string>
 
-    <string name="text_scan_code">请扫描付款码</string>
+    <string name="text_receivable_colon">应收:</string>
+    <string name="text_change_colon">找零:</string>
+    <string name="text_receipts_colon">实收:</string>
+    <string name="text_coupon_colon">优惠:</string>
+    <string name="text_delete">删除</string>
+
+    <string name="text_scan_code">请扫描收款码</string>
     <string name="text_scanning_code">正在识别二维码...</string>
     <string name="text_successful_receipt">收款成功</string>
     <string name="text_already_receive">已收款</string>

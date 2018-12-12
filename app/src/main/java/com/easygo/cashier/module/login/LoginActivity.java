@@ -65,9 +65,6 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
                 }
             }
         });
-
-
-
     }
 
     @OnClick({R.id.btn_login})

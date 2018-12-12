@@ -18,6 +18,12 @@
     <color name="color_d64444">#D64444</color>
     <color name="color_3899d9">#3899D9</color>
     <color name="color_e84525">#E84525</color>
+    <color name="color_4fbdae">#4FBDAE</color>
+    <color name="color_61cbbd">#61CBBD</color>
+    <color name="color_f0f3f7">#F0F3F7</color>
+    <color name="color_53c0b1">#53C0B1</color>
+    <color name="color_51bfb0">#51BFB0</color>
+    <color name="color_d4d3d3">#D4D3D3</color>
 
     <color name="color_goods_title">@color/color_333333</color>
 
@@ -39,7 +45,7 @@
 
     <!--选中-->
     <color name="color_bg_cc565a">#CC565A</color>
-    <color name="color_text_70_alpha">#9e101010</color>
+    <color name="color_text_70_alpha">#9e000000</color>
     <color name="color_text_80_alpha">#cc101010</color>
 
 

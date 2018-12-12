@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_text_white"
     >
 
 
@@ -24,12 +25,20 @@
     <com.easygo.cashier.widget.PayWayView
         android:id="@+id/pay_way_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/y27"
+        android:layout_height="@dimen/y153"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_title">
 
     </com.easygo.cashier.widget.PayWayView>
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y21"
+        android:background="@color/color_f0f3f7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pay_way_view"/>
 
     <FrameLayout
         android:id="@+id/framelayout"
@@ -37,48 +46,52 @@
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/kb"
-        app:layout_constraintTop_toBottomOf="@id/pay_way_view"
-        app:layout_constraintBottom_toTopOf="@id/tv_print">
+        app:layout_constraintTop_toBottomOf="@id/line1"
+        app:layout_constraintBottom_toBottomOf="parent">
 
     </FrameLayout>
 
-    <com.niubility.library.widget.keyboard.NumericKeyboard
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="@dimen/x154"
+        android:layout_height="@dimen/y98"
+        android:text="@string/text_delete"
+        android:textColor="@color/color_text_white"
+        android:textSize="@dimen/text_size_29"
+        android:background="@drawable/bg_btn_clear"
+        android:layout_marginTop="@dimen/y84"
+        android:layout_marginEnd="@dimen/x110"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line1" />
+
+    <EditText
+        android:id="@+id/et_money"
+        android:layout_width="@dimen/x348"
+        android:layout_height="@dimen/y98"
+        android:layout_marginEnd="@dimen/x39"
+        android:background="@drawable/bg_input"
+        android:hint="输入收款金额"
+        android:textColorHint="@color/color_d4d3d3"
+        android:textSize="@dimen/text_size_29"
+        android:paddingStart="@dimen/x31"
+        app:layout_constraintTop_toTopOf="@id/btn_delete"
+        app:layout_constraintBottom_toBottomOf="@id/btn_delete"
+        app:layout_constraintEnd_toStartOf="@id/btn_delete"
+        />
+
+    <com.easygo.cashier.widget.Keyboard
         android:id="@+id/kb"
-        android:layout_width="@dimen/keyboard_width"
-        android:layout_height="@dimen/keyboard_height"
-        android:background="@color/color_bg_input_keyboard"
-        android:keyBackground="@drawable/bg_keyboard"
-        android:keyTextColor="#101010"
-        android:keyTextSize="@dimen/x36"
-        android:labelTextSize="@dimen/x36"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:shadowColor="#BBBBBB"
-        android:shadowRadius="0.0"
-        android:padding="@dimen/x16"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_marginTop="@dimen/y39"
+        app:layout_constraintEnd_toEndOf="@id/btn_delete"
+        app:layout_constraintTop_toBottomOf="@id/btn_delete">
 
-    </com.niubility.library.widget.keyboard.NumericKeyboard>
+    </com.easygo.cashier.widget.Keyboard>
 
-    <TextView
-        android:id="@+id/tv_print"
-        android:layout_width="@dimen/x233"
-        android:layout_height="@dimen/y81"
-        android:text="@string/text_print_paper"
-        style="@style/TextStyle"
-        android:gravity="center_vertical"
-        android:background="@drawable/bg_frame"
-        android:button="@null"
-        android:drawableStart="@drawable/check_box"
-        android:drawablePadding="@dimen/x20"
-        android:paddingStart="@dimen/x25"
-        android:layout_marginStart="@dimen/x27"
-        android:layout_marginTop="@dimen/y27"
-        android:layout_marginBottom="@dimen/y27"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -49,7 +49,7 @@
 
     <style name="PayButtonStyle" parent="TextStyle">
         <item name="android:gravity">center</item>
-        <item name="android:layout_marginStart">@dimen/x25</item>
+        <item name="android:layout_marginStart">@dimen/x42</item>
     </style>
 
     <style name="DialogStyle" parent="CustomDialogStyle">
@@ -78,6 +78,22 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/text_size_30</item>
         <item name="android:textColor">@color/color_505050</item>
+    </style>
+
+    <!--结算详情页-->
+    <style name="SettlementDetailTextStyle">
+        <item name="android:textColor">@color/color_7e7e7e</item>
+        <item name="android:textSize">@dimen/text_size_42</item>
+    </style>
+
+    <style name="KeyboardTextStyle">
+        <item name="android:layout_width">@dimen/x154</item>
+        <item name="android:layout_height">@dimen/y98</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_505050</item>
+        <item name="android:textSize">@dimen/text_size_38</item>
+        <item name="android:background">@drawable/bg_btn_frame</item>
     </style>
 
 

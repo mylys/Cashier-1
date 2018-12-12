@@ -85,18 +85,28 @@
 
 
     <!--退款页面-->
-    <ImageView
-        android:id="@+id/iv_back"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_back"
+        android:layout_width="@dimen/x108"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="@dimen/x71"
-        android:layout_height="@dimen/x71"
-        android:layout_marginStart="@dimen/x9"
-        android:background="@null"
-        android:contentDescription="返回"
-        android:src="@mipmap/ic_launcher"
-        android:visibility="gone"/>
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="@dimen/x34"
+            android:layout_height="@dimen/x40"
+            android:contentDescription="返回"
+            android:src="@drawable/ic_back" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/tv_title"
@@ -105,9 +115,9 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/x90"
+        android:layout_marginStart="@dimen/x110"
         android:text="@string/text_refund"
-        android:textSize="@dimen/x28"
+        android:textSize="@dimen/text_size_33"
         android:textColor="@color/color_text_white"
         android:visibility="gone"/>
 

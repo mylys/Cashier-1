@@ -53,10 +53,10 @@ public class RefundActivity extends BaseActivity {
         super.onStart();
 
     }
-    @OnClick({R.id.iv_back})
+    @OnClick({R.id.cl_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_back://返回
+            case R.id.cl_back://返回
                 finish();
                 break;
         }

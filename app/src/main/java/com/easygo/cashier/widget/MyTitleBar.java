@@ -29,7 +29,7 @@ public class MyTitleBar extends ConstraintLayout {
     private String mTitleText;//标题文本
 
     //后退 页面描述 工号
-    private ImageView mBack;
+    private ConstraintLayout mBack;
     private TextView mTitle;
     private TextView mCashierAccountRight;
 
@@ -87,7 +87,7 @@ public class MyTitleBar extends ConstraintLayout {
         mNetwork = (ImageView) mView.findViewById(R.id.network);
         mMenu = (ImageView) mView.findViewById(R.id.menu);
 
-        mBack = (ImageView) mView.findViewById(R.id.iv_back);
+        mBack = (ConstraintLayout) mView.findViewById(R.id.cl_back);
         mTitle = (TextView) mView.findViewById(R.id.tv_title);
         mCashierAccountRight = (TextView) mView.findViewById(R.id.tv_cashier);
 

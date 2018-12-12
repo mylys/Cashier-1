@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="@dimen/x106"
-        android:layout_height="@dimen/y106"
-        android:layout_marginTop="@dimen/y29"
-        android:src="@mipmap/ic_launcher"
+        android:layout_width="@dimen/x150"
+        android:layout_height="@dimen/y150"
+        android:layout_marginTop="@dimen/y78"
+        android:src="@drawable/dialog_scan"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -21,12 +21,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_scan_code"
-        android:textSize="@dimen/x28"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_33"
         android:textColor="@color/color_text_white"
-        android:layout_marginBottom="@dimen/y38"
+        android:layout_marginBottom="@dimen/y54"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_close"
+        android:layout_width="@dimen/x81"
+        android:layout_height="@dimen/y81"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="@dimen/x33"
+            android:layout_height="@dimen/y33"
+            android:src="@drawable/ic_close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

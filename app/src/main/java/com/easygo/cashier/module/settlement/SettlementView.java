@@ -1,16 +1,13 @@
 package com.easygo.cashier.module.settlement;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.text.InputType;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
@@ -33,24 +30,18 @@ public class SettlementView extends FrameLayout {
     TextView tvCoupon;
     @BindView(R.id.tv_text_receipts_way)
     TextView tvReceiptsWay;
-    @BindView(R.id.et_receipts)
-    EditText etReceipts;
-    @BindView(R.id.cl_receipts)
-    ConstraintLayout clReceipts;
-    @BindView(R.id.line3)
-    View line3;
+    @BindView(R.id.tv_receipts)
+    TextView tvReceipts;
+    @BindView(R.id.line4)
+    View line4;
     @BindView(R.id.tv_text_change)
     TextView tvTextChange;
     @BindView(R.id.tv_change)
     TextView tvChange;
-    @BindView(R.id.iv_scan)
-    ImageView ivScan;
+    @BindView(R.id.cl_scan)
+    ConstraintLayout clScan;
     @BindView(R.id.tv_already_settlement)
     TextView tvAlreadySettlement;
-    @BindView(R.id.tv_combine_way)
-    TextView tvCombineWay;
-    @BindView(R.id.tv_combine_money)
-    TextView tvCombineMoney;
     private Unbinder unbinder;
     private View mView;
     private ScanCodeDialog mScanCodeDialog;
@@ -66,17 +57,19 @@ public class SettlementView extends FrameLayout {
 
 
         tvAlreadySettlement.setVisibility(View.GONE);
-        ivScan.setVisibility(View.GONE);
-        tvCombineWay.setVisibility(View.GONE);
-        tvCombineMoney.setVisibility(View.GONE);
+        clScan.setVisibility(View.GONE);
 
         setShowSoftInputOnFocus(false);
 
         setPayType(false, PayWayView.WAY_CASH);
 
-        ivScan.setOnClickListener(new View.OnClickListener() {
+        clScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(mListener != null) {
+                    mListener.onScanClicked();
+                }
                 showScanCodeDialog();
             }
         });
@@ -94,7 +87,7 @@ public class SettlementView extends FrameLayout {
      * @param showSoftInputOnFocus
      */
     private void setShowSoftInputOnFocus(boolean showSoftInputOnFocus) {
-        etReceipts.setShowSoftInputOnFocus(showSoftInputOnFocus);
+        tvReceipts.setShowSoftInputOnFocus(showSoftInputOnFocus);
     }
 
     /**
@@ -106,36 +99,31 @@ public class SettlementView extends FrameLayout {
             showAlreadySettlement(false);
             setScanVisibility(false);
             setChangeVisibilty(true);
-            showReceiptsFrame(true);
 
             if(payType != PayWayView.WAY_CASH) {
                 switch (payType) {
                     case PayWayView.WAY_ALIPAY:
-                        tvTextChange.setText(R.string.text_alipay);
+                        tvReceiptsWay.setText(R.string.text_alipay);
                         break;
                     case PayWayView.WAY_WECHAT:
-                        tvTextChange.setText(R.string.text_wechat);
+                        tvReceiptsWay.setText(R.string.text_wechat);
                         break;
                     case PayWayView.WAY_BANK_CARD:
-                        tvTextChange.setText(R.string.text_alipay);
+                        tvReceiptsWay.setText(R.string.text_bank_card);
                         break;
                     case PayWayView.WAY_OTHER:
-                        tvTextChange.setText(R.string.text_other);
+                        tvReceiptsWay.setText(R.string.text_other);
                         break;
                 }
-                tvTextChange.setTextColor(getResources().getColor(R.color.color_bg_cc565a));
             }
 
         } else
         switch (payType) {
             case PayWayView.WAY_CASH://现金
-                tvTextChange.setText(R.string.text_change);
-                tvTextChange.setTextColor(getResources().getColor(R.color.color_text));
                 tvReceiptsWay.setText(R.string.text_cash);
                 showAlreadySettlement(false);
                 setScanVisibility(false);
                 setChangeVisibilty(true);
-                showReceiptsFrame(true);
 
                 break;
             case PayWayView.WAY_WECHAT://微信
@@ -143,7 +131,6 @@ public class SettlementView extends FrameLayout {
                 showAlreadySettlement(false);
                 setScanVisibility(true);
                 setChangeVisibilty(false);
-                showReceiptsFrame(false);
 
                 break;
             case PayWayView.WAY_ALIPAY://支付宝
@@ -151,7 +138,6 @@ public class SettlementView extends FrameLayout {
                 showAlreadySettlement(false);
                 setScanVisibility(true);
                 setChangeVisibilty(false);
-                showReceiptsFrame(false);
 
                 break;
             case PayWayView.WAY_BANK_CARD://银行卡
@@ -159,7 +145,6 @@ public class SettlementView extends FrameLayout {
                 showAlreadySettlement(false);
                 setScanVisibility(false);
                 setChangeVisibilty(false);
-                showReceiptsFrame(false);
 
                 break;
             case PayWayView.WAY_OTHER://其他
@@ -167,38 +152,24 @@ public class SettlementView extends FrameLayout {
                 showAlreadySettlement(false);
                 setScanVisibility(false);
                 setChangeVisibilty(false);
-                showReceiptsFrame(false);
 
                 break;
         }
     }
 
     public void setChangeVisibilty(boolean visibilty) {
-        line3.setVisibility(visibilty? View.VISIBLE: View.GONE);
+        line4.setVisibility(visibilty? View.VISIBLE: View.GONE);
         tvTextChange.setVisibility(visibilty? View.VISIBLE: View.GONE);
         tvChange.setVisibility(visibilty? View.VISIBLE: View.GONE);
     }
     public void setScanVisibility(boolean visibilty) {
-        ivScan.setVisibility(visibilty? View.VISIBLE: View.GONE);
+        clScan.setVisibility(visibilty? View.VISIBLE: View.GONE);
     }
     public void showAlreadySettlement(boolean visibilty) {
         tvAlreadySettlement.setVisibility(visibilty? View.VISIBLE: View.GONE);
     }
 
-    public void showReceiptsFrame(boolean visibilty) {
-        clReceipts.setBackgroundResource(visibilty? R.drawable.bg_frame: Color.TRANSPARENT);
-        if(visibilty) {
-            etReceipts.setInputType(InputType.TYPE_CLASS_TEXT);
-            etReceipts.setSelection(etReceipts.length());
-        } else {
-            etReceipts.setInputType(InputType.TYPE_NULL);
-        }
-        etReceipts.setCursorVisible(visibilty);
-    }
 
-    public EditText getEditText() {
-        return etReceipts;
-    }
 
     /**
      * 显示扫码弹窗
@@ -207,14 +178,23 @@ public class SettlementView extends FrameLayout {
         if(mScanCodeDialog == null) {
             mScanCodeDialog = new ScanCodeDialog(getContext(), R.style.DialogStyle);
             WindowManager.LayoutParams lp = mScanCodeDialog.getWindow().getAttributes();
-            lp.gravity = Gravity.START;
-
-            lp.x = (int) (getWidth() / 2f - mScanCodeDialog.getDialogWidth() / 2f);
-            lp.y = (int) (getHeight() / 2f - mScanCodeDialog.getDialogHeight() / 2f);
+            lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+            lp.y = getResources().getDimensionPixelSize(R.dimen.y411);
             mScanCodeDialog.getWindow().setAttributes(lp);
+            mScanCodeDialog.setCanceledOnTouchOutside(false);
         }
         mScanCodeDialog.show();
 
+    }
+
+    private OnClickListener mListener;
+    public void setOnSettlementClickListener(OnClickListener listener) {
+        this.mListener = listener;
+    }
+    public interface OnClickListener {
+        void onScanClicked();
+        void onPrintClicked();
+        void onCommitOrderClicked();
     }
 
 

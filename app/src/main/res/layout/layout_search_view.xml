@@ -41,7 +41,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="@dimen/x42"
             android:layout_height="@dimen/y42"
-            android:src="@drawable/ic_close" />
+            android:src="@drawable/ic_clear" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
