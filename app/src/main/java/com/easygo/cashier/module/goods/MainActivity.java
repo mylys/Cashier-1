@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.base.BaseAppActivity;
@@ -23,13 +24,14 @@ import com.easygo.cashier.module.refund.RefundActivity;
 import com.easygo.cashier.module.secondary_sreen.SecondaryScreen;
 import com.easygo.cashier.module.settlement.CashierActivity;
 import com.easygo.cashier.widget.FunctionListDialog;
-import com.easygo.cashier.widget.HelpDialog;
-import com.niubility.library.widget.imageview.CircleImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 首页
+ */
 @Route(path = ModulePath.goods)
 public class MainActivity extends BaseAppActivity {
 
@@ -93,6 +95,7 @@ public class MainActivity extends BaseAppActivity {
                 break;
             case R.id.menu://功能列表
                 FunctionListDialog functionListDialog = new FunctionListDialog();
+                functionListDialog.setOnFunctionListItemListener(mFunctionListItemListener);
                 functionListDialog.show(getSupportFragmentManager(), TAG_FUNCTION_LIST);
                 break;
             case R.id.cl_back://返回
@@ -100,27 +103,51 @@ public class MainActivity extends BaseAppActivity {
         }
     }
 
-    /**
-     * 收银页面
-     */
-    public void toCashierActivity() {
-        Intent intent = new Intent(this, CashierActivity.class);
-        startActivity(intent);
-    }
+    public FunctionListDialog.OnFunctionListItemListener mFunctionListItemListener = new FunctionListDialog.OnFunctionListItemListener() {
+        @Override
+        public void orderHistory() {
+            ARouter.getInstance().build(ModulePath.order_history).navigation();
+        }
 
-    /**
-     * 历史订单页面
-     */
-    public void toOrderHistoryActivity() {
-        Intent intent = new Intent(this, OrderHistoryActivity.class);
-        startActivity(intent);
-    }
+        @Override
+        public void refund() {
+            ARouter.getInstance().build(ModulePath.refund).navigation();
+        }
 
-    /**
-     * 退款页面
-     */
-    public void toRefundActivity() {
-        Intent intent = new Intent(this, RefundActivity.class);
-        startActivity(intent);
-    }
+        @Override
+        public void shift() {
+
+        }
+
+        @Override
+        public void enterSystem() {
+
+        }
+
+        @Override
+        public void languageSetting() {
+
+        }
+
+        @Override
+        public void deviceStatus() {
+
+        }
+
+        @Override
+        public void systemSetting() {
+
+        }
+
+        @Override
+        public void onItemClickBefore() {
+
+        }
+
+        @Override
+        public void onItemClickAfter() {
+
+        }
+    };
+
 }

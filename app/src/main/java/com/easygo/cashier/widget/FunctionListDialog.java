@@ -4,16 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
-import com.alibaba.android.arouter.launcher.ARouter;
-import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
-import com.easygo.cashier.module.goods.MainActivity;
 import com.easygo.cashier.adapter.FunctionListAdapter;
 
 import butterknife.BindView;
@@ -48,6 +47,17 @@ public class FunctionListDialog extends DialogFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Window window = getDialog().getWindow();
+        if(window != null) {
+            window.setLayout(getResources().getDimensionPixelSize(R.dimen.function_list_width),
+                            getResources().getDimensionPixelSize(R.dimen.function_list_height));
+        }
+        getDialog().setCanceledOnTouchOutside(false);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -57,12 +67,23 @@ public class FunctionListDialog extends DialogFragment {
 
         FunctionListAdapter functionListAdapter = new FunctionListAdapter();
 
+        //分割线
+        DividerItemDecoration horizontalDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL);
+        DividerItemDecoration verticalDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        horizontalDecoration.setDrawable(getResources().getDrawable(R.drawable.bg_item_decoration_horizontal));
+        verticalDecoration.setDrawable(getResources().getDrawable(R.drawable.bg_item_decoration_vertical));
+        rvFunction.addItemDecoration(horizontalDecoration);
+        rvFunction.addItemDecoration(verticalDecoration);
+
         rvFunction.setLayoutManager(glm);
         rvFunction.setAdapter(functionListAdapter);
 
         functionListAdapter.setOnItemClickListener(new FunctionListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                if(mListener != null) {
+                    mListener.onItemClickBefore();
+                }
                 switch (position) {
                     case 0://历史订单
                         orderHistory();
@@ -95,42 +116,69 @@ public class FunctionListDialog extends DialogFragment {
 
     private void onItemClickAfter() {
         dismiss();
+
+        if(mListener != null) {
+            mListener.onItemClickAfter();
+        }
     }
 
     public void orderHistory() {
-        ARouter.getInstance().build(ModulePath.order_history).navigation();
-//        MainActivity activity = (MainActivity) getActivity();
-//        if (activity != null) {
-//            activity.toOrderHistoryActivity();
-//        }
+        if (mListener != null) {
+            mListener.orderHistory();
+        }
     }
 
     public void refund() {
-        ARouter.getInstance().build(ModulePath.refund).navigation();
-//        MainActivity activity = (MainActivity) getActivity();
-//        if (activity != null) {
-//            activity.toRefundActivity();
-//        }
+        if (mListener != null) {
+            mListener.refund();
+        }
     }
 
     public void shift() {
-
+        if (mListener != null) {
+            mListener.shift();
+        }
     }
 
     public void enterSystem() {
-
+        if (mListener != null) {
+            mListener.enterSystem();
+        }
     }
 
     public void languageSetting() {
-
+        if (mListener != null) {
+            mListener.languageSetting();
+        }
     }
 
     public void deviceStatus() {
-
+        if (mListener != null) {
+            mListener.deviceStatus();
+        }
     }
 
     public void systemSetting() {
+        if (mListener != null) {
+            mListener.systemSetting();
+        }
+    }
 
+    private OnFunctionListItemListener mListener;
+    public void setOnFunctionListItemListener(OnFunctionListItemListener listItemListener) {
+        this.mListener = listItemListener;
+    }
+    public interface OnFunctionListItemListener {
+        void orderHistory();
+        void refund();
+        void shift();
+        void enterSystem();
+        void languageSetting();
+        void deviceStatus();
+        void systemSetting();
+
+        void onItemClickBefore();
+        void onItemClickAfter();
     }
 
     @Override

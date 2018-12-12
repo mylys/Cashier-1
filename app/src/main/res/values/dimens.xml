@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--登录-->
     <dimen name="login_btn_width">@dimen/x492</dimen>
     <dimen name="login_btn_height">@dimen/y80</dimen>
     <dimen name="logo_width">@dimen/x220</dimen>
@@ -31,6 +32,13 @@
     <dimen name="text_size">@dimen/x28</dimen>
     <dimen name="text_size_middle">@dimen/x25</dimen>
     <dimen name="text_size_small">@dimen/x20</dimen>
+
+    <!--功能列表-->
+    <dimen name="function_list_width">@dimen/x1159</dimen>
+    <dimen name="function_list_height">@dimen/y632</dimen>
+    <dimen name="function_list_item_width">@dimen/x289</dimen>
+    <dimen name="function_list_item_height">@dimen/y273</dimen>
+
 
     <!--支付方式按钮大小-->
     <dimen name="pay_btn_width">@dimen/x183</dimen>

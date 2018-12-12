@@ -1,40 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/x767"
-    android:layout_height="@dimen/y440"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/color_text_white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <View
+        android:id="@+id/cover"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y84"
+        android:background="@color/color_f5f7fa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/cover"/>
 
     <TextView
         android:id="@+id/tv_function_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_function_list"
-        style="@style/SmallTextStyle"
-        android:layout_marginStart="@dimen/x31"
-        android:layout_marginTop="@dimen/y22"
-        android:layout_marginBottom="@dimen/y22"
+        style="@style/GoodsListStyle"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/x36"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/rv_function"/>
+        app:layout_constraintTop_toTopOf="@id/cover"
+        app:layout_constraintBottom_toBottomOf="@id/cover"/>
 
-    <ImageView
-        android:id="@+id/iv_cancel"
-        android:layout_width="@dimen/x38"
-        android:layout_height="@dimen/y38"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginEnd="@dimen/x16"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_cancel"
+        android:layout_width="@dimen/x84"
+        android:layout_height="@dimen/y84"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_function_list"
-        app:layout_constraintBottom_toBottomOf="@id/tv_function_list"/>
+        app:layout_constraintBottom_toBottomOf="@id/tv_function_list">
+
+        <ImageView
+            android:id="@+id/iv_cancel"
+            android:layout_width="@dimen/x35"
+            android:layout_height="@dimen/y35"
+            android:src="@drawable/ic_close_function_list"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_function"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_function_list"
+        app:layout_constraintTop_toBottomOf="@id/cover"
         app:layout_constraintBottom_toBottomOf="parent">
 
     </android.support.v7.widget.RecyclerView>

@@ -27,13 +27,13 @@ public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapte
     };
 
     private int[] res = new int[]{
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
+            R.drawable.ic_order_history,
+            R.drawable.ic_refund,
+            R.drawable.ic_shift,
+            R.drawable.ic_enter_system,
+            R.drawable.ic_lauage,
+            R.drawable.ic_device_status,
+            R.drawable.ic_system_setting,
     };
 
     @NonNull
