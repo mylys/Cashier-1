@@ -1,7 +1,7 @@
 package com.easygo.cashier.module.login;
 
-import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
+import com.niubility.library.http.base.HttpResult;
 import com.niubility.library.mvp.BaseContract;
 import com.niubility.library.mvp.BaseView;
 
@@ -15,7 +15,7 @@ public class LoginContract {
 //    }
 
     public interface IPresenter extends BaseContract.Presenter {
-         void login(String account, String password);
+         void login(String shop_sn, String account, String password);
          void init(String mac_adr);
     }
 
@@ -23,7 +23,7 @@ public class LoginContract {
         void loginSuccess(LoginResponse result);
         void loginFailed(Map<String, Object> map);
 
-        void initSuccess(InitResponse result);
+        void initSuccess(String result);
         void initFailed(Map<String, Object> map);
     }
 }

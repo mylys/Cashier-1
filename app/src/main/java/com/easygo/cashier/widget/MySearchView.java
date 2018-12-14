@@ -2,14 +2,12 @@ package com.easygo.cashier.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.easygo.cashier.R;
 
@@ -58,7 +56,6 @@ public class MySearchView extends ConstraintLayout {
         mEditText.setHint(mHint);
 
         findViewById(R.id.cl_clear).setOnClickListener(new OnClickListener() {
-//        mClearImageView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 mEditText.setText("");
@@ -70,7 +67,6 @@ public class MySearchView extends ConstraintLayout {
     private void initView(Context context) {
         mView = LayoutInflater.from(context).inflate(R.layout.layout_search_view, this, true);
         mEditText = (EditText) mView.findViewById(R.id.et_search);
-//        mClearImageView = (ImageView) mView.findViewById(R.id.iv_clear);
         mSearchBtn = (Button) mView.findViewById(R.id.btn_search);
     }
 

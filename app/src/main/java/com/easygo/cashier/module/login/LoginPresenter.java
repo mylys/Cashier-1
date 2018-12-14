@@ -1,8 +1,8 @@
 package com.easygo.cashier.module.login;
 
-import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
 import com.easygo.cashier.http.HttpAPI;
+import com.niubility.library.http.base.HttpClient;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
 
@@ -12,9 +12,11 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
 
 
     @Override
-    public void login(String account, String password) {
+    public void login(String shop_sn, String account, String password) {
+
+        Map<String, String> header = HttpClient.getInstance().getLoginHeader();
         subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().login(account, password),
+                HttpAPI.getInstance().httpService().login(header, shop_sn, account, password),
                 new BaseResultObserver<LoginResponse>() {
             @Override
             protected void onSuccess(LoginResponse result) {
@@ -32,12 +34,12 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
     public void init(String mac_adr) {
         subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().init(mac_adr),
-//                HttpAPI.getInstance().httpService().getShopId(mac_adr),
-                new BaseResultObserver<InitResponse>() {
+                new BaseResultObserver<String>() {
                     @Override
-                    protected void onSuccess(InitResponse result) {
+                    protected void onSuccess(String result) {
                         mView.initSuccess(result);
                     }
+
 
                     @Override
                     protected void onFailure(Map<String, Object> map) {

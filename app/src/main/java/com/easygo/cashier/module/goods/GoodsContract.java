@@ -1,6 +1,7 @@
 package com.easygo.cashier.module.goods;
 
 import com.easygo.cashier.bean.CheckPayStatusResponse;
+import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.niubility.library.mvp.BaseContract;
@@ -23,7 +24,6 @@ public class GoodsContract {
         void getGoods(String shop_id, String barcode);
         void searchGoods(String shop_id, String barcode, String good_name);
 
-        void createOrder(String json);
         void checkPayStatus(String order_sn);
         void realMoney(String json);
 
@@ -35,9 +35,6 @@ public class GoodsContract {
 
         void searchGoodsSuccess(GoodsResponse result);
         void searchGoodsFailed(Map<String, Object> map);
-
-        void createOrderSuccess(String order_sn);
-        void createOrderFailed(Map<String, Object> map);
 
         void realMoneySuccess(RealMoneyResponse result);
         void realMoneyFailed(Map<String, Object> map);

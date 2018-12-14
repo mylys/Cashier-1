@@ -39,6 +39,8 @@
     <dimen name="function_list_item_width">@dimen/x289</dimen>
     <dimen name="function_list_item_height">@dimen/y273</dimen>
 
+    <!--确认弹窗-->
+    <dimen name="dialog_width">@dimen/x600</dimen>
 
     <!--支付方式按钮大小-->
     <dimen name="pay_btn_width">@dimen/x183</dimen>

@@ -1,4 +1,4 @@
 package com.easygo.cashier.bean;
 
-public class InitResponse {
+public class CheckAlipayStatus {
 }

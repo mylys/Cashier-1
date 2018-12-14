@@ -6,13 +6,17 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
 import com.easygo.cashier.widget.PayWayView;
 import com.easygo.cashier.widget.ScanCodeDialog;
+
+import java.text.DecimalFormat;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
@@ -42,9 +46,21 @@ public class SettlementView extends FrameLayout {
     ConstraintLayout clScan;
     @BindView(R.id.tv_already_settlement)
     TextView tvAlreadySettlement;
+    @BindView(R.id.cb_print)
+    CheckBox cbPrint;
+    @BindView(R.id.btn_commit)
+    Button btnCommit;
     private Unbinder unbinder;
     private View mView;
-    private ScanCodeDialog mScanCodeDialog;
+
+
+
+    //结算数据
+    private float mReceivable;//应收
+    private float mCoupon;//优惠
+    private float mReceipts;//实收
+    private float mChange;//找零
+    //结算数据
 
     public SettlementView(@NonNull Context context) {
         super(context);
@@ -59,18 +75,31 @@ public class SettlementView extends FrameLayout {
         tvAlreadySettlement.setVisibility(View.GONE);
         clScan.setVisibility(View.GONE);
 
-        setShowSoftInputOnFocus(false);
 
         setPayType(false, PayWayView.WAY_CASH);
 
         clScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if(mListener != null) {
                     mListener.onScanClicked();
                 }
-                showScanCodeDialog();
+            }
+        });
+        cbPrint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(mListener != null) {
+                    mListener.onPrintClicked(isChecked);
+                }
+            }
+        });
+        btnCommit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mListener != null) {
+                    mListener.onCommitOrderClicked();
+                }
             }
         });
     }
@@ -82,13 +111,6 @@ public class SettlementView extends FrameLayout {
     }
 
 
-    /**
-     * 设置EditText获取焦点时 是否弹出软键盘
-     * @param showSoftInputOnFocus
-     */
-    private void setShowSoftInputOnFocus(boolean showSoftInputOnFocus) {
-        tvReceipts.setShowSoftInputOnFocus(showSoftInputOnFocus);
-    }
 
     /**
      * 根据选择的支付方式，改变相应布局
@@ -170,30 +192,35 @@ public class SettlementView extends FrameLayout {
     }
 
 
+    public void setData(float receivable, float coupon, float receipts, float change) {
+        mReceivable = receivable;
+        mCoupon = coupon;
+        mReceipts = receipts;
+        mChange = change;
 
-    /**
-     * 显示扫码弹窗
-     */
-    public void showScanCodeDialog() {
-        if(mScanCodeDialog == null) {
-            mScanCodeDialog = new ScanCodeDialog(getContext(), R.style.DialogStyle);
-            WindowManager.LayoutParams lp = mScanCodeDialog.getWindow().getAttributes();
-            lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-            lp.y = getResources().getDimensionPixelSize(R.dimen.y411);
-            mScanCodeDialog.getWindow().setAttributes(lp);
-            mScanCodeDialog.setCanceledOnTouchOutside(false);
-        }
-        mScanCodeDialog.show();
+        DecimalFormat df = new DecimalFormat("#0.00");
 
+        String sign = "￥";
+        tvReceivable.setText(sign + df.format(mReceivable));
+        tvCoupon.setText(sign + df.format(mCoupon));
+        tvReceipts.setText(sign + df.format(mReceipts));
+        tvChange.setText(sign + df.format(mChange));
     }
+
+
 
     private OnClickListener mListener;
     public void setOnSettlementClickListener(OnClickListener listener) {
         this.mListener = listener;
     }
+
+    public boolean needPrint() {
+        return cbPrint.isChecked();
+    }
+
     public interface OnClickListener {
         void onScanClicked();
-        void onPrintClicked();
+        void onPrintClicked(boolean isChecked);
         void onCommitOrderClicked();
     }
 
@@ -201,8 +228,5 @@ public class SettlementView extends FrameLayout {
     public void release() {
         if (unbinder != null)
             unbinder.unbind();
-        if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
-            mScanCodeDialog.dismiss();
-        }
     }
 }

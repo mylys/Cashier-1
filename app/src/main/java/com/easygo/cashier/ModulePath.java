@@ -5,6 +5,7 @@ package com.easygo.cashier;
  */
 public class ModulePath {
 
+    public static final String login = "/module/login";
     public static final String goods = "/module/goods";
     public static final String order_history = "/module/order_history";
     public static final String refund = "/module/refund";

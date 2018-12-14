@@ -5,39 +5,44 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.Test;
 import com.easygo.cashier.adapter.GoodsAdapter;
 import com.easygo.cashier.bean.CheckPayStatusResponse;
 import com.easygo.cashier.bean.GoodsInfo;
+import com.easygo.cashier.bean.GoodsNum;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
-import com.easygo.cashier.bean.request.CreateOrderRequestBody;
-import com.easygo.cashier.bean.request.RealMoneyRequestBody;
 import com.easygo.cashier.module.refund.RefundActivity;
 import com.easygo.cashier.widget.NoGoodsDialog;
 import com.niubility.library.base.BaseMvpFragment;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.GsonUtils;
-import com.niubility.library.utils.ToastUtils;
 
+import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPresenter> implements GoodsContract.IView {
 
+    public static final String TAG = "GoodsFragment";
 
     @BindView(R.id.tv_goods_count)
     TextView tvGoodsCount;
@@ -51,12 +56,20 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     Button btnSettlement;
     @BindView(R.id.btn_pop_money_box)
     Button clPopMoneyBox;
+    @BindView(R.id.et_barcode)
+    EditText etBarcode;//监听扫码机
 
     public static final int TYPE_GOODS = 0;
     public static final int TYPE_REFUND = 1;
     public static final String KEY_TYPE = "key_type";
     private int mType = TYPE_GOODS;
     private GoodsAdapter mGoodsAdapter;
+
+    private List<GoodsNum<GoodsResponse>> mdata;
+
+    private int mGoodsCount;
+    private float mTotalMoney;
+    private float mCoupon;
 
 
     public static GoodsFragment newInstance() {
@@ -89,23 +102,85 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     @Override
     protected void init() {
         initView();
+
+        initBarcode();
     }
+
+    private void initBarcode() {
+
+        etBarcode.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+                    onScanCode(etBarcode.getText().toString().trim());
+                    etBarcode.setText("");
+                }
+
+                return false;
+            }
+        });
+
+        etBarcode.setFocusable(true);
+        etBarcode.setFocusableInTouchMode(true);
+        etBarcode.requestFocus();
+
+//        etBarcode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if(!hasFocus) {
+//                    showToast("重新获取焦点");
+//                    etBarcode.requestFocus();
+//                }
+//            }
+//        });
+    }
+
+    /**
+     * 扫描到的条码 回调
+     */
+    private void onScanCode(String barcode) {
+        Log.i(TAG, "onScanCode: barcode --> " + barcode);
+
+        if(TextUtils.isEmpty(barcode)) {
+            showToast("barcode = null");
+        } else {
+            //获取商品信息
+            mPresenter.getGoods(Configs.shop_sn, barcode);
+        }
+
+//        mPresenter.getGoods(Test.shop_sn, "096619438839");
+
+//        mPresenter.getGoods(Test.shop_sn, Test.barcode);
+//        mPresenter.getGoods(Test.shop_sn, "8885012290555");
+//        mPresenter.getGoods(Test.shop_sn, "3179730010041");
+//        mPresenter.getGoods(Test.shop_sn, "4891028170969");
+//        mPresenter.getGoods(Test.shop_sn, "4891028705635");
+//        mPresenter.getGoods(Test.shop_sn, "8996006856890");
+
+    }
+
 
     private void initView() {
         rvGoods.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mGoodsAdapter = new GoodsAdapter();
         rvGoods.setAdapter(mGoodsAdapter);
 
-        mGoodsAdapter.setNewData(Test.getGoodsInfos());
+        mdata = new ArrayList<>();
+        mGoodsAdapter.setNewData(mdata);
 
-        mGoodsAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        mGoodsAdapter.setOnPriceListener(new GoodsAdapter.OnPriceListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                GoodsInfo goodsInfo = (GoodsInfo) (adapter.getData().get(position));
-                Toast.makeText(getContext(), goodsInfo.getName(), Toast.LENGTH_SHORT).show();
+            public void onPriceChange(float price, int count, float coupon) {
+                refreshPrce(price, count, coupon);
             }
+
         });
 
+        setIntentData();
+    }
+
+    private void setIntentData() {
         Bundle data = getArguments();
         if (data != null) {
             mType = data.getInt(KEY_TYPE, TYPE_GOODS);
@@ -114,15 +189,35 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         switch (mType) {
             case TYPE_GOODS:
                 clPopMoneyBox.setVisibility(View.VISIBLE);
-                btnSettlement.setText("收银：  ￥6.00");
+                btnSettlement.setText(" 收银：  ￥0.00 ");
                 break;
             case TYPE_REFUND:
                 clPopMoneyBox.setVisibility(View.GONE);
-                btnSettlement.setText("退款：  ￥6.00");
+                btnSettlement.setText(" 退款：  ￥0.00 ");
                 break;
         }
 
-        btnSettlement.setText(mType == TYPE_GOODS ? "收银：  ￥6.00" : "退款：  ￥6.00");
+//        btnSettlement.setText(mType == TYPE_GOODS ? " 收银：  ￥0.00 " : " 退款：  ￥0.00 ");
+    }
+
+    /**
+     * 刷新界面显示
+     */
+    private void refreshPrce(float price, int count, float coupon) {
+        mGoodsCount = count;
+        mTotalMoney = price;
+        mCoupon = coupon;
+
+        DecimalFormat df = new DecimalFormat("#0.00");
+
+        tvTotalMoney.setText("￥" + df.format(price));
+        tvCoupon.setText("￥" + df.format(coupon));
+        if(mType == TYPE_GOODS) {
+            btnSettlement.setText(" 收银：  ￥" + df.format(price) + " ");
+        } else {
+            btnSettlement.setText(" 退款：  ￥" + df.format(price) + " ");
+        }
+        tvGoodsCount.setText(String.valueOf(count));
     }
 
 
@@ -136,10 +231,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                     @Override
                     public void onDialogClick(String content) {
                         if (TextUtils.isEmpty(content)) {
-                            ToastUtils.showToast(getActivity(), "请输入金额");
+                            showToast("请输入金额");
                             return;
                         }
-                        ToastUtils.showToast(getActivity(), content);
+                        showToast(content);
                         dialog.dismiss();
                     }
                 });
@@ -147,30 +242,43 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                 break;
             case R.id.btn_pop_money_box://弹出钱箱
-                RealMoneyRequestBody requestBody = new RealMoneyRequestBody();
-                requestBody.setShop_id("16");
-                requestBody.setOpenid("上海");
+//                RealMoneyRequestBody requestBody = new RealMoneyRequestBody();
+//                requestBody.setShop_id("16");
+//                requestBody.setOpenid("上海");
+//
+//                RealMoneyRequestBody.GoodsBean goodsBean = new RealMoneyRequestBody.GoodsBean();
+//                goodsBean.setBarcode("6923450605226");
+//                goodsBean.setGoods_count(1);
+//                List<RealMoneyRequestBody.GoodsBean> list = new ArrayList<>();
+//                list.add(goodsBean);
+//                requestBody.setGoods(list);
+//
+//                String json = GsonUtils.getInstance().getGson().toJson(requestBody);
+//                mPresenter.realMoney(json);
 
-                RealMoneyRequestBody.GoodsBean goodsBean = new RealMoneyRequestBody.GoodsBean();
-                goodsBean.setBarcode("6923450605226");
-                goodsBean.setGoods_count(1);
-                List<RealMoneyRequestBody.GoodsBean> list = new ArrayList<>();
-                list.add(goodsBean);
-                requestBody.setGoods(list);
-
-                String json = GsonUtils.getInstance().getGson().toJson(requestBody);
-                mPresenter.realMoney(json);
 
 
                 break;
             case R.id.btn_clear://清空
-                mGoodsAdapter.setNewData(new ArrayList<GoodsInfo>());
+                mGoodsAdapter.clear();
 
                 break;
             case R.id.btn_settlement://收银 or  退款
                 switch (mType) {
                     case TYPE_GOODS:
-                        ARouter.getInstance().build(ModulePath.settlement).navigation();
+
+//                        if(mTotalMoney <= 0) {
+//                            showToast("金额不能小于等于0！");
+//                            return;
+//                        }
+
+                        ARouter.getInstance().build(ModulePath.settlement)
+                                .withInt("goods_count", mGoodsCount)
+                                .withFloat("coupon", mCoupon)
+                                .withFloat("total_money", mTotalMoney)
+                                .withString("string_goods_data", GsonUtils.getInstance().getGson().toJson(mdata))
+                                .withSerializable("goods_data", (Serializable) mdata)
+                                .navigation();
 //                        MainActivity mainActivity = (MainActivity) getActivity();
 //                        if (mainActivity != null)
 //                            mainActivity.toCashierActivity();
@@ -187,40 +295,23 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         }
     }
 
-    public void createOrder() {
-        CreateOrderRequestBody requestBody1 = new CreateOrderRequestBody();
-        requestBody1.setShop_id("308");
-        requestBody1.setOpenid("shanghai");
-        requestBody1.setTotal_money("1");
-        requestBody1.setReal_pay("1");
-        requestBody1.setAct_sn("");
-        requestBody1.setCoun_sn("");
-        requestBody1.setIntegral(1);
-        requestBody1.setWallet_pay(0);
-        requestBody1.setUnion_id("");
-        requestBody1.setCard_no("");
-        requestBody1.setMember_money(1);
-        CreateOrderRequestBody.GoodsBean goodsBean1 = new CreateOrderRequestBody.GoodsBean();
-        goodsBean1.setBarcode("6921168550111");
-        goodsBean1.setGoods_count(1);
-        List<CreateOrderRequestBody.GoodsBean> list1 = new ArrayList<>();
-        list1.add(goodsBean1);
-        requestBody1.setGoods(list1);
-
-        mPresenter.createOrder(GsonUtils.getInstance().getGson().toJson(requestBody1));
-    }
-
-//    mPresenter.checkPayStatus("201812055c07c454c6faa845457");
-//    mPresenter.getGoods("308","6921168550111");
-
     @Override
     public void getGoodsSuccess(GoodsResponse goodsResponse) {
-
+        String barcode = goodsResponse.getBarcode();
+        mGoodsAdapter.addItem(barcode, goodsResponse);
     }
 
     @Override
     public void getGoodsFailed(Map<String, Object> map) {
-
+        if(HttpExceptionEngine.isBussinessError(map)) {
+            int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
+            String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
+            if(20001 == err_code) {
+                showToast(err_msg);
+            } else {
+                showToast(err_msg);
+            }
+        }
     }
 
     @Override
@@ -233,15 +324,6 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     }
 
-    @Override
-    public void createOrderSuccess(String order_sn) {
-
-    }
-
-    @Override
-    public void createOrderFailed(Map<String, Object> map) {
-
-    }
 
     @Override
     public void realMoneySuccess(RealMoneyResponse result) {

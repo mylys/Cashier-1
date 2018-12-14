@@ -1,6 +1,7 @@
 package com.easygo.cashier.module.goods;
 
 import com.easygo.cashier.bean.CheckPayStatusResponse;
+import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.http.HttpAPI;
@@ -15,9 +16,11 @@ import okhttp3.RequestBody;
 public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implements GoodsContract.IPresenter {
 
     @Override
-    public void getGoods(String shop_id, String barcode) {
+    public void getGoods(String shop_sn, String barcode) {
+
+        Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().getGoods(shop_id, barcode),
+                HttpAPI.getInstance().httpService().getGoods(header, shop_sn, barcode),
                 new BaseResultObserver<GoodsResponse>() {
 
                     @Override
@@ -50,26 +53,6 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
                 });
     }
 
-    @Override
-    public void createOrder(String json) {
-
-        RequestBody requestBody = HttpClient.getInstance().createRequestBody(json);
-
-        subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().createOrder(requestBody),
-                new BaseResultObserver<String>() {
-
-                    @Override
-                    protected void onSuccess(String result) {
-                        mView.createOrderSuccess(result);
-                    }
-
-                    @Override
-                    protected void onFailure(Map<String, Object> map) {
-                        mView.createOrderFailed(map);
-                    }
-                });
-    }
 
     @Override
     public void checkPayStatus(String order_sn) {

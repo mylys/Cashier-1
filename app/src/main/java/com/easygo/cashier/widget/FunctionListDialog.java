@@ -57,11 +57,6 @@ public class FunctionListDialog extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(false);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
     public void init() {
         GridLayoutManager glm = new GridLayoutManager(getContext(), 4);
 

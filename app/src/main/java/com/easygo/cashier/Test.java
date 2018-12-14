@@ -8,6 +8,9 @@ import java.util.List;
 
 public class Test {
 
+    public static String shop_sn = "0001";
+    public static String barcode = "096619756803";
+
     public static List<OrderHistoryInfo> getOrderHistoryData() {
         ArrayList<OrderHistoryInfo> orderHistoryInfos = new ArrayList<>();
 

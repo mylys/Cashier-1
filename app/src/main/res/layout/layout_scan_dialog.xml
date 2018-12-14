@@ -5,6 +5,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_scan_dialog">
 
+    <!--获取扫码机条码-->
+    <EditText
+        android:id="@+id/editText_barcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:inputType="text"
+        android:textColor="#00ffffff"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_marginStart="@dimen/x10"
+        android:layout_marginTop="@dimen/y10"
+        android:visibility="visible"
+        android:background="#00FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
 
     <ImageView
         android:id="@+id/iv_logo"
@@ -15,6 +32,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="@dimen/x104"
+        android:layout_height="@dimen/y104"
+        android:layout_marginTop="@dimen/y90"
+        android:visibility="gone"
+        android:indeterminateDrawable="@drawable/bg_scan_loading"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <TextView
         android:id="@+id/tv_description"

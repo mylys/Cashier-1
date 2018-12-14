@@ -24,7 +24,8 @@ android {
         }
         dev.initWith(buildTypes.debug)
         dev {
-            buildConfigField("String", "API_URL", "\"http://api.dev.ieasygo.cn/\"")
+//            buildConfigField("String", "API_URL", "\"http://api.dev.ieasygo.cn/\"")
+            buildConfigField("String", "API_URL", "\"http://api.dev.jpcs.esgao.cn/\"")
         }
     }
 }

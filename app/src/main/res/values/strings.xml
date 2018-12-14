@@ -20,6 +20,7 @@
     <string name="text_settlement">收银</string>
     <string name="text_refund">退款</string>
     <string name="text_cancel">取消</string>
+    <string name="text_confirm">确认</string>
 
 
     <!--结算页面-->
@@ -62,6 +63,9 @@
     <!-- dialog -->
     <string name="no_goods_text">无码商品</string>
     <string name="input_price">请输入商品金额</string>
+
+    <string name="text_confirm_commit_order">确认提交交易?</string>
+    <string name="text_confirm_refund">确认提交退款?</string>
 
 
 </resources>
