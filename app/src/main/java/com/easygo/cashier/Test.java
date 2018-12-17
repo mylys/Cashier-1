@@ -24,10 +24,13 @@ public class Test {
             info.setOrder_no("订单单号" + i);
             info.setReceipts(i);
             info.setReceivable(i);
-            info.setRefund(i);
+            info.setRefund(i % 3);
             info.setTime("时间" + i);
             info.setTotal_money(i);
             info.setReturn_of_goods_count(i);
+            info.setPay_way(i % 3);
+            info.setCoupon(i);
+            info.setBuyer("昵称" + i);
 
             orderHistoryInfos.add(info);
         }

@@ -37,6 +37,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
+import javax.crypto.KeyAgreement;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -63,12 +65,18 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public static final int TYPE_REFUND = 1;
     public static final String KEY_TYPE = "key_type";
     private int mType = TYPE_GOODS;
+    public static final String KEY_ADMIN_NAME = "key_admin_name";
+    private String admin_name;
     private GoodsAdapter mGoodsAdapter;
 
+    /**商品数据*/
     private List<GoodsNum<GoodsResponse>> mdata;
 
+    /**商品总数*/
     private int mGoodsCount;
+    /**应收*/
     private float mTotalMoney;
+    /**优惠*/
     private float mCoupon;
 
 
@@ -125,15 +133,6 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         etBarcode.setFocusableInTouchMode(true);
         etBarcode.requestFocus();
 
-//        etBarcode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if(!hasFocus) {
-//                    showToast("重新获取焦点");
-//                    etBarcode.requestFocus();
-//                }
-//            }
-//        });
     }
 
     /**
@@ -141,6 +140,13 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
      */
     private void onScanCode(String barcode) {
         Log.i(TAG, "onScanCode: barcode --> " + barcode);
+
+        if("2210000000019".equals(barcode)) {
+            //测试
+            showToast("测试数据");
+            mPresenter.getGoods(Configs.shop_sn, "096619438839");
+            return;
+        }
 
         if(TextUtils.isEmpty(barcode)) {
             showToast("barcode = null");
@@ -184,6 +190,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         Bundle data = getArguments();
         if (data != null) {
             mType = data.getInt(KEY_TYPE, TYPE_GOODS);
+            admin_name = data.getString(KEY_ADMIN_NAME);
 
         }
         switch (mType) {
@@ -197,7 +204,6 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 break;
         }
 
-//        btnSettlement.setText(mType == TYPE_GOODS ? " 收银：  ￥0.00 " : " 退款：  ￥0.00 ");
     }
 
     /**
@@ -273,18 +279,15 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 //                        }
 
                         ARouter.getInstance().build(ModulePath.settlement)
+                                .withString("admin_name", admin_name)
                                 .withInt("goods_count", mGoodsCount)
                                 .withFloat("coupon", mCoupon)
                                 .withFloat("total_money", mTotalMoney)
                                 .withString("string_goods_data", GsonUtils.getInstance().getGson().toJson(mdata))
                                 .withSerializable("goods_data", (Serializable) mdata)
                                 .navigation();
-//                        MainActivity mainActivity = (MainActivity) getActivity();
-//                        if (mainActivity != null)
-//                            mainActivity.toCashierActivity();
                         break;
                     case TYPE_REFUND:
-//                        ARouter.getInstance().build(ModulePath.refund).navigation();
                         RefundActivity refundActivity = (RefundActivity) getActivity();
                         if (refundActivity != null)
                             refundActivity.toRefundCashFragment();

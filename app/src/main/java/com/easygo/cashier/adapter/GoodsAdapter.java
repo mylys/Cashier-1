@@ -1,8 +1,6 @@
 package com.easygo.cashier.adapter;
 
-import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
-import android.util.Log;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -13,9 +11,6 @@ import com.easygo.cashier.widget.CountTextView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.transform.Templates;
 
 public class GoodsAdapter extends BaseQuickAdapter<GoodsNum<GoodsResponse>, BaseViewHolder> {
 
@@ -75,12 +70,13 @@ public class GoodsAdapter extends BaseQuickAdapter<GoodsNum<GoodsResponse>, Base
 
         final String barcode = good.getBarcode();
         float subtotal = Float.valueOf(good.getPrice()) * good_count;
+        DecimalFormat df = new DecimalFormat("#0.00");
 
         helper.setText(R.id.tv_barcode, barcode)
                 .setText(R.id.tv_goods_name, good.getG_sku_name())
                 .setText(R.id.tv_price, String.valueOf(good.getPrice()))
                 .setText(R.id.tv_coupon, String.valueOf(good.getDiscount_price()))
-                .setText(R.id.tv_subtotal, String.valueOf(subtotal));
+                .setText(R.id.tv_subtotal, String.valueOf(df.format(subtotal)));
 
         CountTextView count = ((CountTextView) helper.getView(R.id.count_view));
         count.setCount(String.valueOf(good_count));
@@ -95,9 +91,10 @@ public class GoodsAdapter extends BaseQuickAdapter<GoodsNum<GoodsResponse>, Base
                     notifyItemRemoved(helper.getAdapterPosition());
                 } else {
                     item.setCount(count);
-                    double subtotal = Double.parseDouble(good.getPrice()) * count;
-                    DecimalFormat df = new DecimalFormat("#0.00");
-                    helper.setText(R.id.tv_subtotal, String.valueOf(df.format(subtotal)));
+//                    double subtotal_new = Double.valueOf(good.getPrice()) * count;
+//                    DecimalFormat df = new DecimalFormat("0.00");
+//                    helper.setText(R.id.tv_subtotal, "" + String.valueOf(df.format(subtotal_new)));
+
                     notifyItemChanged(helper.getAdapterPosition());
                 }
                 //刷新价格

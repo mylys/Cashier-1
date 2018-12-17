@@ -29,6 +29,7 @@
         android:textColor="@color/color_4cbbac"
         android:layout_marginStart="@dimen/x42"
         android:background="@drawable/bg_btn_frame"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cl_search"
         app:layout_constraintTop_toTopOf="parent"/>

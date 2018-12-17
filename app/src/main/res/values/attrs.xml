@@ -12,8 +12,10 @@
     <declare-styleable name="MySearchView">
 
         <attr name="search_hint" format="string"/>
-        <attr name="search_btn_width" format="integer"/>
-        <attr name="search_btn_height" format="integer"/>
+        <attr name="search_text_padding_start" format="dimension"/>
+        <attr name="search_btn_text_size" format="dimension"/>
+        <attr name="search_btn_width" format="dimension"/>
+        <attr name="search_btn_height" format="dimension"/>
 
     </declare-styleable>
 </resources>

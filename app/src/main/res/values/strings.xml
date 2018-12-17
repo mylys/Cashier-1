@@ -21,6 +21,7 @@
     <string name="text_refund">退款</string>
     <string name="text_cancel">取消</string>
     <string name="text_confirm">确认</string>
+    <string name="text_has_already_refund">已退款</string>
 
 
     <!--结算页面-->
@@ -54,6 +55,7 @@
     <string name="text_order_no">订单单号：</string>
     <string name="text_cashier">收银员：</string>
     <string name="text_function_list">功能列表</string>
+    <string name="text_buyer">付款人：</string>
 
     <!--搜索框-->
     <string name="text_search_hint_barcode">输入条形码、商品名或编码</string>

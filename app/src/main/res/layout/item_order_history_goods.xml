@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/y12"
+    android:paddingBottom="@dimen/y12"
+    android:background="@color/color_text_white">
+
+    <TextView
+        android:id="@+id/tv_barcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1234567890123"
+        style="@style/GoodsListStyle"
+        android:layout_marginStart="@dimen/margin_66"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_goods_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="农夫山泉"
+        style="@style/GoodsListStyle"
+        android:layout_marginStart="@dimen/margin_362"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥6.00"
+        style="@style/GoodsListStyle"
+        android:layout_marginStart="@dimen/margin_937"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_coupon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥0.00"
+        style="@style/GoodsListStyle"
+        android:layout_marginStart="@dimen/margin_1131"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_subtotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥6.00"
+        style="@style/GoodsListStyle"
+        android:layout_marginStart="@dimen/margin_1327"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/margin_1645"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!--商品数量 可加减-->
+
+    <com.easygo.cashier.widget.CountTextView
+        android:id="@+id/count_view"
+        android:layout_width="@dimen/x232"
+        android:layout_height="@dimen/y56"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+
+    <!--<ImageView-->
+        <!--android:id="@+id/iv_add"-->
+        <!--android:layout_width="@dimen/x24"-->
+        <!--android:layout_height="@dimen/y24"-->
+        <!--android:src="@mipmap/ic_launcher"-->
+        <!--android:layout_marginEnd="@dimen/x67"-->
+        <!--app:layout_constraintStart_toEndOf="@id/tv_goods_count"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/tv_goods_count"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="1"-->
+        <!--style="@style/GoodsListStyle"-->
+        <!--android:paddingStart="@dimen/x5"-->
+        <!--android:paddingEnd="@dimen/x5"-->
+        <!---->
+    <!--<ImageView-->
+        <!--android:id="@+id/iv_reduce"-->
+        <!--android:layout_width="@dimen/x24"-->
+        <!--android:layout_height="@dimen/y24"-->
+        <!--android:src="@mipmap/ic_launcher"-->
+        <!--app:layout_constraintEnd_toStartOf="@id/tv_goods_count"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

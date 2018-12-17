@@ -7,19 +7,19 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
-import com.easygo.cashier.module.order_history.OrderHistoryFragment;
-import com.easygo.cashier.module.order_history.OrderHistoryRefundFragment;
-import com.niubility.library.base.BaseActivity;
+import com.easygo.cashier.base.BaseAppActivity;
+import com.easygo.cashier.widget.MyTitleBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 @Route(path = ModulePath.order_history)
-public class OrderHistoryActivity extends BaseActivity {
+public class OrderHistoryActivity extends BaseAppActivity {
 
     private final String TAG_ORDER_HISTORY = "tag_order_history";
     private final String TAG_ORDER_HISTORY_REFUND = "tag_order_history_refund";
@@ -30,6 +30,11 @@ public class OrderHistoryActivity extends BaseActivity {
 
     @BindView(R.id.framelayout)
     FrameLayout framelayout;
+    @BindView(R.id.cl_title)
+    MyTitleBar clTitle;
+
+    @Autowired(name = "admin_name")
+    String admin_name;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +47,8 @@ public class OrderHistoryActivity extends BaseActivity {
     }
 
     private void init() {
+        clTitle.setCashierAccount(admin_name);
+
         orderHistoryFragment = OrderHistoryFragment.newInstance();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

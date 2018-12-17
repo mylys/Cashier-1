@@ -11,8 +11,12 @@ public class OrderHistoryInfo {
     private float receivable;
     private float receipts;
     private float refund;
-    private float return_of_goods_count;
+    private int return_of_goods_count;
     private String time;
+    private int pay_way;
+    private float change;
+    private float coupon;
+    private String buyer;
 
 
     private float total_money;
@@ -81,11 +85,11 @@ public class OrderHistoryInfo {
         this.total_money = total_money;
     }
 
-    public float getReturn_of_goods_count() {
+    public int getReturn_of_goods_count() {
         return return_of_goods_count;
     }
 
-    public void setReturn_of_goods_count(float return_of_goods_count) {
+    public void setReturn_of_goods_count(int return_of_goods_count) {
         this.return_of_goods_count = return_of_goods_count;
     }
 
@@ -95,6 +99,38 @@ public class OrderHistoryInfo {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public int getPay_way() {
+        return pay_way;
+    }
+
+    public void setPay_way(int pay_way) {
+        this.pay_way = pay_way;
+    }
+
+    public float getChange() {
+        return change;
+    }
+
+    public void setChange(float change) {
+        this.change = change;
+    }
+
+    public float getCoupon() {
+        return coupon;
+    }
+
+    public void setCoupon(float coupon) {
+        this.coupon = coupon;
+    }
+
+    public String getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(String buyer) {
+        this.buyer = buyer;
     }
 
     @Override

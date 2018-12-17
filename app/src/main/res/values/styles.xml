@@ -40,10 +40,10 @@
         <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
-    <style name="SmallRedTextStyle" parent="SmallTextStyle">
+    <style name="SmallRedTextStyle" parent="DetailTextStyle">
         <item name="android:textColor">@color/color_cc565a</item>
     </style>
-    <style name="SmallBlueTextStyle" parent="SmallTextStyle">
+    <style name="SmallBlueTextStyle" parent="DetailTextStyle">
         <item name="android:textColor">@color/color_text_3899d9</item>
     </style>
 
@@ -77,6 +77,12 @@
     <style name="GoodsSettlementDetailTextStyle">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/text_size_30</item>
+        <item name="android:textColor">@color/color_505050</item>
+    </style>
+
+    <style name="DetailTextStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_28</item>
         <item name="android:textColor">@color/color_505050</item>
     </style>
 

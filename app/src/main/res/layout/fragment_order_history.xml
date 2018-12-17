@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:MySearchView="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <!--左右两边分割线-->
@@ -15,28 +14,49 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.36"
+        app:layout_constraintHorizontal_bias="0.35"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y155"
+        app:layout_constraintEnd_toStartOf="@id/line1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/color_text_white"
+        />
+
 
 
     <!--搜索框-->
     <com.easygo.cashier.widget.MySearchView
         android:id="@+id/cl_search"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/y69"
-        android:layout_marginTop="@dimen/y15"
-        android:layout_marginBottom="@dimen/y16"
-        android:layout_marginStart="@dimen/x19"
-        android:layout_marginEnd="@dimen/x18"
-        android:background="@drawable/bg_frame"
-        MySearchView:search_hint="@string/text_search_hint_order"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="@dimen/x590"
+        android:layout_height="@dimen/y98"
+        android:background="@drawable/bg_btn_frame_green"
+        app:search_hint="@string/text_search_hint_order"
+        app:search_text_padding_start="@dimen/x29"
+        app:search_btn_text_size="@dimen/x28"
+        app:search_btn_width="@dimen/x118"
+        app:search_btn_height="@dimen/y98"
+        app:layout_constraintStart_toStartOf="@id/view1"
         app:layout_constraintEnd_toEndOf="@id/line1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/rv_order_history">
+        app:layout_constraintTop_toTopOf="@id/view1"
+        app:layout_constraintBottom_toBottomOf="@id/view1">
 
     </com.easygo.cashier.widget.MySearchView>
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y21"
+        app:layout_constraintEnd_toStartOf="@id/line1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view1"
+        android:background="@color/color_f0f3f7"
+        />
 
 
     <!--历史订单列表-->
@@ -44,10 +64,9 @@
         android:id="@+id/rv_order_history"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/y11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/line1"
-        app:layout_constraintTop_toBottomOf="@id/cl_search"
+        app:layout_constraintTop_toBottomOf="@id/line2"
         app:layout_constraintBottom_toBottomOf="parent">
 
     </android.support.v7.widget.RecyclerView>

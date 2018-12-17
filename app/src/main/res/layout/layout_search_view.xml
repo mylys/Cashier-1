@@ -27,6 +27,7 @@
         android:id="@+id/cl_clear"
         android:layout_width="@dimen/x118"
         android:layout_height="match_parent"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_search"
         app:layout_constraintTop_toTopOf="parent">

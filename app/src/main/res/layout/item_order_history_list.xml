@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y100"
+    android:layout_height="@dimen/y141"
     android:id="@+id/root"
-    android:paddingStart="@dimen/x31"
+    android:paddingStart="@dimen/x41"
+    android:background="@color/color_text_white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -11,7 +12,7 @@
         android:id="@+id/cl_refund"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/x13"
+        android:paddingEnd="@dimen/x22"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/tv_time"
         app:layout_constraintEnd_toStartOf="@id/tv_order_no"
@@ -22,11 +23,11 @@
             android:id="@+id/tv_refund"
             android:layout_width="@dimen/x69"
             android:layout_height="@dimen/y35"
-            android:text="@string/text_refund"
+            android:text="@string/text_has_already_refund"
             android:textColor="@color/color_text_white"
             android:textSize="@dimen/x18"
             android:gravity="center"
-            android:background="@color/color_cc565a"
+            android:background="@drawable/bg_refund_status"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -39,20 +40,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="20180701123456789012"
-        style="@style/SmallTextStyle"
-        android:layout_marginTop="@dimen/y11"
+        style="@style/GoodsListStyle"
+        android:layout_marginTop="@dimen/y25"
         app:layout_constraintStart_toEndOf="@id/cl_refund"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tv_time"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="2018-07-01 12:34:56"
-        style="@style/SmallTextStyle"
-        android:layout_marginTop="@dimen/y13"
-        android:layout_marginBottom="@dimen/x13"
+        style="@style/GoodsListStyle"
+        android:layout_marginTop="@dimen/y25"
+        android:layout_marginBottom="@dimen/y25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -61,9 +61,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="￥6.00"
-        style="@style/TextStyle"
-        android:layout_marginEnd="@dimen/x16"
-        android:layout_marginBottom="@dimen/x13"
+        android:textSize="@dimen/x42"
+        android:textColor="@color/color_505050"
+        android:layout_marginEnd="@dimen/x45"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

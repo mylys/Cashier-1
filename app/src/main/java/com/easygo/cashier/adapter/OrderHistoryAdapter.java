@@ -1,91 +1,56 @@
 package com.easygo.cashier.adapter;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.graphics.Color;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.OrderHistoryInfo;
 
-import java.util.List;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+public class OrderHistoryAdapter extends BaseQuickAdapter<OrderHistoryInfo, BaseViewHolder> {
 
-public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapter.OrderHistoryViewHolder> {
+    private int mSelected = 0;
+    private int normal_color = -1;
+    private int selected_color = -1;
+    private int background_color = -1;
 
-    private List<OrderHistoryInfo> data;
+    public OrderHistoryAdapter() {
+        super(R.layout.item_order_history_list);
+    }
 
-
-    @NonNull
-    @Override
-    public OrderHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_order_history_list, viewGroup, false);
-        return new OrderHistoryViewHolder(view);
+    public void setColor(int normal, int selected, int background) {
+        normal_color = normal;
+        selected_color = selected;
+        background_color = background;
+    }
+    public int getSelected() {
+        return this.mSelected;
+    }
+    public void setSelected(int selected) {
+         this.mSelected = selected;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final OrderHistoryViewHolder orderHistoryViewHolder, int i) {
-        final OrderHistoryInfo orderHistoryInfo = data.get(i);
-        if(orderHistoryInfo.getRefund() != 0) {
-            orderHistoryViewHolder.clRefund.setVisibility(View.VISIBLE);
-        } else {
-            orderHistoryViewHolder.clRefund.setVisibility(View.GONE);
-        }
-        orderHistoryViewHolder.tvOrderNo.setText(orderHistoryInfo.getOrder_no());
-        orderHistoryViewHolder.tvMoney.setText("￥" + orderHistoryInfo.getTotal_money());
-        orderHistoryViewHolder.tvTime.setText(orderHistoryInfo.getTime());
+    protected void convert(BaseViewHolder helper, OrderHistoryInfo item) {
 
-        orderHistoryViewHolder.root.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(orderHistoryInfo, orderHistoryViewHolder.getAdapterPosition());
-                }
-            }
-        });
-    }
+        helper.setText(R.id.tv_order_no, item.getOrder_no())
+                .setText(R.id.tv_money, "￥" + item.getTotal_money())
+                .setText(R.id.tv_time, item.getTime());
 
-    @Override
-    public int getItemCount() {
-        return data != null? data.size(): 0;
-    }
+        //已退款状态 是否显示
+        helper.getView(R.id.cl_refund).setVisibility(item.getRefund() != 0? View.VISIBLE: View.GONE);
 
-    public void setData(List<OrderHistoryInfo> data) {
-        this.data = data;
-        notifyDataSetChanged();
-    }
+        boolean isSelected = mSelected == helper.getAdapterPosition();
+        //设置颜色
+        helper.setTextColor(R.id.tv_order_no, isSelected ? selected_color : normal_color)
+                .setTextColor(R.id.tv_money, isSelected ? selected_color : normal_color)
+                .setTextColor(R.id.tv_time, isSelected ? selected_color : normal_color);
+        //设置退款状态
+        helper.getView(R.id.cl_refund).setSelected(isSelected);
+        //设置背景色
+        helper.getView(R.id.root).setBackgroundColor(isSelected ? background_color: Color.WHITE);
 
-    static class OrderHistoryViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.root)
-        ConstraintLayout root;
-        @BindView(R.id.cl_refund)
-        ConstraintLayout clRefund;
-        @BindView(R.id.tv_order_no)
-        TextView tvOrderNo;
-        @BindView(R.id.tv_time)
-        TextView tvTime;
-        @BindView(R.id.tv_money)
-        TextView tvMoney;
-
-        public OrderHistoryViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            ButterKnife.bind(this, itemView);
-        }
-    }
-
-    private OnItemClickListener mOnItemClickListener;
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.mOnItemClickListener  = listener;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(OrderHistoryInfo orderHistoryInfo, int position);
     }
 }

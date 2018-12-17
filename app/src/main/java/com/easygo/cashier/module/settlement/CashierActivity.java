@@ -64,17 +64,24 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     @BindView(R.id.et_money)
     EditText etMoney;
 
+    @Autowired(name = "admin_name")
+    String admin_name;
     @Autowired(name = "goods_count")
     int mGoodsCount;
     @Autowired(name = "coupon")
     float mCoupon;
+    /**应收*/
     @Autowired(name = "total_money")
     float mTotalMoney;
     @Autowired(name = "goods_data")
     Serializable mGoodsDataSerializable;
+
+    /**商品数据*/
     List<GoodsNum<GoodsResponse>> mGoodsData;
 
+    /**实收*/
     float mRealPay;
+    /**找零*/
     float mChange;
 
     private SettlementView settlementView;
@@ -107,6 +114,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         settlementView = SettlementView.create(this);
         ((FrameLayout) findViewById(R.id.framelayout)).addView(settlementView);
 
+        clTitle.setCashierAccount(admin_name);
 
         mRealPay = mTotalMoney;
         settlementView.setData(mTotalMoney, mCoupon, mRealPay, 0);
@@ -131,6 +139,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
             @Override
             public void onCommitOrderClicked() {
+                if(mRealPay < mTotalMoney) {
+                    showToast("实收金额小于应收金额， 请确认！");
+                }
+                //弹出确认弹窗
                 Bundle bundle = ConfirmDialog.getDataBundle(mTotalMoney, mRealPay, mChange);
                 confirmDialog = new ConfirmDialog();
                 confirmDialog.setArguments(bundle);
@@ -162,6 +174,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 String text = s.toString().trim();
 
                 if(TextUtils.isEmpty(text)) {
+                    mRealPay = mTotalMoney;
+                    mChange = 0;
+                    //刷新价格
+                    if(settlementView != null)
+                        settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange);
                     return;
                 }
                 float data = Float.valueOf(text);
@@ -169,12 +186,12 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 if(data >= mTotalMoney) {
                     showToast("找零不能大于等于应收");
                     s.delete(s.length()-1, s.length());
-                } else if(data < 0.01 && s.length() > 4) {
+                } else if(data < 0.01f && s.length() > 4) {
                     showToast("找零不能小于0.01元");
                     s.delete(s.length()-1, s.length());
                 } else {
                     mRealPay = data;
-                    mChange = mTotalMoney - mRealPay;
+                    mChange = mRealPay - mTotalMoney;
 
                     //刷新价格
                     if(settlementView != null)
@@ -192,6 +209,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 //支付方式选择回调
                 if (settlementView != null) {
                     settlementView.setPayType(isCombinePay, pay_way);
+
+                    //清空 刷新价格
+                    etMoney.setText("");
 
                     //支付方式为有现金时 键盘才可用
                     etMoney.setEnabled(isCombinePay || pay_way == PayWayView.WAY_CASH);

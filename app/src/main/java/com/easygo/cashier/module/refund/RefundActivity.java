@@ -6,13 +6,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
+import com.easygo.cashier.base.BaseAppActivity;
 import com.easygo.cashier.module.goods.GoodsFragment;
-import com.easygo.cashier.module.order_history.OrderHistoryRefundFragment;
-import com.niubility.library.base.BaseActivity;
+import com.easygo.cashier.widget.MyTitleBar;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -20,13 +22,19 @@ import butterknife.OnClick;
  * 功能列表弹框 退款选项进入的页面
  */
 @Route(path = ModulePath.refund)
-public class RefundActivity extends BaseActivity {
+public class RefundActivity extends BaseAppActivity {
 
     private final String TAG_REFUND = "tag_refund";
     private final String TAG_REFUND_CASH = "tag_refund_cash";
 
     private GoodsFragment goodsFragment;
     private RefundCashFragment refundCashFragment;
+
+    @BindView(R.id.cl_title)
+    MyTitleBar clTitle;
+    @Autowired(name = "admin_name")
+    String admin_name;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +47,8 @@ public class RefundActivity extends BaseActivity {
     }
 
     private void init() {
+        clTitle.setCashierAccount(admin_name);
+
         Bundle bundle = new Bundle();
         bundle.putInt(GoodsFragment.KEY_TYPE, GoodsFragment.TYPE_REFUND);
         goodsFragment = GoodsFragment.newInstance(bundle);

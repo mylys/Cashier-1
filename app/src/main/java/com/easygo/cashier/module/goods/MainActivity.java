@@ -88,7 +88,9 @@ public class MainActivity extends BaseAppActivity {
         if (fragment != null) {
             transaction.show(fragment);
         } else {
-            goodsFragment = GoodsFragment.newInstance();
+            Bundle bundle = new Bundle();
+            bundle.putString(GoodsFragment.KEY_ADMIN_NAME, admin_name);
+            goodsFragment = GoodsFragment.newInstance(bundle);
 
             transaction.replace(R.id.framelayout, goodsFragment, TAG_MAIN);
         }
@@ -169,12 +171,18 @@ public class MainActivity extends BaseAppActivity {
     public FunctionListDialog.OnFunctionListItemListener mFunctionListItemListener = new FunctionListDialog.OnFunctionListItemListener() {
         @Override
         public void orderHistory() {
-            ARouter.getInstance().build(ModulePath.order_history).navigation();
+            ARouter.getInstance()
+                    .build(ModulePath.order_history)
+                    .withString("admin_name", admin_name)
+                    .navigation();
         }
 
         @Override
         public void refund() {
-            ARouter.getInstance().build(ModulePath.refund).navigation();
+            ARouter.getInstance()
+                    .build(ModulePath.refund)
+                    .withString("admin_name", admin_name)
+                    .navigation();
         }
 
         @Override
@@ -188,8 +196,16 @@ public class MainActivity extends BaseAppActivity {
                 editor.remove(Constans.KEY_SESSION_ID).apply();
             }
             if(sp.contains(Constans.KEY_ADMIN_NAME)) {
-                //登录状态中，清除
                 editor.remove(Constans.KEY_ADMIN_NAME).apply();
+            }
+            if(sp.contains(Constans.KEY_SHOP_SN)) {
+                editor.remove(Constans.KEY_SHOP_SN).apply();
+            }
+            if(sp.contains(Constans.KEY_TIME)) {
+                editor.remove(Constans.KEY_TIME).apply();
+            }
+            if(sp.contains(Constans.KEY_HANDOVER_ID)) {
+                editor.remove(Constans.KEY_HANDOVER_ID).apply();
             }
             //跳转登录页
 //            ARouter.getInstance()
