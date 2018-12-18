@@ -58,6 +58,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     Button btnSettlement;
     @BindView(R.id.btn_pop_money_box)
     Button clPopMoneyBox;
+    @BindView(R.id.btn_no_barcode)
+    Button clNoBarcode;
     @BindView(R.id.et_barcode)
     EditText etBarcode;//监听扫码机
 
@@ -196,10 +198,12 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         switch (mType) {
             case TYPE_GOODS:
                 clPopMoneyBox.setVisibility(View.VISIBLE);
+                clNoBarcode.setVisibility(View.GONE);
                 btnSettlement.setText(" 收银：  ￥0.00 ");
                 break;
             case TYPE_REFUND:
                 clPopMoneyBox.setVisibility(View.GONE);
+                clNoBarcode.setVisibility(View.VISIBLE);
                 btnSettlement.setText(" 退款：  ￥0.00 ");
                 break;
         }
