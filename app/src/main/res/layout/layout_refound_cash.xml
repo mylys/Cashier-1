@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/y47"
+    android:background="@color/color_text_white">
+
+    <RelativeLayout
+        android:layout_width="@dimen/x758"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x45"
+            android:text="@string/text_receivable_refound"
+            android:textColor="@color/color_7e7e7e"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/tv_cash_maney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/x45"
+            android:text="￥20"
+            android:textColor="@color/color_d64444"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@id/line1"
+            android:layout_width="@dimen/x758"
+            android:layout_height="@dimen/y1"
+            android:layout_below="@+id/tv_cash_maney"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y40"
+            android:layout_marginBottom="@dimen/y40"
+            android:background="@color/color_d3d3d3" />
+
+        <TextView
+            android:id="@+id/tv_refund_cash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line1"
+            android:layout_marginStart="@dimen/x45"
+            android:text="实退：(现金)"
+            android:textColor="@color/color_7e7e7e"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/tv_refound_maney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line1"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/x45"
+            android:text="￥20"
+            android:textColor="@color/color_505050"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="@dimen/x758"
+            android:layout_height="@dimen/y1"
+            android:layout_below="@+id/tv_refound_maney"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y40"
+            android:layout_marginBottom="@dimen/y40"
+            android:background="@color/color_d3d3d3" />
+
+        <CheckBox
+            android:id="@+id/cb_print"
+            android:layout_width="@dimen/x225"
+            android:layout_height="@dimen/y98"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/x112"
+            android:layout_marginBottom="@dimen/y72"
+            android:background="@drawable/bg_btn_frame"
+            android:button="@null"
+            android:checked="true"
+            android:drawableStart="@drawable/check_box"
+            android:drawablePadding="@dimen/x12"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/x31"
+            android:text="@string/text_print_paper"
+            android:textColor="@color/color_4cbbac"
+            android:textSize="@dimen/text_size_29"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_commit"
+            android:layout_width="@dimen/x225"
+            android:layout_height="@dimen/y98"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="@dimen/y112"
+            android:layout_marginBottom="@dimen/y72"
+            android:background="@drawable/bg_btn_commit"
+            android:text="@string/text_commit_order"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/text_size_29"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

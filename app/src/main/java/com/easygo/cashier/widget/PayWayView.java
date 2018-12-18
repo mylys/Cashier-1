@@ -36,7 +36,6 @@ public class PayWayView extends ConstraintLayout {
     private Button mSelected;
 
 
-
     public PayWayView(Context context) {
         super(context);
         init(context, null);
@@ -73,10 +72,10 @@ public class PayWayView extends ConstraintLayout {
         mCombineCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
                     setSelected(mCash, true);
 
-                    if(mSelected == mCash) {
+                    if (mSelected == mCash) {
                         setSelected(mAlipay, true);
                         mSelected = mAlipay;
                     }
@@ -86,7 +85,7 @@ public class PayWayView extends ConstraintLayout {
                     mSelected = mCash;
                 }
 
-                if(mListener != null) {
+                if (mListener != null) {
                     mListener.onPayWaySelected(isChecked, getPayWay(mSelected));
                 }
             }
@@ -121,25 +120,25 @@ public class PayWayView extends ConstraintLayout {
 
             Button clicked = (Button) view;
 
-            if(mCombineCheckBox.isChecked()) {
+            if (mCombineCheckBox.isChecked()) {
                 //组合支付
-                if(!mCash.isSelected())
+                if (!mCash.isSelected())
                     mCash.setSelected(true);
-                if(mSelected != clicked && clicked != mCash) {
+                if (mSelected != clicked && clicked != mCash) {
                     setSelected(clicked, true);
                     setSelected(mSelected, false);
                     mSelected = clicked;
                 }
 
             } else {
-                if(mSelected != clicked) {
+                if (mSelected != clicked) {
                     setSelected(clicked, true);
                     setSelected(mSelected, false);
                     mSelected = clicked;
                 }
             }
 
-            if(mListener != null) {
+            if (mListener != null) {
                 mListener.onPayWaySelected(mCombineCheckBox.isChecked(), getPayWay(mSelected));
             }
         }
@@ -148,7 +147,7 @@ public class PayWayView extends ConstraintLayout {
     private void setSelected(Button button, boolean isSelected) {
 
         Resources res = getResources();
-        button.setTextColor(isSelected? res.getColor(R.color.color_text_white): res.getColor(R.color.color_text_black));
+        button.setTextColor(isSelected ? res.getColor(R.color.color_text_white) : res.getColor(R.color.color_text_black));
         button.setSelected(isSelected);
     }
 
@@ -174,8 +173,19 @@ public class PayWayView extends ConstraintLayout {
     }
 
     private OnPayWayListener mListener;
+
     public void setOnPayWayListener(OnPayWayListener listener) {
         this.mListener = listener;
     }
 
+    public void setPayWayShow(int[] position) {
+        for (View view : mButtons) {
+            view.setVisibility(GONE);
+        }
+        if (position.length <= mButtons.size()) {
+            for (int i : position) {
+                mButtons.get(i).setVisibility(VISIBLE);
+            }
+        }
+    }
 }

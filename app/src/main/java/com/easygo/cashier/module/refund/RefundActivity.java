@@ -63,10 +63,15 @@ public class RefundActivity extends BaseAppActivity {
         super.onStart();
 
     }
+
     @OnClick({R.id.cl_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cl_back://返回
+                if (refundCashFragment != null && refundCashFragment.isVisible()) {
+                    onBackPressed();
+                    return;
+                }
                 finish();
                 break;
         }
@@ -74,14 +79,11 @@ public class RefundActivity extends BaseAppActivity {
 
 
     public void toRefundCashFragment() {
-
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_REFUND_CASH);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (fragment == null) {
             refundCashFragment = RefundCashFragment.newInstance();
-
             transaction.add(R.id.framelayout, refundCashFragment, TAG_REFUND_CASH);
-
         } else {
             transaction.show(refundCashFragment);
         }
