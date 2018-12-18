@@ -38,6 +38,7 @@
         <activity
             android:name=".module.refund.RefundActivity"
             android:screenOrientation="landscape" />
+        <activity android:name=".module.handover.HandoverActivity" />
     </application>
 
 </manifest>

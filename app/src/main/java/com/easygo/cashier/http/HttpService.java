@@ -1,12 +1,11 @@
 package com.easygo.cashier.http;
 
-import com.easygo.cashier.bean.CheckAlipayStatus;
-import com.easygo.cashier.bean.CheckPayStatusResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GoodsResponse;
+import com.easygo.cashier.bean.HandoverResponse;
+import com.easygo.cashier.bean.HandoverSaleResponse;
 import com.easygo.cashier.bean.LoginResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
-import com.easygo.cashier.bean.AlipayResponse;
 import com.niubility.library.http.base.HttpResult;
 
 import java.util.Map;
@@ -78,13 +77,6 @@ public interface HttpService {
     @POST("api/pay/create_order")
     Observable<HttpResult<CreateOderResponse>> createOrder(@HeaderMap Map<String, String> header, @Body RequestBody json);
 
-    /**
-     * 获取shop_id
-     * mac 08:ea:40:36:4f:3b
-     */
-    @FormUrlEncoded
-    @POST("api/cash/shop_id")
-    Observable<String> getShopId(@Field("mac") String mac);
 
 
     /**
@@ -103,15 +95,36 @@ public interface HttpService {
      */
     @FormUrlEncoded
     @POST("api/pay/alipay")
-    Observable<HttpResult<CheckAlipayStatus>> checkAlipayStatus(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
+    Observable<HttpResult<String>> checkAlipayStatus(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
 
 
     /**
-     * 查询订单状态
+     * 微信支付
+     * method  = pay  支付 , method = query  查询 , method=cancel  撤销
+     *
      */
     @FormUrlEncoded
-    @POST("api/weixin/minapp/eq_s/pay/check_pay_status")
-    Observable<HttpResult<CheckPayStatusResponse>> checkPayStatus(@Field("order_sn") String order_sn);
+    @POST("api/pay/wechat")
+    Observable<HttpResult<String>> wechatPay(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
+
+    /**
+     * 检测微信支付状态
+     * method  = pay  支付 , method = query  查询 , method=cancel  撤销
+     *
+     */
+    @FormUrlEncoded
+    @POST("api/pay/wechat")
+    Observable<HttpResult<String>> checkWechatPayStatus(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
+
+
+
+    /**
+     * 现金
+     */
+    @FormUrlEncoded
+    @POST("api/pay/cash")
+    Observable<HttpResult<String>> cash(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
+
 
     /**
      * 调起会员支付
@@ -119,11 +132,59 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("api/weixin/minapp/eq_s/pay/pay_vip")
     Observable<HttpResult<String>> payVip();
-
     /**
      * 打印
      */
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("api/pay/printer")
     Observable<HttpResult<String>> print(@HeaderMap Map<String, String> header, @Body RequestBody json);
+
+    /**
+     * 打印机状态
+     */
+    @FormUrlEncoded
+    @POST("api/pay/printer_status")
+    Observable<HttpResult<String>> printer_status(@HeaderMap Map<String, String> header, @Field("shop_sn") String shop_sn,
+                                                      @Field("printer_sn") String printer_sn);
+
+    /**
+     * 钱箱
+     */
+    @FormUrlEncoded
+    @POST("api/pay/printer_till")
+    Observable<HttpResult<String>> pop_till(@HeaderMap Map<String, String> header, @Field("shop_sn") String shop_sn,
+                                                  @Field("printer_sn") String printer_sn);
+
+    /**
+     * 交接班信息
+     *
+     * type 1是退出登录，2是返回交接页的数据
+     */
+    @FormUrlEncoded
+    @POST("api/cash/loginout")
+    Observable<HttpResult<HandoverResponse>> handover(@HeaderMap Map<String, String> header, @Field("handover_id") int handover_id,
+                                                      @Field("type") int type);
+
+    /**
+     * 登出
+     *
+     * type 1是退出登录，2是返回交接页的数据
+     */
+    @FormUrlEncoded
+    @POST("api/cash/loginout")
+    Observable<HttpResult<String>> loginout(@HeaderMap Map<String, String> header, @Field("handover_id") int handover_id,
+                                                      @Field("type") int type);
+
+
+    /**
+     * type 1是退出登录，2是返回交接页的数据
+     */
+    @FormUrlEncoded
+    @POST("api/cash/sale")
+    Observable<HttpResult<HandoverSaleResponse>> sale_list(@HeaderMap Map<String, String> header, @Field("handover_id") int handover_id);
+
+
+
+
+
 }

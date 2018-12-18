@@ -60,6 +60,8 @@ public class SettlementView extends FrameLayout {
     private float mCoupon;//优惠
     private float mReceipts;//实收
     private float mChange;//找零
+
+    private boolean mAlreadySettlement;
     //结算数据
 
     public SettlementView(@NonNull Context context) {
@@ -189,6 +191,17 @@ public class SettlementView extends FrameLayout {
     }
     public void showAlreadySettlement(boolean visibilty) {
         tvAlreadySettlement.setVisibility(visibilty? View.VISIBLE: View.GONE);
+    }
+
+    public void setAlreadySettlement() {
+        mAlreadySettlement = true;
+
+        tvAlreadySettlement.setVisibility(VISIBLE);
+        clScan.setVisibility(GONE);
+    }
+
+    public boolean hasAlreadySettlement() {
+        return this.mAlreadySettlement;
     }
 
 

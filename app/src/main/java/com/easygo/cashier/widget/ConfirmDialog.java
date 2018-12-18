@@ -37,11 +37,14 @@ public class ConfirmDialog extends DialogFragment {
     TextView tvReceipts;
     @BindView(R.id.tv_change)
     TextView tvChange;
+    @BindView(R.id.tv_pay_way)
+    TextView tvPayWay;
     private Unbinder unbinder;
 
     private float mReceivable;
     private float mReceipts;
     private float mChange;
+    private int mPayWay;
 
 
     @Override
@@ -51,11 +54,12 @@ public class ConfirmDialog extends DialogFragment {
         setStyle(STYLE_NO_FRAME, R.style.CustomDialogStyle);
     }
 
-    public static Bundle getDataBundle(float receivable, float receipts, float change) {
+    public static Bundle getDataBundle(float receivable, float receipts, float change, int pay_way) {
         Bundle bundle = new Bundle();
         bundle.putFloat("receivable", receivable);
         bundle.putFloat("receipts", receipts);
         bundle.putFloat("change", change);
+        bundle.putInt("pay_way", pay_way);
         return bundle;
     }
 
@@ -77,11 +81,24 @@ public class ConfirmDialog extends DialogFragment {
             mReceivable = bundle.getFloat("receivable");
             mReceipts = bundle.getFloat("receipts");
             mChange = bundle.getFloat("change");
+            mPayWay = bundle.getInt("pay_way");
         }
 
         tvReceivable.setText("￥" + mReceivable);
         tvReceipts.setText("￥" + mReceipts);
         tvChange.setText("￥" + mChange);
+
+        switch (mPayWay) {
+            case PayWayView.WAY_CASH:
+                tvPayWay.setText("（现金）");
+                break;
+            case PayWayView.WAY_ALIPAY:
+                tvPayWay.setText("（支付宝）");
+                break;
+            case PayWayView.WAY_WECHAT:
+                tvPayWay.setText("（微信）");
+                break;
+        }
 
     }
 

@@ -22,8 +22,6 @@ import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.Test;
-import com.easygo.cashier.bean.AlipayResponse;
-import com.easygo.cashier.bean.CheckAlipayStatus;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GoodsNum;
 import com.easygo.cashier.bean.GoodsResponse;
@@ -143,7 +141,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     showToast("实收金额小于应收金额， 请确认！");
                 }
                 //弹出确认弹窗
-                Bundle bundle = ConfirmDialog.getDataBundle(mTotalMoney, mRealPay, mChange);
+                Bundle bundle = ConfirmDialog.getDataBundle(mTotalMoney, mRealPay, mChange, mPayWay);
                 confirmDialog = new ConfirmDialog();
                 confirmDialog.setArguments(bundle);
                 confirmDialog.setOnConfirmListener(new ConfirmDialog.OnConfirmListenr() {
@@ -181,12 +179,15 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                         settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange);
                     return;
                 }
+
+                //以00 . 开头 直接返回
+                if(text.startsWith(".") || text.startsWith("00")) {
+                    s.delete(0, s.length());
+                    return;
+                }
                 float data = Float.valueOf(text);
 
-                if(data >= mTotalMoney) {
-                    showToast("找零不能大于等于应收");
-                    s.delete(s.length()-1, s.length());
-                } else if(data < 0.01f && s.length() > 4) {
+                if(data < 0.01f && s.length() > 4) {
                     showToast("找零不能小于0.01元");
                     s.delete(s.length()-1, s.length());
                 } else {
@@ -210,11 +211,17 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 if (settlementView != null) {
                     settlementView.setPayType(isCombinePay, pay_way);
 
+                    boolean needShowKeyboard = isCombinePay || pay_way == PayWayView.WAY_CASH;
+                    //需要输入现金时 显示键盘
+                    etMoney.setVisibility(needShowKeyboard? View.VISIBLE: View.GONE);
+                    btnDelete.setVisibility(needShowKeyboard? View.VISIBLE: View.GONE);
+                    kb.setVisibility(needShowKeyboard? View.VISIBLE: View.GONE);
+
                     //清空 刷新价格
                     etMoney.setText("");
 
                     //支付方式为有现金时 键盘才可用
-                    etMoney.setEnabled(isCombinePay || pay_way == PayWayView.WAY_CASH);
+                    etMoney.setEnabled(needShowKeyboard);
                 }
             }
         });
@@ -223,11 +230,13 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     public void print() {
         PrintRequestBody requestBody = new PrintRequestBody();
+        //测试代码
 //        requestBody.setGoods_count(2);
 //        requestBody.setOrder_no("2018121417565998545099");
 //        requestBody.setPrinter_sn(Configs.printer_sn);
 //        requestBody.setTimes(2);
 //        requestBody.setShop_sn(Configs.shop_sn);
+        //测试代码
 
         int total_count = mGoodsData.size();
         requestBody.setGoods_count(total_count);
@@ -244,11 +253,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         DecimalFormat df = new DecimalFormat("#");
         float price;
         for (int i = 0; i < total_count; i++) {
+//        for (int i = 0; i < 2; i++) {
+            //测试代码
 //            goodsListBean.setDiscount(1);
 //            goodsListBean.setGoods_name("a");
 //            goodsListBean.setCount_price(100);
 //            goodsListBean.setPrice(100);
 //            goodsListBean.setCount(1);
+            //测试代码
 
             GoodsNum<GoodsResponse> goodsNum = mGoodsData.get(i);
             GoodsResponse data = goodsNum.getData();
@@ -274,17 +286,18 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     }
 
 
+    /**
+     * 提交交易
+     */
     public void onCommitOrder() {
-        if(mPayWay == PayWayView.WAY_ALIPAY) {
-            if(TextUtils.isEmpty(Configs.order_no)) {
-                showToast("确认提交订单");
-                createOrder();
-            } else {
-                showToast("订单已经创建 --> " + Configs.order_no);
-            }
+
+        if(TextUtils.isEmpty(Configs.order_no)) {
+            showToast("确认提交订单");
+            createOrder();
         } else {
-            showToast("开发中");
+            showToast("订单已经创建 --> " + Configs.order_no);
         }
+
     }
     /**
      * 扫描到的付款码 回调
@@ -300,11 +313,18 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             showToast("付款码 --> " + auth_code);
 
             //请求接口
-            if(mPayWay == PayWayView.WAY_ALIPAY) {//支付宝
-                DecimalFormat df = new DecimalFormat("#");
-                mPresenter.aliPay(Configs.shop_sn, Configs.order_no,
-                        Integer.valueOf(df.format(mTotalMoney*100)), auth_code);
+            DecimalFormat df = new DecimalFormat("#");
+            switch (mPayWay) {
+                case PayWayView.WAY_ALIPAY://支付宝
+                    mPresenter.aliPay(Configs.shop_sn, Configs.order_no,
+                            Integer.valueOf(df.format(mTotalMoney*100)), auth_code);
+                    break;
+                case PayWayView.WAY_WECHAT://微信
+                    mPresenter.wechatPay(Configs.shop_sn, Configs.order_no,
+                            Integer.valueOf(df.format(mTotalMoney*100)), auth_code);
+                    break;
             }
+
         }
     }
 
@@ -445,7 +465,23 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         Configs.order_no = result.getTrade_num();
         showToast("订单号 --> " + Configs.order_no);
 
-        showScanCodeDialog();
+
+        switch (mPayWay) {
+            case PayWayView.WAY_CASH:
+
+                DecimalFormat df = new DecimalFormat("#");
+                String real_pay = df.format(mRealPay*100);
+                String change_money = df.format(mChange*100);
+
+                mPresenter.cash(Configs.shop_sn, Configs.order_no,
+                        Integer.valueOf(real_pay), Integer.valueOf(change_money));
+                break;
+            case PayWayView.WAY_ALIPAY:
+            case PayWayView.WAY_WECHAT:
+                showScanCodeDialog();
+                break;
+        }
+
 
     }
 
@@ -458,10 +494,18 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public void aliPaySuccess(String result) {
-        showToast("alipaySuccess - ");
-        if (mScanCodeDialog != null) {
+        showToast("支付宝支付成功");
+
+        onPaySuccessAfter();
+    }
+
+    private void onPaySuccessAfter() {
+        if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
             mScanCodeDialog.setStatus(ScanCodeDialog.STATUS_SUCCESSFUL_RECEIPT);
         }
+
+        //设置为已收款
+        settlementView.setAlreadySettlement();
 
         if(settlementView.needPrint()) {
             print();
@@ -488,12 +532,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     }
 
     @Override
-    public void checkAlipayStatusSuccess(CheckAlipayStatus result) {
+    public void checkAlipayStatusSuccess(String result) {
         showToast("支付宝： 查询订单 - 支付成功");
-        if (mScanCodeDialog != null) {
-            mScanCodeDialog.setStatus(ScanCodeDialog.STATUS_SUCCESSFUL_RECEIPT);
 
-        }
+        onPaySuccessAfter();
     }
 
     @Override
@@ -515,23 +557,70 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     }
 
     @Override
-    public void wechatPaySuccess() {
+    public void wechatPaySuccess(String result) {
+        showToast("微信支付成功");
 
+        onPaySuccessAfter();
     }
+
 
     @Override
     public void wechatPayFailed(Map<String, Object> map) {
+        if(HttpExceptionEngine.isBussinessError(map)) {
+            showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
+            int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
 
+            if(20000 == err_code) {
+                showToast("微信： 开始查询订单支付状态");
+                mPresenter.checkWechatPayStatus(Test.shop_sn, Configs.order_no);
+            }
+        }
     }
 
     @Override
-    public void printSuccess() {
+    public void checkWechatStatusSuccess(String result) {
+        showToast("微信： 查询订单 - 支付成功");
+
+        onPaySuccessAfter();
+    }
+
+    @Override
+    public void checkWechatStatusFailed(Map<String, Object> map) {
+        if(HttpExceptionEngine.isBussinessError(map)) {
+            int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
+
+            if(20000 == err_code) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast("微信： 继续查询订单支付状态");
+                        mPresenter.checkWechatPayStatus(Test.shop_sn, Configs.order_no);
+
+                    }
+                }, 1000);
+            }
+        }
+    }
+
+    @Override
+    public void cashSuccess(String result) {
+        showToast("现金成功");
+    }
+
+
+    @Override
+    public void cashFailed(Map<String, Object> map) {
+        showToast("现金失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
+    }
+
+    @Override
+    public void printSuccess(String result) {
         showToast("打印成功");
     }
 
     @Override
     public void printFailed(Map<String, Object> map) {
-        showToast("打印失败");
+        showToast("打印失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
 
     }
 }

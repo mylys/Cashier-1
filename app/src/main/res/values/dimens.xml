@@ -16,6 +16,7 @@
     <dimen name="text_size_37">@dimen/x37</dimen>
     <dimen name="text_size_38">@dimen/x38</dimen>
     <dimen name="text_size_42">@dimen/x42</dimen>
+    <dimen name="text_size_84">@dimen/x84</dimen>
 
 
     <!--商品标题名称间距-->
