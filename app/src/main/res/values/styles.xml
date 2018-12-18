@@ -15,9 +15,11 @@
         <item name="android:windowSoftInputMode">adjustUnspecified|stateHidden</item>
     </style>
 
+
+    <!--旧设计稿-->
     <style name="TextStyle">
         <item name="android:textColor">@color/color_text</item>
-        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textSize">@dimen/text_size_28</item>
     </style>
 
     <style name="RedTextStyle" parent="TextStyle">
@@ -26,20 +28,17 @@
 
     <style name="WhiteTextStyle">
         <item name="android:textColor">@color/color_text_white</item>
-        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textSize">@dimen/text_size_28</item>
     </style>
 
     <style name="MiddleTextStyle">
         <item name="android:textColor">@color/color_text</item>
-        <item name="android:textSize">@dimen/text_size_middle</item>
+        <item name="android:textSize">@dimen/text_size_25</item>
     </style>
+    <!--旧设计稿-->
 
 
-    <style name="SmallTextStyle">
-        <item name="android:textColor">@color/color_text</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
-    </style>
-
+    <!--历史订单-->
     <style name="SmallRedTextStyle" parent="DetailTextStyle">
         <item name="android:textColor">@color/color_cc565a</item>
     </style>
@@ -100,6 +99,13 @@
         <item name="android:textColor">@color/color_505050</item>
         <item name="android:textSize">@dimen/text_size_38</item>
         <item name="android:background">@drawable/bg_btn_frame</item>
+    </style>
+
+    <!--交接班-->
+    <style name="HandoverTextStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_37</item>
+        <item name="android:textColor">@color/color_505050</item>
     </style>
 
 

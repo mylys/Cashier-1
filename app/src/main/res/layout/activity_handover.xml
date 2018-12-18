@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--标题栏-->
+    <com.easygo.cashier.widget.MyTitleBar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:id="@+id/cl_title"
+        app:title_text="@string/text_handover"
+        app:show_title="true"
+        app:show_right_account="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <FrameLayout
+        android:id="@+id/framelayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/line1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_title" />
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginBottom="@dimen/y154"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/color_f5f7fa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line1">
+
+        <TextView
+            android:id="@+id/tv_text_login_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/GoodsListStyle"
+            android:text="@string/text_login_time"
+            android:layout_marginStart="@dimen/x47"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_login_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/GoodsListStyle"
+            android:text="2018-08-08 10:10:10"
+            app:layout_constraintStart_toEndOf="@id/tv_text_login_time"
+            app:layout_constraintTop_toTopOf="@id/tv_text_login_time"
+            app:layout_constraintBottom_toBottomOf="@id/tv_text_login_time" />
+
+
+        <!--交接班并登出-->
+        <Button
+            android:id="@+id/btn_handover"
+            android:layout_width="@dimen/x323"
+            android:layout_height="@dimen/y98"
+            android:text="@string/text_handover_and_login_out"
+            android:textSize="@dimen/x36"
+            android:textColor="@color/color_text_white"
+            android:layout_marginEnd="@dimen/x42"
+            android:background="@drawable/bg_btn_commit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!--销售列表-->
+        <Button
+            android:id="@+id/btn_sales_list"
+            android:layout_width="@dimen/x239"
+            android:layout_height="@dimen/y98"
+            android:text="@string/text_sales_list"
+            android:textSize="@dimen/x36"
+            android:textColor="@color/color_text_white"
+            android:layout_marginEnd="@dimen/x42"
+            android:background="@drawable/bg_btn_clear"
+            app:layout_constraintEnd_toStartOf="@id/btn_handover"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

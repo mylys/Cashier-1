@@ -21,7 +21,6 @@
     <string name="text_refund">退款</string>
     <string name="text_cancel">取消</string>
     <string name="text_confirm">确认</string>
-    <string name="text_has_already_refund">已退款</string>
 
 
     <!--结算页面-->
@@ -48,10 +47,10 @@
     <string name="text_scanning_code">正在识别二维码...</string>
     <string name="text_successful_receipt">收款成功</string>
     <string name="text_already_receive">已收款</string>
-    <string name="text_help">请致电客服020-1231231</string>
 
     <!--历史订单详情-->
     <string name="text_order_history">历史订单</string>
+    <string name="text_has_already_refund">已退款</string>
     <string name="text_order_no">订单单号：</string>
     <string name="text_cashier">收银员：</string>
     <string name="text_function_list">功能列表</string>
@@ -68,6 +67,19 @@
 
     <string name="text_confirm_commit_order">确认提交交易?</string>
     <string name="text_confirm_refund">确认提交退款?</string>
+
+    <!--交接班详情-->
+    <string name="text_handover">交接班</string>
+    <string name="text_login_time">本次登录时间：</string>
+    <string name="text_handover_and_login_out">交接班并登出</string>
+    <string name="text_sales_list">销售列表</string>
+    <string name="text_total_sales">总销售额</string>
+    <string name="text_total_order_count">总单据数</string>
+    <string name="text_total_cash">总现金</string>
+    <string name="text_sale_count">销售单</string>
+    <string name="text_refund_count">退货单</string>
+    <string name="text_cash_income">现金收入</string>
+    <string name="text_classification">分类</string>
 
 
 </resources>

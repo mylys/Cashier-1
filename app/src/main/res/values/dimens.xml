@@ -13,6 +13,7 @@
     <dimen name="text_size_29">@dimen/x29</dimen>
     <dimen name="text_size_30">@dimen/x30</dimen>
     <dimen name="text_size_33">@dimen/x33</dimen>
+    <dimen name="text_size_37">@dimen/x37</dimen>
     <dimen name="text_size_38">@dimen/x38</dimen>
     <dimen name="text_size_42">@dimen/x42</dimen>
 
@@ -29,10 +30,6 @@
     <!--顶部标题栏高度-->
     <dimen name="title_bar_height">@dimen/y100</dimen>
 
-    <dimen name="text_size_large">@dimen/x36</dimen>
-    <dimen name="text_size">@dimen/x28</dimen>
-    <dimen name="text_size_middle">@dimen/x25</dimen>
-    <dimen name="text_size_small">@dimen/x20</dimen>
 
     <!--功能列表-->
     <dimen name="function_list_width">@dimen/x1159</dimen>

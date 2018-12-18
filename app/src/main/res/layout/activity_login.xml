@@ -103,7 +103,7 @@
             android:layout_marginTop="@dimen/y64"
             android:text="@string/text_login"
             android:textColor="@color/color_text_white"
-            android:textSize="@dimen/text_size"
+            android:textSize="@dimen/text_size_28"
             android:background="@drawable/bg_btn_login"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
