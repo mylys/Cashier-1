@@ -38,7 +38,7 @@
         android:background="@drawable/bg_btn_frame_green"
         app:search_hint="@string/text_search_hint_order"
         app:search_text_padding_start="@dimen/x29"
-        app:search_btn_text_size="@dimen/x28"
+        app:search_btn_text_size="@dimen/x12"
         app:search_btn_width="@dimen/x118"
         app:search_btn_height="@dimen/y98"
         app:layout_constraintStart_toStartOf="@id/view1"
