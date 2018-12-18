@@ -1,7 +1,5 @@
 package com.easygo.cashier.module.goods;
 
-import com.easygo.cashier.bean.CheckPayStatusResponse;
-import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.http.HttpAPI;
@@ -54,29 +52,11 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
     }
 
 
-    @Override
-    public void checkPayStatus(String order_sn) {
-        subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().checkPayStatus(order_sn),
-                new BaseResultObserver<CheckPayStatusResponse>() {
-
-                    @Override
-                    protected void onSuccess(CheckPayStatusResponse result) {
-                        mView.checkPayStatusSuccess(result);
-                    }
-
-                    @Override
-                    protected void onFailure(Map<String, Object> map) {
-                        mView.checkPayStatusFailed(map);
-                    }
-                });
-    }
 
     @Override
     public void realMoney(String json) {
 
         RequestBody requestBody = HttpClient.getInstance().createRequestBody(json);
-
         subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().getRealMoney(requestBody),
                 new BaseResultObserver<RealMoneyResponse>() {
@@ -89,6 +69,26 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
                     @Override
                     protected void onFailure(Map<String, Object> map) {
                         mView.realMoneyFailed(map);
+                    }
+                });
+    }
+
+    @Override
+    public void popTill(String shop_sn, String printer_sn) {
+
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().pop_till(header, shop_sn, printer_sn),
+                new BaseResultObserver<String>() {
+
+                    @Override
+                    protected void onSuccess(String result) {
+                        mView.popTillSuccess();
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.popTillFailed(map);
                     }
                 });
     }

@@ -1,6 +1,5 @@
 package com.easygo.cashier.module.settlement;
 
-import com.easygo.cashier.bean.CheckAlipayStatus;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.http.HttpAPI;
 import com.niubility.library.http.base.HttpClient;
@@ -36,8 +35,55 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
     }
 
     @Override
-    public void wechatPay(String order_sn) {
+    public void wechatPay(String shop_sn,  String order_no, int total_fee, String auth_code) {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
 
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("method", "pay");
+        requestMap.put("shop_sn", shop_sn);
+        requestMap.put("order_no", order_no);
+        requestMap.put("total_fee", total_fee);
+        requestMap.put("auth_code", auth_code);
+
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().wechatPay(header,  requestMap),
+                new BaseResultObserver<String>() {
+
+                    @Override
+                    protected void onSuccess(String result) {
+                        mView.wechatPaySuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.wechatPayFailed(map);
+                    }
+                });
+    }
+
+    @Override
+    public void checkWechatPayStatus(String shop_sn, String order_no) {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("method", "query");
+        requestMap.put("shop_sn", shop_sn);
+        requestMap.put("order_no", order_no);
+
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().checkWechatPayStatus(header,  requestMap),
+                new BaseResultObserver<String>() {
+
+                    @Override
+                    protected void onSuccess(String result) {
+                        mView.checkWechatStatusSuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.checkWechatStatusFailed(map);
+                    }
+                });
     }
 
     @Override
@@ -88,14 +134,15 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
 
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("method", "query");
+        requestMap.put("shop_sn", shop_sn);
         requestMap.put("order_no", order_no);
 
         subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().checkAlipayStatus(header,  requestMap),
-                new BaseResultObserver<CheckAlipayStatus>() {
+                new BaseResultObserver<String>() {
 
                     @Override
-                    protected void onSuccess(CheckAlipayStatus result) {
+                    protected void onSuccess(String result) {
                         mView.checkAlipayStatusSuccess(result);
                     }
 
@@ -107,9 +154,30 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
     }
 
     @Override
-    public void checkPayStatus(String order_sn) {
+    public void cash(String shop_sn, String order_no, int buyer_pay, int change_money) {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
 
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("shop_sn", shop_sn);
+        requestMap.put("order_no", order_no);
+        requestMap.put("buyer_pay", buyer_pay);
+        requestMap.put("change_money", change_money);
+
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().cash(header, requestMap),
+                new BaseResultObserver<String>() {
+                    @Override
+                    protected void onSuccess(String result) {
+                        mView.cashSuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.cashFailed(map);
+                    }
+                });
     }
+
 
     @Override
     public void print(String json) {
@@ -122,7 +190,7 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
 
                     @Override
                     protected void onSuccess(String result) {
-                        mView.printSuccess();
+                        mView.printSuccess(result);
                     }
 
                     @Override

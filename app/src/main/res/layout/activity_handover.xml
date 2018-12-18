@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_text_white">
 
     <!--标题栏-->
     <com.easygo.cashier.widget.MyTitleBar
@@ -22,8 +23,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/line1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_title" />
+        app:layout_constraintTop_toBottomOf="@id/cl_title"
+        app:layout_constraintVertical_bias="1.0" />
 
     <View
         android:id="@+id/line1"
@@ -62,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/GoodsListStyle"
-            android:text="2018-08-08 10:10:10"
+            android:text=""
             app:layout_constraintStart_toEndOf="@id/tv_text_login_time"
             app:layout_constraintTop_toTopOf="@id/tv_text_login_time"
             app:layout_constraintBottom_toBottomOf="@id/tv_text_login_time" />
@@ -95,6 +98,24 @@
             app:layout_constraintEnd_toStartOf="@id/btn_handover"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+        <!--销售列表页  打印按钮-->
+        <Button
+            android:id="@+id/btn_print"
+            android:layout_width="@dimen/x210"
+            android:layout_height="@dimen/y98"
+            android:background="@drawable/bg_btn_clear"
+            android:gravity="center"
+            android:text="@string/text_print"
+            android:textStyle="bold"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/text_size_37"
+            android:layout_marginEnd="@dimen/x44"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

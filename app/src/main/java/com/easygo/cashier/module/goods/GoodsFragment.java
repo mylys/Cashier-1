@@ -10,17 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
-import com.easygo.cashier.Test;
 import com.easygo.cashier.adapter.GoodsAdapter;
-import com.easygo.cashier.bean.CheckPayStatusResponse;
-import com.easygo.cashier.bean.GoodsInfo;
 import com.easygo.cashier.bean.GoodsNum;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
@@ -35,9 +30,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.ServiceLoader;
-
-import javax.crypto.KeyAgreement;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -248,6 +240,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                 break;
             case R.id.btn_pop_money_box://弹出钱箱
+
+                mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
+
 //                RealMoneyRequestBody requestBody = new RealMoneyRequestBody();
 //                requestBody.setShop_id("16");
 //                requestBody.setOpenid("上海");
@@ -273,10 +268,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 switch (mType) {
                     case TYPE_GOODS:
 
-//                        if(mTotalMoney <= 0) {
-//                            showToast("金额不能小于等于0！");
-//                            return;
-//                        }
+                        if(mTotalMoney <= 0) {
+                            showToast("金额不能小于等于0！");
+                            return;
+                        }
 
                         ARouter.getInstance().build(ModulePath.settlement)
                                 .withString("admin_name", admin_name)
@@ -338,13 +333,15 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         Log.i("test", "realMoneyFailed: " + (String) map.get(HttpExceptionEngine.ErrorMsg));
     }
 
-    @Override
-    public void checkPayStatusSuccess(CheckPayStatusResponse result) {
 
+    @Override
+    public void popTillSuccess() {
+        showToast("弹出钱箱成功");
     }
 
     @Override
-    public void checkPayStatusFailed(Map<String, Object> map) {
+    public void popTillFailed(Map<String, Object> map) {
+        showToast("弹出钱箱失败");
 
     }
 

@@ -21,24 +21,28 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
-import com.easygo.cashier.base.BaseAppActivity;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.secondary_sreen.SecondaryScreen;
+import com.easygo.cashier.module.status.StatusContract;
+import com.easygo.cashier.module.status.StatusPresenter;
 import com.easygo.cashier.widget.FunctionListDialog;
+import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
+import java.util.Map;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * 首页
  */
 @Route(path = ModulePath.goods)
-public class MainActivity extends BaseAppActivity {
+public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPresenter> implements StatusContract.IView {
 
     public static final String TAG = "MainActivity";
 
@@ -62,19 +66,38 @@ public class MainActivity extends BaseAppActivity {
     @Autowired(name = "admin_name")
     String admin_name;
 
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//
+//        ButterKnife.bind(this);
+//
+//        init();
+//    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        ButterKnife.bind(this);
-
-        init();
+    protected StatusPresenter createPresenter() {
+        return new StatusPresenter();
     }
 
-    private void init() {
+    @Override
+    protected StatusContract.IView createView() {
+        return this;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public void init() {
+        ARouter.getInstance().inject(this);
 
         tvCashierAcount.setText("收银员: " + admin_name);
+
+        mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
     }
 
     @Override
@@ -183,7 +206,16 @@ public class MainActivity extends BaseAppActivity {
         }
 
         @Override
-        public void shift() {
+        public void handover() {
+
+            //跳转交接班页面
+            ARouter.getInstance()
+                    .build(ModulePath.handover)
+                    .withString("admin_name", admin_name)
+                    .navigation();
+
+            if(true)
+                return;
 
 
             SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getApplicationContext());
@@ -206,7 +238,7 @@ public class MainActivity extends BaseAppActivity {
             }
             //跳转登录页
 //            ARouter.getInstance()
-//                    .build(ModulePath.login)
+//                    .create(ModulePath.login)
 //                    .withFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 //                    .withFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
 //                    .navigation();
@@ -247,4 +279,14 @@ public class MainActivity extends BaseAppActivity {
         }
     };
 
+
+    @Override
+    public void printerStatusSuccess(String result) {
+        showToast("打印机正常连接");
+    }
+
+    @Override
+    public void printerStatusFailed(Map<String, Object> map) {
+        showToast("打印机可能连接失败");
+    }
 }

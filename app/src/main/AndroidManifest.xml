@@ -33,6 +33,7 @@
         <activity android:name=".module.settlement.CashierActivity" />
         <activity android:name=".module.order_history.OrderHistoryActivity" />
         <activity android:name=".module.refund.RefundActivity" />
+        <activity android:name=".module.handover.HandoverActivity" />
     </application>
 
 </manifest>

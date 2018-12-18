@@ -87,7 +87,7 @@ public class FunctionListDialog extends DialogFragment {
                         refund();
                         break;
                     case 2://交接班
-                        shift();
+                        handover();
                         break;
                     case 3://进入系统
                         enterSystem();
@@ -129,9 +129,9 @@ public class FunctionListDialog extends DialogFragment {
         }
     }
 
-    public void shift() {
+    public void handover() {
         if (mListener != null) {
-            mListener.shift();
+            mListener.handover();
         }
     }
 
@@ -166,7 +166,7 @@ public class FunctionListDialog extends DialogFragment {
     public interface OnFunctionListItemListener {
         void orderHistory();
         void refund();
-        void shift();
+        void handover();
         void enterSystem();
         void languageSetting();
         void deviceStatus();
