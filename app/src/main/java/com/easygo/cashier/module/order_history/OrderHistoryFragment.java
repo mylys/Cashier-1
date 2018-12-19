@@ -20,6 +20,7 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.Test;
 import com.easygo.cashier.adapter.OrderHistoryAdapter;
 import com.easygo.cashier.bean.OrderHistoryInfo;
+import com.easygo.cashier.widget.MySearchView;
 import com.niubility.library.base.BaseFragment;
 
 import butterknife.BindView;
@@ -32,6 +33,8 @@ public class OrderHistoryFragment extends BaseFragment {
 
     @BindView(R.id.rv_order_history)
     RecyclerView rvOrderHistory;
+    @BindView(R.id.cl_search)
+    MySearchView clSearch;
     private Unbinder unbinder;
 
     private final String TAG_ORDER_HISTORY = "tag_order_history";
@@ -63,7 +66,6 @@ public class OrderHistoryFragment extends BaseFragment {
         int selected_color = res.getColor(R.color.color_text_white);
         int background = res.getColor(R.color.color_51beaf);
         orderHistoryAdapter.setColor(normal_color, selected_color, background);
-
 
         rvOrderHistory.setLayoutManager(llm);
         rvOrderHistory.setAdapter(orderHistoryAdapter);
