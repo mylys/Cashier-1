@@ -69,7 +69,7 @@ public class ConfirmDialog extends DialogFragment {
         return bundle;
     }
 
-    public static Bundle getDataBundle(float receivable, float receipts, int pay_way, boolean isVisiable, String... str) {
+    public static Bundle getDataBundle(float receivable, float receipts, float change, int pay_way, boolean isVisiable, String... str) {
         Bundle bundle = new Bundle();
         bundle.putFloat("receivable", receivable);
         bundle.putFloat("receipts", receipts);

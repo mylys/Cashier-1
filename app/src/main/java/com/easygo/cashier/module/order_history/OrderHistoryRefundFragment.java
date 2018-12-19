@@ -103,7 +103,7 @@ public class OrderHistoryRefundFragment extends BaseFragment {
 
     @OnClick(R.id.btn_refund)
     public void onViewClicked() {
-        Bundle bundle = ConfirmDialog.getDataBundle(0, 0, 1, false, "应退", "实退");
+        Bundle bundle = ConfirmDialog.getDataBundle(0, 0, 0, PayWayView.WAY_CASH, false, "应退", "实退");
         confirmDialog = new ConfirmDialog();
         confirmDialog.setArguments(bundle);
         confirmDialog.setOnConfirmListener(new ConfirmDialog.OnConfirmListenr() {
