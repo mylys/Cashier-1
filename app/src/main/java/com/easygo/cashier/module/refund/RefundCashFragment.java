@@ -78,7 +78,7 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
 //                    showToast("实收金额小于应收金额， 请确认！");
 //                }
                 //弹出确认弹窗
-                Bundle bundle = ConfirmDialog.getDataBundle(0, 0, 0);
+                Bundle bundle = ConfirmDialog.getDataBundle(0, 0, 0, PayWayView.WAY_CASH);
                 confirmDialog = new ConfirmDialog();
                 confirmDialog.setArguments(bundle);
                 confirmDialog.setOnConfirmListener(new ConfirmDialog.OnConfirmListenr() {
