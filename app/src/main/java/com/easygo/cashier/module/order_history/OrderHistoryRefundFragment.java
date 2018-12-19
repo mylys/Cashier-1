@@ -19,11 +19,15 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.Test;
 import com.easygo.cashier.adapter.OrderHistoryRefundAdapter;
 import com.easygo.cashier.bean.GoodsRefundInfo;
+import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.MySearchView;
 import com.easygo.cashier.widget.PayWayView;
 import com.niubility.library.base.BaseFragment;
 
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,13 +48,22 @@ public class OrderHistoryRefundFragment extends BaseFragment {
     RecyclerView recyclerView;
     @BindView(R.id.tv_pay_type)
     TextView tvPayType;
-    @BindView(R.id.tv_refoundcash_price)
-    TextView tvRefoundcashPrice;
+    @BindView(R.id.tv_refund_cash_num)
+    TextView tvRefundcashNum;
+    @BindView(R.id.tv_refund_case_price)
+    TextView tvRefundcashPrice;
     Unbinder unbinder;
 
     private ConfirmDialog confirmDialog;
     private int mPayWay = PayWayView.WAY_CASH;
     private OrderHistoryRefundAdapter adapter;
+
+    public static OrderHistoryRefundFragment getInstance(Bundle bundle) {
+        OrderHistoryRefundFragment fragment = new OrderHistoryRefundFragment();
+        if (bundle != null)
+            fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -63,13 +76,29 @@ public class OrderHistoryRefundFragment extends BaseFragment {
     }
 
     private void initView() {
+        List<OrderHistorysInfo.ListBean> data = null;
+        if (getArguments() != null) {
+            data = getArguments().getParcelableArrayList("data");
+            tvPayType.setText(getArguments().getString("pay_type"));
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
         adapter = new OrderHistoryRefundAdapter();
         recyclerView.setAdapter(adapter);
-        adapter.setNewData(Test.getGoodsRefundInfos());
-
+        if (data != null) {
+            for (OrderHistorysInfo.ListBean bean : data) {
+                GoodsRefundInfo info = new GoodsRefundInfo();
+                info.setProduct_name(bean.getG_sku_name());
+                info.setProduct_price(bean.getSell_price());
+                info.setProduct_subtotal(bean.getMoney());
+                info.setProduct_preferential("0");
+                info.setRefund_num("1");
+                info.setRefund_subtotal("0");
+                info.setSelect(false);
+                adapter.addData(info);
+            }
+        }
         setListener();
     }
 
@@ -79,6 +108,8 @@ public class OrderHistoryRefundFragment extends BaseFragment {
             public void onClick(View v) {
                 //如果点击checkbox，则全选，反之全否
                 adapter.setClick(checkbox.isChecked());
+                tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件,退款金额：");
+                tvRefundcashPrice.setText(adapter.getTotalPrice());
             }
         });
         adapter.setOnItemClickListener(new OrderHistoryRefundAdapter.OnItemClickListener() {
@@ -86,6 +117,12 @@ public class OrderHistoryRefundFragment extends BaseFragment {
             public void onClick(boolean isClick) {
                 //点击Item判断是否全选，反之checkbox关闭
                 checkbox.setChecked(isClick);
+            }
+
+            @Override
+            public void onListener() {
+                tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件,退款金额：");
+                tvRefundcashPrice.setText(adapter.getTotalPrice());
             }
         });
     }
@@ -95,10 +132,6 @@ public class OrderHistoryRefundFragment extends BaseFragment {
         super.onDestroyView();
         if (unbinder != null)
             unbinder.unbind();
-    }
-
-    public static OrderHistoryRefundFragment newInstance() {
-        return new OrderHistoryRefundFragment();
     }
 
     @OnClick(R.id.btn_refund)

@@ -70,11 +70,17 @@
         android:gravity="center"
         android:visibility="gone">
 
-        <com.easygo.cashier.widget.CountEditText
-            android:id="@+id/edit_refund_subtotal"
+        <EditText
+            android:id="@+id/edit_goods_count"
             android:layout_width="50dp"
             android:layout_height="20dp"
-            android:gravity="center" />
+            android:background="@drawable/bg_frame"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="5"
+            android:text="1000"
+            android:textColor="@color/color_333333"
+            android:textSize="12sp"/>
 
     </LinearLayout>
 

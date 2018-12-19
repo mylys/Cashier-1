@@ -1,6 +1,7 @@
 package com.easygo.cashier.module.order_history;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -63,21 +64,12 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     RecyclerView rvGoods;
     Unbinder unbinder;
 
+    private String payType = "";
+
     /**
      * 商品数据
      */
     private OrderHistoryGoodsAdapter orderHistoryGoodsAdapter;
-
-    private float mTotalMoney;
-    private float mReceivable;
-    private float mReceipts;
-    private float mCoupon;
-    private float mGoodsCount;
-    private float mReturnOfGoodsCount;
-    private float mRefund;
-    private int mPayWay;
-    private String mBuyer;
-
 
     @Nullable
     @Override
@@ -113,10 +105,11 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_refund:
-                Toast.makeText(getContext(), "退款", Toast.LENGTH_SHORT).show();
-
                 if (getActivity() != null) {
-                    ((OrderHistoryActivity) getActivity()).toOrderHistoryRefundFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("data", (ArrayList<OrderHistorysInfo.ListBean>) orderHistoryGoodsAdapter.getData());
+                    bundle.putString("pay_type","支付方式：" + payType);
+                    ((OrderHistoryActivity) getActivity()).toOrderHistoryRefundFragment(bundle);
                 }
                 break;
             case R.id.btn_print:
@@ -149,6 +142,27 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 tvBuyer.setVisibility(View.INVISIBLE);
                 break;
         }
+
+        switch (orderHistoryInfo.getPay_type()) {
+            case 1:
+                payType = "微信支付";
+                break;
+            case 2:
+                payType = "微信 + 现金支付";
+                break;
+            case 3:
+                payType = "现金支付";
+                break;
+            case 4:
+                payType = "企业钱包支付";
+                break;
+            case 5:
+                payType = "微信 + 企业钱包支付";
+                break;
+            case 6:
+                payType = "支付宝支付";
+                break;
+        }
 //        //优惠
 //        float coupon = orderHistoryInfo.getCoupon();
 //        if (coupon > 0) {
@@ -162,26 +176,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
 //        float refund = (float) orderHistoryInfo.getRefund_fee();
 //        if (refund > 0) {
 //            tvRefund.setText("退款：￥" + refund);
-//            switch (orderHistoryInfo.getPay_type()) {
-//                case 1:
-//                    tvRefundWay.setText("微信：￥" + refund);
-//                    break;
-//                case 2:
-//                    tvRefundWay.setText("微信 + 现金：￥" + refund);
-//                    break;
-//                case 3:
-//                    tvRefundWay.setText("现金：￥" + refund);
-//                    break;
-//                case 4:
-//                    tvRefundWay.setText("企业钱包：￥" + refund);
-//                    break;
-//                case 5:
-//                    tvRefundWay.setText("微信 + 企业钱包：￥" + refund);
-//                    break;
-//                case 6:
-//                    tvRefundWay.setText("支付宝：￥" + refund);
-//                    break;
-//            }
+
 //            tvReturnOfGoodsCount.setText("共退货" + orderHistoryInfo.getReturn_of_goods_count() + "件");
 //            tvRefund.setVisibility(View.VISIBLE);
 //            tvRefundWay.setVisibility(View.VISIBLE);

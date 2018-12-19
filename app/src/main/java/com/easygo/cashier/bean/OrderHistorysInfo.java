@@ -1,5 +1,8 @@
 package com.easygo.cashier.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -161,7 +164,7 @@ public class OrderHistorysInfo {
         this.list = list;
     }
 
-    public static class ListBean {
+    public static class ListBean implements Parcelable {
         /**
          * g_sku_name : 可口可乐小瓶
          * sell_price : 0.01
@@ -173,6 +176,25 @@ public class OrderHistorysInfo {
         private String sell_price;
         private int count;
         private String money;
+
+        protected ListBean(Parcel in) {
+            g_sku_name = in.readString();
+            sell_price = in.readString();
+            count = in.readInt();
+            money = in.readString();
+        }
+
+        public static final Creator<ListBean> CREATOR = new Creator<ListBean>() {
+            @Override
+            public ListBean createFromParcel(Parcel in) {
+                return new ListBean(in);
+            }
+
+            @Override
+            public ListBean[] newArray(int size) {
+                return new ListBean[size];
+            }
+        };
 
         public String getG_sku_name() {
             return g_sku_name;
@@ -204,6 +226,19 @@ public class OrderHistorysInfo {
 
         public void setMoney(String money) {
             this.money = money;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(g_sku_name);
+            dest.writeString(sell_price);
+            dest.writeInt(count);
+            dest.writeString(money);
         }
     }
 }

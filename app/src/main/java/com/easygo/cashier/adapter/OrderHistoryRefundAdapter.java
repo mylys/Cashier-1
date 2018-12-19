@@ -9,12 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.GoodsRefundInfo;
-import com.easygo.cashier.widget.CountEditText;
 import com.easygo.cashier.widget.CountTextView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * @Describe：
@@ -22,6 +17,8 @@ import java.util.List;
  * @date：2018-12-19
  */
 public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo, BaseViewHolder> {
+    private OnItemClickListener listener;
+
     public OrderHistoryRefundAdapter() {
         super(R.layout.item_order_history_refund_list);
     }
@@ -45,24 +42,44 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 .setText(R.id.tv_refund_subtotal, item.getRefund_subtotal())
                 .setText(R.id.tv_refund_num_no, item.getRefund_num());
         CountTextView countTextView = helper.getView(R.id.tv_refund_num);
-//        CountEditText countEditText = helper.getView(R.id.edit_refund_subtotal);
         countTextView.setCount(item.getRefund_num());
-//        countEditText.setCount(item.getRefund_subtotal());
 
-        //设置监听
+        /*设置EditText,以免滑动复用*/
+        EditText countEditText = helper.getView(R.id.edit_goods_count);
+        //1.移除绑定的EditText监听
+        if (countEditText.getTag() instanceof TextWatcher) {
+            countEditText.removeTextChangedListener((TextWatcher) countEditText.getTag());
+        }
+        //2.移除监听后设置EditText值
+        countEditText.setText(item.getRefund_subtotal());
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                item.setRefund_subtotal(s.toString());
+            }
+        };
+        //3.设置EditText监听
+        countEditText.addTextChangedListener(watcher);
+        //4.绑定监听
+        countEditText.setTag(watcher);
+
         countTextView.setOnCountListener(new CountTextView.OnCountListener() {
             @Override
             public void onCountChanged(int count) {
                 item.setRefund_num(count + "");
+                listener.onListener();
             }
         });
-//
-//        countEditText.setOnCountListener(new CountEditText.OnCountListener() {
-//            @Override
-//            public void onCountChanged(String count) {
-//                item.setRefund_subtotal(count);
-//            }
-//        });
 
         helper.getView(R.id.image_select).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,11 +91,13 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                         num++;
                     }
                 }
-                listener.onClick(num == getData().size());
+                listener.onListener();
+                if (num != getData().size()) {
+                    listener.onClick(false);
+                }
                 notifyItemChanged(helper.getLayoutPosition());
             }
         });
-
     }
 
     public void setClick(boolean click) {
@@ -88,10 +107,33 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         notifyDataSetChanged();
     }
 
-    private OnItemClickListener listener;
+    public String getTotalPrice() {
+        double totalPrcie = 0;
+        for (GoodsRefundInfo goodsRefundInfo : getData()) {
+            if (goodsRefundInfo.isSelect()) {
+                totalPrcie += Double.parseDouble(goodsRefundInfo.getProduct_price())
+                        * Integer.parseInt(goodsRefundInfo.getRefund_num());
+            }
+        }
+        if (totalPrcie == 0){
+            return "￥0.00";
+        }
+        return "￥" + totalPrcie;
+    }
+
+    public int getTotalNum() {
+        int totalPrcie = 0;
+        for (GoodsRefundInfo goodsRefundInfo : getData()) {
+            if (goodsRefundInfo.isSelect()) {
+                totalPrcie++;
+            }
+        }
+        return totalPrcie;
+    }
 
     public interface OnItemClickListener {
         void onClick(boolean click);
+        void onListener();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

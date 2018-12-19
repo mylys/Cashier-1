@@ -8,6 +8,15 @@
     android:layout_marginRight="@dimen/x1"
     android:background="@color/color_f5f7fa">
 
+    <ImageView
+        android:id="@+id/image_discount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_coupon"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_text_goods_name"
         style="@style/GoodsTitleStylelist"

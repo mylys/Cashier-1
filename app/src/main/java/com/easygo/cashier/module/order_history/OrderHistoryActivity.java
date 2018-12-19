@@ -12,7 +12,11 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.base.BaseAppActivity;
+import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.widget.MyTitleBar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,40 +46,36 @@ public class OrderHistoryActivity extends BaseAppActivity {
         setContentView(R.layout.activity_order_history);
         ButterKnife.bind(this);
 
-        clTitle.setCashierAccount(admin_name);
+        init();
     }
 
-    public void toOrderHistoryRefundFragment() {
+    private void init() {
+        clTitle.setCashierAccount(admin_name);
 
+        fragment = getSupportFragmentManager().findFragmentByTag(TAG_ORDER_HISTORY);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (fragment != null) {
+            transaction.show(orderHistoryFragment);
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putString("name", admin_name);
+            orderHistoryFragment = OrderHistoryFragment.newInstance(bundle);
+            transaction.replace(R.id.framelayout, orderHistoryFragment, TAG_ORDER_HISTORY);
+        }
+        transaction.commit();
+    }
+
+    public void toOrderHistoryRefundFragment(Bundle bundle) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_ORDER_HISTORY_REFUND);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (fragment == null) {
-            orderHistoryRefundFragment = OrderHistoryRefundFragment.newInstance();
-
+            orderHistoryRefundFragment = OrderHistoryRefundFragment.getInstance(bundle);
             transaction.add(R.id.framelayout, orderHistoryRefundFragment, TAG_ORDER_HISTORY_REFUND);
-
         } else {
             transaction.show(orderHistoryRefundFragment);
         }
         transaction.hide(orderHistoryFragment);
         transaction.addToBackStack(TAG_ORDER_HISTORY_REFUND);
-        transaction.commit();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        fragment = getSupportFragmentManager().findFragmentByTag(TAG_ORDER_HISTORY);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (fragment != null) {
-            transaction.show(fragment);
-        } else {
-            Bundle bundle = new Bundle();
-            bundle.putString("name", admin_name);
-            fragment = OrderHistoryFragment.newInstance(bundle);
-            transaction.replace(R.id.framelayout, fragment, TAG_ORDER_HISTORY);
-        }
         transaction.commit();
     }
 
