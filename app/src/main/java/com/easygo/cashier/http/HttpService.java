@@ -5,9 +5,11 @@ import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.HandoverResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
 import com.easygo.cashier.bean.LoginResponse;
+import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.niubility.library.http.base.HttpResult;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -49,7 +51,7 @@ public interface HttpService {
     /**
      * 获取商品列表信息总额及促销信息
      */
-    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("api/weixin/minapp/eq_s/pay/order_info")
     Observable<HttpResult<RealMoneyResponse>> getRealMoney(@Body RequestBody json);
 
@@ -66,23 +68,20 @@ public interface HttpService {
      */
     @GET("api/weixin/minapp/eq_s/pay/goods_by_barcode")
     Observable<HttpResult<GoodsResponse>> searchGoods(@Query("shop_sn") String shop_sn, @Query("barcode") String barcode,
-                                                        @Query("good_name") String good_name);
-
+                                                      @Query("good_name") String good_name);
 
 
     /**
      * 创建订单
      */
-    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("api/pay/create_order")
     Observable<HttpResult<CreateOderResponse>> createOrder(@HeaderMap Map<String, String> header, @Body RequestBody json);
-
 
 
     /**
      * 支付宝支付
      * method  = pay  支付 , method = query  查询 , method=cancel  撤销
-     *
      */
     @FormUrlEncoded
     @POST("api/pay/alipay")
@@ -91,7 +90,6 @@ public interface HttpService {
     /**
      * 检测支付宝支付状态
      * method  = pay  支付 , method = query  查询 , method=cancel  撤销
-     *
      */
     @FormUrlEncoded
     @POST("api/pay/alipay")
@@ -101,7 +99,6 @@ public interface HttpService {
     /**
      * 微信支付
      * method  = pay  支付 , method = query  查询 , method=cancel  撤销
-     *
      */
     @FormUrlEncoded
     @POST("api/pay/wechat")
@@ -110,12 +107,10 @@ public interface HttpService {
     /**
      * 检测微信支付状态
      * method  = pay  支付 , method = query  查询 , method=cancel  撤销
-     *
      */
     @FormUrlEncoded
     @POST("api/pay/wechat")
     Observable<HttpResult<String>> checkWechatPayStatus(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
-
 
 
     /**
@@ -132,10 +127,11 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("api/weixin/minapp/eq_s/pay/pay_vip")
     Observable<HttpResult<String>> payVip();
+
     /**
      * 打印
      */
-    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("api/pay/printer")
     Observable<HttpResult<String>> print(@HeaderMap Map<String, String> header, @Body RequestBody json);
 
@@ -145,7 +141,7 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("api/pay/printer_status")
     Observable<HttpResult<String>> printer_status(@HeaderMap Map<String, String> header, @Field("shop_sn") String shop_sn,
-                                                      @Field("printer_sn") String printer_sn);
+                                                  @Field("printer_sn") String printer_sn);
 
     /**
      * 钱箱
@@ -153,11 +149,11 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("api/pay/printer_till")
     Observable<HttpResult<String>> pop_till(@HeaderMap Map<String, String> header, @Field("shop_sn") String shop_sn,
-                                                  @Field("printer_sn") String printer_sn);
+                                            @Field("printer_sn") String printer_sn);
 
     /**
      * 交接班信息
-     *
+     * <p>
      * type 1是退出登录，2是返回交接页的数据
      */
     @FormUrlEncoded
@@ -167,13 +163,13 @@ public interface HttpService {
 
     /**
      * 登出
-     *
+     * <p>
      * type 1是退出登录，2是返回交接页的数据
      */
     @FormUrlEncoded
     @POST("api/cash/loginout")
     Observable<HttpResult<String>> loginout(@HeaderMap Map<String, String> header, @Field("handover_id") int handover_id,
-                                                      @Field("type") int type);
+                                            @Field("type") int type);
 
 
     /**
@@ -184,7 +180,16 @@ public interface HttpService {
     Observable<HttpResult<HandoverSaleResponse>> sale_list(@HeaderMap Map<String, String> header, @Field("handover_id") int handover_id);
 
 
-
-
-
+    /*
+     * page 页数
+     * count 每页数量
+     * keyword 搜索关键词
+     */
+    @FormUrlEncoded
+    @POST("api/cash/order")
+    Observable<HttpResult<List<OrderHistorysInfo>>> getOrderHistory(@HeaderMap Map<String, String> header,
+                                                                    @Field("handover_id") int handover_id,
+                                                                    @Field("keyword") String keyword,
+                                                                    @Field("page") int page,
+                                                                    @Field("count") int count);
 }

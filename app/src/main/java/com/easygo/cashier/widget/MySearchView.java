@@ -29,6 +29,7 @@ public class MySearchView extends ConstraintLayout {
     private EditText mEditText;
     private Button mSearchBtn;
     private ConstraintLayout mClear;
+    private String keyword = "";
 
 
     public MySearchView(Context context) {
@@ -49,9 +50,9 @@ public class MySearchView extends ConstraintLayout {
         initAttr(context, attrs);
 
         //设置搜索按钮大小
-        if(mSearchBtnWidth != -1 && mSearchBtnHeight != -1) {
+        if (mSearchBtnWidth != -1 && mSearchBtnHeight != -1) {
             ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) mSearchBtn.getLayoutParams();
-            if(lp == null)
+            if (lp == null)
                 lp = new LayoutParams(-2, -2);
             lp.width = mSearchBtnWidth;
             lp.height = mSearchBtnHeight;
@@ -59,15 +60,15 @@ public class MySearchView extends ConstraintLayout {
         }
 
         Resources res = getResources();
-        if(mSearchTextPaddingStart != -1) {
-            mEditText.setPadding(mSearchTextPaddingStart, 0 , 0, 0);
+        if (mSearchTextPaddingStart != -1) {
+            mEditText.setPadding(mSearchTextPaddingStart, 0, 0, 0);
         }
-        if(mSearchBtnTextSize != -1) {
+        if (mSearchBtnTextSize != -1) {
             mSearchBtn.setTextSize(mSearchBtnTextSize);
         }
 
 
-        if(TextUtils.isEmpty(mHint)) {
+        if (TextUtils.isEmpty(mHint)) {
             mHint = res.getString(R.string.text_search_hint_barcode);
         }
         mEditText.setHint(mHint);
@@ -91,7 +92,8 @@ public class MySearchView extends ConstraintLayout {
 
             @Override
             public void afterTextChanged(Editable s) {
-                mClear.setVisibility(s.length() > 0? VISIBLE: GONE);
+                keyword = s.toString();
+                mClear.setVisibility(s.length() > 0 ? VISIBLE : GONE);
             }
         });
 
@@ -105,11 +107,11 @@ public class MySearchView extends ConstraintLayout {
     }
 
     private void initAttr(Context context, AttributeSet attrs) {
-        if(attrs == null) {
+        if (attrs == null) {
             return;
         }
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MySearchView);
-        if(ta != null) {
+        if (ta != null) {
 
 
             mHint = ta.getString(R.styleable.MySearchView_search_hint);
@@ -120,6 +122,24 @@ public class MySearchView extends ConstraintLayout {
 
             ta.recycle();
         }
+
+        mSearchBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onSearch(keyword);
+                }
+            }
+        });
     }
 
+    OnSearhListenerClick listener;
+
+    public interface OnSearhListenerClick {
+        void onSearch(String content);
+    }
+
+    public void setOnSearchListenerClick(OnSearhListenerClick onSearchListenerClick) {
+        this.listener = onSearchListenerClick;
+    }
 }

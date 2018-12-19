@@ -1,56 +1,68 @@
 package com.easygo.cashier.adapter;
 
-import android.graphics.Color;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.easygo.cashier.R;
-import com.easygo.cashier.bean.OrderHistoryInfo;
+import com.easygo.cashier.bean.OrderHistorysInfo;
+import com.niubility.library.utils.TimeUtils;
 
 
-public class OrderHistoryAdapter extends BaseQuickAdapter<OrderHistoryInfo, BaseViewHolder> {
-
-    private int mSelected = 0;
-    private int normal_color = -1;
-    private int selected_color = -1;
-    private int background_color = -1;
+public class OrderHistoryAdapter extends BaseQuickAdapter<OrderHistorysInfo, BaseViewHolder> {
 
     public OrderHistoryAdapter() {
         super(R.layout.item_order_history_list);
     }
 
-    public void setColor(int normal, int selected, int background) {
-        normal_color = normal;
-        selected_color = selected;
-        background_color = background;
-    }
-    public int getSelected() {
-        return this.mSelected;
-    }
-    public void setSelected(int selected) {
-         this.mSelected = selected;
-    }
-
     @Override
-    protected void convert(BaseViewHolder helper, OrderHistoryInfo item) {
-
-        helper.setText(R.id.tv_order_no, item.getOrder_no())
-                .setText(R.id.tv_money, "￥" + item.getTotal_money())
-                .setText(R.id.tv_time, item.getTime());
+    protected void convert(final BaseViewHolder helper, final OrderHistorysInfo item) {
+        long time = Long.parseLong(item.getCreate_time() + "") * 1000;
+        String getTime = TimeUtils.stampToDate(time + "");
+        int white = mContext.getResources().getColor(R.color.color_text_white);
+        int theme = mContext.getResources().getColor(R.color.color_51beaf);
+        int text_color = mContext.getResources().getColor(R.color.color_505050);
 
         //已退款状态 是否显示
-        helper.getView(R.id.cl_refund).setVisibility(item.getRefund() != 0? View.VISIBLE: View.GONE);
+        helper.getView(R.id.cl_refund).setVisibility(item.getStatus() == 3 ? View.VISIBLE : View.GONE);
 
-        boolean isSelected = mSelected == helper.getAdapterPosition();
-        //设置颜色
-        helper.setTextColor(R.id.tv_order_no, isSelected ? selected_color : normal_color)
-                .setTextColor(R.id.tv_money, isSelected ? selected_color : normal_color)
-                .setTextColor(R.id.tv_time, isSelected ? selected_color : normal_color);
-        //设置退款状态
-        helper.getView(R.id.cl_refund).setSelected(isSelected);
-        //设置背景色
-        helper.getView(R.id.root).setBackgroundColor(isSelected ? background_color: Color.WHITE);
+        //设置点击状态
+        helper.getView(R.id.root).setBackgroundColor(item.isSelect() ? theme : white);
+        helper.getView(R.id.tv_refund).setBackgroundResource(item.isSelect() ? R.drawable.bg_refund_selected : R.drawable.bg_refund_normal);
+        helper.setTextColor(R.id.tv_order_no, item.isSelect() ? white : text_color);
+        helper.setTextColor(R.id.tv_money, item.isSelect() ? white : text_color);
+        helper.setTextColor(R.id.tv_time, item.isSelect() ? white : text_color);
 
+        helper.setText(R.id.tv_order_no, item.getTrade_num())
+                .setText(R.id.tv_money, "￥" + item.getTotal_money())
+                .setText(R.id.tv_time, getTime);
+
+        helper.getView(R.id.root).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!item.isSelect()) {
+                    for (OrderHistorysInfo info : getData()) {
+                        info.setSelect(false);
+                    }
+                    item.setSelect(true);
+                    listener.onItemClck(helper.getLayoutPosition());
+                    notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    public void setItemClick() {
+        getData().get(0).setSelect(true);
+        notifyDataSetChanged();
+    }
+
+    private OnItemClickListener listener;
+    public interface OnItemClickListener{
+        void onItemClck(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.listener = onItemClickListener;
     }
 }

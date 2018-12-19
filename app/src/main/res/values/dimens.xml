@@ -11,6 +11,7 @@
     <dimen name="text_size_25">@dimen/x25</dimen>
     <dimen name="text_size_28">@dimen/x28</dimen>
     <dimen name="text_size_29">@dimen/x29</dimen>
+    <dimen name="text_size_12">@dimen/x12</dimen>
     <dimen name="text_size_30">@dimen/x30</dimen>
     <dimen name="text_size_33">@dimen/x33</dimen>
     <dimen name="text_size_37">@dimen/x37</dimen>

@@ -39,6 +39,12 @@ public class ConfirmDialog extends DialogFragment {
     TextView tvChange;
     @BindView(R.id.tv_pay_way)
     TextView tvPayWay;
+    @BindView(R.id.tv_text_receivable)
+    TextView tvTextReceivable;
+    @BindView(R.id.tv_text_receipts)
+    TextView tvTextReceipts;
+    @BindView(R.id.tv_text_change)
+    TextView tvTextChange;
     private Unbinder unbinder;
 
     private float mReceivable;
@@ -63,6 +69,16 @@ public class ConfirmDialog extends DialogFragment {
         return bundle;
     }
 
+    public static Bundle getDataBundle(float receivable, float receipts, int pay_way, boolean isVisiable, String... str) {
+        Bundle bundle = new Bundle();
+        bundle.putFloat("receivable", receivable);
+        bundle.putFloat("receipts", receipts);
+        bundle.putInt("pay_way", pay_way);
+        bundle.putBoolean("visiable", isVisiable);
+        bundle.putStringArray("change_text", str);
+        return bundle;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,13 +92,24 @@ public class ConfirmDialog extends DialogFragment {
     }
 
     private void init() {
+        boolean visiable = true;
+        String[] strings = new String[]{"应收", "实收"};
         Bundle bundle = getArguments();
-        if(bundle != null) {
+        if (bundle != null) {
             mReceivable = bundle.getFloat("receivable");
             mReceipts = bundle.getFloat("receipts");
             mChange = bundle.getFloat("change");
             mPayWay = bundle.getInt("pay_way");
+            visiable = bundle.getBoolean("visiable", true);
+            strings = bundle.getStringArray("change_text");
         }
+
+        if (strings != null) {
+            tvTextReceivable.setText(strings[0]);
+            tvTextReceipts.setText(strings[1]);
+        }
+        tvTextChange.setVisibility(visiable ? View.VISIBLE : View.GONE);
+        tvChange.setVisibility(visiable ? View.VISIBLE : View.GONE);
 
         tvReceivable.setText("￥" + mReceivable);
         tvReceipts.setText("￥" + mReceipts);
@@ -102,6 +129,13 @@ public class ConfirmDialog extends DialogFragment {
 
     }
 
+    public void setContent(String... str) {
+
+    }
+
+    public void setVisiable() {
+
+    }
 
     @Override
     public void onResume() {

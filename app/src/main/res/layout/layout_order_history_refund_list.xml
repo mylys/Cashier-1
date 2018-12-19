@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/rl"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y96"
@@ -18,82 +18,55 @@
 
             <CheckBox
                 android:id="@+id/checkbox"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_centerVertical="true"
+                android:layout_width="@dimen/x45"
+                android:layout_height="@dimen/y45"
+                android:layout_gravity="center"
                 android:layout_marginStart="@dimen/x36"
                 android:background="@drawable/selected_tab_bg"
                 android:button="@null" />
 
             <TextView
-                android:id="@+id/tv1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                style="@style/RefundList"
+                android:layout_width="@dimen/x486"
+                android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/x30"
-                android:layout_toEndOf="@+id/checkbox"
-                android:text="品名"
-                android:textColor="@color/color_333333"
-                android:textSize="12sp" />
+                android:text="品名" />
 
             <TextView
-                android:id="@+id/tv2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/x570"
-                android:layout_toEndOf="@+id/tv1"
-                android:text="单价"
-                android:textColor="@color/color_333333"
-                android:textSize="12sp" />
+                style="@style/RefundList"
+                android:layout_width="@dimen/x282"
+                android:layout_height="match_parent"
+                android:text="单价" />
 
             <TextView
-                android:id="@+id/tv3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/x140"
-                android:layout_toEndOf="@+id/tv2"
-                android:text="优惠"
-                android:textColor="@color/color_333333"
-                android:textSize="12sp" />
+                style="@style/RefundList"
+                android:layout_width="@dimen/x171"
+                android:layout_height="match_parent"
+                android:text="优惠" />
 
             <TextView
-                android:id="@+id/tv4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/x140"
-                android:layout_toEndOf="@+id/tv3"
-                android:text="小计"
-                android:textColor="@color/color_333333"
-                android:textSize="12sp" />
+                style="@style/RefundList"
+                android:layout_width="@dimen/x225"
+                android:layout_height="match_parent"
+                android:text="小计" />
 
             <TextView
-                android:id="@+id/tv5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/x204"
-                android:layout_toEndOf="@+id/tv4"
+                android:layout_width="@dimen/x321"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="退货数量"
                 android:textColor="@color/color_333333"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp_12" />
 
             <TextView
-                android:id="@+id/tv6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/x156"
-                android:layout_toEndOf="@+id/tv5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="退货小计"
                 android:textColor="@color/color_333333"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp_12" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"

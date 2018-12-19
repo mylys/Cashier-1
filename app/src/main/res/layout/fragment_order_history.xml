@@ -22,13 +22,10 @@
         android:id="@+id/view1"
         android:layout_width="0dp"
         android:layout_height="@dimen/y155"
+        android:background="@color/color_text_white"
         app:layout_constraintEnd_toStartOf="@id/line1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/color_text_white"
-        />
-
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--搜索框-->
     <com.easygo.cashier.widget.MySearchView
@@ -36,15 +33,15 @@
         android:layout_width="@dimen/x590"
         android:layout_height="@dimen/y98"
         android:background="@drawable/bg_btn_frame_green"
-        app:search_hint="@string/text_search_hint_order"
-        app:search_text_padding_start="@dimen/x29"
+        app:layout_constraintBottom_toBottomOf="@id/view1"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintStart_toStartOf="@id/view1"
+        app:layout_constraintTop_toTopOf="@id/view1"
+        app:search_btn_height="@dimen/y98"
         app:search_btn_text_size="@dimen/x12"
         app:search_btn_width="@dimen/x118"
-        app:search_btn_height="@dimen/y98"
-        app:layout_constraintStart_toStartOf="@id/view1"
-        app:layout_constraintEnd_toEndOf="@id/line1"
-        app:layout_constraintTop_toTopOf="@id/view1"
-        app:layout_constraintBottom_toBottomOf="@id/view1">
+        app:search_hint="@string/text_search_hint_order"
+        app:search_text_padding_start="@dimen/x29">
 
     </com.easygo.cashier.widget.MySearchView>
 
@@ -52,34 +49,41 @@
         android:id="@+id/line2"
         android:layout_width="0dp"
         android:layout_height="@dimen/y21"
+        android:background="@color/color_f0f3f7"
         app:layout_constraintEnd_toStartOf="@id/line1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view1"
-        android:background="@color/color_f0f3f7"
-        />
+        app:layout_constraintTop_toBottomOf="@id/view1" />
 
-
-    <!--历史订单列表-->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_order_history"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/line1"
-        app:layout_constraintTop_toBottomOf="@id/line2"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line2">
 
-    </android.support.v7.widget.RecyclerView>
+        <!--历史订单列表-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_order_history"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <!--历史订单详情-->
     <FrameLayout
         android:id="@+id/framelayout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:layout_constraintStart_toEndOf="@id/line1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toEndOf="@id/line1"
+        app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
 

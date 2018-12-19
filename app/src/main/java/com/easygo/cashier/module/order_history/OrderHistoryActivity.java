@@ -39,20 +39,10 @@ public class OrderHistoryActivity extends BaseAppActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_order_history);
         ButterKnife.bind(this);
 
-        init();
-    }
-
-    private void init() {
         clTitle.setCashierAccount(admin_name);
-
-        orderHistoryFragment = OrderHistoryFragment.newInstance();
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.framelayout, orderHistoryFragment, TAG_ORDER_HISTORY).commit();
     }
 
     public void toOrderHistoryRefundFragment() {
@@ -81,7 +71,9 @@ public class OrderHistoryActivity extends BaseAppActivity {
         if (fragment != null) {
             transaction.show(fragment);
         } else {
-            fragment = OrderHistoryFragment.newInstance();
+            Bundle bundle = new Bundle();
+            bundle.putString("name", admin_name);
+            fragment = OrderHistoryFragment.newInstance(bundle);
             transaction.replace(R.id.framelayout, fragment, TAG_ORDER_HISTORY);
         }
         transaction.commit();
@@ -91,6 +83,10 @@ public class OrderHistoryActivity extends BaseAppActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cl_back://返回
+                if (orderHistoryRefundFragment != null && orderHistoryRefundFragment.isVisible()) {
+                    onBackPressed();
+                    return;
+                }
                 finish();
                 break;
         }
