@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.easygo.cashier.Configs;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.OrderHistoryAdapter;
 import com.easygo.cashier.bean.OrderHistorysInfo;
@@ -41,14 +42,10 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
 
     private int page = 1;
     private int pageCount = 10;
-    private String name = "";
     private boolean isSearch = false;
 
-    public static OrderHistoryFragment newInstance(Bundle bundle) {
-        OrderHistoryFragment orderHistoryFragment = new OrderHistoryFragment();
-        if (bundle != null)
-            orderHistoryFragment.setArguments(bundle);
-        return orderHistoryFragment;
+    public static OrderHistoryFragment newInstance() {
+        return new OrderHistoryFragment();
     }
 
     @Override
@@ -68,9 +65,6 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
 
     @Override
     protected void init() {
-        if (getArguments() != null) {
-            name = getArguments().getString("name");
-        }
         if (orderHistoryDetailFragment == null) {
             orderHistoryDetailFragment = new OrderHistoryDetailFragment();
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -111,7 +105,7 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
         adapter.setOnItemClickListener(new OrderHistoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClck(int position) {
-                orderHistoryDetailFragment.showOrderHistory(adapter.getData().get(position), name);
+                orderHistoryDetailFragment.showOrderHistory(adapter.getData().get(position), Configs.admin_name);
             }
         });
 
@@ -141,7 +135,7 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
                 if (orderHistoryDetailFragment != null) {
                     if (orderHistorysInfo.size() > 0) {
                         adapter.setItemClick();
-                        orderHistoryDetailFragment.showOrderHistory(orderHistorysInfo.get(0), name);
+                        orderHistoryDetailFragment.showOrderHistory(orderHistorysInfo.get(0), Configs.admin_name);
                     }
                 }
                 if (isSearch){

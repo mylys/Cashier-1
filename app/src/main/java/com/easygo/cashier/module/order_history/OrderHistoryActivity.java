@@ -57,9 +57,7 @@ public class OrderHistoryActivity extends BaseAppActivity {
         if (fragment != null) {
             transaction.show(orderHistoryFragment);
         } else {
-            Bundle bundle = new Bundle();
-            bundle.putString("name", admin_name);
-            orderHistoryFragment = OrderHistoryFragment.newInstance(bundle);
+            orderHistoryFragment = OrderHistoryFragment.newInstance();
             transaction.replace(R.id.framelayout, orderHistoryFragment, TAG_ORDER_HISTORY);
         }
         transaction.commit();

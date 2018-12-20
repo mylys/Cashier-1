@@ -74,6 +74,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
                     .withString("admin_name", admin_name)
                     .navigation();
             showToast("登录： " + admin_name);
+            Configs.admin_name = admin_name;
             finish();
         } else {
 
@@ -173,6 +174,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         ARouter.getInstance().build(ModulePath.goods)
                 .withString("admin_name", result.getReal_name())
                 .navigation();
+        Configs.admin_name = result.getReal_name();
         finish();
     }
 

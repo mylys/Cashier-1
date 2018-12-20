@@ -152,22 +152,22 @@
 
     <!--付款人-->
     <TextView
-        android:visibility="invisible"
         android:id="@+id/tv_buyer"
         style="@style/GoodsListStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/btn_print"
         app:layout_constraintStart_toStartOf="@id/tv_goods_count"
         app:layout_constraintTop_toTopOf="@id/btn_print" />
 
     <TextView
-        android:visibility="invisible"
         android:id="@+id/tv_return_of_goods_count"
         style="@style/GoodsListStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="共退货1件"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/tv_refund"
         app:layout_constraintStart_toStartOf="@id/tv_goods_count"
         app:layout_constraintTop_toTopOf="@id/tv_refund" />
@@ -175,7 +175,6 @@
 
     <!--退款-->
     <TextView
-        android:visibility="invisible"
         android:id="@+id/tv_refund"
         style="@style/SmallRedTextStyle"
         android:layout_width="wrap_content"
@@ -183,33 +182,18 @@
         android:layout_marginEnd="@dimen/x44"
         android:layout_marginBottom="@dimen/y52"
         android:text="退款：￥10000"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/btn_print"
         app:layout_constraintEnd_toEndOf="@id/tv_cashier_account" />
 
     <TextView
-        android:visibility="invisible"
-        android:id="@+id/tv_equal_3"
+        android:id="@+id/tv_refund_text"
         style="@style/DetailTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x7"
-        android:text="="
-        app:layout_constraintBottom_toBottomOf="@id/tv_refund"
-        app:layout_constraintEnd_toStartOf="@id/tv_refund"
-        app:layout_constraintTop_toTopOf="@id/tv_refund" />
-
-    <TextView
-        android:visibility="invisible"
-        android:id="@+id/tv_refund_way"
-        style="@style/DetailTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x7"
-        android:text="现金：￥10000"
-        app:layout_constraintBottom_toBottomOf="@id/tv_refund"
-        app:layout_constraintEnd_toStartOf="@id/tv_equal_3"
-        app:layout_constraintTop_toTopOf="@id/tv_refund" />
-
+        android:layout_marginBottom="@dimen/y52"
+        app:layout_constraintBottom_toTopOf="@id/btn_print"
+        app:layout_constraintEnd_toStartOf="@+id/tv_refund" />
 
     <View
         android:id="@+id/line3"
@@ -232,39 +216,13 @@
         app:layout_constraintEnd_toEndOf="@id/tv_refund" />
 
     <TextView
-        android:id="@+id/tv_equal_2"
+        android:id="@+id/tv_receipts_text"
         style="@style/DetailTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x7"
-        android:text="="
-        app:layout_constraintBottom_toBottomOf="@id/tv_receipts"
-        app:layout_constraintEnd_toStartOf="@id/tv_receipts"
-        app:layout_constraintTop_toTopOf="@id/tv_receipts" />
-
-    <TextView
-        android:id="@+id/tv_receipts_cash_change"
-        style="@style/DetailTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x7"
-        android:text="- 找零：￥10000"
-        app:layout_constraintBottom_toBottomOf="@id/tv_receipts"
-        app:layout_constraintEnd_toStartOf="@id/tv_equal_2"
-        app:layout_constraintTop_toTopOf="@id/tv_receipts" />
-
-
-    <TextView
-        android:id="@+id/tv_receipts_way"
-        style="@style/DetailTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x7"
-        android:text="现金：￥10000"
-        app:layout_constraintBottom_toBottomOf="@id/tv_receipts"
-        app:layout_constraintEnd_toStartOf="@id/tv_receipts_cash_change"
-        app:layout_constraintTop_toTopOf="@id/tv_receipts" />
-
+        android:layout_marginBottom="@dimen/y19"
+        app:layout_constraintBottom_toTopOf="@id/line3"
+        app:layout_constraintEnd_toStartOf="@+id/tv_receipts" />
 
     <View
         android:id="@+id/line2"
@@ -300,38 +258,13 @@
         app:layout_constraintEnd_toEndOf="@id/tv_refund" />
 
     <TextView
-        android:id="@+id/tv_equal_1"
+        android:id="@+id/tv_receivable_text"
         style="@style/DetailTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x7"
-        android:text="="
-        app:layout_constraintBottom_toBottomOf="@id/tv_receivable"
-        app:layout_constraintEnd_toStartOf="@id/tv_receivable"
-        app:layout_constraintTop_toTopOf="@id/tv_receivable" />
-
-    <TextView
-        android:id="@+id/tv_coupon"
-        style="@style/DetailTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x7"
-        android:text="- 优惠：￥10000"
-        app:layout_constraintBottom_toBottomOf="@id/tv_receivable"
-        app:layout_constraintEnd_toStartOf="@id/tv_equal_1"
-        app:layout_constraintTop_toTopOf="@id/tv_receivable" />
-
-
-    <TextView
-        android:id="@+id/tv_receivable_total_money"
-        style="@style/DetailTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x7"
-        android:text="总额：￥10000"
-        app:layout_constraintBottom_toBottomOf="@id/tv_receivable"
-        app:layout_constraintEnd_toStartOf="@id/tv_coupon"
-        app:layout_constraintTop_toTopOf="@id/tv_receivable" />
+        android:layout_marginBottom="@dimen/y19"
+        app:layout_constraintBottom_toTopOf="@id/line2"
+        app:layout_constraintEnd_toStartOf="@+id/tv_receivable" />
 
 
     <!--历史订单商品详情-->

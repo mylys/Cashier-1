@@ -11,12 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.R;
-import com.easygo.cashier.Test;
 import com.easygo.cashier.adapter.OrderHistoryRefundAdapter;
 import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
@@ -26,7 +24,6 @@ import com.easygo.cashier.widget.PayWayView;
 import com.niubility.library.base.BaseFragment;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -79,8 +76,11 @@ public class OrderHistoryRefundFragment extends BaseFragment {
         List<OrderHistorysInfo.ListBean> data = null;
         if (getArguments() != null) {
             data = getArguments().getParcelableArrayList("data");
-            tvPayType.setText(getArguments().getString("pay_type"));
+            tvPayType.setText(getArguments().getString("pay_type") + "支付");
+            tvOrderNumber.setText(getArguments().getString("order_number"));
         }
+        tvOrderCashier.setText("收银员：" + Configs.admin_name);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 

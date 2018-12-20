@@ -39,6 +39,10 @@
     <dimen name="function_list_item_width">@dimen/x289</dimen>
     <dimen name="function_list_item_height">@dimen/y273</dimen>
 
+    <!-- 设备状态 -->
+    <dimen name="equipment_list_width">@dimen/x633</dimen>
+    <dimen name="equipment_list_height">@dimen/x506</dimen>
+
     <!--确认弹窗-->
     <dimen name="dialog_width">@dimen/x600</dimen>
 

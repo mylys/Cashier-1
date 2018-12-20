@@ -85,6 +85,12 @@
     <string name="text_refund_count">退货单</string>
     <string name="text_cash_income">现金收入</string>
     <string name="text_classification">分类</string>
+    <string name="reconnection">重新连接</string>
+
+    <!-- 设备状态 -->
+    <string name="the_printer">小票机</string>
+    <string name="the_code_gun">扫码枪</string>
+    <string name="the_till">钱柜</string>
 
 
 </resources>

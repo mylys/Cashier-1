@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -24,15 +25,19 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
+import com.easygo.cashier.Test;
+import com.easygo.cashier.bean.EquipmentState;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.secondary_sreen.SecondaryScreen;
 import com.easygo.cashier.module.status.StatusContract;
 import com.easygo.cashier.module.status.StatusPresenter;
+import com.easygo.cashier.widget.EquipmentstateDialog;
 import com.easygo.cashier.widget.FunctionListDialog;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -62,6 +67,7 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
     FrameLayout framelayout;
     private Fragment fragment;
     private GoodsFragment goodsFragment;
+    private EquipmentstateDialog dialog;
 
     @Autowired(name = "admin_name")
     String admin_name;
@@ -97,6 +103,7 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
 
         tvCashierAcount.setText("收银员: " + admin_name);
 
+//        Test.detectInputDeviceWithShell();
         mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
     }
 
@@ -168,7 +175,8 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
         }
         return onTouchEvent(ev);
     }
-    public  boolean isShouldHideInput(View v, MotionEvent event) {
+
+    public boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
             int[] leftTop = {0, 0};
             //获取输入框当前的location位置
@@ -214,26 +222,26 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
                     .withString("admin_name", admin_name)
                     .navigation();
 
-            if(true)
+            if (true)
                 return;
 
 
             SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getApplicationContext());
             SharedPreferences.Editor editor = sp.edit();
             //登录状态中，清除 session_id 、 admin_name
-            if(sp.contains(Constans.KEY_SESSION_ID)) {
+            if (sp.contains(Constans.KEY_SESSION_ID)) {
                 editor.remove(Constans.KEY_SESSION_ID).apply();
             }
-            if(sp.contains(Constans.KEY_ADMIN_NAME)) {
+            if (sp.contains(Constans.KEY_ADMIN_NAME)) {
                 editor.remove(Constans.KEY_ADMIN_NAME).apply();
             }
-            if(sp.contains(Constans.KEY_SHOP_SN)) {
+            if (sp.contains(Constans.KEY_SHOP_SN)) {
                 editor.remove(Constans.KEY_SHOP_SN).apply();
             }
-            if(sp.contains(Constans.KEY_TIME)) {
+            if (sp.contains(Constans.KEY_TIME)) {
                 editor.remove(Constans.KEY_TIME).apply();
             }
-            if(sp.contains(Constans.KEY_HANDOVER_ID)) {
+            if (sp.contains(Constans.KEY_HANDOVER_ID)) {
                 editor.remove(Constans.KEY_HANDOVER_ID).apply();
             }
             //跳转登录页
@@ -260,7 +268,8 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
 
         @Override
         public void deviceStatus() {
-
+            mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
+            getPrinterstateShowLoading();
         }
 
         @Override
@@ -279,14 +288,48 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
         }
     };
 
+    //TODO：待处理...
+    private void getPrinterstateShowLoading() {
+        Bundle bundle = new Bundle();
+        ArrayList<EquipmentState> arrayList = new ArrayList<>();
+        arrayList.add(new EquipmentState(getResources().getString(R.string.the_printer), true, true));
+        arrayList.add(new EquipmentState(getResources().getString(R.string.the_code_gun), true, true));
+        arrayList.add(new EquipmentState(getResources().getString(R.string.the_till), true, true));
+        bundle.putString("title", "设备状态");
+        bundle.putParcelableArrayList("data", arrayList);
+        dialog = EquipmentstateDialog.getInstance(bundle);
+        dialog.showCenter(MainActivity.this);
+        dialog.setOnItemConnectClickListener(new EquipmentstateDialog.OnItemConnectClickListener() {
+            @Override
+            public void onClickListener(String name) {
+                Toast.makeText(MainActivity.this, name + " --- 重新连接", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @Override
     public void printerStatusSuccess(String result) {
+        if (dialog != null && dialog.isShow()) {
+            ArrayList<EquipmentState> arrayList = new ArrayList<>();
+            arrayList.add(new EquipmentState(getResources().getString(R.string.the_printer), true, false));
+            arrayList.add(new EquipmentState(getResources().getString(R.string.the_code_gun), true, false));
+            arrayList.add(new EquipmentState(getResources().getString(R.string.the_till), true, false));
+            dialog.setNewData(arrayList);
+            return;
+        }
         showToast("打印机正常连接");
     }
 
     @Override
     public void printerStatusFailed(Map<String, Object> map) {
+        if (dialog != null && dialog.isShow()) {
+            ArrayList<EquipmentState> arrayList = new ArrayList<>();
+            arrayList.add(new EquipmentState(getResources().getString(R.string.the_printer), false, false));
+            arrayList.add(new EquipmentState(getResources().getString(R.string.the_code_gun), true, false));
+            arrayList.add(new EquipmentState(getResources().getString(R.string.the_till), true, false));
+            dialog.setNewData(arrayList);
+            return;
+        }
         showToast("打印机可能连接失败");
     }
 }
