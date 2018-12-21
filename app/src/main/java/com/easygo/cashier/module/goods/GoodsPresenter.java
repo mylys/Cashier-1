@@ -7,6 +7,7 @@ import com.niubility.library.http.base.HttpClient;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;
@@ -18,11 +19,11 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
         Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().getGoods(header, shop_sn, barcode),
-                new BaseResultObserver<GoodsResponse>() {
+                HttpAPI.getInstance().httpService().getGoods(header, shop_sn, barcode, 1),
+                new BaseResultObserver<List<GoodsResponse>>() {
 
                     @Override
-                    protected void onSuccess(GoodsResponse result) {
+                    protected void onSuccess(List<GoodsResponse> result) {
                         mView.getGoodsSuccess(result);
                     }
 
@@ -34,19 +35,20 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
     }
 
     @Override
-    public void searchGoods(String shop_id, String barcode, String good_name) {
+    public void searchGoods(String shop_sn, String barcode) {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().searchGoods(shop_id, barcode, good_name),
-                new BaseResultObserver<GoodsResponse>() {
+                HttpAPI.getInstance().httpService().getGoods(header, shop_sn, barcode, 2),
+                new BaseResultObserver<List<GoodsResponse>>() {
 
                     @Override
-                    protected void onSuccess(GoodsResponse result) {
-                        mView.getGoodsSuccess(result);
+                    protected void onSuccess(List<GoodsResponse> result) {
+                        mView.searchGoodsSuccess(result);
                     }
 
                     @Override
                     protected void onFailure(Map<String, Object> map) {
-                        mView.getGoodsFailed(map);
+                        mView.searchGoodsFailed(map);
                     }
                 });
     }

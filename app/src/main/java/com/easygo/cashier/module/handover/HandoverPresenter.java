@@ -7,6 +7,7 @@ import com.niubility.library.http.base.HttpClient;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
 
+import java.util.List;
 import java.util.Map;
 
 public class HandoverPresenter extends BasePresenter<HandoverContract.IView> implements HandoverContract.IPresenter {
@@ -53,9 +54,9 @@ public class HandoverPresenter extends BasePresenter<HandoverContract.IView> imp
     public void sale_list(int handover_id) {
         Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(HttpAPI.getInstance().httpService().sale_list(header, handover_id),
-                new BaseResultObserver<HandoverSaleResponse>() {
+                new BaseResultObserver<List<HandoverSaleResponse>>() {
                     @Override
-                    protected void onSuccess(HandoverSaleResponse result) {
+                    protected void onSuccess(List<HandoverSaleResponse> result) {
                         mView.saleListSuccess(result);
                     }
 

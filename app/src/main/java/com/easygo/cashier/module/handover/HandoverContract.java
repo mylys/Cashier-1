@@ -5,6 +5,7 @@ import com.easygo.cashier.bean.HandoverSaleResponse;
 import com.niubility.library.mvp.BaseContract;
 import com.niubility.library.mvp.BaseView;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -28,7 +29,7 @@ public class HandoverContract {
         void loginoutSuccess(String result);
         void loginoutFailed(Map<String, Object> map);
 
-        void saleListSuccess(HandoverSaleResponse result);
+        void saleListSuccess(List<HandoverSaleResponse> result);
         void saleListFailed(Map<String, Object> map);
 
     }

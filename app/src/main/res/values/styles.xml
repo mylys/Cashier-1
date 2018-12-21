@@ -67,6 +67,12 @@
         <item name="android:textSize">@dimen/text_size_29</item>
         <item name="android:textColor">@color/color_505050</item>
     </style>
+
+    <!--弹窗文本-->
+    <style name="DialogTextStyle">
+        <item name="android:textSize">@dimen/text_size_37</item>
+        <item name="android:textColor">@color/color_505050</item>
+    </style>
     <!--商品价格详情-->
     <style name="GoodsSettlementDetailStyle">
         <item name="android:textStyle">bold</item>

@@ -1,5 +1,13 @@
 package com.easygo.cashier;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.text.TextUtils;
+import android.view.TextureView;
+
+import com.niubility.library.constants.Constans;
+import com.niubility.library.utils.SharedPreferencesUtils;
+
 public class Configs {
 
     /**
@@ -15,4 +23,12 @@ public class Configs {
      * 打印机
      */
     public static String printer_sn = "918510026";
+
+    public static String getShop_sn(Context context) {
+        if(TextUtils.isEmpty(shop_sn)) {
+            SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(context);
+            shop_sn = sp.getString(Constans.KEY_SHOP_SN, "");
+        }
+        return shop_sn;
+    }
 }

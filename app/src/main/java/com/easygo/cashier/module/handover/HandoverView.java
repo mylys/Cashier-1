@@ -44,7 +44,7 @@ public class HandoverView extends FrameLayout {
     }
 
     private void init(Context context) {
-        mView = LayoutInflater.from(context).inflate(R.layout.fragment_handover, this, true);
+        mView = LayoutInflater.from(context).inflate(R.layout.layout_handover, this, true);
         unbinder = ButterKnife.bind(this, mView);
     }
 
@@ -59,18 +59,19 @@ public class HandoverView extends FrameLayout {
         //总单据数
         int sale_count = result.getSale_count();
         int refund_count = result.getRefund_count();
-        tvTotalOrderCount.setText(sale_count + refund_count);
-        tvSaleCount.setText(sale_count);
-        tvRefundCount.setText(refund_count);
+        tvTotalOrderCount.setText(String.valueOf(sale_count + refund_count));
+        tvSaleCount.setText(String.valueOf(sale_count));
+        tvRefundCount.setText(String.valueOf(refund_count));
 
         //总销售额
         float cash_money = result.getCash_money();
-        tvTotalSales.setText(String.valueOf(result.getAlipay_money()));
+        tvTotalSales.setText(String.valueOf(result.getAll_money()));
         tvCash.setText(String.valueOf(cash_money));
         tvAlipay.setText(String.valueOf(result.getAlipay_money()));
         tvWechat.setText(String.valueOf(result.getWx_money()));
 
         //总现金
+        tvTotalCash.setText(String.valueOf(cash_money));
         tvCashIncome.setText(String.valueOf(cash_money));
 
     }

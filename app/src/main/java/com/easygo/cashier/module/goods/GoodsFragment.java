@@ -1,39 +1,48 @@
 package com.easygo.cashier.module.goods;
 
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.easygo.cashier.BarcodeUtils;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
-import com.easygo.cashier.adapter.GoodsAdapter;
-import com.easygo.cashier.bean.GoodsNum;
+import com.easygo.cashier.adapter.GoodsEntity;
+import com.easygo.cashier.adapter.GoodsMultiItemAdapter;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.module.refund.RefundActivity;
+import com.easygo.cashier.widget.MySearchView;
 import com.easygo.cashier.widget.NoGoodsDialog;
+import com.easygo.cashier.widget.ProcessingChoiceDialog;
+import com.easygo.cashier.widget.SearchResultWindow;
 import com.niubility.library.base.BaseMvpFragment;
 import com.niubility.library.http.exception.HttpExceptionEngine;
-import com.niubility.library.utils.GsonUtils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * 扫描商品
+ */
 public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPresenter> implements GoodsContract.IView {
 
     public static final String TAG = "GoodsFragment";
@@ -50,6 +59,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     Button btnSettlement;
     @BindView(R.id.btn_pop_money_box)
     Button clPopMoneyBox;
+    @BindView(R.id.cl_search)
+    MySearchView clSearch;
     @BindView(R.id.btn_no_barcode)
     Button clNoBarcode;
     @BindView(R.id.et_barcode)
@@ -61,17 +72,34 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     private int mType = TYPE_GOODS;
     public static final String KEY_ADMIN_NAME = "key_admin_name";
     private String admin_name;
-    private GoodsAdapter mGoodsAdapter;
+    private GoodsMultiItemAdapter mGoodsMultiItemAdapter;
 
-    /**商品数据*/
-    private List<GoodsNum<GoodsResponse>> mdata;
+    /**
+     * 商品数据
+     */
+    private List<GoodsEntity<GoodsResponse>> mData;
 
-    /**商品总数*/
+    /**
+     * 商品总数
+     */
     private int mGoodsCount;
-    /**应收*/
+    /**
+     * 应收
+     */
     private float mTotalMoney;
-    /**优惠*/
+    /**
+     * 优惠
+     */
     private float mCoupon;
+
+    /**
+     * 搜索结果弹窗
+     */
+    private SearchResultWindow mSearchResultWindow;
+    /**
+     * 加工方式选择弹窗
+     */
+    private ProcessingChoiceDialog mProcessingChoiceDialog;
 
 
     public static GoodsFragment newInstance() {
@@ -129,21 +157,33 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     }
 
+    private int mGoodWeight;
+
     /**
      * 扫描到的条码 回调
      */
     private void onScanCode(String barcode) {
         Log.i(TAG, "onScanCode: barcode --> " + barcode);
 
-        if("2210000000019".equals(barcode)) {
+        if ("2210000000019".equals(barcode)) {
             //测试
             showToast("测试数据");
-            mPresenter.getGoods(Configs.shop_sn, "096619438839");
+//            mPresenter.getGoods(Configs.shop_sn, "096619438839");
+            mPresenter.getGoods(Configs.shop_sn, "2212345");
+//            mPresenter.getGoods(Configs.shop_sn, "发", 2);
             return;
         }
 
-        if(TextUtils.isEmpty(barcode)) {
+        if (TextUtils.isEmpty(barcode)) {
             showToast("barcode = null");
+        } else if (BarcodeUtils.isWeightCode(barcode)) {//自编码
+
+            String weight_barcode = BarcodeUtils.getProductCode(barcode);
+            mGoodWeight = BarcodeUtils.getProductWeight(barcode);
+
+            //获取称重商品信息
+            mPresenter.getGoods(Configs.shop_sn, weight_barcode);
+
         } else {
             //获取商品信息
             mPresenter.getGoods(Configs.shop_sn, barcode);
@@ -163,21 +203,82 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     private void initView() {
         rvGoods.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        mGoodsAdapter = new GoodsAdapter();
-        rvGoods.setAdapter(mGoodsAdapter);
 
-        mdata = new ArrayList<>();
-        mGoodsAdapter.setNewData(mdata);
+        mGoodsMultiItemAdapter = new GoodsMultiItemAdapter();
+        rvGoods.setAdapter(mGoodsMultiItemAdapter);
+        mData = mGoodsMultiItemAdapter.getData();
 
-        mGoodsAdapter.setOnPriceListener(new GoodsAdapter.OnPriceListener() {
+        mGoodsMultiItemAdapter.setOnItemListener(new GoodsMultiItemAdapter.OnItemListener() {
             @Override
             public void onPriceChange(float price, int count, float coupon) {
                 refreshPrce(price, count, coupon);
             }
 
+            @Override
+            public void onProcessingClicked(int position, GoodsResponse current, List<GoodsResponse> processing_list) {
+                showProcessingDialog(position, current, processing_list);
+                for (GoodsResponse goodsResponse : processing_list) {
+                    Log.i(TAG, "onProcessingClicked: name - " + goodsResponse.getG_sku_name());
+                }
+            }
+
+        });
+        //条目点击事件监听
+        mGoodsMultiItemAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                List data = adapter.getData();
+                GoodsEntity goodsEntity = (GoodsEntity) data.get(position);
+                switch (goodsEntity.getItemType()) {
+                    case GoodsEntity.TYPE_WEIGHT:
+                    case GoodsEntity.TYPE_ONLY_PROCESSING:
+                    case GoodsEntity.TYPE_PROCESSING:
+                        mGoodsMultiItemAdapter.remove(position);
+                        break;
+                }
+            }
         });
 
+
+
+        //分割线
+        DividerItemDecoration verticalDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        verticalDecoration.setDrawable(getResources().getDrawable(R.drawable.bg_item_decoration_vertical));
+        rvGoods.addItemDecoration(verticalDecoration);
+
         setIntentData();
+
+        clSearch.setOnSearchClickListener(new MySearchView.OnSearchClickListener() {
+            @Override
+            public void onSearchClicked(String content) {
+                if (!TextUtils.isEmpty(content)) {
+                    mPresenter.searchGoods(Configs.shop_sn, content);
+                }
+            }
+        });
+
+
+    }
+
+    /**
+     * 显示加工方式选择框
+     */
+    private void showProcessingDialog(final int position, final GoodsResponse current, List<GoodsResponse> processing_list) {
+        if(mProcessingChoiceDialog == null) {
+            mProcessingChoiceDialog = new ProcessingChoiceDialog(getContext());
+            mProcessingChoiceDialog.setCanceledOnTouchOutside(true);
+
+            mProcessingChoiceDialog.create();
+        }
+        mProcessingChoiceDialog.setOnItemClickListener(new ProcessingChoiceDialog.OnItemClickListener() {
+            @Override
+            public void onItemClicked(GoodsResponse result) {
+                mGoodsMultiItemAdapter.chooseProcessing(position, current, result);
+            }
+        });
+        mProcessingChoiceDialog.setData(processing_list);
+        mProcessingChoiceDialog.show();
+
     }
 
     private void setIntentData() {
@@ -190,7 +291,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         switch (mType) {
             case TYPE_GOODS:
                 clPopMoneyBox.setVisibility(View.VISIBLE);
-                clNoBarcode.setVisibility(View.GONE);
+                clNoBarcode.setVisibility(View.VISIBLE);
                 btnSettlement.setText(" 收银：  ￥0.00 ");
                 break;
             case TYPE_REFUND:
@@ -214,7 +315,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
         tvTotalMoney.setText("￥" + df.format(price));
         tvCoupon.setText("￥" + df.format(coupon));
-        if(mType == TYPE_GOODS) {
+        if (mType == TYPE_GOODS) {
             btnSettlement.setText(" 收银：  ￥" + df.format(price) + " ");
         } else {
             btnSettlement.setText(" 退款：  ￥" + df.format(price) + " ");
@@ -235,9 +336,19 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                         if (TextUtils.isEmpty(content)) {
                             showToast("请输入金额");
                             return;
+                        } else if (content.startsWith(".") || content.startsWith("00")) {
+                            showToast("请重新输入");
+                            return;
                         }
-                        showToast(content);
+                        float price = Float.valueOf(content);
+                        if (price == 0) {
+                            showToast("金额不能等于0");
+                            return;
+                        }
                         dialog.dismiss();
+
+                        //添加无码商品
+                        mGoodsMultiItemAdapter.addNoCodeItem(price);
                     }
                 });
 
@@ -247,32 +358,16 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                 mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
 
-//                RealMoneyRequestBody requestBody = new RealMoneyRequestBody();
-//                requestBody.setShop_id("16");
-//                requestBody.setOpenid("上海");
-//
-//                RealMoneyRequestBody.GoodsBean goodsBean = new RealMoneyRequestBody.GoodsBean();
-//                goodsBean.setBarcode("6923450605226");
-//                goodsBean.setGoods_count(1);
-//                List<RealMoneyRequestBody.GoodsBean> list = new ArrayList<>();
-//                list.add(goodsBean);
-//                requestBody.setGoods(list);
-//
-//                String json = GsonUtils.getInstance().getGson().toJson(requestBody);
-//                mPresenter.realMoney(json);
-
-
-
                 break;
             case R.id.btn_clear://清空
-                mGoodsAdapter.clear();
+                mGoodsMultiItemAdapter.clear();
 
                 break;
             case R.id.btn_settlement://收银 or  退款
                 switch (mType) {
                     case TYPE_GOODS:
 
-                        if(mTotalMoney <= 0) {
+                        if (mTotalMoney <= 0) {
                             showToast("金额不能小于等于0！");
                             return;
                         }
@@ -282,8 +377,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                                 .withInt("goods_count", mGoodsCount)
                                 .withFloat("coupon", mCoupon)
                                 .withFloat("total_money", mTotalMoney)
-                                .withString("string_goods_data", GsonUtils.getInstance().getGson().toJson(mdata))
-                                .withSerializable("goods_data", (Serializable) mdata)
+                                .withSerializable("goods_data", (Serializable) mData)
                                 .navigation();
                         break;
                     case TYPE_REFUND:
@@ -298,17 +392,19 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     }
 
     @Override
-    public void getGoodsSuccess(GoodsResponse goodsResponse) {
-        String barcode = goodsResponse.getBarcode();
-        mGoodsAdapter.addItem(barcode, goodsResponse);
+    public void getGoodsSuccess(List<GoodsResponse> result) {
+
+        mGoodsMultiItemAdapter.addItem(result, mGoodWeight != 0 ? mGoodWeight : 1);
+        mGoodWeight = 0;
+
     }
 
     @Override
     public void getGoodsFailed(Map<String, Object> map) {
-        if(HttpExceptionEngine.isBussinessError(map)) {
+        if (HttpExceptionEngine.isBussinessError(map)) {
             int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
-            if(20001 == err_code) {
+            if (20001 == err_code) {
                 showToast(err_msg);
             } else {
                 showToast(err_msg);
@@ -317,13 +413,55 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     }
 
     @Override
-    public void searchGoodsSuccess(GoodsResponse goodsResponse) {
+    public void searchGoodsSuccess(List<GoodsResponse> result) {
 
+        if (getActivity() != null) {
+            showSearchResultWindow(result);
+        }
+
+    }
+
+    /**显示搜索结果弹窗*/
+    private void showSearchResultWindow(List<GoodsResponse> result) {
+        if (mSearchResultWindow == null) {
+            mSearchResultWindow = new SearchResultWindow(getContext());
+            mSearchResultWindow.setOutsideTouchable(true);
+            mSearchResultWindow.setWidth(clSearch.getSearchResultWidth());
+            mSearchResultWindow.setHeight(-2);
+            mSearchResultWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_search_result_frame));
+
+            mSearchResultWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                //在dismiss中恢复透明度
+                public void onDismiss() {
+                    WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+                    lp.alpha = 1f;
+                    getActivity().getWindow().setAttributes(lp);
+                }
+            });
+
+            mSearchResultWindow.setOnSearchResultClickListener(new SearchResultWindow.OnSearchResultClickListener() {
+                @Override
+                public void onSearchResultClicked(List<GoodsResponse> list) {
+                    //添加
+                    mGoodsMultiItemAdapter.addItem(list, 1);
+                    clSearch.clearText();
+                    mSearchResultWindow.dismiss();
+                }
+            });
+        }
+        mSearchResultWindow.setData(result);
+        if(!mSearchResultWindow.isShowing()) {
+            WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+            lp.alpha = 0.4f;
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            getActivity().getWindow().setAttributes(lp);
+            mSearchResultWindow.showAsDropDown(clSearch);
+        }
     }
 
     @Override
     public void searchGoodsFailed(Map<String, Object> map) {
-
+        showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
     }
 
 

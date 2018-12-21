@@ -8,6 +8,7 @@ import com.easygo.cashier.bean.LoginResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.niubility.library.http.base.HttpResult;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -55,11 +56,12 @@ public interface HttpService {
 
     /**
      * 获取商品信息
+     * type 1 精确搜索， 2 模糊搜索（此时barcode传关键字）
      */
     @FormUrlEncoded
     @POST("api/pay/get_info")
-    Observable<HttpResult<GoodsResponse>> getGoods(@HeaderMap Map<String, String> header, @Field("shop_sn") String shop_sn,
-                                                   @Field("barcode") String barcode);
+    Observable<HttpResult<List<GoodsResponse>>> getGoods(@HeaderMap Map<String, String> header, @Field("shop_sn") String shop_sn,
+                                                        @Field("barcode") String barcode, @Field("type") int type);
 
     /**
      * 获取商品信息
@@ -181,7 +183,7 @@ public interface HttpService {
      */
     @FormUrlEncoded
     @POST("api/cash/sale")
-    Observable<HttpResult<HandoverSaleResponse>> sale_list(@HeaderMap Map<String, String> header, @Field("handover_id") int handover_id);
+    Observable<HttpResult<List<HandoverSaleResponse>>> sale_list(@HeaderMap Map<String, String> header, @Field("handover_id") int handover_id);
 
 
 

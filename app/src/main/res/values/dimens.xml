@@ -28,6 +28,17 @@
     <dimen name="margin_1327">@dimen/x1327</dimen>
     <dimen name="margin_1645">@dimen/x1645</dimen>
 
+
+    <!--交接班销售列表-->
+    <dimen name="margin_72">@dimen/x72</dimen>
+    <dimen name="margin_661">@dimen/x661</dimen>
+    <dimen name="margin_1054">@dimen/x1054</dimen>
+    <dimen name="margin_1291">@dimen/x1291</dimen>
+    <dimen name="margin_1528">@dimen/x1528</dimen>
+
+
+
+
     <!--顶部标题栏高度-->
     <dimen name="title_bar_height">@dimen/y100</dimen>
 
