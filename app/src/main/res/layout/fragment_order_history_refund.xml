@@ -11,14 +11,21 @@
         android:layout_height="50dp"
         android:background="@color/color_text_white">
 
+        <!--搜索框-->
         <com.easygo.cashier.widget.MySearchView
             android:id="@+id/search_view"
-            android:layout_width="258dp"
+            android:layout_width="@dimen/x590"
             android:layout_height="33dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/x45"
+            android:background="@drawable/bg_btn_frame_green"
+            MySearchView:search_btn_height="33dp"
             MySearchView:search_btn_text_size="@dimen/x12"
-            MySearchView:search_hint="输入商品名" />
+            MySearchView:search_btn_width="@dimen/x180"
+            MySearchView:search_hint="@string/text_search_hint_product_name"
+            MySearchView:search_text_padding_start="@dimen/x29">
+
+        </com.easygo.cashier.widget.MySearchView>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -58,12 +65,12 @@
         layout="@layout/layout_order_history_refund_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/ll"
+        android:layout_above="@+id/layout"
         android:layout_below="@+id/rl"
         android:layout_marginTop="@dimen/x21" />
 
     <LinearLayout
-        android:id="@+id/ll"
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y150"
         android:layout_alignParentBottom="true"
@@ -80,21 +87,24 @@
             android:textColor="@color/color_505050" />
 
         <TextView
-            android:id="@+id/tv_refoundcash_price"
+            android:id="@+id/tv_refund_cash_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="共退货1件，退货金额：" />
+            android:text="共退货1件，退货金额："
+            android:textSize="12sp" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/tv_refund_case_price"
+            android:layout_width="90dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
-            android:background="@drawable/bg_fill_frame_order_history_goods_title"
-            android:padding="6dp"
-            android:text="￥1000.00"
+            android:background="@drawable/bg_frame"
+            android:gravity="center"
+            android:maxLength="10"
+            android:text="￥0.00"
             android:textColor="@color/color_ed2e2e"
-            android:textSize="11sp" />
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btn_refund"
@@ -104,7 +114,7 @@
             android:layout_marginStart="@dimen/x90"
             android:layout_marginEnd="@dimen/y45"
             android:background="@drawable/bg_btn_commit"
-            android:text="@string/text_refund_order"
+            android:text="@string/text_refund_orders"
             android:textColor="@color/color_text_white"
             android:textSize="@dimen/text_size_29"
             android:textStyle="bold" />

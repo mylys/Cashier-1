@@ -1,131 +1,163 @@
 package com.easygo.cashier.module.order_history;
 
-import android.content.res.Resources;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.easygo.cashier.Configs;
 import com.easygo.cashier.R;
-import com.easygo.cashier.Test;
 import com.easygo.cashier.adapter.OrderHistoryAdapter;
-import com.easygo.cashier.bean.OrderHistoryInfo;
+import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.widget.MySearchView;
-import com.niubility.library.base.BaseFragment;
+import com.niubility.library.base.BaseMvpFragment;
+import com.niubility.library.constants.Constans;
+import com.niubility.library.http.exception.HttpExceptionEngine;
+import com.niubility.library.utils.SharedPreferencesUtils;
+
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
-public class OrderHistoryFragment extends BaseFragment {
-
-    private static final String TAG = "OrderHistoryFragment";
+public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.IView, OrderHistoryPresenter> implements OrderHistoryContract.IView {
 
     @BindView(R.id.rv_order_history)
     RecyclerView rvOrderHistory;
     @BindView(R.id.cl_search)
     MySearchView clSearch;
-    private Unbinder unbinder;
+    @BindView(R.id.refresh)
+    SwipeRefreshLayout layout;
 
-    private final String TAG_ORDER_HISTORY = "tag_order_history";
     private OrderHistoryDetailFragment orderHistoryDetailFragment;
+    private OrderHistoryAdapter adapter = new OrderHistoryAdapter();
+    SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getActivity());
+    int handover_id = -1;
+
+    private int page = 1;
+    private int pageCount = 10;
+    private boolean isSearch = false;
 
     public static OrderHistoryFragment newInstance() {
         return new OrderHistoryFragment();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_order_history, container, false);
-        unbinder = ButterKnife.bind(this, view);
-
-        return view;
+    protected OrderHistoryPresenter createPresenter() {
+        return new OrderHistoryPresenter();
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected OrderHistoryContract.IView createView() {
+        return this;
+    }
 
-        LinearLayoutManager llm = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        final OrderHistoryAdapter orderHistoryAdapter = new OrderHistoryAdapter();
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_order_history;
+    }
 
-        Resources res = getResources();
-        int normal_color = res.getColor(R.color.color_505050);
-        int selected_color = res.getColor(R.color.color_text_white);
-        int background = res.getColor(R.color.color_51beaf);
-        orderHistoryAdapter.setColor(normal_color, selected_color, background);
+    @Override
+    protected void init() {
+        if (orderHistoryDetailFragment == null) {
+            orderHistoryDetailFragment = new OrderHistoryDetailFragment();
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            transaction.replace(R.id.framelayout, orderHistoryDetailFragment, "tag_order_history").commit();
+        }
 
-        rvOrderHistory.setLayoutManager(llm);
-        rvOrderHistory.setAdapter(orderHistoryAdapter);
+        handover_id = sp.getInt(Constans.KEY_HANDOVER_ID, -1);
+        mPresenter.post(handover_id, null, page, pageCount);
+
+        rvOrderHistory.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvOrderHistory.setAdapter(adapter);
 
         //分割线
         DividerItemDecoration verticalDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-        verticalDecoration.setDrawable(res.getDrawable(R.drawable.bg_item_decoration_vertical_order_history));
+        verticalDecoration.setDrawable(getResources().getDrawable(R.drawable.bg_item_decoration_vertical_order_history));
         rvOrderHistory.addItemDecoration(verticalDecoration);
+        setEmpty();
+        setListener();
+    }
 
-        orderHistoryAdapter.setNewData(Test.getOrderHistoryData());
-
-        orderHistoryAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+    private void setListener() {
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                OrderHistoryAdapter myself = (OrderHistoryAdapter) adapter;
-                int selected_old = myself.getSelected();
-                if (selected_old != position) {
-                    myself.setSelected(position);
-                    myself.notifyItemChanged(selected_old);
-                    myself.notifyItemChanged(position);
-                }
-                OrderHistoryInfo orderHistoryInfo = (OrderHistoryInfo) adapter.getData().get(position);
-                Log.i(TAG, "onItemClick: orderHistoryInfo --> " + orderHistoryInfo.toString());
-                showToast("position-> " + position);
-                showOrderHistory(orderHistoryInfo);
+            public void onLoadMoreRequested() {
+                page++;
+                mPresenter.post(handover_id, null, page, pageCount);
             }
         });
 
-        if(orderHistoryDetailFragment == null) {
-            orderHistoryDetailFragment = new OrderHistoryDetailFragment();
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.replace(R.id.framelayout, orderHistoryDetailFragment, TAG_ORDER_HISTORY).commit();
-        }
-
-        new Handler().postDelayed(new Runnable() {
+        layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void run() {
-                //显示第一条数据
-                orderHistoryDetailFragment.showOrderHistory(Test.getOrderHistoryData().get(0));
+            public void onRefresh() {
+                page = 1;
+                mPresenter.post(handover_id, null, page, pageCount);
             }
-        },1000);
+        });
 
+        adapter.setOnItemClickListener(new OrderHistoryAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClck(int position) {
+                orderHistoryDetailFragment.showOrderHistory(adapter.getData().get(position), Configs.admin_name);
+            }
+        });
+
+        clSearch.setOnSearchListenerClick(new MySearchView.OnSearhListenerClick() {
+            @Override
+            public void onSearch(String content) {
+                page = 1;
+                isSearch = content.length() != 0;
+                mPresenter.post(handover_id, content.length() == 0 ? null : content, page, pageCount);
+            }
+        });
     }
 
-    public void showOrderHistory(final OrderHistoryInfo orderHistoryInfo) {
-
-                orderHistoryDetailFragment.showOrderHistory(orderHistoryInfo);
-
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//            }
-//        }, 2000);
+    /* 设置adapter数据 */
+    private void setEmpty() {
+        View emptyView = getLayoutInflater().inflate(R.layout.item_empty_view, null);
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        adapter.setEmptyView(emptyView);
     }
-
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (unbinder != null)
-            unbinder.unbind();
+    public void getHistoryInfo(List<OrderHistorysInfo> orderHistorysInfo) {
+        if (orderHistorysInfo != null) {
+            if (page == 1) {
+                adapter.setNewData(orderHistorysInfo);
+                if (orderHistoryDetailFragment != null) {
+                    if (orderHistorysInfo.size() > 0) {
+                        adapter.setItemClick();
+                        orderHistoryDetailFragment.showOrderHistory(orderHistorysInfo.get(0), Configs.admin_name);
+                    }
+                }
+                if (isSearch){
+                    adapter.loadMoreEnd();
+                }
+                layout.setRefreshing(false);
+            } else {
+                if (orderHistorysInfo.size() == 0) {
+                    adapter.loadMoreEnd();
+                    return;
+                }
+                adapter.addData(orderHistorysInfo);
+                adapter.loadMoreComplete();
+            }
+        }
+    }
+
+    @Override
+    public void getHistorfFailed(Map<String, Object> map) {
+        if (HttpExceptionEngine.isBussinessError(map)) {
+            String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
+            showToast("错误信息:" + err_msg);
+        }
     }
 }

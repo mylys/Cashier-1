@@ -78,7 +78,7 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
 //                    showToast("实收金额小于应收金额， 请确认！");
 //                }
                 //弹出确认弹窗
-                Bundle bundle = ConfirmDialog.getDataBundle(0, 0, 0, PayWayView.WAY_CASH);
+                Bundle bundle = ConfirmDialog.getDataBundle(0, 0, 0, PayWayView.WAY_CASH, false, "应退", "实退");
                 confirmDialog = new ConfirmDialog();
                 confirmDialog.setArguments(bundle);
                 confirmDialog.setOnConfirmListener(new ConfirmDialog.OnConfirmListenr() {
@@ -106,8 +106,8 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
     }
 
     public void onCommitOrder() {
-        if(mPayWay == PayWayView.WAY_ALIPAY) {
-            if(TextUtils.isEmpty(Configs.order_no)) {
+        if (mPayWay == PayWayView.WAY_ALIPAY) {
+            if (TextUtils.isEmpty(Configs.order_no)) {
                 showToast("确认提交订单");
 //                createOrder();
             } else {

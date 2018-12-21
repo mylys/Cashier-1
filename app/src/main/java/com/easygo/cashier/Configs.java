@@ -3,7 +3,6 @@ package com.easygo.cashier;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.view.TextureView;
 
 import com.niubility.library.constants.Constans;
 import com.niubility.library.utils.SharedPreferencesUtils;
@@ -24,6 +23,11 @@ public class Configs {
      */
     public static String printer_sn = "918510026";
 
+    /* admin */
+    public static String admin_name = "";
+
+
+
     public static String getShop_sn(Context context) {
         if(TextUtils.isEmpty(shop_sn)) {
             SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(context);
@@ -31,4 +35,5 @@ public class Configs {
         }
         return shop_sn;
     }
+
 }

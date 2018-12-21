@@ -45,7 +45,7 @@
     <string name="text_receipts_refound">实退:</string>
     <string name="text_coupon_colon">优惠:</string>
     <string name="text_delete">删除</string>
-    <string name="text_refund_order">退款</string>
+    <string name="text_refund_orders">退款</string>
 
 
     <string name="text_scan_code">请扫描收款码</string>
@@ -64,6 +64,7 @@
     <!--搜索框-->
     <string name="text_search_hint_barcode">输入条形码、商品名或编码</string>
     <string name="text_search_hint_order">输入订单单号</string>
+    <string name="text_search_hint_product_name">输入商品名</string>
     <string name="text_search">搜索</string>
 
     <!-- dialog -->
@@ -85,6 +86,12 @@
     <string name="text_refund_count">退货单</string>
     <string name="text_cash_income">现金收入</string>
     <string name="text_classification">分类</string>
+    <string name="reconnection">重新连接</string>
+
+    <!-- 设备状态 -->
+    <string name="the_printer">小票机</string>
+    <string name="the_code_gun">扫码枪</string>
+    <string name="the_till">钱柜</string>
 
 
 </resources>

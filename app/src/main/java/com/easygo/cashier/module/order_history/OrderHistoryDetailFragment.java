@@ -1,10 +1,13 @@
 package com.easygo.cashier.module.order_history;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.OrderHistoryGoodsAdapter;
 import com.easygo.cashier.bean.GoodsInfo;
 import com.easygo.cashier.bean.OrderHistoryInfo;
+import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.niubility.library.base.BaseFragment;
 
 import java.util.ArrayList;
@@ -39,42 +43,33 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     View line3;
     @BindView(R.id.tv_receipts)
     TextView tvReceipts;
-    @BindView(R.id.tv_receipts_way)
-    TextView tvReceiptsWay;
-    @BindView(R.id.tv_receipts_cash_change)
-    TextView tvReceiptsCashChange;
     @BindView(R.id.line2)
     View line2;
     @BindView(R.id.tv_goods_count)
     TextView tvGoodsCount;
     @BindView(R.id.tv_receivable)
     TextView tvReceivable;
-    @BindView(R.id.tv_receivable_total_money)
-    TextView tvReceivableTotalMoney;
-    @BindView(R.id.tv_refund_way)
-    TextView tvRefundWay;
-    @BindView(R.id.tv_coupon)
-    TextView tvCoupon;
     @BindView(R.id.tv_buyer)
     TextView tvBuyer;
     @BindView(R.id.rv_goods)
     RecyclerView rvGoods;
+    @BindView(R.id.tv_receivable_text)
+    TextView tvReceivableText;
+    @BindView(R.id.tv_receipts_text)
+    TextView tvReceiptsText;
+    @BindView(R.id.tv_refund_text)
+    TextView tvRefundText;
     Unbinder unbinder;
 
-    /**商品数据*/
-    private List<GoodsInfo> mdata;
+    /* 获取支付方式，传递给退款Fragment */
+    private String payType = "";
+    /* 获取订单单号，传递给退款Fragment */
+    private String order_number = "";
+
+    /**
+     * 商品数据
+     */
     private OrderHistoryGoodsAdapter orderHistoryGoodsAdapter;
-
-    private float mTotalMoney;
-    private float mReceivable;
-    private float mReceipts;
-    private float mCoupon;
-    private float mGoodsCount;
-    private float mReturnOfGoodsCount;
-    private float mRefund;
-    private int mPayWay;
-    private String mBuyer;
-
 
     @Nullable
     @Override
@@ -92,20 +87,16 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     }
 
     private void init() {
-        rvGoods.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        rvGoods.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        rvGoods.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         orderHistoryGoodsAdapter = new OrderHistoryGoodsAdapter();
         rvGoods.setAdapter(orderHistoryGoodsAdapter);
-
-        mdata = new ArrayList<>();
-        orderHistoryGoodsAdapter.setNewData(mdata);
-
-
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(unbinder != null) {
+        if (unbinder != null) {
             unbinder.unbind();
         }
     }
@@ -114,80 +105,96 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_refund:
-                Toast.makeText(getContext(), "退款", Toast.LENGTH_SHORT).show();
-
                 if (getActivity() != null) {
-                    ((OrderHistoryActivity) getActivity()).toOrderHistoryRefundFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("data", (ArrayList<OrderHistorysInfo.ListBean>) orderHistoryGoodsAdapter.getData());
+                    bundle.putString("pay_type", "支付方式：" + payType);
+                    bundle.putString("order_number", "订单单号：" + order_number);
+                    ((OrderHistoryActivity) getActivity()).toOrderHistoryRefundFragment(bundle);
                 }
                 break;
             case R.id.btn_print:
                 Toast.makeText(getContext(), "打印单据", Toast.LENGTH_SHORT).show();
-            break;
+                break;
         }
     }
 
-    public void showOrderHistory(OrderHistoryInfo orderHistoryInfo) {
-        tvOrderNo.setText(orderHistoryInfo.getOrder_no());
-        tvCashierAcount.setText(orderHistoryInfo.getAcount());
-        tvGoodsCount.setText("共" + orderHistoryInfo.getCount() + "件");
-        tvReceivableTotalMoney.setText("总额：￥" + orderHistoryInfo.getTotal_money());
-        tvReceipts.setText("实收：￥" + orderHistoryInfo.getReceipts());
-        tvReceivable.setText("应收：￥" + orderHistoryInfo.getReceivable());
-        tvBuyer.setText(orderHistoryInfo.getBuyer());
+    public void showOrderHistory(OrderHistorysInfo orderHistoryInfo, String name) {
+        orderHistoryGoodsAdapter.setNewData(orderHistoryInfo.getList());
+        tvOrderNo.setText(orderHistoryInfo.getTrade_num());
+        tvCashierAcount.setText(name);
+        tvGoodsCount.setText("共" + orderHistoryInfo.getList().size() + "件");
+        tvReceipts.setText("实收：￥" + orderHistoryInfo.getBuyer_pay());
 
+        tvReceivable.setText("应收：￥" + orderHistoryInfo.getReal_pay());
+        tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money() + " = ");
 
-        //优惠
-        float coupon = orderHistoryInfo.getCoupon();
-        if(coupon > 0) {
-            tvCoupon.setText("- 优惠：￥" + coupon);
-            tvCoupon.setVisibility(View.VISIBLE);
-        } else {
-            tvCoupon.setVisibility(View.GONE);
-        }
+        order_number = orderHistoryInfo.getTrade_num();
 
-        //退款
-        float refund = orderHistoryInfo.getRefund();
-        if(refund > 0) {
-            tvRefund.setText("退款：￥" + refund);
-            switch (orderHistoryInfo.getPay_way()) {
-                case 0:
-                    tvRefundWay.setText("现金：￥" + refund);
-                    break;
-                case 1:
-                    tvRefundWay.setText("支付宝：￥" + refund);
-                    break;
-                case 2:
-                    tvRefundWay.setText("微信：￥" + refund);
-                    break;
-            }
-            tvReturnOfGoodsCount.setText("共退货" + orderHistoryInfo.getReturn_of_goods_count() + "件");
-            tvRefund.setVisibility(View.VISIBLE);
-            tvRefundWay.setVisibility(View.VISIBLE);
-            tvReturnOfGoodsCount.setVisibility(View.VISIBLE);
-        } else {
-            tvRefund.setVisibility(View.GONE);
-            tvRefundWay.setVisibility(View.GONE);
-            tvReturnOfGoodsCount.setVisibility(View.GONE);
-        }
-
-        switch (orderHistoryInfo.getPay_way()) {
-            case 0:
-                tvReceiptsWay.setText("现金：￥" + orderHistoryInfo.getReceivable());
-                tvReceiptsCashChange.setText("找零：￥" + orderHistoryInfo.getChange());
-                tvReceiptsCashChange.setVisibility(View.VISIBLE);
-                break;
+        switch (orderHistoryInfo.getPay_type()) {
             case 1:
-                tvReceiptsWay.setText("支付宝：￥" + orderHistoryInfo.getReceivable());
-                tvReceiptsCashChange.setVisibility(View.GONE);
+                payType = "微信";
                 break;
             case 2:
-                tvReceiptsWay.setText("微信：￥" + orderHistoryInfo.getReceivable());
-                tvReceiptsCashChange.setVisibility(View.GONE);
+                payType = "微信 + 现金";
+                break;
+            case 3:
+                payType = "现金";
+                break;
+            case 4:
+                payType = "企业钱包";
+                break;
+            case 5:
+                payType = "微信 + 企业钱包";
+                break;
+            case 6:
+                payType = "支付宝";
                 break;
         }
+        double change_money = Double.parseDouble(orderHistoryInfo.getChange_money());
+        double buyer_price = Double.parseDouble(orderHistoryInfo.getBuyer_pay());
+        double total_buyer_price = buyer_price + change_money;
+        String change_price = "0.00";
+        if (change_money != 0) {
+            change_price = change_money + "";
+        }
+        if (total_buyer_price != 0) {
+            tvReceiptsText.setText(payType + "：￥" + total_buyer_price + " - 找零：￥" + change_price + " = ");
+        } else {
+            tvReceiptsText.setText(payType + "：￥0.00 - 找零：￥" + change_price + " = ");
+        }
 
-        List<GoodsInfo> goods = orderHistoryInfo.getGoods();
+        /*付款*/
+        tvBuyer.setVisibility(View.INVISIBLE);
 
+        /*退款*/
+        tvRefund.setVisibility(View.INVISIBLE);
+        tvRefundText.setVisibility(View.INVISIBLE);
+        tvReturnOfGoodsCount.setVisibility(View.INVISIBLE);
+        switch (orderHistoryInfo.getStatus()) {
+            case 1:
+                break;
+            case 2:
+                tvBuyer.setVisibility(View.VISIBLE);
+                tvBuyer.setText("付款人：" + orderHistoryInfo.getBuyer());
+                break;
+            case 3:
+                tvReturnOfGoodsCount.setVisibility(View.VISIBLE);
+                tvRefund.setVisibility(View.VISIBLE);
 
+                double refund_price = 0;
+                if (orderHistoryInfo.getRefund_fee() != null) {
+                    refund_price = (double) orderHistoryInfo.getRefund_fee();
+                }
+                double total_refund = refund_price + change_money;
+                if (total_refund != 0) {
+                    tvRefundText.setText(payType + "：￥" + total_refund + " - 找零：￥" + change_price + " = ");
+                } else {
+                    tvRefundText.setText(payType + "：￥0.00 - 找零：￥" + change_price + " = ");
+                }
+                tvRefund.setText("退款：￥" + refund_price);
+                tvReturnOfGoodsCount.setText("共退款" + orderHistoryInfo.getList().size() + "件");
+                break;
+        }
     }
 }

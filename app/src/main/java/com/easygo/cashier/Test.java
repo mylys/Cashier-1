@@ -1,10 +1,20 @@
 package com.easygo.cashier;
 
+import android.app.Activity;
+import android.hardware.input.InputManager;
+import android.util.Log;
+import android.view.InputDevice;
+
 import com.easygo.cashier.bean.GoodsInfo;
+import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.OrderHistoryInfo;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.INPUT_SERVICE;
 
 public class Test {
 
@@ -35,7 +45,7 @@ public class Test {
             orderHistoryInfos.add(info);
         }
 
-        return  orderHistoryInfos;
+        return orderHistoryInfos;
     }
 
     public static List<GoodsInfo> getGoodsInfos() {
@@ -55,5 +65,40 @@ public class Test {
         }
 
         return goodsInfos;
+    }
+
+    public static List<GoodsRefundInfo> getGoodsRefundInfos() {
+        ArrayList<GoodsRefundInfo> list = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            GoodsRefundInfo goodsRefundInfo = new GoodsRefundInfo();
+            goodsRefundInfo.setProduct_name("商品 - " + (i + 1));
+            goodsRefundInfo.setProduct_price("￥" + (i + 1) + "000.00");
+            goodsRefundInfo.setProduct_preferential(i + "");
+            goodsRefundInfo.setProduct_subtotal("￥" + (i + 1) + "000.00");
+            goodsRefundInfo.setRefund_num("1");
+            goodsRefundInfo.setRefund_subtotal((i + 1) + "000");
+            goodsRefundInfo.setSelect(false);
+
+            list.add(goodsRefundInfo);
+        }
+        return list;
+    }
+
+    public static void detectInputDeviceWithShell() {
+        try {
+            //获得外接USB输入设备的信息
+            Process p = Runtime.getRuntime().exec("cat /proc/bus/input/devices");
+            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line = null;
+            while ((line = in.readLine()) != null) {
+                String deviceInfo = line.trim();
+                //对获取的每行的设备信息进行过滤，获得自己想要的。
+                if (deviceInfo.contains("Name="))
+                    Log.i("hjq", "detectInputDeviceWithShell: " + deviceInfo);
+            }
+            Log.i("hjq", "-----------------------");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -11,6 +11,7 @@
     <dimen name="text_size_25">@dimen/x25</dimen>
     <dimen name="text_size_28">@dimen/x28</dimen>
     <dimen name="text_size_29">@dimen/x29</dimen>
+    <dimen name="text_size_12">@dimen/x12</dimen>
     <dimen name="text_size_30">@dimen/x30</dimen>
     <dimen name="text_size_33">@dimen/x33</dimen>
     <dimen name="text_size_37">@dimen/x37</dimen>
@@ -48,6 +49,10 @@
     <dimen name="function_list_height">@dimen/y632</dimen>
     <dimen name="function_list_item_width">@dimen/x289</dimen>
     <dimen name="function_list_item_height">@dimen/y273</dimen>
+
+    <!-- 设备状态 -->
+    <dimen name="equipment_list_width">@dimen/x633</dimen>
+    <dimen name="equipment_list_height">@dimen/x506</dimen>
 
     <!--确认弹窗-->
     <dimen name="dialog_width">@dimen/x600</dimen>
