@@ -192,4 +192,8 @@ public interface HttpService {
                                                                     @Field("keyword") String keyword,
                                                                     @Field("page") int page,
                                                                     @Field("count") int count);
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("api/pay/refund")
+    Observable<HttpResult<String>> refund(@HeaderMap Map<String, String> header, @Body RequestBody json);
 }

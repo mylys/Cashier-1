@@ -12,11 +12,8 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.base.BaseAppActivity;
-import com.easygo.cashier.bean.OrderHistorysInfo;
+import com.easygo.cashier.module.order_history.order_history_refund.OrderHistoryRefundFragment;
 import com.easygo.cashier.widget.MyTitleBar;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

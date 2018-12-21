@@ -13,7 +13,7 @@
     <string name="text_coupon">优惠</string>
     <string name="text_subtotal">小计</string>
     <string name="text_count">数量</string>
-
+    <string name="text_total">合计</string>
     <string name="text_goods_count">件数</string>
     <string name="text_total_money">总额</string>
     <string name="text_clear">清空</string>
@@ -21,6 +21,7 @@
     <string name="text_refund">退款</string>
     <string name="text_cancel">取消</string>
     <string name="text_confirm">确认</string>
+    <string name="text_pay">支付</string>
 
 
     <!--结算页面-->
@@ -59,6 +60,12 @@
     <string name="text_cashier">收银员：</string>
     <string name="text_function_list">功能列表</string>
     <string name="text_buyer">付款人：</string>
+    <string name="text_pay_type">支付方式：</string>
+    <string name="text_order_number">订单单号：</string>
+
+    <!-- 退款 -->
+    <string name="text_total_refund_product">共退货</string>
+    <string name="text_total_refund_price">件,退款金额：￥ </string>
 
     <!--搜索框-->
     <string name="text_search_hint_barcode">输入条形码、商品名或编码</string>
@@ -85,12 +92,23 @@
     <string name="text_refund_count">退货单</string>
     <string name="text_cash_income">现金收入</string>
     <string name="text_classification">分类</string>
-    <string name="reconnection">重新连接</string>
 
     <!-- 设备状态 -->
+    <string name="device_state">设备状态</string>
     <string name="the_printer">小票机</string>
     <string name="the_code_gun">扫码枪</string>
     <string name="the_till">钱柜</string>
+    <string name="reconnection">请重新连接</string>
+    <string name="device_normal">正常</string>
+    <string name="device_abnormal">异常</string>
+
+    <!-- 支付方式 -->
+    <string name="pay_alipay">支付宝</string>
+    <string name="pay_wechat">微信</string>
+    <string name="pay_wechat_cash">微信 + 现金</string>
+    <string name="pay_wechat_wallet">微信 + 企业钱包</string>
+    <string name="pay_cash">现金</string>
+    <string name="pay_wallet">企业钱包</string>
 
 
 </resources>

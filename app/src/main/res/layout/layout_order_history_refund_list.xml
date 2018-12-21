@@ -27,14 +27,14 @@
 
             <TextView
                 style="@style/RefundList"
-                android:layout_width="@dimen/x486"
+                android:layout_width="@dimen/x428"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/x30"
                 android:text="品名" />
 
             <TextView
                 style="@style/RefundList"
-                android:layout_width="@dimen/x282"
+                android:layout_width="@dimen/x220"
                 android:layout_height="match_parent"
                 android:text="单价" />
 
@@ -46,12 +46,18 @@
 
             <TextView
                 style="@style/RefundList"
+                android:layout_width="@dimen/x135"
+                android:layout_height="match_parent"
+                android:text="数量" />
+
+            <TextView
+                style="@style/RefundList"
                 android:layout_width="@dimen/x225"
                 android:layout_height="match_parent"
                 android:text="小计" />
 
             <TextView
-                android:layout_width="@dimen/x321"
+                android:layout_width="@dimen/x306"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="退货数量"

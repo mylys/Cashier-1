@@ -65,12 +65,12 @@
         layout="@layout/layout_order_history_refund_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/layout"
+        android:layout_above="@+id/ll"
         android:layout_below="@+id/rl"
         android:layout_marginTop="@dimen/x21" />
 
     <LinearLayout
-        android:id="@+id/layout"
+        android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y150"
         android:layout_alignParentBottom="true"
@@ -91,18 +91,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="共退货1件，退货金额："
+            android:text="共退货1件，退货金额：￥ "
             android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/tv_refund_case_price"
-            android:layout_width="90dp"
-            android:layout_height="24dp"
+        <EditText
+            android:id="@+id/edit_refund_case_price"
+            android:layout_width="@dimen/x190"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/bg_frame"
             android:gravity="center"
-            android:maxLength="10"
-            android:text="￥0.00"
+            android:inputType="number|numberDecimal"
+            android:paddingTop="@dimen/x10"
+            android:paddingBottom="@dimen/y10"
+            android:text="0.00"
             android:textColor="@color/color_ed2e2e"
             android:textSize="14sp" />
 
@@ -119,5 +121,4 @@
             android:textSize="@dimen/text_size_29"
             android:textStyle="bold" />
     </LinearLayout>
-
 </RelativeLayout>

@@ -66,6 +66,8 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     /* 获取订单单号，传递给退款Fragment */
     private String order_number = "";
 
+    private int total_price = 0;
+
     /**
      * 商品数据
      */
@@ -108,8 +110,9 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 if (getActivity() != null) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList("data", (ArrayList<OrderHistorysInfo.ListBean>) orderHistoryGoodsAdapter.getData());
-                    bundle.putString("pay_type", "支付方式：" + payType);
-                    bundle.putString("order_number", "订单单号：" + order_number);
+                    bundle.putString("pay_type", payType);
+                    bundle.putInt("total_price",total_price);
+                    bundle.putString("order_number", order_number);
                     ((OrderHistoryActivity) getActivity()).toOrderHistoryRefundFragment(bundle);
                 }
                 break;
@@ -130,25 +133,26 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money() + " = ");
 
         order_number = orderHistoryInfo.getTrade_num();
+        total_price = Integer.parseInt(orderHistoryInfo.getTotal_money().replace(".",""));
 
         switch (orderHistoryInfo.getPay_type()) {
             case 1:
-                payType = "微信";
+                payType = getResources().getString(R.string.pay_wechat);
                 break;
             case 2:
-                payType = "微信 + 现金";
+                payType = getResources().getString(R.string.pay_wechat_cash);
                 break;
             case 3:
-                payType = "现金";
+                payType = getResources().getString(R.string.pay_cash);
                 break;
             case 4:
-                payType = "企业钱包";
+                payType = getResources().getString(R.string.pay_wallet);
                 break;
             case 5:
-                payType = "微信 + 企业钱包";
+                payType = getResources().getString(R.string.pay_wechat_wallet);
                 break;
             case 6:
-                payType = "支付宝";
+                payType = getResources().getString(R.string.pay_alipay);
                 break;
         }
         double change_money = Double.parseDouble(orderHistoryInfo.getChange_money());

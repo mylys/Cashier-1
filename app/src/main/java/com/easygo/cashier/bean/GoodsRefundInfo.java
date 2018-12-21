@@ -1,8 +1,6 @@
 package com.easygo.cashier.bean;
 
 /**
- * @Describe：
- * @author：hgeson
  * @date：2018-12-19
  */
 public class GoodsRefundInfo {
@@ -12,7 +10,25 @@ public class GoodsRefundInfo {
     private String product_subtotal;
     private String refund_num;
     private String refund_subtotal;
+    private int product_num;
+    private int s_sku_id;
     private boolean isSelect;
+
+    public int getS_sku_id() {
+        return s_sku_id;
+    }
+
+    public void setS_sku_id(int s_sku_id) {
+        this.s_sku_id = s_sku_id;
+    }
+
+    public int getProduct_num() {
+        return product_num;
+    }
+
+    public void setProduct_num(int product_num) {
+        this.product_num = product_num;
+    }
 
     public String getProduct_name() {
         return product_name;

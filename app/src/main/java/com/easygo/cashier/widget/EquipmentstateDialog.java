@@ -81,22 +81,14 @@ public class EquipmentstateDialog extends BaseDialog {
             protected void convert(BaseViewHolder helper, final EquipmentState item) {
                 int normal = getResources().getColor(R.color.color_16A1E1);
                 int abnormal = getResources().getColor(R.color.color_B02F38);
+                String normal_str = getResources().getString(R.string.device_normal);
+                String abnormal_str = getResources().getString(R.string.device_abnormal);
 
                 helper.getView(R.id.loading).setVisibility(item.isEquipment_request() ? View.VISIBLE : View.GONE);
                 helper.setText(R.id.tv_equipment_name, item.getEquipment_name())
-                        .setText(R.id.tv_equipment_state, item.isEquipment_state() ? "正常" : "异常")
+                        .setText(R.id.tv_equipment_state, item.isEquipment_state() ? normal_str : abnormal_str)
                         .setTextColor(R.id.tv_equipment_state, item.isEquipment_state() ? normal : abnormal)
                         .getView(R.id.tv_connection).setVisibility(item.isEquipment_state() ? View.GONE : View.VISIBLE);
-
-                /* 重新连接点击事件 */
-                helper.getView(R.id.tv_connection).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (listener != null) {
-                            listener.onClickListener(item.getEquipment_name());
-                        }
-                    }
-                });
             }
         });
         if (data != null) {
@@ -130,21 +122,15 @@ public class EquipmentstateDialog extends BaseDialog {
         showCenter(activity, "EQUIPMENT_STATE");
     }
 
-    private OnItemConnectClickListener listener;
-
-    public interface OnItemConnectClickListener {
-        void onClickListener(String name);
-    }
-
-    public void setOnItemConnectClickListener(OnItemConnectClickListener listener) {
-        this.listener = listener;
-    }
-
-    public boolean isShow(){
+    public boolean isShow() {
         return isShowing();
     }
 
-    public void setNewData(ArrayList<EquipmentState> list){
-        adapter.setNewData(list);
+    public void setNewData(int position, String name, boolean state) {
+        EquipmentState bean = adapter.getData().get(position);
+        bean.setEquipment_name(name);
+        bean.setEquipment_state(state);
+        bean.setEquipment_request(false);
+        adapter.notifyDataSetChanged();
     }
 }

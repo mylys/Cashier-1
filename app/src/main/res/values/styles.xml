@@ -122,6 +122,11 @@
         <item name="android:textSize">@dimen/text_size_84</item>
         <item name="android:textColor">@color/color_51bfb0</item>
     </style>
+    
+    <!-- 副屏 -->
+    <style name="ViceScreen" parent="GoodsSettlementDetailStyle">
+        <item name="android:gravity">center</item>
+    </style>
 
 
 

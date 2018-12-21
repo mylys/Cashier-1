@@ -68,6 +68,7 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
     private Fragment fragment;
     private GoodsFragment goodsFragment;
     private EquipmentstateDialog dialog;
+    private SecondaryScreen mPresentation = null;
 
     @Autowired(name = "admin_name")
     String admin_name;
@@ -103,7 +104,7 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
 
         tvCashierAcount.setText("收银员: " + admin_name);
 
-//        Test.detectInputDeviceWithShell();
+        Test.detectInputDeviceWithShell();
         mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
     }
 
@@ -128,16 +129,13 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.setting://设置
-
                 //临时代码
                 //屏幕管理类
                 DisplayManager mDisplayManager = (DisplayManager) this.getSystemService(Context.DISPLAY_SERVICE);
                 Display[] displays = mDisplayManager.getDisplays();
 
-                SecondaryScreen mPresentation = null;
                 if (mPresentation == null) {
                     mPresentation = new SecondaryScreen(this, displays[displays.length - 1]);// displays[1]是副屏
-
                     mPresentation.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
                 }
                 mPresentation.show();
@@ -295,26 +293,16 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
         arrayList.add(new EquipmentState(getResources().getString(R.string.the_printer), true, true));
         arrayList.add(new EquipmentState(getResources().getString(R.string.the_code_gun), true, true));
         arrayList.add(new EquipmentState(getResources().getString(R.string.the_till), true, true));
-        bundle.putString("title", "设备状态");
+        bundle.putString("title", getResources().getString(R.string.device_state));
         bundle.putParcelableArrayList("data", arrayList);
         dialog = EquipmentstateDialog.getInstance(bundle);
         dialog.showCenter(MainActivity.this);
-        dialog.setOnItemConnectClickListener(new EquipmentstateDialog.OnItemConnectClickListener() {
-            @Override
-            public void onClickListener(String name) {
-                Toast.makeText(MainActivity.this, name + " --- 重新连接", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
     public void printerStatusSuccess(String result) {
         if (dialog != null && dialog.isShow()) {
-            ArrayList<EquipmentState> arrayList = new ArrayList<>();
-            arrayList.add(new EquipmentState(getResources().getString(R.string.the_printer), true, false));
-            arrayList.add(new EquipmentState(getResources().getString(R.string.the_code_gun), true, false));
-            arrayList.add(new EquipmentState(getResources().getString(R.string.the_till), true, false));
-            dialog.setNewData(arrayList);
+            dialog.setNewData(0, getResources().getString(R.string.the_printer), true);
             return;
         }
         showToast("打印机正常连接");
@@ -323,11 +311,7 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
     @Override
     public void printerStatusFailed(Map<String, Object> map) {
         if (dialog != null && dialog.isShow()) {
-            ArrayList<EquipmentState> arrayList = new ArrayList<>();
-            arrayList.add(new EquipmentState(getResources().getString(R.string.the_printer), false, false));
-            arrayList.add(new EquipmentState(getResources().getString(R.string.the_code_gun), true, false));
-            arrayList.add(new EquipmentState(getResources().getString(R.string.the_till), true, false));
-            dialog.setNewData(arrayList);
+            dialog.setNewData(0, getResources().getString(R.string.the_printer), false);
             return;
         }
         showToast("打印机可能连接失败");

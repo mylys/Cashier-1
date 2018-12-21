@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class ConfirmDialog extends DialogFragment {
     private float mReceipts;
     private float mChange;
     private int mPayWay;
+    private String mRefundNum = "";
 
 
     @Override
@@ -69,9 +71,9 @@ public class ConfirmDialog extends DialogFragment {
         return bundle;
     }
 
-    public static Bundle getDataBundle(float receivable, float receipts, float change, int pay_way, boolean isVisiable, String... str) {
+    public static Bundle getDataBundle(String refund_num, float receipts, int pay_way, boolean isVisiable, String... str) {
         Bundle bundle = new Bundle();
-        bundle.putFloat("receivable", receivable);
+        bundle.putString("refund_num", refund_num);
         bundle.putFloat("receipts", receipts);
         bundle.putInt("pay_way", pay_way);
         bundle.putBoolean("visiable", isVisiable);
@@ -100,6 +102,7 @@ public class ConfirmDialog extends DialogFragment {
             mReceipts = bundle.getFloat("receipts");
             mChange = bundle.getFloat("change");
             mPayWay = bundle.getInt("pay_way");
+            mRefundNum = bundle.getString("refund_num");
             visiable = bundle.getBoolean("visiable", true);
             strings = bundle.getStringArray("change_text");
         }
@@ -114,6 +117,9 @@ public class ConfirmDialog extends DialogFragment {
         tvReceivable.setText("￥" + mReceivable);
         tvReceipts.setText("￥" + mReceipts);
         tvChange.setText("￥" + mChange);
+        if (!TextUtils.isEmpty(mRefundNum)){
+            tvReceivable.setText(mRefundNum + "件");
+        }
 
         switch (mPayWay) {
             case PayWayView.WAY_CASH:

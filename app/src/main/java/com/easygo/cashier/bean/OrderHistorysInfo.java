@@ -165,6 +165,7 @@ public class OrderHistorysInfo {
     }
 
     public static class ListBean implements Parcelable {
+
         /**
          * g_sku_name : 可口可乐小瓶
          * sell_price : 0.01
@@ -176,12 +177,14 @@ public class OrderHistorysInfo {
         private String sell_price;
         private int count;
         private String money;
+        private int s_sku_id;
 
         protected ListBean(Parcel in) {
             g_sku_name = in.readString();
             sell_price = in.readString();
             count = in.readInt();
             money = in.readString();
+            s_sku_id = in.readInt();
         }
 
         public static final Creator<ListBean> CREATOR = new Creator<ListBean>() {
@@ -228,6 +231,14 @@ public class OrderHistorysInfo {
             this.money = money;
         }
 
+        public int getS_sku_id() {
+            return s_sku_id;
+        }
+
+        public void setS_sku_id(int s_sku_id) {
+            this.s_sku_id = s_sku_id;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -239,6 +250,7 @@ public class OrderHistorysInfo {
             dest.writeString(sell_price);
             dest.writeInt(count);
             dest.writeString(money);
+            dest.writeInt(s_sku_id);
         }
     }
 }

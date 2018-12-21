@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_view"
     android:layout_width="@dimen/x1832"
     android:layout_height="@dimen/y90"
     android:orientation="horizontal">
@@ -14,7 +15,7 @@
     <TextView
         android:id="@+id/tv_product_name"
         style="@style/RefundList"
-        android:layout_width="@dimen/x486"
+        android:layout_width="@dimen/x428"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/x30"
         android:ellipsize="end"
@@ -24,7 +25,7 @@
     <TextView
         android:id="@+id/tv_product_price"
         style="@style/RefundList"
-        android:layout_width="@dimen/x282"
+        android:layout_width="@dimen/x220"
         android:layout_height="wrap_content"
         android:text="1000.00" />
 
@@ -32,6 +33,13 @@
         android:id="@+id/tv_product_preferential"
         style="@style/RefundList"
         android:layout_width="@dimen/x171"
+        android:layout_height="wrap_content"
+        android:text="0" />
+
+    <TextView
+        android:id="@+id/tv_product_total_num"
+        style="@style/RefundList"
+        android:layout_width="@dimen/x120"
         android:layout_height="wrap_content"
         android:text="0" />
 
@@ -51,7 +59,7 @@
         android:text="1"
         android:textColor="@color/color_303030"
         android:textSize="@dimen/sp_12"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <com.easygo.cashier.widget.CountTextView
         android:id="@+id/tv_refund_num"
@@ -60,29 +68,7 @@
         android:layout_gravity="center"
         android:textColor="@color/color_303030"
         android:textSize="@dimen/sp_12"
-        android:visibility="visible" />
-
-    <LinearLayout
-        android:id="@+id/edit_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:visibility="gone">
-
-        <EditText
-            android:id="@+id/edit_goods_count"
-            android:layout_width="50dp"
-            android:layout_height="20dp"
-            android:background="@drawable/bg_frame"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="5"
-            android:text="1000"
-            android:textColor="@color/color_333333"
-            android:textSize="12sp"/>
-
-    </LinearLayout>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_refund_subtotal"
