@@ -16,7 +16,7 @@
         android:layout_marginEnd="@dimen/margin_72"
         android:ellipsize="end"
         android:text="@string/text_goods_name"
-        style="@style/GoodsTitleStyle" />
+        style="@style/GoodsListStyle" />
 
 
     <TextView
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_661"
         android:text="@string/text_classification"
-        style="@style/GoodsTitleStyle" />
+        style="@style/GoodsListStyle" />
 
 
     <TextView
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_1054"
         android:text="@string/text_price"
-        style="@style/GoodsTitleStyle" />
+        style="@style/GoodsListStyle" />
 
 
     <TextView
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_1291"
         android:text="@string/text_count"
-        style="@style/GoodsTitleStyle" />
+        style="@style/GoodsListStyle" />
 
 
     <TextView
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_1528"
         android:text="@string/text_subtotal"
-        style="@style/GoodsTitleStyle" />
+        style="@style/GoodsListStyle" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

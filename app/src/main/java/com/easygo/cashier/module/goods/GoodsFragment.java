@@ -248,11 +248,11 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
         setIntentData();
 
-        clSearch.setOnSearchClickListener(new MySearchView.OnSearchClickListener() {
+        clSearch.setOnSearchListenerClick(new MySearchView.OnSearhListenerClick() {
             @Override
-            public void onSearchClicked(String content) {
-                if (!TextUtils.isEmpty(content)) {
-                    mPresenter.searchGoods(Configs.shop_sn, content);
+            public void onSearch(String content) {
+                if (!TextUtils.isEmpty(content.trim())) {
+                    mPresenter.searchGoods(Configs.shop_sn, content.trim());
                 }
             }
         });

@@ -4,16 +4,15 @@ public class HandoverSaleResponse {
 
 
     /**
-     * g_sku_id : 12988
-     * barcode : 6921168550111
-     * g_sku_name : 力量帝维他命热带水果味500ml
-     * g_c_name : 饮料类-功能性类
-     * purchase_price : 3.50
-     * sell_price : 6.00
+     * g_sku_id : 0
+     * barcode : null
+     * g_sku_name : 无码商品
+     * g_c_name : null
+     * purchase_price : 0.00
+     * sell_price : 2.00
      * count : 1
-     * money : 6
+     * money : 2
      */
-
 
     private int g_sku_id;
     private Object barcode;
@@ -22,7 +21,7 @@ public class HandoverSaleResponse {
     private String purchase_price;
     private String sell_price;
     private int count;
-    private int money;
+    private float money;
 
     public int getG_sku_id() {
         return g_sku_id;
@@ -32,8 +31,8 @@ public class HandoverSaleResponse {
         this.g_sku_id = g_sku_id;
     }
 
-    public String getBarcode() {
-        return barcode == null ? "" : (String) barcode;
+    public Object getBarcode() {
+        return barcode;
     }
 
     public void setBarcode(Object barcode) {
@@ -48,8 +47,8 @@ public class HandoverSaleResponse {
         this.g_sku_name = g_sku_name;
     }
 
-    public String getG_c_name() {
-        return g_c_name == null ? "" : (String) g_c_name;
+    public Object getG_c_name() {
+        return g_c_name;
     }
 
     public void setG_c_name(Object g_c_name) {
@@ -80,12 +79,11 @@ public class HandoverSaleResponse {
         this.count = count;
     }
 
-    public int getMoney() {
+    public float getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(float money) {
         this.money = money;
     }
-
 }

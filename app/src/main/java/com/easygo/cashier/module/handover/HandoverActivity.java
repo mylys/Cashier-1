@@ -2,7 +2,10 @@ package com.easygo.cashier.module.handover;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -24,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -37,11 +41,19 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
     MyTitleBar clTitle;
     @BindView(R.id.framelayout)
     FrameLayout framelayout;
+    @BindView(R.id.tv_text_login_time)
+    TextView tvTextLoginTime;
     @BindView(R.id.tv_login_time)
     TextView tvLoginTime;
 
     @Autowired(name = "admin_name")
     String admin_name;
+    @BindView(R.id.btn_handover)
+    Button btnHandover;
+    @BindView(R.id.btn_sales_list)
+    Button btnSalesList;
+    @BindView(R.id.btn_print)
+    Button btnPrint;
 
     private HandoverView mHandoverView;
     private HandoverSaleListView mHandoverSaleListView;
@@ -91,7 +103,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
             mHandoverView.setData(result);
         } catch (Exception e) {
             e.printStackTrace();
-            showToast("错误, 可能带有null对象" );
+            showToast("错误, 可能带有null对象");
         }
         tvLoginTime.setText(result.getStart_time());
 
@@ -100,7 +112,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
     @Override
     public void handoverFailed(Map<String, Object> map) {
 
-        if(HttpExceptionEngine.isBussinessError(map)) {
+        if (HttpExceptionEngine.isBussinessError(map)) {
 
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
 
@@ -126,26 +138,26 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
         SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sp.edit();
         //登录状态中，清除 session_id 、 admin_name
-        if(sp.contains(Constans.KEY_SESSION_ID)) {
+        if (sp.contains(Constans.KEY_SESSION_ID)) {
             editor.remove(Constans.KEY_SESSION_ID).apply();
         }
-        if(sp.contains(Constans.KEY_ADMIN_NAME)) {
+        if (sp.contains(Constans.KEY_ADMIN_NAME)) {
             editor.remove(Constans.KEY_ADMIN_NAME).apply();
         }
-        if(sp.contains(Constans.KEY_SHOP_SN)) {
+        if (sp.contains(Constans.KEY_SHOP_SN)) {
             editor.remove(Constans.KEY_SHOP_SN).apply();
         }
-        if(sp.contains(Constans.KEY_TIME)) {
+        if (sp.contains(Constans.KEY_TIME)) {
             editor.remove(Constans.KEY_TIME).apply();
         }
-        if(sp.contains(Constans.KEY_HANDOVER_ID)) {
+        if (sp.contains(Constans.KEY_HANDOVER_ID)) {
             editor.remove(Constans.KEY_HANDOVER_ID).apply();
         }
     }
 
     @Override
     public void loginoutFailed(Map<String, Object> map) {
-        if(HttpExceptionEngine.isBussinessError(map)) {
+        if (HttpExceptionEngine.isBussinessError(map)) {
 
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
 
@@ -155,19 +167,14 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
 
     @Override
     public void saleListSuccess(List<HandoverSaleResponse> result) {
-        showToast("销售列表成功");
-
-        if(mHandoverSaleListView != null) {
+        if (mHandoverSaleListView != null) {
             mHandoverSaleListView.setData(result);
         }
-
-
-
     }
 
     @Override
     public void saleListFailed(Map<String, Object> map) {
-        if(HttpExceptionEngine.isBussinessError(map)) {
+        if (HttpExceptionEngine.isBussinessError(map)) {
 
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
 
@@ -189,9 +196,13 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
                     mHandoverSaleListView = HandoverSaleListView.create(this);
                     framelayout.addView(mHandoverSaleListView);
                 }
-                if(mHandoverView != null) {
+                if (mHandoverView != null) {
                     mHandoverView.setVisibility(View.GONE);
                 }
+                if (mHandoverSaleListView != null) {
+                    mHandoverSaleListView.setVisibility(View.VISIBLE);
+                }
+                setBottomLayout(2);
 
                 mPresenter.sale_list(handover_id);
                 break;
@@ -202,20 +213,52 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
     }
 
 
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+
+            onBack();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
     /**
      * 返回， 销售列表显示时先关闭，否则退出交接班页面
      */
     public void onBack() {
-        if(mHandoverSaleListView != null && mHandoverSaleListView.isShown()) {
+        if (mHandoverSaleListView != null && mHandoverSaleListView.isShown()) {
             mHandoverSaleListView.setVisibility(View.GONE);
-            if(mHandoverView != null) {
+            if (mHandoverView != null) {
                 mHandoverView.setVisibility(View.VISIBLE);
             }
-        } else if(mHandoverView != null && mHandoverView.isShown()) {
+            setBottomLayout(1);
+        } else if (mHandoverView != null && mHandoverView.isShown()) {
             finish();
         }
 
     }
+
+    public void setBottomLayout(int status) {
+
+        switch (status) {
+            case 1:
+                btnSalesList.setVisibility(View.VISIBLE);
+                btnHandover.setVisibility(View.VISIBLE);
+                tvTextLoginTime.setVisibility(View.VISIBLE);
+                tvLoginTime.setVisibility(View.VISIBLE);
+                btnPrint.setVisibility(View.GONE);
+                break;
+            case 2:
+                btnSalesList.setVisibility(View.GONE);
+                btnHandover.setVisibility(View.GONE);
+                tvTextLoginTime.setVisibility(View.GONE);
+                tvLoginTime.setVisibility(View.GONE);
+                btnPrint.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -226,5 +269,12 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
         if (mHandoverSaleListView != null) {
             mHandoverSaleListView.release();
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
