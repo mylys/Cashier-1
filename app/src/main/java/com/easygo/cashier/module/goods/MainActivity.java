@@ -35,6 +35,7 @@ import com.easygo.cashier.widget.EquipmentstateDialog;
 import com.easygo.cashier.widget.FunctionListDialog;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
+import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
@@ -101,10 +102,21 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
     public void init() {
         ARouter.getInstance().inject(this);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
+
         tvCashierAcount.setText("收银员: " + admin_name);
 
 //        Test.detectInputDeviceWithShell();
         mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        ScreenUtils.hideNavigationBar(this);
     }
 
     @Override

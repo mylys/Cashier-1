@@ -35,6 +35,7 @@ import com.easygo.cashier.widget.ScanCodeDialog;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.GsonUtils;
+import com.niubility.library.utils.ScreenUtils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -364,6 +365,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
         }
     }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        ScreenUtils.hideNavigationBar(this);
+    }
+
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {

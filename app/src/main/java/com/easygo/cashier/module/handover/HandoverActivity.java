@@ -21,6 +21,7 @@ import com.easygo.cashier.widget.MyTitleBar;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
+import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
 import java.util.List;
@@ -259,6 +260,12 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
         }
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        ScreenUtils.hideNavigationBar(this);
+    }
 
     @Override
     protected void onDestroy() {
@@ -271,10 +278,4 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }
