@@ -15,7 +15,7 @@ public class PrintRequestBody {
     public static class GoodsListBean {
 
         private String goods_name;
-        private int count;
+        private String count;
         private int discount;
         private int price;
         private int count_price;
@@ -28,11 +28,11 @@ public class PrintRequestBody {
             this.goods_name = goods_name;
         }
 
-        public int getCount() {
+        public String getCount() {
             return count;
         }
 
-        public void setCount(int count) {
+        public void setCount(String count) {
             this.count = count;
         }
 

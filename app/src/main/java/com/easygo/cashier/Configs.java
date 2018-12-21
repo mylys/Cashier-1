@@ -1,5 +1,12 @@
 package com.easygo.cashier;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.text.TextUtils;
+
+import com.niubility.library.constants.Constans;
+import com.niubility.library.utils.SharedPreferencesUtils;
+
 public class Configs {
 
     /**
@@ -18,4 +25,15 @@ public class Configs {
 
     /* admin */
     public static String admin_name = "";
+
+
+
+    public static String getShop_sn(Context context) {
+        if(TextUtils.isEmpty(shop_sn)) {
+            SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(context);
+            shop_sn = sp.getString(Constans.KEY_SHOP_SN, "");
+        }
+        return shop_sn;
+    }
+
 }

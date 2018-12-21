@@ -7,23 +7,26 @@ public class GoodsResponse implements Serializable {
 
 
     /**
-     * g_sku_id : 5
+     * g_sku_id : 29986
      * company_id : 0
-     * g_sku_name : 美国柯可蓝天然矿泉水 500mL
-     * first_c_id : 185
-     * second_c_id : 213
-     * three_c_id : null
-     * four_c_id : null
-     * g_c_name : 饮料类-纯水类
-     * pic_big :
-     * barcode : 096619756803
-     * g_u_id : 12
-     * g_u_name : 瓶
-     * purchase_price : 2.00
-     * price : 4.00
+     * g_sku_name : 发舒服撒发-就是个福
+     * first_c_id : 722
+     * second_c_id : 727
+     * three_c_id : 728
+     * four_c_id : 729
+     * g_c_name : 测试一级1-测试二级-测试三级-test
+     * pic_big : null
+     * barcode : wrwqr2413
+     * g_u_id : 19
+     * g_u_name : 千克
+     * parent_id : 29985
+     * process_id : 13
+     * process_price : 1.00
+     * purchase_price : 3.38
+     * price : 5.50
      * discount_price : 0.00
      * membership_price : 0.00
-     * on_sale_count : 1
+     * on_sale_count : 100
      * birthday_price : 0.00
      * sell_status : 1
      * status : 1
@@ -34,13 +37,16 @@ public class GoodsResponse implements Serializable {
     private String g_sku_name;
     private int first_c_id;
     private int second_c_id;
-    private Object three_c_id;
-    private Object four_c_id;
+    private int three_c_id;
+    private int four_c_id;
     private String g_c_name;
-    private String pic_big;
+    private Object pic_big;
     private String barcode;
     private int g_u_id;
     private String g_u_name;
+    private int parent_id;
+    private int process_id;
+    private String process_price;
     private String purchase_price;
     private String price;
     private String discount_price;
@@ -49,6 +55,16 @@ public class GoodsResponse implements Serializable {
     private String birthday_price;
     private int sell_status;
     private int status;
+
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public int getG_sku_id() {
         return g_sku_id;
@@ -90,19 +106,19 @@ public class GoodsResponse implements Serializable {
         this.second_c_id = second_c_id;
     }
 
-    public Object getThree_c_id() {
+    public int getThree_c_id() {
         return three_c_id;
     }
 
-    public void setThree_c_id(Object three_c_id) {
+    public void setThree_c_id(int three_c_id) {
         this.three_c_id = three_c_id;
     }
 
-    public Object getFour_c_id() {
+    public int getFour_c_id() {
         return four_c_id;
     }
 
-    public void setFour_c_id(Object four_c_id) {
+    public void setFour_c_id(int four_c_id) {
         this.four_c_id = four_c_id;
     }
 
@@ -114,11 +130,11 @@ public class GoodsResponse implements Serializable {
         this.g_c_name = g_c_name;
     }
 
-    public String getPic_big() {
+    public Object getPic_big() {
         return pic_big;
     }
 
-    public void setPic_big(String pic_big) {
+    public void setPic_big(Object pic_big) {
         this.pic_big = pic_big;
     }
 
@@ -144,6 +160,30 @@ public class GoodsResponse implements Serializable {
 
     public void setG_u_name(String g_u_name) {
         this.g_u_name = g_u_name;
+    }
+
+    public int getParent_id() {
+        return parent_id;
+    }
+
+    public void setParent_id(int parent_id) {
+        this.parent_id = parent_id;
+    }
+
+    public int getProcess_id() {
+        return process_id;
+    }
+
+    public void setProcess_id(int process_id) {
+        this.process_id = process_id;
+    }
+
+    public String getProcess_price() {
+        return process_price;
+    }
+
+    public void setProcess_price(String process_price) {
+        this.process_price = process_price;
     }
 
     public String getPurchase_price() {

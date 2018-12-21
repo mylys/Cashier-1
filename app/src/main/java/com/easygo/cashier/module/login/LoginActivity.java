@@ -21,6 +21,7 @@ import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.DeviceUtils;
+import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
 import java.util.Map;
@@ -146,6 +147,14 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         }
         return false;
     }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        ScreenUtils.hideNavigationBar(this);
+    }
+
 
     @Override
     protected void onStart() {

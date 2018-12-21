@@ -2,7 +2,10 @@ package com.easygo.cashier.module.handover;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -13,17 +16,19 @@ import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.HandoverResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
-import com.easygo.cashier.module.goods.MainActivity;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.widget.MyTitleBar;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
+import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -37,13 +42,22 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
     MyTitleBar clTitle;
     @BindView(R.id.framelayout)
     FrameLayout framelayout;
+    @BindView(R.id.tv_text_login_time)
+    TextView tvTextLoginTime;
     @BindView(R.id.tv_login_time)
     TextView tvLoginTime;
 
     @Autowired(name = "admin_name")
     String admin_name;
+    @BindView(R.id.btn_handover)
+    Button btnHandover;
+    @BindView(R.id.btn_sales_list)
+    Button btnSalesList;
+    @BindView(R.id.btn_print)
+    Button btnPrint;
 
-    private HandoverView handoverView;
+    private HandoverView mHandoverView;
+    private HandoverSaleListView mHandoverSaleListView;
     private int handover_id;
 
 
@@ -68,6 +82,13 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
 
         clTitle.setCashierAccount(admin_name);
 
+        if (mHandoverView == null) {
+            mHandoverView = HandoverView.create(this);
+            framelayout.addView(mHandoverView);
+        }
+
+
+        //获取交接班信息
         SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getApplicationContext());
         handover_id = sp.getInt(Constans.KEY_HANDOVER_ID, -1);
 
@@ -78,12 +99,13 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
 
     @Override
     public void handoverSuccess(HandoverResponse result) {
-        if (handoverView == null) {
-            handoverView = HandoverView.create(this);
-            framelayout.addView(handoverView);
-        }
 
-//        handoverView.setData(result);
+        try {
+            mHandoverView.setData(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showToast("错误, 可能带有null对象");
+        }
         tvLoginTime.setText(result.getStart_time());
 
     }
@@ -91,7 +113,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
     @Override
     public void handoverFailed(Map<String, Object> map) {
 
-        if(HttpExceptionEngine.isBussinessError(map)) {
+        if (HttpExceptionEngine.isBussinessError(map)) {
 
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
 
@@ -105,24 +127,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
     public void loginoutSuccess(String result) {
         showToast(result);
 
-        SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = sp.edit();
-        //登录状态中，清除 session_id 、 admin_name
-        if(sp.contains(Constans.KEY_SESSION_ID)) {
-            editor.remove(Constans.KEY_SESSION_ID).apply();
-        }
-        if(sp.contains(Constans.KEY_ADMIN_NAME)) {
-            editor.remove(Constans.KEY_ADMIN_NAME).apply();
-        }
-        if(sp.contains(Constans.KEY_SHOP_SN)) {
-            editor.remove(Constans.KEY_SHOP_SN).apply();
-        }
-        if(sp.contains(Constans.KEY_TIME)) {
-            editor.remove(Constans.KEY_TIME).apply();
-        }
-        if(sp.contains(Constans.KEY_HANDOVER_ID)) {
-            editor.remove(Constans.KEY_HANDOVER_ID).apply();
-        }
+//        clearLoginInfo();
 
         Intent intent = new Intent(HandoverActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -130,9 +135,30 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
 
     }
 
+    private void clearLoginInfo() {
+        SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sp.edit();
+        //登录状态中，清除 session_id 、 admin_name
+        if (sp.contains(Constans.KEY_SESSION_ID)) {
+            editor.remove(Constans.KEY_SESSION_ID).apply();
+        }
+        if (sp.contains(Constans.KEY_ADMIN_NAME)) {
+            editor.remove(Constans.KEY_ADMIN_NAME).apply();
+        }
+        if (sp.contains(Constans.KEY_SHOP_SN)) {
+            editor.remove(Constans.KEY_SHOP_SN).apply();
+        }
+        if (sp.contains(Constans.KEY_TIME)) {
+            editor.remove(Constans.KEY_TIME).apply();
+        }
+        if (sp.contains(Constans.KEY_HANDOVER_ID)) {
+            editor.remove(Constans.KEY_HANDOVER_ID).apply();
+        }
+    }
+
     @Override
     public void loginoutFailed(Map<String, Object> map) {
-        if(HttpExceptionEngine.isBussinessError(map)) {
+        if (HttpExceptionEngine.isBussinessError(map)) {
 
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
 
@@ -141,15 +167,15 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
     }
 
     @Override
-    public void saleListSuccess(HandoverSaleResponse result) {
-        showToast("销售列表成功");
-
-
+    public void saleListSuccess(List<HandoverSaleResponse> result) {
+        if (mHandoverSaleListView != null) {
+            mHandoverSaleListView.setData(result);
+        }
     }
 
     @Override
     public void saleListFailed(Map<String, Object> map) {
-        if(HttpExceptionEngine.isBussinessError(map)) {
+        if (HttpExceptionEngine.isBussinessError(map)) {
 
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
 
@@ -157,23 +183,99 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
         }
     }
 
-    @OnClick({R.id.btn_handover, R.id.btn_sales_list})
+    @OnClick({R.id.btn_handover, R.id.btn_sales_list, R.id.iv_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_handover:
                 mPresenter.loginout(handover_id);
+
+                clearLoginInfo();
+
                 break;
             case R.id.btn_sales_list:
+                if (mHandoverSaleListView == null) {
+                    mHandoverSaleListView = HandoverSaleListView.create(this);
+                    framelayout.addView(mHandoverSaleListView);
+                }
+                if (mHandoverView != null) {
+                    mHandoverView.setVisibility(View.GONE);
+                }
+                if (mHandoverSaleListView != null) {
+                    mHandoverSaleListView.setVisibility(View.VISIBLE);
+                }
+                setBottomLayout(2);
+
                 mPresenter.sale_list(handover_id);
                 break;
+            case R.id.iv_back:
+                onBack();
+                break;
         }
+    }
+
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+
+            onBack();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
+    /**
+     * 返回， 销售列表显示时先关闭，否则退出交接班页面
+     */
+    public void onBack() {
+        if (mHandoverSaleListView != null && mHandoverSaleListView.isShown()) {
+            mHandoverSaleListView.setVisibility(View.GONE);
+            if (mHandoverView != null) {
+                mHandoverView.setVisibility(View.VISIBLE);
+            }
+            setBottomLayout(1);
+        } else if (mHandoverView != null && mHandoverView.isShown()) {
+            finish();
+        }
+
+    }
+
+    public void setBottomLayout(int status) {
+
+        switch (status) {
+            case 1:
+                btnSalesList.setVisibility(View.VISIBLE);
+                btnHandover.setVisibility(View.VISIBLE);
+                tvTextLoginTime.setVisibility(View.VISIBLE);
+                tvLoginTime.setVisibility(View.VISIBLE);
+                btnPrint.setVisibility(View.GONE);
+                break;
+            case 2:
+                btnSalesList.setVisibility(View.GONE);
+                btnHandover.setVisibility(View.GONE);
+                tvTextLoginTime.setVisibility(View.GONE);
+                tvLoginTime.setVisibility(View.GONE);
+                btnPrint.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        ScreenUtils.hideNavigationBar(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (handoverView != null) {
-            handoverView.release();
+        if (mHandoverView != null) {
+            mHandoverView.release();
+        }
+        if (mHandoverSaleListView != null) {
+            mHandoverSaleListView.release();
         }
     }
+
 }

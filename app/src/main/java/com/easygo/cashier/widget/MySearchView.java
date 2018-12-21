@@ -15,7 +15,6 @@ import android.widget.EditText;
 import com.easygo.cashier.R;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.Constraints;
 
 public class MySearchView extends ConstraintLayout {
 
@@ -142,4 +141,14 @@ public class MySearchView extends ConstraintLayout {
     public void setOnSearchListenerClick(OnSearhListenerClick onSearchListenerClick) {
         this.listener = onSearchListenerClick;
     }
+
+
+    public void clearText() {
+        this.mEditText.setText("");
+    }
+
+    public int getSearchResultWidth() {
+        return getWidth() - mSearchBtn.getWidth();
+    }
+
 }

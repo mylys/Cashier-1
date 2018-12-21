@@ -76,7 +76,9 @@
         app:layout_constraintTop_toBottomOf="@+id/cl_goods_title"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/bg_frame">
+        android:paddingStart="@dimen/x1"
+        android:paddingEnd="@dimen/x1"
+        android:background="@drawable/bg_frame_goods">
 
 
     </android.support.v7.widget.RecyclerView>

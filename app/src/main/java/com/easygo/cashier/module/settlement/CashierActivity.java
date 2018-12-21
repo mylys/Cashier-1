@@ -22,8 +22,8 @@ import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.Test;
+import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.CreateOderResponse;
-import com.easygo.cashier.bean.GoodsNum;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.request.CreateOrderRequestBody;
 import com.easygo.cashier.bean.request.PrintRequestBody;
@@ -35,6 +35,7 @@ import com.easygo.cashier.widget.ScanCodeDialog;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.GsonUtils;
+import com.niubility.library.utils.ScreenUtils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -75,7 +76,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     Serializable mGoodsDataSerializable;
 
     /**商品数据*/
-    List<GoodsNum<GoodsResponse>> mGoodsData;
+    List<GoodsEntity<GoodsResponse>> mGoodsData;
 
     /**实收*/
     float mRealPay;
@@ -117,7 +118,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         mRealPay = mTotalMoney;
         settlementView.setData(mTotalMoney, mCoupon, mRealPay, 0);
 
-        mGoodsData = (List<GoodsNum<GoodsResponse>>) this.mGoodsDataSerializable;
+        mGoodsData = (List<GoodsEntity<GoodsResponse>>) this.mGoodsDataSerializable;
 
         //扫码、打印、提交 按钮监听
         settlementView.setOnSettlementClickListener(new SettlementView.OnClickListener() {
@@ -139,6 +140,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             public void onCommitOrderClicked() {
                 if(mRealPay < mTotalMoney) {
                     showToast("实收金额小于应收金额， 请确认！");
+                    return;
                 }
                 //弹出确认弹窗
                 Bundle bundle = ConfirmDialog.getDataBundle(mTotalMoney, mRealPay, mChange, mPayWay);
@@ -238,8 +240,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 //        requestBody.setShop_sn(Configs.shop_sn);
         //测试代码
 
-        int total_count = mGoodsData.size();
-        requestBody.setGoods_count(total_count);
+        requestBody.setGoods_count(mGoodsCount);
         requestBody.setOrder_no(Configs.order_no);
         requestBody.setPrinter_sn(Configs.printer_sn);
         requestBody.setTimes(2);
@@ -248,10 +249,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         ArrayList<PrintRequestBody.GoodsListBean> goodsListBeans = new ArrayList<>();
 
         PrintRequestBody.GoodsListBean goodsListBean;
-        goodsListBean = new PrintRequestBody.GoodsListBean();
+
 
         DecimalFormat df = new DecimalFormat("#");
         float price;
+        int total_count = mGoodsData.size();
         for (int i = 0; i < total_count; i++) {
 //        for (int i = 0; i < 2; i++) {
             //测试代码
@@ -262,18 +264,54 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 //            goodsListBean.setCount(1);
             //测试代码
 
-            GoodsNum<GoodsResponse> goodsNum = mGoodsData.get(i);
-            GoodsResponse data = goodsNum.getData();
-            int count = goodsNum.getCount();
+            goodsListBean = new PrintRequestBody.GoodsListBean();
+            GoodsEntity<GoodsResponse> good = mGoodsData.get(i);
+            int count = good.getCount();
+            GoodsResponse data;
+            Integer price_int;
+
+            data = good.getData();
+            price = Float.valueOf(data.getPrice());
+            price_int = Integer.valueOf(df.format(price * 100));
+            goodsListBean.setCount_price(count*price_int);
+
             goodsListBean.setDiscount(1);
             goodsListBean.setGoods_name(data.getG_sku_name());
-            price = Float.valueOf(data.getPrice());
-            Integer price_int = Integer.valueOf(df.format(price * 100));
             goodsListBean.setPrice(price_int);
-            goodsListBean.setCount_price(count*price_int);
-            goodsListBean.setCount(count);
+
+            switch (good.getItemType()) {
+                case GoodsEntity.TYPE_WEIGHT:
+                case GoodsEntity.TYPE_ONLY_PROCESSING:
+                case GoodsEntity.TYPE_PROCESSING:
+                    goodsListBean.setCount(count + "g");
+                    break;
+                case GoodsEntity.TYPE_GOODS:
+                default:
+                    goodsListBean.setCount(String.valueOf(count));
+                    break;
+            }
+
 
             goodsListBeans.add(goodsListBean);
+
+            if(good.getItemType() == GoodsEntity.TYPE_PROCESSING) {
+                data = good.getProcessing();
+                if(data != null) {
+                    goodsListBean = new PrintRequestBody.GoodsListBean();
+                    price = Float.valueOf(data.getProcess_price());
+                    price_int = Integer.valueOf(df.format(price * 100));
+                    goodsListBean.setCount_price(price_int);
+
+                    goodsListBean.setDiscount(1);
+                    goodsListBean.setGoods_name(data.getG_sku_name());
+                    goodsListBean.setPrice(price_int);
+
+                    goodsListBean.setCount(String.valueOf(data.getCount()));
+
+                    goodsListBeans.add(goodsListBean);
+                }
+            }
+
         }
 
         requestBody.setGoods_list(goodsListBeans);
@@ -327,6 +365,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
         }
     }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        ScreenUtils.hideNavigationBar(this);
+    }
+
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -437,20 +483,40 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         int size = mGoodsData.size();
 
         List<CreateOrderRequestBody.GoodsListBean> list = new ArrayList<>();
-        GoodsNum<GoodsResponse> goodsNum;
+        GoodsEntity<GoodsResponse> good;
         GoodsResponse data;
         CreateOrderRequestBody.GoodsListBean goodsBean;
         float price;
         for (int i = 0; i < size; i++) {
-            goodsNum = mGoodsData.get(i);
-            data = goodsNum.getData();
+            good = mGoodsData.get(i);
+
+            //商品信息
             goodsBean = new CreateOrderRequestBody.GoodsListBean();
+            goodsBean.setCount(good.getCount());
+            data = good.getData();
+
             goodsBean.setG_sku_id(data.getG_sku_id());
-            goodsBean.setCount(goodsNum.getCount());
             price = Float.valueOf(data.getPrice());
             goodsBean.setPrice(Integer.valueOf(df.format(price*100)));
             goodsBean.setBarcode(data.getBarcode());
             list.add(goodsBean);
+
+            //加工方式
+            switch (good.getItemType()) {
+                case GoodsEntity.TYPE_PROCESSING:
+                    data = good.getProcessing();
+                    if(data != null) {//选择加工
+                        goodsBean = new CreateOrderRequestBody.GoodsListBean();
+                        goodsBean.setCount(data.getCount());
+                        goodsBean.setG_sku_id(data.getG_sku_id());
+                        price = Float.valueOf(data.getProcess_price());
+                        goodsBean.setPrice(Integer.valueOf(df.format(price*100)));
+                        goodsBean.setBarcode(data.getBarcode());
+                        list.add(goodsBean);
+                    }
+                    break;
+            }
+
         }
 
         requestBody1.setGoods_list(list);
@@ -605,6 +671,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     @Override
     public void cashSuccess(String result) {
         showToast("现金成功");
+
+        onPaySuccessAfter();
     }
 
 

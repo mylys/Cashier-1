@@ -15,7 +15,7 @@
         android:layout_marginStart="@dimen/margin_66"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/tv_goods_name"
@@ -25,8 +25,8 @@
         style="@style/GoodsListStyle"
         android:layout_marginStart="@dimen/margin_362"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode"/>
 
     <TextView
         android:id="@+id/tv_price"
@@ -36,8 +36,8 @@
         style="@style/GoodsListStyle"
         android:layout_marginStart="@dimen/margin_937"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
 
     <TextView
         android:id="@+id/tv_coupon"
@@ -47,8 +47,8 @@
         style="@style/GoodsListStyle"
         android:layout_marginStart="@dimen/margin_1131"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
 
     <TextView
         android:id="@+id/tv_subtotal"
@@ -58,8 +58,8 @@
         style="@style/GoodsListStyle"
         android:layout_marginStart="@dimen/margin_1327"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -67,18 +67,22 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="@dimen/margin_1645"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
 
     <!--商品数量 可加减-->
 
-    <com.easygo.cashier.widget.CountTextView
-        android:id="@+id/count_view"
-        android:layout_width="@dimen/x232"
-        android:layout_height="@dimen/y56"
+    <TextView
+        android:id="@+id/tv_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        style="@style/GoodsListStyle"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

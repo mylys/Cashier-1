@@ -2,6 +2,7 @@ package com.easygo.cashier.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 public class CountTextView extends ConstraintLayout {
 
     private View mView;
+    private ConstraintLayout mRoot;
     private TextView mCountTextView;
     private Button mSubtractBtn;
     private Button mAddBtn;
@@ -82,18 +84,33 @@ public class CountTextView extends ConstraintLayout {
         mCountTextView = (TextView) mView.findViewById(R.id.tv_goods_count);
         mSubtractBtn = (Button) mView.findViewById(R.id.btn_subtract);
         mAddBtn = (Button) mView.findViewById(R.id.btn_add);
+        mRoot = (ConstraintLayout) mView.findViewById(R.id.root);
     }
 
     private void initAttr(Context context, AttributeSet attrs) {
         if(attrs == null) {
             return;
         }
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MySearchView);
-        if(ta != null) {
+//        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MySearchView);
+//        if(ta != null) {
+//
+//
+//
+//            ta.recycle();
+//        }
+    }
 
-
-
-            ta.recycle();
+    /**
+     * 设置可调节数量
+     * @param enable
+     */
+    public void setCountChangeEnable(boolean enable) {
+        mAddBtn.setVisibility(enable? VISIBLE: GONE);
+        mSubtractBtn.setVisibility(enable? VISIBLE: GONE);
+        if(enable) {
+            mRoot.setBackgroundResource(R.drawable.bg_frame);
+        } else {
+            mRoot.setBackgroundResource(0);
         }
     }
 

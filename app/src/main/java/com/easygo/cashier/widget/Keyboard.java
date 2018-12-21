@@ -1,6 +1,7 @@
 package com.easygo.cashier.widget;
 
 import android.content.Context;
+import android.text.Editable;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -83,7 +84,10 @@ public class Keyboard extends ConstraintLayout {
                     TextView textView = (TextView) v;
 
                     if(mEditText != null && mEditText.isEnabled()) {
-                        mEditText.getText().append(textView.getText());
+                        Editable editable = mEditText.getText();
+                        if (editable.length() <= 10) {
+                            editable.append(textView.getText());
+                        }
                     }
                 }
             });

@@ -99,6 +99,25 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+        <!--打印单据-->
+        <CheckBox
+            android:id="@+id/cb_print"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y98"
+            android:text="@string/text_print_paper"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_28"
+            android:textColor="@color/color_4cbbac"
+            android:layout_marginEnd="@dimen/x73"
+            android:button="@null"
+            android:background="@null"
+            android:checked="true"
+            android:drawableStart="@drawable/check_box"
+            android:drawablePadding="@dimen/x17"
+            app:layout_constraintEnd_toStartOf="@id/btn_sales_list"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
 
         <!--销售列表页  打印按钮-->
         <Button
