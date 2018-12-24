@@ -1,7 +1,10 @@
 package com.easygo.cashier.module.order_history.order_history_refund;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +12,13 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.easygo.cashier.Configs;
@@ -54,13 +62,17 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     TextView tvRefundcashNum;
     @BindView(R.id.edit_refund_case_price)
     EditText editRefundcashPrice;
+    @BindView(R.id.ll)
+    LinearLayout child;
+    @BindView(R.id.rl_view)
+    RelativeLayout parent;
     Unbinder unbinder;
 
     private ConfirmDialog confirmDialog;
     private OrderHistoryRefundAdapter adapter;
     private ArrayList<RequsetBody.GoodsList> goodsLists = new ArrayList<>();
 
-    private boolean isRefund = false;
+    private ArrayList<GoodsRefundInfo> infoList = new ArrayList<>();
     private String order_number = "";
     private String pay_type = "";
     private String refund_pay_type = "";
@@ -116,9 +128,10 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-
         adapter = new OrderHistoryRefundAdapter();
         recyclerView.setAdapter(adapter);
+        setEmpty();
+
         if (data != null) {
             for (OrderHistorysInfo.ListBean bean : data) {
                 GoodsRefundInfo info = new GoodsRefundInfo();
@@ -132,10 +145,19 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 info.setRefund_subtotal(bean.getSell_price());
                 info.setSelect(false);
                 adapter.addData(info);
+                infoList.add(info);
             }
         }
         tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件,退款金额：");
         setListener();
+    }
+
+    /* 设置adapter数据 */
+    private void setEmpty() {
+        View emptyView = getLayoutInflater().inflate(R.layout.item_empty_view, null);
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        adapter.setEmptyView(emptyView);
     }
 
     private void setListener() {
@@ -164,8 +186,30 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
             @Override
             public void onSelectBean(ArrayList<RequsetBody.GoodsList> lists) {
+
                 goodsLists.clear();
                 goodsLists.addAll(lists);
+            }
+        });
+
+        searchView.setOnSearchListenerClick(new MySearchView.OnSearhListenerClick() {
+            @Override
+            public void onSearch(String content) {
+//                if (listener != null){
+//                    listener.removeSoftKeyBoardListener(parent);
+//                }
+                ArrayList<GoodsRefundInfo> infos = new ArrayList<>();
+                for (GoodsRefundInfo info : adapter.getData()) {
+                    if (info.getProduct_name().contains(content)) {
+                        infos.add(info);
+                    }
+                }
+                if (infos.size() == 0) {
+                    ToastUtils.showToast(getActivity(), "搜索不到该商品");
+                    adapter.setNewData(infoList);
+                } else {
+                    adapter.setNewData(infos);
+                }
             }
         });
 
@@ -182,8 +226,8 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().length() != 0){
-                    if (s.toString().substring(0,1).equals(".")){
+                if (s.toString().length() != 0) {
+                    if (s.toString().substring(0, 1).equals(".")) {
                         editRefundcashPrice.setText("");
                     }
                 }
@@ -193,7 +237,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
     @OnClick(R.id.btn_refund)
     public void onViewClicked() {
-        if (TextUtils.isEmpty(editRefundcashPrice.getText().toString())){
+        if (TextUtils.isEmpty(editRefundcashPrice.getText().toString())) {
             return;
         }
         float price = Float.parseFloat(editRefundcashPrice.getText().toString());
@@ -242,6 +286,67 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         if (HttpExceptionEngine.isBussinessError(map)) {
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
             showToast("错误信息:" + err_msg);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        if (listener != null) {
+//            removeSoftKeyBoardListener(parent);
+//        }
+    }
+
+
+    private ViewTreeObserver.OnGlobalLayoutListener mSoftKeyBoardListener;
+
+    private class SoftKeyBoardListener implements ViewTreeObserver.OnGlobalLayoutListener {
+
+        private View root;
+        private View view;
+
+        int lastHeight = 0;
+        int lastBottom = -1;
+
+        SoftKeyBoardListener(View r,View v) {
+            root = r;
+            view = v;
+        }
+
+        @Override
+        public void onGlobalLayout() {
+            Rect rect = new Rect();
+            root.getWindowVisibleDisplayFrame(rect);
+            if (lastBottom == -1) {
+                lastBottom = rect.bottom;
+                return;
+            }
+
+            int nb = rect.bottom;
+            int ob = lastBottom;
+
+            if (nb < ob) {
+                // 键盘显示了， 滑上去
+                int[] location = new int[2];
+                view.getLocationInWindow(location);
+                int scrollHeight = (location[1] + view.getHeight()) - nb;
+                root.scrollTo(0, scrollHeight);
+                lastHeight = scrollHeight;
+            }
+            else if (nb > ob) {
+                // 键盘隐藏了, 滑下来
+                root.scrollTo(0, 0);
+            }
+
+            if (nb != ob) {
+                lastBottom = nb;
+            }
+        }
+    }
+
+    public void removeSoftKeyBoardListener(@NonNull View root) {
+        if(mSoftKeyBoardListener != null){
+            root.getViewTreeObserver().removeOnGlobalLayoutListener(mSoftKeyBoardListener);
         }
     }
 }

@@ -34,10 +34,9 @@
         <activity android:name=".module.settlement.CashierActivity" />
         <activity
             android:name=".module.order_history.OrderHistoryActivity"
-            android:screenOrientation="landscape"/>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".module.refund.RefundActivity"
-            android:screenOrientation="landscape" />
+            android:name=".module.refund.RefundActivity"/>
         <activity android:name=".module.handover.HandoverActivity" />
     </application>
 
