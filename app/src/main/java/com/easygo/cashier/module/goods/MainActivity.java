@@ -31,6 +31,7 @@ import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.secondary_sreen.SecondaryScreen;
 import com.easygo.cashier.module.status.StatusContract;
 import com.easygo.cashier.module.status.StatusPresenter;
+import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.EquipmentstateDialog;
 import com.easygo.cashier.widget.FunctionListDialog;
 import com.niubility.library.base.BaseMvpActivity;
@@ -313,11 +314,13 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
 
     @Override
     public void printerStatusSuccess(String result) {
+        //打印机是否正常
+        boolean is_printer_normal = result.equals(PrintHelper.NORMAL);
         if (dialog != null && dialog.isShow()) {
-            dialog.setNewData(0, getResources().getString(R.string.the_printer), true);
+            dialog.setNewData(0, getResources().getString(R.string.the_printer), is_printer_normal);
             return;
         }
-        showToast("打印机正常连接");
+        showToast("打印机: " + result);
     }
 
     @Override
@@ -327,5 +330,14 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
             return;
         }
         showToast("打印机可能连接失败");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(dialog != null && dialog.isShow()) {
+            dialog.dismiss();
+        }
     }
 }

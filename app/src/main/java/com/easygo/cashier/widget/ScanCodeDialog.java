@@ -135,14 +135,14 @@ public class ScanCodeDialog extends Dialog {
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
 
-        if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            mStatus++;
-            if(mStatus > 2) {
-                mStatus = 0;
-            }
-
-            setStatus(mStatus);
-        }
+//        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+//            mStatus++;
+//            if(mStatus > 2) {
+//                mStatus = 0;
+//            }
+//
+//            setStatus(mStatus);
+//        }
         return super.onTouchEvent(event);
     }
 

@@ -38,8 +38,8 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         addItemType(GoodsEntity.TYPE_NO_CODE, R.layout.item_goods);
     }
 
-    private ArrayMap<String, GoodsEntity<GoodsResponse>> data;
-    private ArrayList<String> barcodeData = new ArrayList<>();
+    protected ArrayMap<String, GoodsEntity<GoodsResponse>> data;
+    protected ArrayList<String> barcodeData = new ArrayList<>();
 
 
     //普通商品
@@ -201,7 +201,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     /**
      * 刷新价格
      */
-    private void refreshPrice() {
+    protected void refreshPrice() {
         if (mListener != null) {
             double price = 0;
             int count = 0;
@@ -234,7 +234,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                         //选择加工时 更新价格
                         GoodsResponse processing = good.getProcessing();
                         if(processing != null) {//此时 选择了加工
-                            count += 1;
+//                            count += 1;
                             coupon += Double.valueOf(processing.getDiscount_price());
                             price += Double.parseDouble(processing.getProcess_price()) * processing.getCount();
                         }
@@ -271,6 +271,10 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 count.setOnCountListener(new CountTextView.OnCountListener() {
                     @Override
                     public void onCountChanged(int count) {
+                        if(mListener != null) {
+                            mListener.onCountChanged(helper.getAdapterPosition(), count);
+                        }
+
                         if(count == 0) {
                             //清除当前商品
                             if(TextUtils.isEmpty(barcode)) {
@@ -334,6 +338,12 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                         }
 
                         refreshPrice();
+
+                        if(mListener != null) {
+                            mListener.onProcessingCheckedChanged(isChecked, helper.getAdapterPosition(),
+                                    item.getProcessing());
+                        }
+
                     }
                 });
                 //加工方式点击监听
@@ -354,9 +364,16 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         switch (helper.getItemViewType()) {
             case GoodsEntity.TYPE_WEIGHT://普通商品
             case GoodsEntity.TYPE_PROCESSING://加工商品
-                helper.getView(R.id.cl_remove).setOnClickListener(new View.OnClickListener() {
+            case GoodsEntity.TYPE_ONLY_PROCESSING://加工商品
+                View view = helper.getView(R.id.cl_remove);
+                view.setVisibility(View.VISIBLE);
+                view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if(mListener != null) {
+                            mListener.onItemRemoved(helper.getAdapterPosition());
+                        }
+
                         remove(helper.getAdapterPosition());
                     }
                 });
@@ -424,7 +441,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         notifyItemRangeRemoved(0, count);
     }
 
-    private OnItemListener mListener;
+    protected OnItemListener mListener;
     public void setOnItemListener(OnItemListener listener) {
         this.mListener = listener;
     }
@@ -432,6 +449,14 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     public interface OnItemListener {
         void onPriceChange(float price, int count, float coupon);
         void onProcessingClicked(int position, GoodsResponse cur_processing, List<GoodsResponse> processing_list);
+
+        //用于 用户副屏
+        /**点击加工选项时*/
+        void onProcessingCheckedChanged(boolean isChecked, int position, GoodsResponse processing);
+        /**数量改变时*/
+        void onCountChanged(int position, int count);
+        /**item被移除时*/
+        void onItemRemoved(int position);
     }
 
 }

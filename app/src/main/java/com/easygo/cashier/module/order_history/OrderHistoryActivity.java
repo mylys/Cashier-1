@@ -18,6 +18,7 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.base.BaseAppActivity;
 import com.easygo.cashier.module.order_history.order_history_refund.OrderHistoryRefundFragment;
 import com.easygo.cashier.widget.MyTitleBar;
+import com.niubility.library.utils.ScreenUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,6 +90,13 @@ public class OrderHistoryActivity extends BaseAppActivity {
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        ScreenUtils.hideNavigationBar(this);
     }
 
     @Override

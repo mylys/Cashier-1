@@ -15,6 +15,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
+import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
@@ -39,6 +40,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     EditText etAccount;
     @BindView(R.id.et_password)
     EditText etPassword;
+    private int is_reserve;
 
 
     @Override
@@ -76,8 +78,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
             Configs.admin_name = admin_name;
             finish();
         } else {
-
-            etAccount.setText(admin_name);
+            String account = sp.getString("account", "");
+            etAccount.setText(account);
 //            etAccount.setText("15017740901");
 //            etPassword.setText("123456");
         }
@@ -173,14 +175,22 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     }
 
     @Override
-    public void loginSuccess(LoginResponse result) {
+    public void loginSuccess(final LoginResponse result) {
         SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(this).edit();
         editor.putString(Constans.KEY_ADMIN_NAME, result.getReal_name())
                 .putString(Constans.KEY_SESSION_ID, result.getSession_id())
+                .putString("account", etAccount.getText().toString().trim())
                 .putInt(Constans.KEY_HANDOVER_ID, result.getHandover_id())
                 .apply();
 
         Toast.makeText(this, "登录成功：" + result.getReal_name(), Toast.LENGTH_SHORT).show();
+
+
+//        if(is_reserve == 1) {
+            //支持备用金
+//            mPresenter.resever_money(result.getSession_id(), Configs.shop_sn, result.getHandover_id(), 10000);
+//    }
+
 
         //跳转首页
         ARouter.getInstance().build(ModulePath.goods)
@@ -208,12 +218,18 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     }
 
     @Override
-    public void initSuccess(String result) {
+    public void initSuccess(InitResponse result) {
+
+        String shop_sn = result.getShop_sn();
+        String shop_name = result.getShop_name();
+        is_reserve = result.getIs_reserve();
+
         SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(this).edit();
-        editor.putString(Constans.KEY_SHOP_SN, result)
+        editor.putString(Constans.KEY_SHOP_SN, shop_sn)
                 .apply();
 
-        Configs.shop_sn = result;
+        Configs.shop_name = shop_name;
+        Configs.shop_sn = shop_sn;
 
     }
 
@@ -225,5 +241,15 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         Log.i(TAG, "loginFailed: map --> errorType:" + errorType
                 + ", errorCode: " + errorCode
                 + ", errorMsg: " + errorMsg);
+    }
+
+    @Override
+    public void reseverMoneySuccess() {
+        showToast("备用金 成功");
+    }
+
+    @Override
+    public void reseverMoneyFailed(Map<String, Object> map) {
+        showToast("备用金 失败");
     }
 }

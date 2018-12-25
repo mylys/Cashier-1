@@ -24,10 +24,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/tv_price"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_661"
+        android:layout_marginEnd="@dimen/x22"
         android:text="@string/text_classification"
+        android:ellipsize="end"
         style="@style/GoodsListStyle" />
 
 

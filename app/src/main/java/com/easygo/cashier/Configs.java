@@ -14,6 +14,10 @@ public class Configs {
      */
     public static String shop_sn;
     /**
+     * 门店名称
+     */
+    public static String shop_name;
+    /**
      * 订单号
      */
     public static String order_no;

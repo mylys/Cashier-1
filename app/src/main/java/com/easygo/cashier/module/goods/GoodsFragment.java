@@ -1,11 +1,14 @@
 package com.easygo.cashier.module.goods;
 
+import android.content.Context;
+import android.hardware.display.DisplayManager;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,6 +28,7 @@ import com.easygo.cashier.adapter.GoodsMultiItemAdapter;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.module.refund.RefundActivity;
+import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.widget.MySearchView;
 import com.easygo.cashier.widget.NoGoodsDialog;
 import com.easygo.cashier.widget.ProcessingChoiceDialog;
@@ -101,6 +105,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
      */
     private ProcessingChoiceDialog mProcessingChoiceDialog;
 
+    private UserGoodsScreen mUserGoodsScreen;
+
 
     public static GoodsFragment newInstance() {
         return newInstance(null);
@@ -134,6 +140,11 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         initView();
 
         initBarcode();
+
+        initUserGoodsScreen();
+        if(mUserGoodsScreen != null) {
+            mUserGoodsScreen.show();
+        }
     }
 
     private void initBarcode() {
@@ -222,6 +233,27 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 }
             }
 
+            @Override
+            public void onProcessingCheckedChanged(boolean isChecked, int position, GoodsResponse processing) {
+                if(mUserGoodsScreen != null) {
+                    mUserGoodsScreen.chooseProcessing(position, processing);
+                }
+            }
+
+            @Override
+            public void onCountChanged(int position, int count) {
+                if(mUserGoodsScreen != null) {
+                    mUserGoodsScreen.onCountChanged(position, count);
+                }
+            }
+
+            @Override
+            public void onItemRemoved(int position) {
+                if(mUserGoodsScreen != null) {
+                    mUserGoodsScreen.onItemRemoved(position);
+                }
+            }
+
         });
         //条目点击事件监听
         mGoodsMultiItemAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -260,6 +292,31 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     }
 
+    public void initUserGoodsScreen() {
+        Context context = getContext();
+        if(context == null) {
+            Log.i(TAG, "initUserGoodsScreen: context = null");
+            return;
+        }
+        DisplayManager mDisplayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
+        Display[] displays = mDisplayManager.getDisplays();
+
+        if (mUserGoodsScreen == null) {
+            mUserGoodsScreen = new UserGoodsScreen(context,
+                    displays[displays.length - 1], admin_name);// displays[1]是副屏
+            mUserGoodsScreen.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(mGoodsMultiItemAdapter != null)
+            mGoodsMultiItemAdapter.clear();
+        if(mUserGoodsScreen != null)
+            mUserGoodsScreen.clear();
+    }
+
     /**
      * 显示加工方式选择框
      */
@@ -274,6 +331,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             @Override
             public void onItemClicked(GoodsResponse result) {
                 mGoodsMultiItemAdapter.chooseProcessing(position, current, result);
+                //刷新副屏
+                if(mUserGoodsScreen != null)
+                    mUserGoodsScreen.chooseProcessing(position, result);
             }
         });
         mProcessingChoiceDialog.setData(processing_list);
@@ -310,17 +370,25 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         mGoodsCount = count;
         mTotalMoney = price;
         mCoupon = coupon;
+        float real_pay = price - coupon;
 
         DecimalFormat df = new DecimalFormat("#0.00");
 
         tvTotalMoney.setText("￥" + df.format(price));
         tvCoupon.setText("￥" + df.format(coupon));
         if (mType == TYPE_GOODS) {
-            btnSettlement.setText(" 收银：  ￥" + df.format(price) + " ");
+            btnSettlement.setText(" 收银：  ￥" + df.format(real_pay) + " ");
         } else {
-            btnSettlement.setText(" 退款：  ￥" + df.format(price) + " ");
+            btnSettlement.setText(" 退款：  ￥" + df.format(real_pay) + " ");
         }
         tvGoodsCount.setText(String.valueOf(count));
+
+
+        //刷新用户副屏界面 价格
+        if(mUserGoodsScreen != null) {
+            mUserGoodsScreen.refreshPrice(mGoodsCount, mTotalMoney, mCoupon, mTotalMoney-mCoupon);
+        }
+
     }
 
 
@@ -349,6 +417,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                         //添加无码商品
                         mGoodsMultiItemAdapter.addNoCodeItem(price);
+                        //刷新副屏
+                        if(mUserGoodsScreen != null)
+                            mUserGoodsScreen.addNoCodeItem(price);
                     }
                 });
 
@@ -361,6 +432,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 break;
             case R.id.btn_clear://清空
                 mGoodsMultiItemAdapter.clear();
+
+                if(mUserGoodsScreen != null) {
+                    mUserGoodsScreen.clear();
+                }
 
                 break;
             case R.id.btn_settlement://收银 or  退款
@@ -395,8 +470,17 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public void getGoodsSuccess(List<GoodsResponse> result) {
 
         mGoodsMultiItemAdapter.addItem(result, mGoodWeight != 0 ? mGoodWeight : 1);
-        mGoodWeight = 0;
 
+        if(mUserGoodsScreen != null) {
+            //没有显示时 显示用户商品列表副屏页面
+            if(!mUserGoodsScreen.isShowing())
+                mUserGoodsScreen.show();
+
+            //刷新用户商品列表页面数据
+            mUserGoodsScreen.addItem(result, mGoodWeight != 0 ? mGoodWeight : 1);
+        }
+
+        mGoodWeight = 0;
     }
 
     @Override
@@ -444,6 +528,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 public void onSearchResultClicked(List<GoodsResponse> list) {
                     //添加
                     mGoodsMultiItemAdapter.addItem(list, 1);
+                    //刷新副屏
+                    if(mUserGoodsScreen != null)
+                        mUserGoodsScreen.addItem(list, 1);
+
                     clSearch.clearText();
                     mSearchResultWindow.dismiss();
                 }
@@ -487,4 +575,19 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     }
 
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if(mUserGoodsScreen != null && mUserGoodsScreen.isShowing()) {
+            mUserGoodsScreen.dismiss();
+        }
+        if(mSearchResultWindow != null && mSearchResultWindow.isShowing()) {
+            mSearchResultWindow.dismiss();
+        }
+        if(mProcessingChoiceDialog != null && mProcessingChoiceDialog.isShowing()) {
+            mProcessingChoiceDialog.dismiss();
+        }
+    }
 }

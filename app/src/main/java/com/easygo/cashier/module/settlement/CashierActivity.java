@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -89,6 +90,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     private ConfirmDialog confirmDialog;
 
     private Handler mHandler = new Handler();
+
+    /**
+     * 订单是否支付完成
+     */
+    private boolean mOrderFinished;
 
 
     @Override
@@ -348,7 +354,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             if (mScanCodeDialog != null) {
                 mScanCodeDialog.setStatus(ScanCodeDialog.STATUS_SCANNING);
             }
-            showToast("付款码 --> " + auth_code);
+//            showToast("付款码 --> " + auth_code);
 
             //请求接口
             DecimalFormat df = new DecimalFormat("#");
@@ -376,6 +382,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(mOrderFinished) {
+            showToast("支付成功！！！");
+            return true;
+        }
+
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
             if (isShouldHideInput(v, ev)) {
@@ -530,8 +541,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     public void createOrderSuccess(CreateOderResponse result) {
 //        Configs.order_no = result.getTrade_no();
         Configs.order_no = result.getTrade_num();
-        showToast("订单号 --> " + Configs.order_no);
-
 
         switch (mPayWay) {
             case PayWayView.WAY_CASH:
@@ -567,6 +576,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     }
 
     private void onPaySuccessAfter() {
+        mOrderFinished = true;
+
         if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
             mScanCodeDialog.setStatus(ScanCodeDialog.STATUS_SUCCESSFUL_RECEIPT);
         }
@@ -684,7 +695,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public void printSuccess(String result) {
-        showToast("打印成功");
+//        showToast("打印成功");
     }
 
     @Override

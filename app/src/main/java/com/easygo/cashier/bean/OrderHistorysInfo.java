@@ -169,12 +169,14 @@ public class OrderHistorysInfo {
         /**
          * g_sku_name : 可口可乐小瓶
          * sell_price : 0.01
+         * quantity : 1
          * count : 1
          * money : 0.01
          */
 
         private String g_sku_name;
         private String sell_price;
+        private int quantity;
         private int count;
         private String money;
         private int s_sku_id;
@@ -213,6 +215,14 @@ public class OrderHistorysInfo {
 
         public void setSell_price(String sell_price) {
             this.sell_price = sell_price;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
         }
 
         public int getCount() {

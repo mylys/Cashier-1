@@ -2,8 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cl_goods_title"
-    android:layout_width="@dimen/x1832"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="@dimen/y1"
+    android:paddingStart="@dimen/x1"
+    android:paddingEnd="@dimen/x1"
     android:background="@drawable/bg_goods_title">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -72,8 +75,8 @@
             style="@style/GoodsTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_159"
-            android:text="@string/text_count"
+            android:layout_marginEnd="@dimen/margin_129"
+            android:text="@string/text_count_weight"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

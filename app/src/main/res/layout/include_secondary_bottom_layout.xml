@@ -16,7 +16,7 @@
             style="@style/ViceScreen"
             android:layout_width="@dimen/x324"
             android:layout_height="wrap_content"
-            android:text="1000" />
+            android:text="0" />
 
         <TextView
             style="@style/ViceScreen"
@@ -40,7 +40,7 @@
             style="@style/ViceScreen"
             android:layout_width="@dimen/x324"
             android:layout_height="wrap_content"
-            android:text="1000" />
+            android:text="￥0.00" />
 
         <TextView
             style="@style/ViceScreen"
@@ -64,7 +64,7 @@
             style="@style/ViceScreen"
             android:layout_width="@dimen/x324"
             android:layout_height="wrap_content"
-            android:text="1000" />
+            android:text="￥0.00" />
 
         <TextView
             style="@style/ViceScreen"
@@ -100,12 +100,24 @@
 
     <TextView
         android:layout_centerVertical="true"
+        android:id="@+id/tv_text_total_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/tv_total_price"
+        android:text="@string/text_total"
+        android:layout_marginEnd="@dimen/x20"
+        android:textColor="@color/color_3899d9"
+        android:textSize="@dimen/x50"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_centerVertical="true"
         android:id="@+id/tv_total_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="@dimen/x80"
-        android:text="@string/text_total"
+        android:text="￥0.00"
         android:textColor="@color/color_3899d9"
         android:textSize="@dimen/x50"
         android:textStyle="bold" />

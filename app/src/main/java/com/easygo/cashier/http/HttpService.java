@@ -4,7 +4,9 @@ import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.HandoverResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
+import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
+import com.easygo.cashier.bean.MediaInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.niubility.library.http.base.HttpResult;
@@ -14,6 +16,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
@@ -23,6 +26,7 @@ import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface HttpService {
 
@@ -34,7 +38,19 @@ public interface HttpService {
      */
     @FormUrlEncoded
     @POST("api/cash/shop")
-    Observable<HttpResult<String>> init(@Field("mac") String mac);
+    Observable<HttpResult<InitResponse>> init(@Field("mac") String mac);
+
+
+    /**
+     * 备用金
+     */
+    @FormUrlEncoded
+    @POST("api/cash/reserve")
+    Observable<HttpResult<InitResponse>> reserve_money(@HeaderMap Map<String, String> header,
+                                                       @Field("shop_sn") String shop_sn,
+                                                       @Field("handover_id") int handover_id,
+                                                       @Field("reserve_money") int reserve_money);
+
 
     /**
      * 登录

@@ -244,6 +244,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
                 break;
             case R.id.btn_print://打印销售列表
                 printHandoverSaleList();
+                break;
             case R.id.iv_back:
                 onBack();
                 break;
@@ -256,7 +257,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
 
-        sb.append(PrintHelper.CB_left).append(Configs.shop_sn).append(PrintHelper.CB_right).append(PrintHelper.BR)
+        sb.append(PrintHelper.CB_left).append(Configs.shop_name).append(PrintHelper.CB_right).append(PrintHelper.BR)
                 .append("时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
                 .append("收银员：").append(admin_name).append(PrintHelper.BR)
                 .append("--------------------------------").append(PrintHelper.BR)
@@ -294,7 +295,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
 
-        sb.append(PrintHelper.CB_left).append(Configs.shop_sn).append(PrintHelper.CB_right).append(PrintHelper.BR)
+        sb.append(PrintHelper.CB_left).append(Configs.shop_name).append(PrintHelper.CB_right).append(PrintHelper.BR)
                 .append("时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
                 .append("收银员：").append(admin_name).append(PrintHelper.BR)
                 .append("--------------------------------").append(PrintHelper.BR)
@@ -303,14 +304,16 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
 
         int size = data.size();
         int count = 0;
-        int total_money = 0;
+        float total_money = 0;
         for (int i = 0; i < size; i++) {
             HandoverSaleResponse saleResponse = data.get(i);
             count += saleResponse.getCount();
             total_money += saleResponse.getMoney();
 
-            sb.append(saleResponse.getG_sku_name()).append("   ").append(PrintHelper.BR)
+            sb.append(i).append(".")
+            .append(saleResponse.getG_sku_name()).append("   ").append(PrintHelper.BR)
             .append(saleResponse.getG_c_name()).append("   ").append(PrintHelper.BR)
+            .append("            ")
             .append(saleResponse.getSell_price()).append("   ")
             .append(saleResponse.getCount()).append("   ")
             .append(saleResponse.getMoney()).append(PrintHelper.BR);

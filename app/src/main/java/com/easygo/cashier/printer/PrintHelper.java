@@ -32,4 +32,8 @@ public class PrintHelper {
     private StringBuilder sb = new StringBuilder();
 
 
+    public static final String NORMAL = "在线，工作状态正常。";
+    public static final String OFFLINE = "离线";
+
+
 }
