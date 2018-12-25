@@ -28,6 +28,7 @@
     <dimen name="margin_1131">@dimen/x1131</dimen>
     <dimen name="margin_1327">@dimen/x1327</dimen>
     <dimen name="margin_1645">@dimen/x1645</dimen>
+    <dimen name="margin_129">@dimen/x129</dimen>
 
 
     <!--交接班销售列表-->

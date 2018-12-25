@@ -233,7 +233,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                     case GoodsEntity.TYPE_WEIGHT:
                     case GoodsEntity.TYPE_ONLY_PROCESSING:
                     case GoodsEntity.TYPE_PROCESSING:
-                        mGoodsMultiItemAdapter.remove(position);
+//                        mGoodsMultiItemAdapter.remove(position);
                         break;
                 }
             }

@@ -309,6 +309,8 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
                     //刷新数据
                     refreshPrcessingData(helper, processing);
+                } else {
+                    cb_processing.setChecked(false);
                 }
 
                 final boolean is_processing = cb_processing.isChecked();
@@ -347,6 +349,21 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
                 break;
         }
+
+
+        switch (helper.getItemViewType()) {
+            case GoodsEntity.TYPE_WEIGHT://普通商品
+            case GoodsEntity.TYPE_PROCESSING://加工商品
+                helper.getView(R.id.cl_remove).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        remove(helper.getAdapterPosition());
+                    }
+                });
+
+            break;
+        }
+
     }
     /**设置加工方式相关UI 可见性*/
     private void setProcessingLayout(BaseViewHolder helper, boolean showProcessing) {

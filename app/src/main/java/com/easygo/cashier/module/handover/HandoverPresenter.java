@@ -7,8 +7,11 @@ import com.niubility.library.http.base.HttpClient;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.RequestBody;
 
 public class HandoverPresenter extends BasePresenter<HandoverContract.IView> implements HandoverContract.IPresenter {
 
@@ -66,4 +69,30 @@ public class HandoverPresenter extends BasePresenter<HandoverContract.IView> imp
                     }
                 });
     }
+
+    @Override
+    public void print_info(String shop_sn, String printer_sn, String info) {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("shop_sn", shop_sn);
+        requestMap.put("printer_sn", printer_sn);
+        requestMap.put("info", info);
+
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().printer_info(header, requestMap),
+                new BaseResultObserver<String>() {
+
+                    @Override
+                    protected void onSuccess(String result) {
+                        mView.printSuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.printFailed(map);
+                    }
+                });
+    }
+
 }

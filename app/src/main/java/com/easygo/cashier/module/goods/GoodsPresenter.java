@@ -3,10 +3,12 @@ package com.easygo.cashier.module.goods;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.http.HttpAPI;
+import com.easygo.cashier.printer.PrintHelper;
 import com.niubility.library.http.base.HttpClient;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,8 +81,14 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
     public void popTill(String shop_sn, String printer_sn) {
 
         Map<String, String> header = HttpClient.getInstance().getHeader();
+
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("shop_sn", shop_sn);
+        requestMap.put("printer_sn", printer_sn);
+        requestMap.put("info", PrintHelper.pop_till);
+
         subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().pop_till(header, shop_sn, printer_sn),
+                HttpAPI.getInstance().httpService().printer_info(header, requestMap),
                 new BaseResultObserver<String>() {
 
                     @Override

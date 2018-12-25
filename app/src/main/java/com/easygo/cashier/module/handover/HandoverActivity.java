@@ -2,21 +2,29 @@ package com.easygo.cashier.module.handover;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
+import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.HandoverResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
+import com.easygo.cashier.bean.RealMoneyResponse;
+import com.easygo.cashier.module.goods.GoodsContract;
+import com.easygo.cashier.module.goods.GoodsPresenter;
 import com.easygo.cashier.module.login.LoginActivity;
+import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.MyTitleBar;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
@@ -24,11 +32,13 @@ import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -46,6 +56,8 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
     TextView tvTextLoginTime;
     @BindView(R.id.tv_login_time)
     TextView tvLoginTime;
+    @BindView(R.id.cb_print)
+    CheckBox cbPrint;
 
     @Autowired(name = "admin_name")
     String admin_name;
@@ -93,6 +105,17 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
         handover_id = sp.getInt(Constans.KEY_HANDOVER_ID, -1);
 
         mPresenter.handover(handover_id);
+
+        cbPrint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    printHandoverInfo();
+                }
+            }
+        });
+
+
 
     }
 
@@ -183,13 +206,25 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
         }
     }
 
-    @OnClick({R.id.btn_handover, R.id.btn_sales_list, R.id.iv_back})
+    @Override
+    public void printSuccess(String result) {
+
+    }
+
+    @Override
+    public void printFailed(Map<String, Object> map) {
+
+    }
+
+    @OnClick({R.id.btn_handover, R.id.btn_sales_list, R.id.iv_back, R.id.btn_print})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_handover:
                 mPresenter.loginout(handover_id);
 
                 clearLoginInfo();
+
+                printHandoverInfo();
 
                 break;
             case R.id.btn_sales_list:
@@ -207,10 +242,89 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
 
                 mPresenter.sale_list(handover_id);
                 break;
+            case R.id.btn_print://打印销售列表
+                printHandoverSaleList();
             case R.id.iv_back:
                 onBack();
                 break;
         }
+    }
+
+    private void printHandoverInfo() {
+
+        StringBuilder sb = new StringBuilder();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+
+
+        sb.append(PrintHelper.CB_left).append(Configs.shop_sn).append(PrintHelper.CB_right).append(PrintHelper.BR)
+                .append("时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
+                .append("收银员：").append(admin_name).append(PrintHelper.BR)
+                .append("--------------------------------").append(PrintHelper.BR)
+                .append("总销售额：").append(mHandoverView.tvTotalSales.getText()).append(PrintHelper.BR)
+                .append("现金：").append(mHandoverView.tvCash.getText()).append(PrintHelper.BR)
+                .append("支付宝：").append(mHandoverView.tvAlipay.getText()).append(PrintHelper.BR)
+                .append("微信：").append(mHandoverView.tvWechat.getText()).append(PrintHelper.BR)
+                .append("--------------------------------").append(PrintHelper.BR)
+                .append("总单据数：").append(mHandoverView.tvTotalOrderCount.getText()).append(PrintHelper.BR)
+                .append("销售单：").append(mHandoverView.tvSaleCount.getText()).append(PrintHelper.BR)
+                .append("退货单：").append(mHandoverView.tvRefundCount.getText()).append(PrintHelper.BR)
+                .append("--------------------------------").append(PrintHelper.BR)
+                .append("总现金数：").append(mHandoverView.tvTotalCash.getText()).append(PrintHelper.BR)
+                .append("现金收入：").append(mHandoverView.tvCashIncome.getText()).append(PrintHelper.BR);
+
+
+        Log.i(TAG, "printHandoverInfo: sb -> " + sb.toString());
+
+        mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, sb.toString());
+    }
+
+
+    public void printHandoverSaleList() {
+
+        List<HandoverSaleResponse> data = null;
+        if (mHandoverSaleListView != null) {
+            data = mHandoverSaleListView.getData();
+        }
+        if(data == null) {
+            Log.i(TAG, "printHandoverSaleList: data = null");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+
+
+        sb.append(PrintHelper.CB_left).append(Configs.shop_sn).append(PrintHelper.CB_right).append(PrintHelper.BR)
+                .append("时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
+                .append("收银员：").append(admin_name).append(PrintHelper.BR)
+                .append("--------------------------------").append(PrintHelper.BR)
+                .append("品名  ").append("分类  ").append("单价  ").append("数量  ").append("小计  ")
+                .append(PrintHelper.BR);
+
+        int size = data.size();
+        int count = 0;
+        int total_money = 0;
+        for (int i = 0; i < size; i++) {
+            HandoverSaleResponse saleResponse = data.get(i);
+            count += saleResponse.getCount();
+            total_money += saleResponse.getMoney();
+
+            sb.append(saleResponse.getG_sku_name()).append("   ").append(PrintHelper.BR)
+            .append(saleResponse.getG_c_name()).append("   ").append(PrintHelper.BR)
+            .append(saleResponse.getSell_price()).append("   ")
+            .append(saleResponse.getCount()).append("   ")
+            .append(saleResponse.getMoney()).append(PrintHelper.BR);
+        }
+        sb.append("--------------------------------").append(PrintHelper.BR)
+        .append("总数量：").append(count).append(PrintHelper.BR)
+        .append("总金额：").append(total_money).append(PrintHelper.BR);
+
+
+        Log.i(TAG, "printHandoverSaleList: sb -> " + sb.toString());
+
+        mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, sb.toString());
+
+
     }
 
 

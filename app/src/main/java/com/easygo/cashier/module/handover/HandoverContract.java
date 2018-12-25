@@ -20,6 +20,8 @@ public class HandoverContract {
 
         void sale_list(int handover_id);
 
+        void print_info(String shop_sn, String printer_sn, String info);
+
     }
 
     interface IView extends BaseView {
@@ -31,6 +33,9 @@ public class HandoverContract {
 
         void saleListSuccess(List<HandoverSaleResponse> result);
         void saleListFailed(Map<String, Object> map);
+
+        void printSuccess(String result);
+        void printFailed(Map<String, Object> map);
 
     }
 }

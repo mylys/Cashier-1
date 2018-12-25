@@ -69,7 +69,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     int mGoodsCount;
     @Autowired(name = "coupon")
     float mCoupon;
-    /**应收*/
+    /**订单金额， 应收*/
     @Autowired(name = "total_money")
     float mTotalMoney;
     @Autowired(name = "goods_data")
@@ -78,7 +78,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     /**商品数据*/
     List<GoodsEntity<GoodsResponse>> mGoodsData;
 
-    /**实收*/
+    /**实收 键盘输入的现金数*/
     float mRealPay;
     /**找零*/
     float mChange;
@@ -194,7 +194,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     s.delete(s.length()-1, s.length());
                 } else {
                     mRealPay = data;
-                    mChange = mRealPay - mTotalMoney;
+                    mChange = mRealPay - mTotalMoney - mCoupon;
 
                     //刷新价格
                     if(settlementView != null)
@@ -472,7 +472,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     public void createOrder() {
         DecimalFormat df = new DecimalFormat("#");
         String total_money = df.format(mTotalMoney*100);
-        String real_pay = df.format(mRealPay*100);
+        String real_pay = df.format(mTotalMoney*100 - mCoupon*100);
+//        String real_pay = df.format(mRealPay*100);
 
         CreateOrderRequestBody requestBody1 = new CreateOrderRequestBody();
         requestBody1.setShop_sn(Configs.shop_sn);
@@ -536,7 +537,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             case PayWayView.WAY_CASH:
 
                 DecimalFormat df = new DecimalFormat("#");
-                String real_pay = df.format(mRealPay*100);
+                String real_pay = df.format(mTotalMoney*100 - mCoupon*100);
                 String change_money = df.format(mChange*100);
 
                 mPresenter.cash(Configs.shop_sn, Configs.order_no,

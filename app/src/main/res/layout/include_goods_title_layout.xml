@@ -72,8 +72,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_159"
-        android:text="@string/text_count"
+        android:layout_marginEnd="@dimen/margin_129"
+        android:text="@string/text_count_weight"
         style="@style/GoodsTitleStyle" />
 
 

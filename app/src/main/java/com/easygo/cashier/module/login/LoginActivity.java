@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.TextureView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -20,7 +19,6 @@ import com.easygo.cashier.bean.LoginResponse;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
-import com.niubility.library.utils.DeviceUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
@@ -79,8 +77,9 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
             finish();
         } else {
 
-            etAccount.setText("15017740901");
-            etPassword.setText("123456");
+            etAccount.setText(admin_name);
+//            etAccount.setText("15017740901");
+//            etPassword.setText("123456");
         }
     }
 
@@ -119,6 +118,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
+                v.clearFocus();
             }
             return super.dispatchTouchEvent(ev);
         }
@@ -159,6 +159,9 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     @Override
     protected void onStart() {
         super.onStart();
+
+
+
 
         if(TextUtils.isEmpty(Configs.shop_sn)) {
 

@@ -83,6 +83,30 @@
         app:layout_constraintTop_toTopOf="@id/tv_barcode"
         app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_remove"
+        android:layout_width="@dimen/x67"
+        android:layout_height="@dimen/y56"
+        android:layout_marginEnd="@dimen/x69"
+        android:foreground="?android:listChoiceBackgroundIndicator"
+        android:background="@drawable/bg_btn_remove"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:gravity="center"
+            style="@style/GoodsSettlementDetailStyle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

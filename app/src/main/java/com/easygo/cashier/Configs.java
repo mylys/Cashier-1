@@ -21,7 +21,8 @@ public class Configs {
     /**
      * 打印机
      */
-    public static String printer_sn = "918510026";
+//    public static String printer_sn = "918510026";
+    public static String printer_sn = "918529231";
 
     /* admin */
     public static String admin_name = "";

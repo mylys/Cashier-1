@@ -145,6 +145,14 @@ public interface HttpService {
                                                   @Field("printer_sn") String printer_sn);
 
     /**
+     * 打印机打印
+     */
+    @FormUrlEncoded
+    @POST("api/pay/printer_till")
+    Observable<HttpResult<String>> printer_info(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
+
+
+    /**
      * 钱箱
      */
     @FormUrlEncoded

@@ -21,7 +21,7 @@ public class GoodsContract {
 
     }
 
-    interface IView extends BaseView {
+    public interface IView extends BaseView {
         void getGoodsSuccess(List<GoodsResponse> result);
         void getGoodsFailed(Map<String, Object> map);
 

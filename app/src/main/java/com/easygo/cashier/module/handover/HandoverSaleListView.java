@@ -70,6 +70,10 @@ public class HandoverSaleListView extends FrameLayout {
 
     }
 
+    public List<HandoverSaleResponse> getData() {
+        return mHandoverSaleListAdapter.getData();
+    }
+
     public void release() {
         if (unbinder != null)
             unbinder.unbind();
