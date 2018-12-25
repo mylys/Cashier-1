@@ -1,13 +1,11 @@
 package com.easygo.cashier.module.order_history;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +14,11 @@ import android.widget.Toast;
 
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.OrderHistoryGoodsAdapter;
-import com.easygo.cashier.bean.GoodsInfo;
-import com.easygo.cashier.bean.OrderHistoryInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.niubility.library.base.BaseFragment;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,6 +63,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     private String order_number = "";
 
     private int total_price = 0;
+    private DecimalFormat df = new DecimalFormat("0.00");
 
     /**
      * 商品数据
@@ -111,7 +108,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList("data", (ArrayList<OrderHistorysInfo.ListBean>) orderHistoryGoodsAdapter.getData());
                     bundle.putString("pay_type", payType);
-                    bundle.putInt("total_price",total_price);
+                    bundle.putInt("total_price", total_price);
                     bundle.putString("order_number", order_number);
                     ((OrderHistoryActivity) getActivity()).toOrderHistoryRefundFragment(bundle);
                 }
@@ -133,7 +130,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money() + " = ");
 
         order_number = orderHistoryInfo.getTrade_num();
-        total_price = Integer.parseInt(orderHistoryInfo.getTotal_money().replace(".",""));
+        total_price = Integer.parseInt(orderHistoryInfo.getTotal_money().replace(".", ""));
 
         switch (orderHistoryInfo.getPay_type()) {
             case 1:
@@ -157,16 +154,12 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         }
         double change_money = Double.parseDouble(orderHistoryInfo.getChange_money());
         double buyer_price = Double.parseDouble(orderHistoryInfo.getBuyer_pay());
-        double total_buyer_price = buyer_price + change_money;
+        String total_buyer_price = df.format(buyer_price + change_money);
         String change_price = "0.00";
         if (change_money != 0) {
-            change_price = change_money + "";
+            change_price = df.format(change_money);
         }
-        if (total_buyer_price != 0) {
-            tvReceiptsText.setText(payType + "：￥" + total_buyer_price + " - 找零：￥" + change_price + " = ");
-        } else {
-            tvReceiptsText.setText(payType + "：￥0.00 - 找零：￥" + change_price + " = ");
-        }
+        tvReceiptsText.setText(payType + "：￥" + total_buyer_price + " - 找零：￥" + change_price + " = ");
 
         /*付款*/
         tvBuyer.setVisibility(View.INVISIBLE);
@@ -190,12 +183,8 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 if (orderHistoryInfo.getRefund_fee() != null) {
                     refund_price = (double) orderHistoryInfo.getRefund_fee();
                 }
-                double total_refund = refund_price + change_money;
-                if (total_refund != 0) {
-                    tvRefundText.setText(payType + "：￥" + total_refund + " - 找零：￥" + change_price + " = ");
-                } else {
-                    tvRefundText.setText(payType + "：￥0.00 - 找零：￥" + change_price + " = ");
-                }
+                String total_refund_str = df.format(refund_price + change_money);
+                tvRefundText.setText(payType + "：￥" + total_refund_str + " - 找零：￥" + change_price + " = ");
                 tvRefund.setText("退款：￥" + refund_price);
                 tvReturnOfGoodsCount.setText("共退款" + orderHistoryInfo.getList().size() + "件");
                 break;
