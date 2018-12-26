@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.HandoverResponse;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -56,6 +58,8 @@ public class HandoverView extends FrameLayout {
 
     public void setData(HandoverResponse result) {
 
+        DecimalFormat df = new DecimalFormat("#0.00");
+
         //总单据数
         int sale_count = result.getSale_count();
         int refund_count = result.getRefund_count();
@@ -65,14 +69,15 @@ public class HandoverView extends FrameLayout {
 
         //总销售额
         float cash_money = result.getCash_money();
+        String cash = df.format(cash_money);
         tvTotalSales.setText(String.valueOf(result.getAll_money()));
-        tvCash.setText(String.valueOf(cash_money));
-        tvAlipay.setText(String.valueOf(result.getAlipay_money()));
-        tvWechat.setText(String.valueOf(result.getWx_money()));
+        tvCash.setText(cash);
+        tvAlipay.setText(df.format(result.getAlipay_money()));
+        tvWechat.setText(df.format(result.getWx_money()));
 
         //总现金
-        tvTotalCash.setText(String.valueOf(cash_money));
-        tvCashIncome.setText(String.valueOf(cash_money));
+        tvTotalCash.setText(cash);
+        tvCashIncome.setText(cash);
 
     }
 

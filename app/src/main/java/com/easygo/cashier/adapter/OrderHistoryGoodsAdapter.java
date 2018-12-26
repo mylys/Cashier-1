@@ -21,14 +21,15 @@ public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo
         String sell_price = item.getSell_price();
         helper.setText(R.id.tv_text_goods_name,item.getG_sku_name())
                 .setText(R.id.tv_text_price, sell_price)
-                .setText(R.id.tv_text_coupon,"0")
+                .setText(R.id.tv_text_coupon,"0.00")
                 .setText(R.id.tv_text_goods_count, quantity + "")
                 .setText(R.id.tv_text_subtotal,item.getMoney());
 
         if(quantity != item.getCount()) {
+            boolean noCode = item.getG_sku_name().equals("无码商品");
             float price = Float.valueOf(sell_price);
             DecimalFormat df = new DecimalFormat("#0.00");
-            helper.setText(R.id.tv_text_goods_count, quantity + "g")
+            helper.setText(R.id.tv_text_goods_count, noCode? quantity + "": quantity + "g")
                     .setText(R.id.tv_text_subtotal, df.format(quantity * price));
         }
     }

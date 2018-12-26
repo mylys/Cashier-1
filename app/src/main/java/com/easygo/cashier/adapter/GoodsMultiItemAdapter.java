@@ -234,7 +234,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                         //选择加工时 更新价格
                         GoodsResponse processing = good.getProcessing();
                         if(processing != null) {//此时 选择了加工
-//                            count += 1;
+                            count += 1;
                             coupon += Double.valueOf(processing.getDiscount_price());
                             price += Double.parseDouble(processing.getProcess_price()) * processing.getCount();
                         }
@@ -437,7 +437,8 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         data.clear();
         barcodeData.clear();
         mData.clear();
-        mListener.onPriceChange(0, 0, 0);
+        if(mListener != null)
+            mListener.onPriceChange(0, 0, 0);
         notifyItemRangeRemoved(0, count);
     }
 

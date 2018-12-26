@@ -67,7 +67,7 @@
 
     <!-- 退款 -->
     <string name="text_total_refund_product">共退货</string>
-    <string name="text_total_refund_price">件,退款金额：￥ </string>
+    <string name="text_total_refund_price">件，退款金额：￥ </string>
 
     <!--搜索框-->
     <string name="text_search_hint_barcode">输入条形码、商品名或编码</string>

@@ -54,7 +54,14 @@
         <item name="android:gravity">left|center</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:textColor">@color/color_333333</item>
-        <item name="android:textSize">@dimen/sp_12</item>
+        <!--<item name="android:textSize">@dimen/sp_12</item>-->
+        <item name="android:textSize">@dimen/x28</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="RefundGoodsList" parent="GoodsListStyle">
+        <item name="android:gravity">left|center</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 
     <style name="DialogStyle" parent="CustomDialogStyle">

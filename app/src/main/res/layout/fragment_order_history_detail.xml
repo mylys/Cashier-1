@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="2018071123456789012"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="@id/tv_text_order_no"
         app:layout_constraintStart_toEndOf="@id/tv_text_order_no"
         app:layout_constraintTop_toTopOf="@id/tv_text_order_no" />
@@ -106,7 +106,7 @@
             android:text="@string/text_count_weight"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.7274"
+            app:layout_constraintHorizontal_bias="0.77"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -118,7 +118,7 @@
             android:text="@string/text_subtotal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.855"
+            app:layout_constraintHorizontal_bias="0.93"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -181,7 +181,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/x44"
         android:layout_marginBottom="@dimen/y52"
-        android:text="退款：￥10000"
+        android:text="退款：￥0.00"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/btn_print"
         app:layout_constraintEnd_toEndOf="@id/tv_cashier_account" />
@@ -211,7 +211,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/y19"
-        android:text="实收：￥10000"
+        android:text="实收：￥0.00"
         app:layout_constraintBottom_toTopOf="@id/line3"
         app:layout_constraintEnd_toEndOf="@id/tv_refund" />
 
@@ -240,7 +240,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/x27"
-        android:text="共1件"
+        android:text="共-件"
         app:layout_constraintBottom_toBottomOf="@id/tv_receivable"
         app:layout_constraintStart_toStartOf="@id/tv_text_order_no"
         app:layout_constraintTop_toTopOf="@id/tv_receivable" />
@@ -253,7 +253,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/y20"
-        android:text="应收：￥10000"
+        android:text="应收：￥0.00"
         app:layout_constraintBottom_toTopOf="@id/line2"
         app:layout_constraintEnd_toEndOf="@id/tv_refund" />
 

@@ -3,22 +3,32 @@ package com.easygo.cashier.module.order_history;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easygo.cashier.Configs;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.OrderHistoryGoodsAdapter;
 import com.easygo.cashier.bean.OrderHistorysInfo;
+import com.easygo.cashier.printer.PrintHelper;
 import com.niubility.library.base.BaseFragment;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,6 +79,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
      * 商品数据
      */
     private OrderHistoryGoodsAdapter orderHistoryGoodsAdapter;
+    private OrderHistorysInfo mOrderHistorysInfo;
 
     @Nullable
     @Override
@@ -115,21 +126,85 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 break;
             case R.id.btn_print:
                 Toast.makeText(getContext(), "打印单据", Toast.LENGTH_SHORT).show();
+                printOrderHistoryDetail();
+
                 break;
         }
     }
 
+    /**
+     * 打印历史订单详情
+     */
+    private void printOrderHistoryDetail() {
+        List<OrderHistorysInfo.ListBean> data = mOrderHistorysInfo.getList();
+        int size = data.size();
+        if (size <= 0) {
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+
+        sb.append(PrintHelper.CB_left).append(Configs.shop_name).append(PrintHelper.CB_right).append(PrintHelper.BR)
+                .append("订单号：").append(tvOrderNo.getText().toString()).append(PrintHelper.BR)
+                .append("时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
+                .append("收银员：").append(tvCashierAcount.getText().toString()).append(PrintHelper.BR)
+                .append("--------------------------------").append(PrintHelper.BR)
+                .append("品名  ").append("单价  ").append("优惠  ").append("数量/重量  ").append("小计  ")
+                .append(PrintHelper.BR);
+
+        int count = 0;
+        boolean isWeight = false;
+        for (int i = 0; i < size; i++) {
+            OrderHistorysInfo.ListBean listBean = data.get(i);
+
+            count += listBean.getCount();
+            isWeight = listBean.getCount() == listBean.getQuantity();
+
+            sb.append(i+1).append(".")
+                    .append(listBean.getG_sku_name()).append("   ").append(PrintHelper.BR)
+                    .append("     ")
+                    .append(listBean.getSell_price()).append("   ")
+                    .append("0.00").append("   ")
+                    .append(isWeight? listBean.getQuantity() + "g": listBean.getCount()).append("   ")
+                    .append(listBean.getMoney()).append(PrintHelper.BR);
+        }
+
+        sb.append("--------------------------------").append(PrintHelper.BR)
+                .append("总数量：").append(count).append(PrintHelper.BR)
+                .append("原价：").append(mOrderHistorysInfo.getTotal_money()).append("元").append(PrintHelper.BR)
+                .append("优惠：").append("0.00").append("元").append(PrintHelper.BR)
+                .append("总金额：").append(mOrderHistorysInfo.getTotal_money()).append("元").append(PrintHelper.BR)
+                .append("支付方式：").append(payType).append(PrintHelper.BR)
+                .append("实收：").append(mOrderHistorysInfo.getBuyer_pay()).append("元").append(PrintHelper.BR)
+                .append("找零：").append(mOrderHistorysInfo.getChange_money()).append("元").append(PrintHelper.BR)
+                .append("退款：").append(mOrderHistorysInfo.getRefund_fee()!=null?
+                        ((String) mOrderHistorysInfo.getRefund_fee()):"0.00").append("元").append(PrintHelper.BR);
+
+        Fragment parentFragment = getParentFragment();
+        if(parentFragment != null) {
+            OrderHistoryFragment fragment = (OrderHistoryFragment) parentFragment;
+
+            fragment.print(sb.toString());
+        }
+
+    }
+
     public void showOrderHistory(OrderHistorysInfo orderHistoryInfo, String name) {
+
+        this.mOrderHistorysInfo = orderHistoryInfo;
+
         orderHistoryGoodsAdapter.setNewData(orderHistoryInfo.getList());
-        tvOrderNo.setText(orderHistoryInfo.getTrade_num());
-        tvCashierAcount.setText(name);
+//        tvOrderNo.setText(orderHistoryInfo.getTrade_num());
+        tvOrderNo.setText((String)orderHistoryInfo.getTrade_no());
+        tvCashierAcount.setText(orderHistoryInfo.getAdmin_name());
         tvGoodsCount.setText("共" + orderHistoryInfo.getList().size() + "件");
         tvReceipts.setText("实收：￥" + orderHistoryInfo.getBuyer_pay());
 
         tvReceivable.setText("应收：￥" + orderHistoryInfo.getReal_pay());
         tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money() + " = ");
 
-        order_number = orderHistoryInfo.getTrade_num();
+        order_number = orderHistoryInfo.getTrade_no()!=null?(String)orderHistoryInfo.getTrade_no():"";
         total_price = Integer.parseInt(orderHistoryInfo.getTotal_money().replace(".", ""));
 
         switch (orderHistoryInfo.getPay_type()) {
@@ -172,8 +247,11 @@ public class OrderHistoryDetailFragment extends BaseFragment {
             case 1:
                 break;
             case 2:
-                tvBuyer.setVisibility(View.VISIBLE);
-                tvBuyer.setText("付款人：" + orderHistoryInfo.getBuyer());
+                String buyer = orderHistoryInfo.getBuyer();
+                if(!TextUtils.isEmpty(buyer)) {
+                    tvBuyer.setVisibility(View.VISIBLE);
+                    tvBuyer.setText("付款人：" + buyer);
+                }
                 break;
             case 3:
                 tvReturnOfGoodsCount.setVisibility(View.VISIBLE);

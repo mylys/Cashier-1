@@ -65,11 +65,13 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         String admin_name = sp.getString(Constans.KEY_ADMIN_NAME, "");
         int handover_id = sp.getInt(Constans.KEY_HANDOVER_ID, -1);
         String shop_sn = sp.getString(Constans.KEY_SHOP_SN, "");
+        String shop_name = sp.getString(Constans.KEY_SHOP_NAME, "");
         if(!TextUtils.isEmpty(session_id) && !TextUtils.isEmpty(admin_name)
                 && !TextUtils.isEmpty(shop_sn) && handover_id != -1) {
             //登录状态 直接跳转首页
 
             Configs.shop_sn = shop_sn;
+            Configs.shop_name = shop_name;
 
             ARouter.getInstance().build(ModulePath.goods)
                     .withString("admin_name", admin_name)
@@ -226,6 +228,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
         SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(this).edit();
         editor.putString(Constans.KEY_SHOP_SN, shop_sn)
+                .putString(Constans.KEY_SHOP_NAME, shop_name)
                 .apply();
 
         Configs.shop_name = shop_name;

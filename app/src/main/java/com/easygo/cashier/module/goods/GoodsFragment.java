@@ -470,6 +470,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public void getGoodsSuccess(List<GoodsResponse> result) {
 
         mGoodsMultiItemAdapter.addItem(result, mGoodWeight != 0 ? mGoodWeight : 1);
+        rvGoods.smoothScrollToPosition(mGoodsMultiItemAdapter.getItemCount()-1);
 
         if(mUserGoodsScreen != null) {
             //没有显示时 显示用户商品列表副屏页面
@@ -478,6 +479,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
             //刷新用户商品列表页面数据
             mUserGoodsScreen.addItem(result, mGoodWeight != 0 ? mGoodWeight : 1);
+            mUserGoodsScreen.toPosition();
         }
 
         mGoodWeight = 0;

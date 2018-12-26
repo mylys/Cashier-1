@@ -148,7 +148,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 infoList.add(info);
             }
         }
-        tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件,退款金额：");
+        tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件，退款金额：￥");
         setListener();
     }
 
@@ -166,7 +166,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
             public void onClick(View v) {
                 //如果点击checkbox，则全选，反之全否
                 adapter.setClick(checkbox.isChecked());
-                tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件,退款金额：");
+                tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件，退款金额：￥");
                 editRefundcashPrice.setText(adapter.getTotalPrice());
             }
         });
@@ -295,6 +295,10 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 //        if (listener != null) {
 //            removeSoftKeyBoardListener(parent);
 //        }
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
+
     }
 
 

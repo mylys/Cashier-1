@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -63,7 +64,7 @@ public class MySearchView extends ConstraintLayout {
             mEditText.setPadding(mSearchTextPaddingStart, 0, 0, 0);
         }
         if (mSearchBtnTextSize != -1) {
-            mSearchBtn.setTextSize(mSearchBtnTextSize);
+            mSearchBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, mSearchBtnTextSize);
         }
 
 
@@ -115,7 +116,7 @@ public class MySearchView extends ConstraintLayout {
 
             mHint = ta.getString(R.styleable.MySearchView_search_hint);
             mSearchTextPaddingStart = ta.getDimensionPixelSize(R.styleable.MySearchView_search_text_padding_start, -1);
-            mSearchBtnTextSize = (int) ta.getDimension(R.styleable.MySearchView_search_btn_text_size, -1);
+            mSearchBtnTextSize = (int) ta.getDimensionPixelSize(R.styleable.MySearchView_search_btn_text_size, -1);
             mSearchBtnWidth = ta.getDimensionPixelSize(R.styleable.MySearchView_search_btn_width, -1);
             mSearchBtnHeight = ta.getDimensionPixelSize(R.styleable.MySearchView_search_btn_height, -1);
 
