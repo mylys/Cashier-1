@@ -25,7 +25,6 @@
     <string name="text_pay">支付</string>
     <string name="text_is_processing">是否加工</string>
 
-
     <!--结算页面-->
     <string name="text_combined_payment">组合支付</string>
     <string name="text_cash">现金</string>
@@ -74,6 +73,7 @@
     <string name="text_search_hint_order">输入订单单号</string>
     <string name="text_search_hint_product_name">输入商品名</string>
     <string name="text_search">搜索</string>
+    <string name="search_null">搜索不到该商品</string>
 
     <!-- dialog -->
     <string name="no_goods_text">无码商品</string>

@@ -301,11 +301,11 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         DisplayManager mDisplayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
         Display[] displays = mDisplayManager.getDisplays();
 
-        if (mUserGoodsScreen == null) {
-            mUserGoodsScreen = new UserGoodsScreen(context,
-                    displays[displays.length - 1], admin_name);// displays[1]是副屏
-            mUserGoodsScreen.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        }
+//        if (mUserGoodsScreen == null) {
+//            mUserGoodsScreen = new UserGoodsScreen(context,
+//                    displays[displays.length - 1], admin_name);// displays[1]是副屏
+//            mUserGoodsScreen.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+//        }
     }
 
     @Override

@@ -6,7 +6,7 @@
     android:layout_height="@dimen/y90"
     android:layout_marginLeft="@dimen/x1"
     android:layout_marginRight="@dimen/x1"
-    android:background="@color/color_f5f7fa">
+    android:background="@color/color_text_white">
 
     <ImageView
         android:id="@+id/image_discount"

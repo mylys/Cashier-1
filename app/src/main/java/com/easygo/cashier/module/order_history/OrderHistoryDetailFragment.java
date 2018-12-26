@@ -124,10 +124,10 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         tvOrderNo.setText(orderHistoryInfo.getTrade_num());
         tvCashierAcount.setText(name);
         tvGoodsCount.setText("共" + orderHistoryInfo.getList().size() + "件");
-        tvReceipts.setText("实收：￥" + orderHistoryInfo.getBuyer_pay());
+        tvReceipts.setText("实付：￥" + orderHistoryInfo.getBuyer_pay());
 
         tvReceivable.setText("应收：￥" + orderHistoryInfo.getReal_pay());
-        tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money() + " = ");
+//        tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money() + " = ");
 
         order_number = orderHistoryInfo.getTrade_num();
         total_price = Integer.parseInt(orderHistoryInfo.getTotal_money().replace(".", ""));
@@ -159,12 +159,13 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         if (change_money != 0) {
             change_price = df.format(change_money);
         }
-        tvReceiptsText.setText(payType + "：￥" + total_buyer_price + " - 找零：￥" + change_price + " = ");
+        tvReceiptsText.setText(payType + getResources().getString(R.string.text_pay) + "：￥" + total_buyer_price + " - 找零：￥" + change_price + " = ");
 
         /*付款*/
         tvBuyer.setVisibility(View.INVISIBLE);
 
         /*退款*/
+        line3.setVisibility(View.INVISIBLE);
         tvRefund.setVisibility(View.INVISIBLE);
         tvRefundText.setVisibility(View.INVISIBLE);
         tvReturnOfGoodsCount.setVisibility(View.INVISIBLE);
@@ -178,13 +179,14 @@ public class OrderHistoryDetailFragment extends BaseFragment {
             case 3:
                 tvReturnOfGoodsCount.setVisibility(View.VISIBLE);
                 tvRefund.setVisibility(View.VISIBLE);
+                line3.setVisibility(View.VISIBLE);
 
                 double refund_price = 0;
                 if (orderHistoryInfo.getRefund_fee() != null) {
                     refund_price = (double) orderHistoryInfo.getRefund_fee();
                 }
                 String total_refund_str = df.format(refund_price + change_money);
-                tvRefundText.setText(payType + "：￥" + total_refund_str + " - 找零：￥" + change_price + " = ");
+                tvRefundText.setText(payType + getResources().getString(R.string.text_pay) + "：￥" + total_refund_str + " - 找零：￥" + change_price + " = ");
                 tvRefund.setText("退款：￥" + refund_price);
                 tvReturnOfGoodsCount.setText("共退款" + orderHistoryInfo.getList().size() + "件");
                 break;

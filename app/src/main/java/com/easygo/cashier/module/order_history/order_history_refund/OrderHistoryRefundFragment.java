@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.R;
+import com.easygo.cashier.TestUtils;
 import com.easygo.cashier.adapter.OrderHistoryRefundAdapter;
 import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
@@ -78,6 +79,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     private String refund_pay_type = "";
     private int total_price = 0;
     private int pay_way = PayWayView.WAY_CASH;
+    private TestUtils textUtils = new TestUtils();
 
     public static OrderHistoryRefundFragment getInstance(Bundle bundle) {
         OrderHistoryRefundFragment fragment = new OrderHistoryRefundFragment();
@@ -104,6 +106,9 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     @SuppressLint("SetTextI18n")
     @Override
     protected void init() {
+        textUtils.addSoftKeyBoardListener(parent,child);
+        searchView.moniPerformClick();//进入此fragment模拟点击搜索框，可解决两个搜索框引起的冲突
+
         List<OrderHistorysInfo.ListBean> data = null;
         if (getArguments() != null) {
             data = getArguments().getParcelableArrayList("data");
@@ -186,7 +191,6 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
             @Override
             public void onSelectBean(ArrayList<RequsetBody.GoodsList> lists) {
-
                 goodsLists.clear();
                 goodsLists.addAll(lists);
             }
@@ -195,9 +199,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         searchView.setOnSearchListenerClick(new MySearchView.OnSearhListenerClick() {
             @Override
             public void onSearch(String content) {
-//                if (listener != null){
-//                    listener.removeSoftKeyBoardListener(parent);
-//                }
+                textUtils.removeSoftKeyBoardListener(parent);
                 ArrayList<GoodsRefundInfo> infos = new ArrayList<>();
                 for (GoodsRefundInfo info : adapter.getData()) {
                     if (info.getProduct_name().contains(content)) {
@@ -205,7 +207,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                     }
                 }
                 if (infos.size() == 0) {
-                    ToastUtils.showToast(getActivity(), "搜索不到该商品");
+                    ToastUtils.showToast(getActivity(), R.string.search_null);
                     adapter.setNewData(infoList);
                 } else {
                     adapter.setNewData(infos);
@@ -221,7 +223,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                textUtils.addSoftKeyBoardListener(parent,child);
             }
 
             @Override
@@ -286,67 +288,6 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         if (HttpExceptionEngine.isBussinessError(map)) {
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
             showToast("错误信息:" + err_msg);
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-//        if (listener != null) {
-//            removeSoftKeyBoardListener(parent);
-//        }
-    }
-
-
-    private ViewTreeObserver.OnGlobalLayoutListener mSoftKeyBoardListener;
-
-    private class SoftKeyBoardListener implements ViewTreeObserver.OnGlobalLayoutListener {
-
-        private View root;
-        private View view;
-
-        int lastHeight = 0;
-        int lastBottom = -1;
-
-        SoftKeyBoardListener(View r,View v) {
-            root = r;
-            view = v;
-        }
-
-        @Override
-        public void onGlobalLayout() {
-            Rect rect = new Rect();
-            root.getWindowVisibleDisplayFrame(rect);
-            if (lastBottom == -1) {
-                lastBottom = rect.bottom;
-                return;
-            }
-
-            int nb = rect.bottom;
-            int ob = lastBottom;
-
-            if (nb < ob) {
-                // 键盘显示了， 滑上去
-                int[] location = new int[2];
-                view.getLocationInWindow(location);
-                int scrollHeight = (location[1] + view.getHeight()) - nb;
-                root.scrollTo(0, scrollHeight);
-                lastHeight = scrollHeight;
-            }
-            else if (nb > ob) {
-                // 键盘隐藏了, 滑下来
-                root.scrollTo(0, 0);
-            }
-
-            if (nb != ob) {
-                lastBottom = nb;
-            }
-        }
-    }
-
-    public void removeSoftKeyBoardListener(@NonNull View root) {
-        if(mSoftKeyBoardListener != null){
-            root.getViewTreeObserver().removeOnGlobalLayoutListener(mSoftKeyBoardListener);
         }
     }
 }

@@ -70,7 +70,7 @@
     </style>
     <!--商品标题列表名称-->
     <style name="GoodsTitleStylelist">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">@dimen/text_size_28</item>
         <item name="android:textColor">@color/color_505050</item>
     </style>
     <!--商品列表-->
