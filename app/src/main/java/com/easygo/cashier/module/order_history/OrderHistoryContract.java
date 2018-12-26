@@ -16,11 +16,14 @@ public class OrderHistoryContract {
     public interface IPresenter extends BaseContract.Presenter {
 
         void post(int handover_id, String keyword, int page, int count);
-
+        void print_info(String shop_sn, String printer_sn, String info);
     }
 
     interface IView extends BaseView {
         void getHistoryInfo(List<OrderHistorysInfo> orderHistorysInfo);
         void getHistorfFailed(Map<String, Object> map);
+
+        void printSuccess(String result);
+        void printFailed(Map<String, Object> map);
     }
 }

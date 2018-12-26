@@ -9,20 +9,20 @@
     <RelativeLayout
         android:id="@+id/rl"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/y155"
         android:background="@color/color_text_white">
 
         <!--搜索框-->
         <com.easygo.cashier.widget.MySearchView
             android:id="@+id/search_view"
-            android:layout_width="@dimen/x590"
-            android:layout_height="33dp"
+            android:layout_width="@dimen/x773"
+            android:layout_height="@dimen/y98"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/x45"
             android:background="@drawable/bg_btn_frame_green"
-            MySearchView:search_btn_height="33dp"
-            MySearchView:search_btn_text_size="@dimen/x12"
-            MySearchView:search_btn_width="@dimen/x180"
+            MySearchView:search_btn_height="@dimen/y96"
+            MySearchView:search_btn_text_size="@dimen/x36"
+            MySearchView:search_btn_width="@dimen/x177"
             MySearchView:search_hint="@string/text_search_hint_product_name"
             MySearchView:search_text_padding_start="@dimen/x29">
 
@@ -41,7 +41,9 @@
                 android:id="@+id/tv_order_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="订单单号：201807011234567891012" />
+                android:text="订单单号：201807011234567891012"
+                android:textSize="@dimen/x33"
+                android:textColor="@color/color_505050"/>
 
             <View
                 android:id="@+id/view1"
@@ -55,7 +57,9 @@
                 android:id="@+id/tv_order_cashier"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="收银员：1002" />
+                android:text="收银员：1002"
+                android:textSize="@dimen/x33"
+                android:textColor="@color/color_505050"/>
 
         </LinearLayout>
 
@@ -90,7 +94,8 @@
                 android:layout_marginStart="@dimen/x45"
                 android:layout_weight="1"
                 android:text="订单支付方式：微信支付"
-                android:textColor="@color/color_505050" />
+                android:textColor="@color/color_505050"
+                android:textSize="@dimen/x33"/>
 
             <TextView
                 android:id="@+id/tv_refund_cash_num"
@@ -98,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="共退货1件，退货金额：￥ "
-                android:textSize="12sp" />
+                android:textSize="@dimen/x33" />
 
             <EditText
                 android:id="@+id/edit_refund_case_price"

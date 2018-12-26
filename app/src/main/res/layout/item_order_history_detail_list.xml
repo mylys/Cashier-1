@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cl_goods_title"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y90"
+    android:layout_height="@dimen/y98"
     android:layout_marginLeft="@dimen/x1"
     android:layout_marginRight="@dimen/x1"
     android:background="@color/color_text_white">
@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/tv_text_goods_name"
-        style="@style/GoodsTitleStylelist"
+        style="@style/GoodsListStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_goods_name"
@@ -31,7 +31,7 @@
 
     <TextView
         android:id="@+id/tv_text_price"
-        style="@style/GoodsTitleStylelist"
+        style="@style/GoodsListStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_price"
@@ -43,7 +43,7 @@
 
     <TextView
         android:id="@+id/tv_text_coupon"
-        style="@style/GoodsTitleStylelist"
+        style="@style/GoodsListStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_coupon"
@@ -55,25 +55,25 @@
 
     <TextView
         android:id="@+id/tv_text_goods_count"
-        style="@style/GoodsTitleStylelist"
+        style="@style/GoodsListStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_count"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.7274"
+        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_text_subtotal"
-        style="@style/GoodsTitleStylelist"
+        style="@style/GoodsListStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_subtotal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.855"
+        app:layout_constraintHorizontal_bias="0.93"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

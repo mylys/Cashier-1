@@ -32,6 +32,7 @@ public class OrderHistorysInfo {
     private Object trade_no;
     private String trade_num;
     private int create_time;
+    private Object refund_order_id;
     private String total_money;
     private String real_pay;
     private String buyer_pay;
@@ -43,6 +44,23 @@ public class OrderHistorysInfo {
     private List<ListBean> list;
     private boolean isSelect;
     private String buyer;
+    private String admin_name;
+
+    public Object getRefund_order_id() {
+        return refund_order_id;
+    }
+
+    public void setRefund_order_id(Object refund_order_id) {
+        this.refund_order_id = refund_order_id;
+    }
+
+    public String getAdmin_name() {
+        return admin_name;
+    }
+
+    public void setAdmin_name(String admin_name) {
+        this.admin_name = admin_name;
+    }
 
     public String getBuyer() {
         return buyer;

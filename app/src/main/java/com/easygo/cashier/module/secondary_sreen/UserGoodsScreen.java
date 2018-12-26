@@ -115,4 +115,9 @@ public class UserGoodsScreen extends Presentation {
     public void clear() {
         mUserGoodsAdapter.clear();
     }
+
+    //更新位置到最后
+    public void toPosition() {
+        recyclerView.smoothScrollToPosition(mUserGoodsAdapter.getItemCount()-1);
+    }
 }

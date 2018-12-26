@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -17,12 +17,8 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
-import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.HandoverResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
-import com.easygo.cashier.bean.RealMoneyResponse;
-import com.easygo.cashier.module.goods.GoodsContract;
-import com.easygo.cashier.module.goods.GoodsPresenter;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.MyTitleBar;
@@ -72,6 +68,8 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
     private HandoverSaleListView mHandoverSaleListView;
     private int handover_id;
 
+    private boolean during_handover;
+
 
     @Override
     protected HandoverPresenter createPresenter() {
@@ -106,16 +104,14 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
 
         mPresenter.handover(handover_id);
 
-        cbPrint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
-                    printHandoverInfo();
-                }
-            }
-        });
-
-
+//        cbPrint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if(isChecked) {
+//                    printHandoverInfo();
+//                }
+//            }
+//        });
 
     }
 
@@ -149,6 +145,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
     @Override
     public void loginoutSuccess(String result) {
         showToast(result);
+        during_handover = false;
 
 //        clearLoginInfo();
 
@@ -171,6 +168,9 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
         if (sp.contains(Constans.KEY_SHOP_SN)) {
             editor.remove(Constans.KEY_SHOP_SN).apply();
         }
+        if (sp.contains(Constans.KEY_SHOP_NAME)) {
+            editor.remove(Constans.KEY_SHOP_NAME).apply();
+        }
         if (sp.contains(Constans.KEY_TIME)) {
             editor.remove(Constans.KEY_TIME).apply();
         }
@@ -181,6 +181,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
 
     @Override
     public void loginoutFailed(Map<String, Object> map) {
+        during_handover = false;
         if (HttpExceptionEngine.isBussinessError(map)) {
 
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
@@ -220,11 +221,14 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_handover:
+
+                if(cbPrint.isChecked()) {
+                    printHandoverInfo();
+                }
+                during_handover = true;
                 mPresenter.loginout(handover_id);
 
                 clearLoginInfo();
-
-                printHandoverInfo();
 
                 break;
             case R.id.btn_sales_list:
@@ -299,7 +303,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
                 .append("时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
                 .append("收银员：").append(admin_name).append(PrintHelper.BR)
                 .append("--------------------------------").append(PrintHelper.BR)
-                .append("品名  ").append("分类  ").append("单价  ").append("数量  ").append("小计  ")
+                .append("品名  ").append("分类  ").append("单价  ").append("数量/重量  ").append("小计  ")
                 .append(PrintHelper.BR);
 
         int size = data.size();
@@ -310,7 +314,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
             count += saleResponse.getCount();
             total_money += saleResponse.getMoney();
 
-            sb.append(i).append(".")
+            sb.append(i+1).append(".")
             .append(saleResponse.getG_sku_name()).append("   ").append(PrintHelper.BR)
             .append(saleResponse.getG_c_name()).append("   ").append(PrintHelper.BR)
             .append("            ")
@@ -382,6 +386,15 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
         super.onWindowFocusChanged(hasFocus);
 
         ScreenUtils.hideNavigationBar(this);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(during_handover) {
+            showToast("交接中...");
+            return true;
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override

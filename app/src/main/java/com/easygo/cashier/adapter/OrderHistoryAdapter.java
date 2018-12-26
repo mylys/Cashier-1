@@ -33,7 +33,7 @@ public class OrderHistoryAdapter extends BaseQuickAdapter<OrderHistorysInfo, Bas
         helper.setTextColor(R.id.tv_money, item.isSelect() ? white : text_color);
         helper.setTextColor(R.id.tv_time, item.isSelect() ? white : text_color);
 
-        helper.setText(R.id.tv_order_no, item.getTrade_num())
+        helper.setText(R.id.tv_order_no, item.getTrade_no()!=null?(String)item.getTrade_no():"")
                 .setText(R.id.tv_money, "￥" + item.getTotal_money())
                 .setText(R.id.tv_time, getTime);
 

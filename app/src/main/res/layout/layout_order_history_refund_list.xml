@@ -18,10 +18,10 @@
 
             <CheckBox
                 android:id="@+id/checkbox"
-                android:layout_width="@dimen/x45"
-                android:layout_height="@dimen/y45"
+                android:layout_width="@dimen/x36"
+                android:layout_height="@dimen/y36"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/x36"
+                android:layout_marginStart="@dimen/x39"
                 android:background="@drawable/selected_tab_bg"
                 android:button="@null" />
 
@@ -62,7 +62,8 @@
                 android:gravity="center"
                 android:text="退货数量"
                 android:textColor="@color/color_333333"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/x28"
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -70,7 +71,8 @@
                 android:gravity="center"
                 android:text="退货小计"
                 android:textColor="@color/color_333333"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/x28"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

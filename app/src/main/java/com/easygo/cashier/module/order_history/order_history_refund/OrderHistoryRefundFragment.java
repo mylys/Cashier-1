@@ -106,8 +106,8 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     @SuppressLint("SetTextI18n")
     @Override
     protected void init() {
-        textUtils.addSoftKeyBoardListener(parent,child);
-        searchView.moniPerformClick();//进入此fragment模拟点击搜索框，可解决两个搜索框引起的冲突
+        textUtils.addSoftKeyBoardListener(parent, child);
+//        searchView.moniPerformClick();//进入此fragment模拟点击搜索框，可解决两个搜索框引起的冲突
 
         List<OrderHistorysInfo.ListBean> data = null;
         if (getArguments() != null) {
@@ -153,7 +153,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 infoList.add(info);
             }
         }
-        tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件,退款金额：");
+        tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件，退款金额：￥");
         setListener();
     }
 
@@ -171,7 +171,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
             public void onClick(View v) {
                 //如果点击checkbox，则全选，反之全否
                 adapter.setClick(checkbox.isChecked());
-                tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件,退款金额：");
+                tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件，退款金额：￥");
                 editRefundcashPrice.setText(adapter.getTotalPrice());
             }
         });
@@ -223,7 +223,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                textUtils.addSoftKeyBoardListener(parent,child);
+                textUtils.addSoftKeyBoardListener(parent, child);
             }
 
             @Override
@@ -288,6 +288,17 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         if (HttpExceptionEngine.isBussinessError(map)) {
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
             showToast("错误信息:" + err_msg);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        if (listener != null) {
+//            removeSoftKeyBoardListener(parent);
+//        }
+        if (unbinder != null) {
+            unbinder.unbind();
         }
     }
 }

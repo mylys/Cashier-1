@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--搜索框-->
-    <com.easygo.cashier.widget.MySearchView
+        <com.easygo.cashier.widget.MySearchView
         android:id="@+id/cl_search"
         android:layout_width="@dimen/x590"
         android:layout_height="@dimen/y98"
@@ -40,7 +40,7 @@
         app:layout_constraintStart_toStartOf="@id/view1"
         app:layout_constraintTop_toTopOf="@id/view1"
         app:search_btn_height="@dimen/y98"
-        app:search_btn_text_size="@dimen/x12"
+        app:search_btn_text_size="@dimen/x28"
         app:search_btn_width="@dimen/x118"
         app:search_hint="@string/text_search_hint_order"
         app:search_text_padding_start="@dimen/x29">

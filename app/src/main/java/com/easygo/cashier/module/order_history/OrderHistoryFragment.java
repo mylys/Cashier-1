@@ -127,6 +127,10 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
         adapter.setEmptyView(emptyView);
     }
 
+    public void print(String info) {
+        mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, info);
+    }
+
     @Override
     public void getHistoryInfo(List<OrderHistorysInfo> orderHistorysInfo) {
         if (orderHistorysInfo != null) {
@@ -159,5 +163,15 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
             showToast("错误信息:" + err_msg);
         }
+    }
+
+    @Override
+    public void printSuccess(String result) {
+
+    }
+
+    @Override
+    public void printFailed(Map<String, Object> map) {
+
     }
 }
