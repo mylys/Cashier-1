@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_text_white">
+
+    <!--Row-->
+    <TextView
+        android:id="@+id/tv_1"
+        style="@style/DialogKeyboardTextStyle"
+        android:text="1" />
+
+    <TextView
+        android:id="@+id/tv_2"
+        style="@style/DialogKeyboardTextStyle"
+        android:layout_marginStart="@dimen/x14"
+        android:text="2"
+        app:layout_constraintBottom_toBottomOf="@id/tv_1"
+        app:layout_constraintStart_toEndOf="@id/tv_1"
+        app:layout_constraintTop_toTopOf="@id/tv_1" />
+
+    <TextView
+        android:id="@+id/tv_3"
+        style="@style/DialogKeyboardTextStyle"
+        android:layout_marginStart="@dimen/x14"
+        android:text="3"
+        app:layout_constraintBottom_toBottomOf="@id/tv_1"
+        app:layout_constraintStart_toEndOf="@id/tv_2"
+        app:layout_constraintTop_toTopOf="@id/tv_1" />
+
+    <!--Row-->
+    <TextView
+        android:id="@+id/tv_00"
+        style="@style/DialogKeyboardTextStyle"
+        android:layout_marginStart="@dimen/x14"
+        android:layout_marginTop="@dimen/x14"
+        android:text="00"
+        app:layout_constraintStart_toEndOf="@id/tv_3" />
+
+    <TextView
+        android:id="@+id/tv_4"
+        style="@style/DialogKeyboardTextStyle"
+        android:layout_marginTop="@dimen/y14"
+        android:text="4"
+        app:layout_constraintStart_toStartOf="@id/tv_1"
+        app:layout_constraintTop_toBottomOf="@id/tv_1" />
+
+    <TextView
+        android:id="@+id/tv_5"
+        style="@style/DialogKeyboardTextStyle"
+        android:layout_marginTop="@dimen/y14"
+        android:text="5"
+        app:layout_constraintStart_toStartOf="@id/tv_2"
+        app:layout_constraintTop_toBottomOf="@id/tv_2" />
+
+    <!--Row-->
+    <TextView
+        android:id="@+id/tv_6"
+        style="@style/DialogKeyboardTextStyle"
+        android:layout_marginTop="@dimen/y14"
+        android:text="6"
+        app:layout_constraintStart_toStartOf="@id/tv_3"
+        app:layout_constraintTop_toBottomOf="@id/tv_3" />
+
+    <TextView
+        android:id="@+id/tv_0"
+        style="@style/DialogKeyboardTextStyle"
+        android:layout_marginTop="@dimen/y14"
+        android:text="0"
+        app:layout_constraintStart_toStartOf="@id/tv_00"
+        app:layout_constraintTop_toBottomOf="@id/tv_00" />
+
+    <TextView
+        android:id="@+id/tv_7"
+        style="@style/DialogKeyboardTextStyle"
+        android:layout_marginTop="@dimen/y14"
+        android:text="7"
+        app:layout_constraintStart_toStartOf="@id/tv_4"
+        app:layout_constraintTop_toBottomOf="@id/tv_4" />
+
+    <!--Row-->
+    <TextView
+        android:id="@+id/tv_8"
+        style="@style/DialogKeyboardTextStyle"
+        android:layout_marginTop="@dimen/y14"
+        android:text="8"
+        app:layout_constraintStart_toStartOf="@id/tv_5"
+        app:layout_constraintTop_toBottomOf="@id/tv_5" />
+
+    <TextView
+        android:id="@+id/tv_9"
+        style="@style/DialogKeyboardTextStyle"
+        android:layout_marginTop="@dimen/y14"
+        android:text="9"
+        app:layout_constraintStart_toStartOf="@id/tv_6"
+        app:layout_constraintTop_toBottomOf="@id/tv_6" />
+
+    <TextView
+        android:id="@+id/tv_point"
+        style="@style/DialogKeyboardTextStyle"
+        android:layout_marginTop="@dimen/y14"
+        android:text="."
+        app:layout_constraintStart_toStartOf="@id/tv_0"
+        app:layout_constraintTop_toBottomOf="@id/tv_0" />
+
+
+    <LinearLayout
+        android:id="@+id/tv_back"
+        android:layout_width="@dimen/x98"
+        android:layout_height="@dimen/y98"
+        android:layout_marginStart="@dimen/x14"
+        android:background="@drawable/bg_btn_frame"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@id/tv_00">
+
+        <ImageView
+            android:layout_width="@dimen/x45"
+            android:layout_height="@dimen/y45"
+            android:src="@drawable/icon_cancel" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_sure"
+        style="@style/SureTextStyle"
+        android:layout_marginStart="@dimen/x14"
+        android:layout_marginTop="@dimen/y14"
+        android:text="确\n定"
+        app:layout_constraintStart_toEndOf="@+id/tv_0"
+        app:layout_constraintTop_toBottomOf="@+id/tv_back" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -42,6 +42,7 @@
     <style name="SmallRedTextStyle" parent="DetailTextStyle">
         <item name="android:textColor">@color/color_cc565a</item>
     </style>
+
     <style name="SmallBlueTextStyle" parent="DetailTextStyle">
         <item name="android:textColor">@color/color_text_3899d9</item>
     </style>
@@ -50,6 +51,7 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_marginStart">@dimen/x42</item>
     </style>
+
     <style name="RefundList">
         <item name="android:gravity">left|center</item>
         <item name="android:layout_gravity">center</item>
@@ -97,6 +99,7 @@
         <item name="android:textSize">@dimen/text_size_42</item>
         <item name="android:textColor">@color/color_505050</item>
     </style>
+
     <style name="GoodsSettlementDetailTextStyle">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/text_size_30</item>
@@ -125,22 +128,42 @@
         <item name="android:background">@drawable/bg_btn_frame</item>
     </style>
 
+    <style name="DialogKeyboardTextStyle">
+        <item name="android:layout_width">@dimen/x98</item>
+        <item name="android:layout_height">@dimen/y98</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_505050</item>
+        <item name="android:textSize">@dimen/text_size_37</item>
+        <item name="android:background">@drawable/bg_btn_frame</item>
+    </style>
+
+    <style name="SureTextStyle">
+        <item name="android:layout_width">@dimen/x98</item>
+        <item name="android:layout_height">@dimen/y211</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_text_white</item>
+        <item name="android:textSize">@dimen/text_size_37</item>
+        <item name="android:background">@drawable/bg_btn_frame_green_all</item>
+    </style>
+
     <!--交接班-->
     <style name="HandoverTextStyle">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/text_size_37</item>
         <item name="android:textColor">@color/color_505050</item>
     </style>
+
     <style name="HandoverMoneyTextStyle" parent="HandoverTextStyle">
         <item name="android:textSize">@dimen/text_size_84</item>
         <item name="android:textColor">@color/color_51bfb0</item>
     </style>
-    
+
     <!-- 副屏 -->
     <style name="ViceScreen" parent="GoodsSettlementDetailStyle">
         <item name="android:gravity">center</item>
     </style>
-
 
 
 </resources>

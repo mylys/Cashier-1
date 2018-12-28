@@ -7,10 +7,12 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 import com.easygo.cashier.R;
+import com.niubility.library.utils.ScreenUtils;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -93,6 +95,15 @@ public class Keyboard extends ConstraintLayout {
             });
         }
 
+    }
+
+    public void setLayoutParams(Context context){
+        for (TextView textView : mTvs) {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) textView.getLayoutParams();
+            params.width = ScreenUtils.dp2px(context,33);
+            params.height = ScreenUtils.dp2px(context,33);
+            textView.setLayoutParams(params);
+        }
     }
 
     private void initAttrs() {

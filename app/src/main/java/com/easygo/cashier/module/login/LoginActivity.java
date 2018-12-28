@@ -17,6 +17,7 @@ import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
+import com.easygo.cashier.widget.PettyCashDialog;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
@@ -41,7 +42,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     @BindView(R.id.et_password)
     EditText etPassword;
     private int is_reserve;
-
+    private PettyCashDialog dialog;
 
     @Override
     protected LoginPresenter createPresenter() {
@@ -66,30 +67,29 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         int handover_id = sp.getInt(Constans.KEY_HANDOVER_ID, -1);
         String shop_sn = sp.getString(Constans.KEY_SHOP_SN, "");
         String shop_name = sp.getString(Constans.KEY_SHOP_NAME, "");
-        if(!TextUtils.isEmpty(session_id) && !TextUtils.isEmpty(admin_name)
-                && !TextUtils.isEmpty(shop_sn) && handover_id != -1) {
-            //登录状态 直接跳转首页
-
-            Configs.shop_sn = shop_sn;
-            Configs.shop_name = shop_name;
-
-            ARouter.getInstance().build(ModulePath.goods)
-                    .withString("admin_name", admin_name)
-                    .navigation();
-            showToast("登录： " + admin_name);
-            Configs.admin_name = admin_name;
-            finish();
-        } else {
-            String account = sp.getString("account", "");
-            etAccount.setText(account);
+//        if(!TextUtils.isEmpty(session_id) && !TextUtils.isEmpty(admin_name)
+//                && !TextUtils.isEmpty(shop_sn) && handover_id != -1) {
+//            //登录状态 直接跳转首页
+//
+//            Configs.shop_sn = shop_sn;
+//            Configs.shop_name = shop_name;
+//
+//            ARouter.getInstance().build(ModulePath.goods)
+//                    .withString("admin_name", admin_name)
+//                    .navigation();
+//            showToast("登录： " + admin_name);
+//            Configs.admin_name = admin_name;
+//            finish();
+//        } else {
+        String account = sp.getString("account", "");
+        etAccount.setText(account);
 //            etAccount.setText("15017740901");
 //            etPassword.setText("123456");
-        }
+//        }
     }
 
     @OnClick({R.id.btn_login})
     public void onClick() {
-
 //        ARouter.getInstance().build(ModulePath.goods)
 //                .withString("admin_name", "xxx")
 //                .navigation();
@@ -101,9 +101,9 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         String account = etAccount.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
-        if(TextUtils.isEmpty(account)) {
+        if (TextUtils.isEmpty(account)) {
             showToast("账号不能为空！");
-        } else if(TextUtils.isEmpty(password)) {
+        } else if (TextUtils.isEmpty(password)) {
             showToast("密码不能为空！");
         } else {
             //登录
@@ -132,7 +132,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         }
         return onTouchEvent(ev);
     }
-    public  boolean isShouldHideInput(View v, MotionEvent event) {
+
+    public boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
             int[] leftTop = {0, 0};
             //获取输入框当前的location位置
@@ -165,9 +166,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         super.onStart();
 
 
-
-
-        if(TextUtils.isEmpty(Configs.shop_sn)) {
+        if (TextUtils.isEmpty(Configs.shop_sn)) {
 
             //获取shop_sn
 //            mPresenter.init(DeviceUtils.getMacAddress());
@@ -185,27 +184,39 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
                 .putInt(Constans.KEY_HANDOVER_ID, result.getHandover_id())
                 .apply();
 
-        Toast.makeText(this, "登录成功：" + result.getReal_name(), Toast.LENGTH_SHORT).show();
+        Configs.admin_name = result.getReal_name();
 
+        if (is_reserve == 1) {
+            if (dialog == null)
+                dialog = new PettyCashDialog();
 
-//        if(is_reserve == 1) {
-            //支持备用金
-//            mPresenter.resever_money(result.getSession_id(), Configs.shop_sn, result.getHandover_id(), 10000);
-//    }
+            dialog.showCenter(this);
+            dialog.setOnDialogClickListener(new PettyCashDialog.OnDialogClickListener() {
+                @Override
+                public void onClick(String content) {
+                    mPresenter.resever_money(result.getSession_id(), Configs.shop_sn, result.getHandover_id(), Integer.parseInt(content));
+                }
+            });
+        }else{
+            login();
 
+        }
 
+    }
+
+    private void login() {
         //跳转首页
         ARouter.getInstance().build(ModulePath.goods)
-                .withString("admin_name", result.getReal_name())
+                .withString("admin_name", Configs.admin_name)
                 .navigation();
-        Configs.admin_name = result.getReal_name();
+        Toast.makeText(this, "登录成功：" + Configs.admin_name, Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
     public void loginFailed(Map<String, Object> map) {
 
-        if(HttpExceptionEngine.isBussinessError(map)) {
+        if (HttpExceptionEngine.isBussinessError(map)) {
             String error_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
             showToast(error_msg);
         }
@@ -248,7 +259,9 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
     @Override
     public void reseverMoneySuccess() {
-        showToast("备用金 成功");
+//        showToast("备用金 成功");
+
+        login();
     }
 
     @Override

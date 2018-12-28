@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -63,7 +64,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     TextView tvRefundcashNum;
     @BindView(R.id.edit_refund_case_price)
     EditText editRefundcashPrice;
-    @BindView(R.id.ll)
+    @BindView(R.id.child)
     LinearLayout child;
     @BindView(R.id.rl_view)
     RelativeLayout parent;
@@ -106,9 +107,6 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     @SuppressLint("SetTextI18n")
     @Override
     protected void init() {
-        textUtils.addSoftKeyBoardListener(parent, child);
-//        searchView.moniPerformClick();//进入此fragment模拟点击搜索框，可解决两个搜索框引起的冲突
-
         List<OrderHistorysInfo.ListBean> data = null;
         if (getArguments() != null) {
             data = getArguments().getParcelableArrayList("data");
@@ -199,7 +197,6 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         searchView.setOnSearchListenerClick(new MySearchView.OnSearhListenerClick() {
             @Override
             public void onSearch(String content) {
-                textUtils.removeSoftKeyBoardListener(parent);
                 ArrayList<GoodsRefundInfo> infos = new ArrayList<>();
                 for (GoodsRefundInfo info : adapter.getData()) {
                     if (info.getProduct_name().contains(content)) {
@@ -223,7 +220,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                textUtils.addSoftKeyBoardListener(parent, child);
+
             }
 
             @Override
@@ -232,6 +229,17 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                     if (s.toString().substring(0, 1).equals(".")) {
                         editRefundcashPrice.setText("");
                     }
+                }
+            }
+        });
+
+        editRefundcashPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    textUtils.addSoftKeyBoardListener(parent, child);
+                } else {
+                    textUtils.removeSoftKeyBoardListener(parent);
                 }
             }
         });
@@ -294,9 +302,6 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        if (listener != null) {
-//            removeSoftKeyBoardListener(parent);
-//        }
         if (unbinder != null) {
             unbinder.unbind();
         }

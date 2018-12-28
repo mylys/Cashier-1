@@ -485,6 +485,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         mGoodWeight = 0;
     }
 
+    public int getAdapterSize(){
+        return mGoodsMultiItemAdapter.getData().size();
+    }
+
     @Override
     public void getGoodsFailed(Map<String, Object> map) {
         if (HttpExceptionEngine.isBussinessError(map)) {

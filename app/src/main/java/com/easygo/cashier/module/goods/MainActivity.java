@@ -38,6 +38,7 @@ import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
+import com.niubility.library.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -155,6 +156,10 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
 
                 break;
             case R.id.menu://功能列表
+//                if (goodsFragment.getAdapterSize() == 0){
+//                    ToastUtils.showToast(this,"请先完成收银操作");
+//                    return;
+//                }
                 FunctionListDialog functionListDialog = new FunctionListDialog();
                 functionListDialog.setOnFunctionListItemListener(mFunctionListItemListener);
                 functionListDialog.show(getSupportFragmentManager(), TAG_FUNCTION_LIST);
