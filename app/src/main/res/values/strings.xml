@@ -7,6 +7,10 @@
     <string name="text_no_barcode_goods">无码商品</string>
     <string name="text_pop_money_box">弹出钱箱</string>
 
+    <!-- 备用金 -->
+    <string name="text_petty_cash">备用金</string>
+    <string name="hint_petty_cash">请输入备用金金额</string>
+
     <string name="text_barcode">条码</string>
     <string name="text_goods_name">品名</string>
     <string name="text_price">单价</string>
@@ -14,6 +18,8 @@
     <string name="text_subtotal">小计</string>
     <string name="text_count">数量</string>
     <string name="text_count_weight">数量/重量</string>
+    <string name="text_refund_num">退货数量</string>
+    <string name="text_refund_subtotal">退货小计</string>
     <string name="text_total">合计: </string>
     <string name="text_goods_count">件数</string>
     <string name="text_total_money">总额</string>

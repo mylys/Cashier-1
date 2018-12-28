@@ -50,17 +50,31 @@ public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapte
         funtionListHolder.root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mOnItemClickListener != null) {
+                if (mOnItemClickListener != null) {
                     mOnItemClickListener.onItemClick(i);
                 }
             }
         });
 
+//        ViewGroup.LayoutParams layoutParams = linearLayout.getLayoutParams();
+//
+//        if (receptionHallBeanList.size() == 0) {
+//            //隐藏item要把高度宽度设为0；
+//            linearLayout.setVisibility(View.GONE);
+//            layoutParams.height = 0;
+//            ayoutParams.width = 0;
+//        } else {
+//            //显示item要重新设置高度宽度；
+//            linearLayout.setVisibility(View.VISIBLE);
+//            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+//        }
+//        linearLayout.setLayoutParams(layoutParams);
     }
 
     @Override
     public int getItemCount() {
-        return functions != null? functions.length: 0;
+        return functions != null ? functions.length : 0;
     }
 
     static class FuntionListHolder extends RecyclerView.ViewHolder {
@@ -84,6 +98,7 @@ public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapte
     }
 
     private OnItemClickListener mOnItemClickListener;
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
     }

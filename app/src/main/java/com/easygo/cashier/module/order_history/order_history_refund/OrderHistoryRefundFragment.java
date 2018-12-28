@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -63,7 +64,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     TextView tvRefundcashNum;
     @BindView(R.id.edit_refund_case_price)
     EditText editRefundcashPrice;
-    @BindView(R.id.ll)
+    @BindView(R.id.child)
     LinearLayout child;
     @BindView(R.id.rl_view)
     RelativeLayout parent;
@@ -71,7 +72,6 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
     private ConfirmDialog confirmDialog;
     private OrderHistoryRefundAdapter adapter;
-    private ArrayList<RequsetBody.GoodsList> goodsLists = new ArrayList<>();
 
     private ArrayList<GoodsRefundInfo> infoList = new ArrayList<>();
     private String order_number = "";
@@ -106,9 +106,6 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     @SuppressLint("SetTextI18n")
     @Override
     protected void init() {
-        textUtils.addSoftKeyBoardListener(parent, child);
-//        searchView.moniPerformClick();//进入此fragment模拟点击搜索框，可解决两个搜索框引起的冲突
-
         List<OrderHistorysInfo.ListBean> data = null;
         if (getArguments() != null) {
             data = getArguments().getParcelableArrayList("data");
@@ -144,11 +141,14 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 info.setProduct_price(bean.getSell_price());
                 info.setProduct_subtotal(bean.getMoney());
                 info.setProduct_preferential("0");
-                info.setProduct_num(bean.getCount());
+                info.setIs_weigh(bean.getIs_weigh());
+                info.setProduct_num(Integer.parseInt(bean.getCount()));
                 info.setS_sku_id(bean.getS_sku_id());
                 info.setRefund_num("1");
                 info.setRefund_subtotal(bean.getSell_price());
                 info.setSelect(false);
+                info.setRefund(bean.getRefund());
+                info.setParent_id(bean.getParent_id());
                 adapter.addData(info);
                 infoList.add(info);
             }
@@ -184,22 +184,14 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
             @Override
             public void onListener() {
-                tvRefundcashNum.setText(getResources().getString(R.string.text_total_refund_product) +
-                        adapter.getTotalNum() + getResources().getString(R.string.text_total_refund_price));
+                tvRefundcashNum.setText(getResources().getString(R.string.text_total_refund_product) + adapter.getTotalNum() + getResources().getString(R.string.text_total_refund_price));
                 editRefundcashPrice.setText(adapter.getTotalPrice());
-            }
-
-            @Override
-            public void onSelectBean(ArrayList<RequsetBody.GoodsList> lists) {
-                goodsLists.clear();
-                goodsLists.addAll(lists);
             }
         });
 
         searchView.setOnSearchListenerClick(new MySearchView.OnSearhListenerClick() {
             @Override
             public void onSearch(String content) {
-                textUtils.removeSoftKeyBoardListener(parent);
                 ArrayList<GoodsRefundInfo> infos = new ArrayList<>();
                 for (GoodsRefundInfo info : adapter.getData()) {
                     if (info.getProduct_name().contains(content)) {
@@ -223,7 +215,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                textUtils.addSoftKeyBoardListener(parent, child);
+
             }
 
             @Override
@@ -232,6 +224,17 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                     if (s.toString().substring(0, 1).equals(".")) {
                         editRefundcashPrice.setText("");
                     }
+                }
+            }
+        });
+
+        editRefundcashPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    textUtils.addSoftKeyBoardListener(parent, child);
+                } else {
+                    textUtils.removeSoftKeyBoardListener(parent);
                 }
             }
         });
@@ -273,7 +276,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
     public void onCommitOrder() {
         int price = Integer.parseInt(editRefundcashPrice.getText().toString().replace(".", ""));
-        RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, price, refund_pay_type, goodsLists);
+        RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, price, refund_pay_type, adapter.getList());
         String json = GsonUtils.getInstance().getGson().toJson(body);
         mPresenter.post(json);
     }
@@ -294,9 +297,6 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        if (listener != null) {
-//            removeSoftKeyBoardListener(parent);
-//        }
         if (unbinder != null) {
             unbinder.unbind();
         }

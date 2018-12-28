@@ -10,24 +10,48 @@
 
     <ImageView
         android:id="@+id/image_discount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/x66"
+        android:layout_height="@dimen/y66"
         android:src="@drawable/ic_coupon"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_text_goods_name"
-        style="@style/GoodsListStyle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="@dimen/x410"
         android:layout_height="wrap_content"
-        android:text="@string/text_goods_name"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0242"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_text_goods_name"
+            style="@style/GoodsListStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:paddingStart="@dimen/x29"
+            android:singleLine="true"
+            android:text="@string/text_goods_name" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_refund"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/x7"
+            android:paddingTop="@dimen/y5"
+            android:paddingRight="@dimen/x7"
+            android:paddingBottom="@dimen/y5"
+            android:layout_marginStart="@dimen/x24"
+            android:background="@drawable/bg_refund_status"
+            android:gravity="center"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/x18" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_text_price"

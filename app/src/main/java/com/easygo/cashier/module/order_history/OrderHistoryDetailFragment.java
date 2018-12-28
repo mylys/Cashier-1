@@ -22,6 +22,7 @@ import com.easygo.cashier.adapter.OrderHistoryGoodsAdapter;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.printer.PrintHelper;
 import com.niubility.library.base.BaseFragment;
+import com.niubility.library.utils.ToastUtils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -158,15 +159,15 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         for (int i = 0; i < size; i++) {
             OrderHistorysInfo.ListBean listBean = data.get(i);
 
-            count += listBean.getCount();
-            isWeight = listBean.getCount() == listBean.getQuantity();
+            count += Integer.parseInt(listBean.getCount());
+            isWeight = listBean.getCount().equals(listBean.getQuantity());
 
-            sb.append(i+1).append(".")
+            sb.append(i + 1).append(".")
                     .append(listBean.getG_sku_name()).append("   ").append(PrintHelper.BR)
                     .append("     ")
                     .append(listBean.getSell_price()).append("   ")
                     .append("0.00").append("   ")
-                    .append(isWeight? listBean.getQuantity() + "g": listBean.getCount()).append("   ")
+                    .append(isWeight ? listBean.getQuantity() + "g" : listBean.getCount()).append("   ")
                     .append(listBean.getMoney()).append(PrintHelper.BR);
         }
 
@@ -178,11 +179,11 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 .append("支付方式：").append(payType).append(PrintHelper.BR)
                 .append("实收：").append(mOrderHistorysInfo.getBuyer_pay()).append("元").append(PrintHelper.BR)
                 .append("找零：").append(mOrderHistorysInfo.getChange_money()).append("元").append(PrintHelper.BR)
-                .append("退款：").append(mOrderHistorysInfo.getRefund_fee()!=null?
-                        ((String) mOrderHistorysInfo.getRefund_fee()):"0.00").append("元").append(PrintHelper.BR);
+                .append("退款：").append(mOrderHistorysInfo.getRefund_fee() != null ?
+                ((String) mOrderHistorysInfo.getRefund_fee()) : "0.00").append("元").append(PrintHelper.BR);
 
         Fragment parentFragment = getParentFragment();
-        if(parentFragment != null) {
+        if (parentFragment != null) {
             OrderHistoryFragment fragment = (OrderHistoryFragment) parentFragment;
 
             fragment.print(sb.toString());
@@ -196,7 +197,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
 
         orderHistoryGoodsAdapter.setNewData(orderHistoryInfo.getList());
 //        tvOrderNo.setText(orderHistoryInfo.getTrade_num());
-        tvOrderNo.setText((String)orderHistoryInfo.getTrade_no());
+        tvOrderNo.setText((String) orderHistoryInfo.getTrade_no());
         tvCashierAcount.setText(orderHistoryInfo.getAdmin_name());
         tvGoodsCount.setText("共" + orderHistoryInfo.getList().size() + "件");
         tvReceipts.setText("实付：￥" + orderHistoryInfo.getBuyer_pay());
@@ -204,7 +205,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         tvReceivable.setText("应收：￥" + orderHistoryInfo.getReal_pay());
 //        tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money() + " = ");
 
-        order_number = orderHistoryInfo.getTrade_no()!=null?(String)orderHistoryInfo.getTrade_no():"";
+        order_number = orderHistoryInfo.getTrade_no() != null ? (String) orderHistoryInfo.getTrade_no() : "";
         total_price = Integer.parseInt(orderHistoryInfo.getTotal_money().replace(".", ""));
 
         switch (orderHistoryInfo.getPay_type()) {
@@ -249,7 +250,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 break;
             case 2:
                 String buyer = orderHistoryInfo.getBuyer();
-                if(!TextUtils.isEmpty(buyer)) {
+                if (!TextUtils.isEmpty(buyer)) {
                     tvBuyer.setVisibility(View.VISIBLE);
                     tvBuyer.setText("付款人：" + buyer);
                 }
@@ -260,8 +261,8 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 line3.setVisibility(View.VISIBLE);
 
                 double refund_price = 0;
-                if (orderHistoryInfo.getRefund_fee() != null) {
-                    refund_price = (double) orderHistoryInfo.getRefund_fee();
+                if (!TextUtils.isEmpty(orderHistoryInfo.getRefund_fee())) {
+                    refund_price = Double.parseDouble(orderHistoryInfo.getRefund_fee());
                 }
                 String total_refund_str = df.format(refund_price + change_money);
                 tvRefundText.setText(payType + getResources().getString(R.string.text_pay) + "：￥" + total_refund_str + " - 找零：￥" + change_price + " = ");

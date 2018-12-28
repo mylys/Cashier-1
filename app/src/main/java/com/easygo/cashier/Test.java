@@ -67,23 +67,6 @@ public class Test {
         return goodsInfos;
     }
 
-    public static List<GoodsRefundInfo> getGoodsRefundInfos() {
-        ArrayList<GoodsRefundInfo> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            GoodsRefundInfo goodsRefundInfo = new GoodsRefundInfo();
-            goodsRefundInfo.setProduct_name("商品 - " + (i + 1));
-            goodsRefundInfo.setProduct_price("￥" + (i + 1) + "000.00");
-            goodsRefundInfo.setProduct_preferential(i + "");
-            goodsRefundInfo.setProduct_subtotal("￥" + (i + 1) + "000.00");
-            goodsRefundInfo.setRefund_num("1");
-            goodsRefundInfo.setRefund_subtotal((i + 1) + "000");
-            goodsRefundInfo.setSelect(false);
-
-            list.add(goodsRefundInfo);
-        }
-        return list;
-    }
-
     public static void detectInputDeviceWithShell() {
         try {
             //获得外接USB输入设备的信息

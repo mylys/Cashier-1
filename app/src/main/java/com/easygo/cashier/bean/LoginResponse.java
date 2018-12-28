@@ -6,16 +6,16 @@ public class LoginResponse {
 
 
     /**
-     * real_name : xxx
-     * cashier_id : 358
-     * session_id : b3a1ad7d17f5941500582b6b7d7ee111358
-     * handover_id : 120
+     * real_name : zzz
+     * cashier_id : 361
+     * session_id : 6a90f1b290b1e4ae1c06950f6477c79b361
+     * handover_id : 163
      * menu : [{"menu_id":277,"menu_name":"首页","menu_url":"","parent_id":0,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1,"child_menus":[{"menu_id":278,"menu_name":"收银","menu_url":null,"parent_id":277,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1}]},{"menu_id":279,"menu_name":"历史订单","menu_url":"api/cash/order","parent_id":0,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1,"child_menus":[{"menu_id":280,"menu_name":"退款","menu_url":"api/pay/refund","parent_id":279,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1}]},{"menu_id":281,"menu_name":"交接班","menu_url":"api/cash/loginout","parent_id":0,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1,"child_menus":[{"menu_id":282,"menu_name":"交接班登出","menu_url":"api/cash/loginout","parent_id":281,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1},{"menu_id":283,"menu_name":"销售列表","menu_url":"api/cash/sale","parent_id":281,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1}]},{"menu_id":294,"menu_name":"备用金","menu_url":"api/cash/reserve","parent_id":0,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1,"child_menus":[]},{"menu_id":295,"menu_name":"打印机","menu_url":"","parent_id":0,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1,"child_menus":[{"menu_id":296,"menu_name":"打印机打印","menu_url":"api/pay/printer","parent_id":295,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1},{"menu_id":297,"menu_name":"打印机控制钱柜","menu_url":"api/pay/printer_till","parent_id":295,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1},{"menu_id":298,"menu_name":"打印机状态","menu_url":"api/pay/printer_status","parent_id":295,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1}]},{"menu_id":299,"menu_name":"订单","menu_url":"","parent_id":0,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1,"child_menus":[{"menu_id":300,"menu_name":"获取商品信息","menu_url":"api/pay/get_info","parent_id":299,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1},{"menu_id":301,"menu_name":"创建订单","menu_url":"api/pay/create_order","parent_id":299,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1}]},{"menu_id":302,"menu_name":"支付","menu_url":"","parent_id":0,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1,"child_menus":[{"menu_id":303,"menu_name":"支付宝支付","menu_url":"api/pay/alipay","parent_id":302,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1},{"menu_id":304,"menu_name":"微信支付","menu_url":"api/pay/wechat","parent_id":302,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1},{"menu_id":305,"menu_name":"现金支付","menu_url":"api/pay/cash","parent_id":302,"status":1,"update_time":null,"create_time":0,"level":0,"sort":0,"type":3,"is_show":1,"role":1}]}]
      */
 
     private String real_name;
-    private String session_id;
     private int cashier_id;
+    private String session_id;
     private int handover_id;
     private List<MenuBean> menu;
 

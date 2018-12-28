@@ -65,7 +65,9 @@ public class TestUtils {
     }
 
     public void addSoftKeyBoardListener(final View root, final View view) {
-        mSoftKeyBoardListener = new SoftKeyBoardListener(root,view);
+        if (mSoftKeyBoardListener == null) {
+            mSoftKeyBoardListener = new SoftKeyBoardListener(root, view);
+        }
         root.getViewTreeObserver().addOnGlobalLayoutListener(mSoftKeyBoardListener);
     }
 }

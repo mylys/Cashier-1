@@ -12,15 +12,42 @@
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/x39" />
 
-    <TextView
-        android:id="@+id/tv_product_name"
-        style="@style/RefundGoodsList"
+    <LinearLayout
         android:layout_width="@dimen/x428"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/x30"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="一个很长很长很长的商品名666666" />
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/x30">
+
+        <TextView
+            android:id="@+id/tv_product_name"
+            style="@style/RefundGoodsList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="品名" />
+
+        <TextView
+            android:id="@+id/tv_refund"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/x24"
+            android:background="@drawable/bg_refund_status"
+            android:gravity="center"
+            android:paddingLeft="@dimen/x7"
+            android:paddingTop="@dimen/y5"
+            android:paddingRight="@dimen/x7"
+            android:paddingBottom="@dimen/y5"
+            android:text="123是多少是d"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/x18"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/tv_product_price"
@@ -39,42 +66,42 @@
     <TextView
         android:id="@+id/tv_product_total_num"
         style="@style/RefundGoodsList"
-        android:layout_width="@dimen/x120"
+        android:layout_width="@dimen/x165"
         android:layout_height="wrap_content"
         android:text="0" />
 
     <TextView
         android:id="@+id/tv_product_subtotal"
         style="@style/RefundGoodsList"
-        android:layout_width="@dimen/x225"
+        android:layout_width="@dimen/x195"
         android:layout_height="wrap_content"
         android:text="1000.00" />
 
     <TextView
         android:id="@+id/tv_refund_num_no"
-        android:layout_width="@dimen/x321"
+        style="@style/RefundGoodsList"
+        android:layout_width="@dimen/x306"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:text="1"
-        style="@style/RefundGoodsList"
         android:visibility="visible" />
 
     <com.easygo.cashier.widget.CountTextView
         android:id="@+id/tv_refund_num"
-        android:layout_width="@dimen/x321"
+        style="@style/RefundGoodsList"
+        android:layout_width="@dimen/x306"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        style="@style/RefundGoodsList"
         android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_refund_subtotal"
+        style="@style/RefundGoodsList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="1000.00"
-        style="@style/RefundGoodsList" />
+        android:text="1000.00" />
 
 </LinearLayout>
