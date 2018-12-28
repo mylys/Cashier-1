@@ -137,12 +137,15 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     @Override
     protected void init() {
+        if (Configs.menuBeanList != null && Configs.menuBeanList.size() > 0) {
+            btnSettlement.setVisibility(Configs.menuBeanList.get(0).getChild_menus().get(0).getRole() == 1 ? View.VISIBLE : View.GONE);
+        }
         initView();
 
         initBarcode();
 
         initUserGoodsScreen();
-        if(mUserGoodsScreen != null) {
+        if (mUserGoodsScreen != null) {
             mUserGoodsScreen.show();
         }
     }
@@ -235,21 +238,21 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
             @Override
             public void onProcessingCheckedChanged(boolean isChecked, int position, GoodsResponse processing) {
-                if(mUserGoodsScreen != null) {
+                if (mUserGoodsScreen != null) {
                     mUserGoodsScreen.chooseProcessing(position, processing);
                 }
             }
 
             @Override
             public void onCountChanged(int position, int count) {
-                if(mUserGoodsScreen != null) {
+                if (mUserGoodsScreen != null) {
                     mUserGoodsScreen.onCountChanged(position, count);
                 }
             }
 
             @Override
             public void onItemRemoved(int position) {
-                if(mUserGoodsScreen != null) {
+                if (mUserGoodsScreen != null) {
                     mUserGoodsScreen.onItemRemoved(position);
                 }
             }
@@ -270,7 +273,6 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 }
             }
         });
-
 
 
         //分割线
@@ -294,7 +296,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     public void initUserGoodsScreen() {
         Context context = getContext();
-        if(context == null) {
+        if (context == null) {
             Log.i(TAG, "initUserGoodsScreen: context = null");
             return;
         }
@@ -311,9 +313,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     @Override
     public void onStart() {
         super.onStart();
-        if(mGoodsMultiItemAdapter != null)
+        if (mGoodsMultiItemAdapter != null)
             mGoodsMultiItemAdapter.clear();
-        if(mUserGoodsScreen != null)
+        if (mUserGoodsScreen != null)
             mUserGoodsScreen.clear();
     }
 
@@ -321,7 +323,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
      * 显示加工方式选择框
      */
     private void showProcessingDialog(final int position, final GoodsResponse current, List<GoodsResponse> processing_list) {
-        if(mProcessingChoiceDialog == null) {
+        if (mProcessingChoiceDialog == null) {
             mProcessingChoiceDialog = new ProcessingChoiceDialog(getContext());
             mProcessingChoiceDialog.setCanceledOnTouchOutside(true);
 
@@ -332,7 +334,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             public void onItemClicked(GoodsResponse result) {
                 mGoodsMultiItemAdapter.chooseProcessing(position, current, result);
                 //刷新副屏
-                if(mUserGoodsScreen != null)
+                if (mUserGoodsScreen != null)
                     mUserGoodsScreen.chooseProcessing(position, result);
             }
         });
@@ -385,8 +387,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
 
         //刷新用户副屏界面 价格
-        if(mUserGoodsScreen != null) {
-            mUserGoodsScreen.refreshPrice(mGoodsCount, mTotalMoney, mCoupon, mTotalMoney-mCoupon);
+        if (mUserGoodsScreen != null) {
+            mUserGoodsScreen.refreshPrice(mGoodsCount, mTotalMoney, mCoupon, mTotalMoney - mCoupon);
         }
 
     }
@@ -418,7 +420,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                         //添加无码商品
                         mGoodsMultiItemAdapter.addNoCodeItem(price);
                         //刷新副屏
-                        if(mUserGoodsScreen != null)
+                        if (mUserGoodsScreen != null)
                             mUserGoodsScreen.addNoCodeItem(price);
                     }
                 });
@@ -433,7 +435,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             case R.id.btn_clear://清空
                 mGoodsMultiItemAdapter.clear();
 
-                if(mUserGoodsScreen != null) {
+                if (mUserGoodsScreen != null) {
                     mUserGoodsScreen.clear();
                 }
 
@@ -470,11 +472,11 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public void getGoodsSuccess(List<GoodsResponse> result) {
 
         mGoodsMultiItemAdapter.addItem(result, mGoodWeight != 0 ? mGoodWeight : 1);
-        rvGoods.smoothScrollToPosition(mGoodsMultiItemAdapter.getItemCount()-1);
+        rvGoods.smoothScrollToPosition(mGoodsMultiItemAdapter.getItemCount() - 1);
 
-        if(mUserGoodsScreen != null) {
+        if (mUserGoodsScreen != null) {
             //没有显示时 显示用户商品列表副屏页面
-            if(!mUserGoodsScreen.isShowing())
+            if (!mUserGoodsScreen.isShowing())
                 mUserGoodsScreen.show();
 
             //刷新用户商品列表页面数据
@@ -485,7 +487,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         mGoodWeight = 0;
     }
 
-    public int getAdapterSize(){
+    public int getAdapterSize() {
         return mGoodsMultiItemAdapter.getData().size();
     }
 
@@ -511,7 +513,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     }
 
-    /**显示搜索结果弹窗*/
+    /**
+     * 显示搜索结果弹窗
+     */
     private void showSearchResultWindow(List<GoodsResponse> result) {
         if (mSearchResultWindow == null) {
             mSearchResultWindow = new SearchResultWindow(getContext());
@@ -535,7 +539,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                     //添加
                     mGoodsMultiItemAdapter.addItem(list, 1);
                     //刷新副屏
-                    if(mUserGoodsScreen != null)
+                    if (mUserGoodsScreen != null)
                         mUserGoodsScreen.addItem(list, 1);
 
                     clSearch.clearText();
@@ -544,7 +548,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             });
         }
         mSearchResultWindow.setData(result);
-        if(!mSearchResultWindow.isShowing()) {
+        if (!mSearchResultWindow.isShowing()) {
             WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
             lp.alpha = 0.4f;
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -586,13 +590,13 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public void onDestroyView() {
         super.onDestroyView();
 
-        if(mUserGoodsScreen != null && mUserGoodsScreen.isShowing()) {
+        if (mUserGoodsScreen != null && mUserGoodsScreen.isShowing()) {
             mUserGoodsScreen.dismiss();
         }
-        if(mSearchResultWindow != null && mSearchResultWindow.isShowing()) {
+        if (mSearchResultWindow != null && mSearchResultWindow.isShowing()) {
             mSearchResultWindow.dismiss();
         }
-        if(mProcessingChoiceDialog != null && mProcessingChoiceDialog.isShowing()) {
+        if (mProcessingChoiceDialog != null && mProcessingChoiceDialog.isShowing()) {
             mProcessingChoiceDialog.dismiss();
         }
     }

@@ -185,6 +185,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
                 .apply();
 
         Configs.admin_name = result.getReal_name();
+        Configs.menuBeanList = result.getMenu();
 
         if (is_reserve == 1) {
             if (dialog == null)

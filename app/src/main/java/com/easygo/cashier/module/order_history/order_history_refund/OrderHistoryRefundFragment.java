@@ -72,7 +72,6 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
     private ConfirmDialog confirmDialog;
     private OrderHistoryRefundAdapter adapter;
-    private ArrayList<RequsetBody.GoodsList> goodsLists = new ArrayList<>();
 
     private ArrayList<GoodsRefundInfo> infoList = new ArrayList<>();
     private String order_number = "";
@@ -142,11 +141,14 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 info.setProduct_price(bean.getSell_price());
                 info.setProduct_subtotal(bean.getMoney());
                 info.setProduct_preferential("0");
-                info.setProduct_num(bean.getCount());
+                info.setIs_weigh(bean.getIs_weigh());
+                info.setProduct_num(Integer.parseInt(bean.getCount()));
                 info.setS_sku_id(bean.getS_sku_id());
                 info.setRefund_num("1");
                 info.setRefund_subtotal(bean.getSell_price());
                 info.setSelect(false);
+                info.setRefund(bean.getRefund());
+                info.setParent_id(bean.getParent_id());
                 adapter.addData(info);
                 infoList.add(info);
             }
@@ -182,15 +184,8 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
             @Override
             public void onListener() {
-                tvRefundcashNum.setText(getResources().getString(R.string.text_total_refund_product) +
-                        adapter.getTotalNum() + getResources().getString(R.string.text_total_refund_price));
+                tvRefundcashNum.setText(getResources().getString(R.string.text_total_refund_product) + adapter.getTotalNum() + getResources().getString(R.string.text_total_refund_price));
                 editRefundcashPrice.setText(adapter.getTotalPrice());
-            }
-
-            @Override
-            public void onSelectBean(ArrayList<RequsetBody.GoodsList> lists) {
-                goodsLists.clear();
-                goodsLists.addAll(lists);
             }
         });
 
@@ -281,7 +276,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
     public void onCommitOrder() {
         int price = Integer.parseInt(editRefundcashPrice.getText().toString().replace(".", ""));
-        RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, price, refund_pay_type, goodsLists);
+        RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, price, refund_pay_type, adapter.getList());
         String json = GsonUtils.getInstance().getGson().toJson(body);
         mPresenter.post(json);
     }

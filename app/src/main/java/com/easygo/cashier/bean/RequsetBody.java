@@ -65,10 +65,14 @@ public class RequsetBody {
     public static class GoodsList {
         private int s_sku_id;
         private int count;
+        private int is_weigh;
 
-        public GoodsList(int s_sku_id, int count) {
-            this.s_sku_id = s_sku_id;
-            this.count = count;
+        public int getIs_weigh() {
+            return is_weigh;
+        }
+
+        public void setIs_weigh(int is_weigh) {
+            this.is_weigh = is_weigh;
         }
 
         public int getS_sku_id() {

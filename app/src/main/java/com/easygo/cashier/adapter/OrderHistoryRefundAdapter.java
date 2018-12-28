@@ -2,6 +2,7 @@ package com.easygo.cashier.adapter;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -35,22 +36,40 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
 
     @Override
     protected void convert(final BaseViewHolder helper, final GoodsRefundInfo item) {
+        final CountTextView countTextView = helper.getView(R.id.tv_refund_num);
+
+        final boolean is_weigh = item.getIs_weigh() == 1;//是否为称重商品(1:是 其他为否)
+        final boolean is_parentId = item.getParent_id() == 0;//是否为加工方式(>0:是 =0否) 称重商品为前提才有加工方式
         //设置选择时显示隐藏
-        helper.getView(R.id.tv_refund_num).setVisibility(item.isSelect() ? View.VISIBLE : View.GONE);
-        helper.getView(R.id.tv_refund_num_no).setVisibility(item.isSelect() ? View.GONE : View.VISIBLE);
+        if (item.isSelect()) {
+            if (is_weigh) {
+                countTextView.setVisibility(is_parentId ? View.GONE : View.VISIBLE);
+                helper.getView(R.id.tv_refund_num_no).setVisibility(is_parentId ? View.VISIBLE : View.GONE);
+            } else {
+                countTextView.setVisibility(View.VISIBLE);
+                helper.getView(R.id.tv_refund_num_no).setVisibility(View.GONE);
+            }
+        } else {
+            countTextView.setVisibility(View.GONE);
+            helper.getView(R.id.tv_refund_num_no).setVisibility(View.VISIBLE);
+        }
+        helper.getView(R.id.tv_refund).setVisibility(item.getRefund() > 0 ? View.VISIBLE : View.GONE);
 
         //设置选中样式
         helper.setImageResource(R.id.image_select, item.isSelect() ? R.drawable.icon_select : R.drawable.icon_no_select);
 
         //设置数据
+        String tv_total_num = is_weigh && is_parentId ? item.getProduct_num() + "g" : item.getProduct_num() + "";
+        String tv_subtotal = df.format(Double.parseDouble(item.getProduct_subtotal()));
         helper.setText(R.id.tv_product_name, item.getProduct_name())
                 .setText(R.id.tv_product_preferential, item.getProduct_preferential())
                 .setText(R.id.tv_product_price, item.getProduct_price())
-                .setText(R.id.tv_product_subtotal, item.getProduct_subtotal())
-                .setText(R.id.tv_product_total_num, item.getProduct_num() + "")
-                .setText(R.id.tv_refund_subtotal, item.getRefund_subtotal())
-                .setText(R.id.tv_refund_num_no, item.getRefund_num());
-        final CountTextView countTextView = helper.getView(R.id.tv_refund_num);
+                .setText(R.id.tv_product_subtotal, tv_subtotal)
+                .setText(R.id.tv_product_total_num, tv_total_num)
+                .setText(R.id.tv_refund_subtotal, is_weigh && is_parentId ? tv_subtotal : item.getRefund_subtotal())
+                .setText(R.id.tv_refund_num_no, is_weigh && is_parentId ? tv_total_num : item.getRefund_num())
+                .setText(R.id.tv_refund, item.getRefund() == item.getProduct_num() ? "全退" : "退" + item.getRefund() + "件");
+
         countTextView.setCount(item.getRefund_num());
 
         countTextView.setOnCountListener(new CountTextView.OnCountListener() {
@@ -77,21 +96,41 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         helper.getView(R.id.ll_view).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<RequsetBody.GoodsList> goodsInfos = new ArrayList<>();
                 item.setSelect(!item.isSelect());
-                for (GoodsRefundInfo goodsRefundInfo : getData()) {
-                    if (goodsRefundInfo.isSelect()) {
-                        goodsInfos.add(new RequsetBody.GoodsList(item.getS_sku_id(), Integer.parseInt(item.getRefund_num())));
-                    }
-                }
-                listener.onSelectBean(goodsInfos);
                 listener.onListener();
-                if (goodsInfos.size() != getData().size()) {
-                    listener.onClick(false);
+                int num = 0;
+                for (int i = 0; i < getData().size(); i++) {
+                    if (getData().get(i).isSelect()) {
+                        if (++num != getData().size()) {
+                            listener.onClick(false);
+                        }
+                    }
                 }
                 notifyItemChanged(helper.getLayoutPosition());
             }
         });
+    }
+
+    public ArrayList<RequsetBody.GoodsList> getList() {
+        ArrayList<RequsetBody.GoodsList> goodsLists = new ArrayList<>();
+        for (GoodsRefundInfo item : getData()) {
+            if (item.isSelect()) {
+                RequsetBody.GoodsList list = new RequsetBody.GoodsList();
+                list.setS_sku_id(item.getS_sku_id());
+                list.setIs_weigh(item.getIs_weigh());
+                if (item.getIs_weigh() == 1) {
+                    if (item.getParent_id() == 0) {
+                        list.setCount(item.getProduct_num());
+                    } else {
+                        list.setCount(Integer.parseInt(item.getRefund_num()));
+                    }
+                } else {
+                    list.setCount(Integer.parseInt(item.getRefund_num()));
+                }
+                goodsLists.add(list);
+            }
+        }
+        return goodsLists;
     }
 
     public void setClick(boolean click) {
@@ -126,8 +165,6 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         void onClick(boolean click);
 
         void onListener();
-
-        void onSelectBean(ArrayList<RequsetBody.GoodsList> goodsInfos);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

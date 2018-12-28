@@ -13,6 +13,33 @@ public class GoodsRefundInfo {
     private int product_num;
     private int s_sku_id;
     private boolean isSelect;
+    private int is_weigh;
+    private int refund;
+    private int parent_id;
+
+    public int getParent_id() {
+        return parent_id;
+    }
+
+    public void setParent_id(int parent_id) {
+        this.parent_id = parent_id;
+    }
+
+    public int getRefund() {
+        return refund;
+    }
+
+    public void setRefund(int refund) {
+        this.refund = refund;
+    }
+
+    public int getIs_weigh() {
+        return is_weigh;
+    }
+
+    public void setIs_weigh(int is_weigh) {
+        this.is_weigh = is_weigh;
+    }
 
     public int getS_sku_id() {
         return s_sku_id;
