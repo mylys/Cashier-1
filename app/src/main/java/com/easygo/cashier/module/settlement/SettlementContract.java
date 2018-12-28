@@ -20,6 +20,7 @@ public class SettlementContract {
         void cash(String shop_sn, String order_no, int buyer_pay, int change_money);
 
         void print(String json);
+        void print_info(String shop_sn, String printer_sn, String info);
     }
 
     public interface IView extends BaseView {

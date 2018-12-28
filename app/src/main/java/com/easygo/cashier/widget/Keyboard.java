@@ -85,8 +85,14 @@ public class Keyboard extends ConstraintLayout {
 
                     if(mEditText != null && mEditText.isEnabled()) {
                         Editable editable = mEditText.getText();
+                        CharSequence text = textView.getText();
+                        if(text.equals(".")) {
+                            if (editable.toString().contains(".")) {
+                                return;
+                            }
+                        }
                         if (editable.length() <= 10) {
-                            editable.append(textView.getText());
+                            editable.append(text);
                         }
                     }
                 }

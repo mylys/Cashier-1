@@ -28,6 +28,7 @@ import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.request.CreateOrderRequestBody;
 import com.easygo.cashier.bean.request.PrintRequestBody;
+import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.Keyboard;
 import com.easygo.cashier.widget.MyTitleBar;
@@ -588,6 +589,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         if(settlementView.needPrint()) {
             print();
         }
+        //弹出钱箱
+        mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, PrintHelper.pop_till);
+
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {

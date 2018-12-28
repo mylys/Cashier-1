@@ -70,7 +70,7 @@ public class HandoverView extends FrameLayout {
         //总销售额
         float cash_money = result.getCash_money();
         String cash = df.format(cash_money);
-        tvTotalSales.setText(String.valueOf(result.getAll_money()));
+        tvTotalSales.setText(df.format(Float.valueOf(result.getAll_money())));
         tvCash.setText(cash);
         tvAlipay.setText(df.format(result.getAlipay_money()));
         tvWechat.setText(df.format(result.getWx_money()));

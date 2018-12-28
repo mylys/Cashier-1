@@ -225,7 +225,8 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                     case GoodsEntity.TYPE_ONLY_PROCESSING:
                         count += 1;
                         coupon += Double.valueOf(good.getData().getDiscount_price());
-                        price += Double.parseDouble(good.getData().getPrice()) * good.getCount();
+//                        price += Double.parseDouble(good.getData().getProcess_price()) * good.getCount();
+                        price += Double.parseDouble(good.getData().getProcess_price());
                         break;
                     case GoodsEntity.TYPE_PROCESSING:
                         count += 1;
@@ -302,6 +303,12 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             case GoodsEntity.TYPE_ONLY_PROCESSING://纯加工方式
                 CountTextView view = (CountTextView) helper.getView(R.id.count_view);
                 view.setCountChangeEnable(false);
+
+                String process_price = good.getProcess_price();
+                subtotal = Float.valueOf(process_price);
+
+                helper.setText(R.id.tv_price, String.valueOf(process_price))
+                        .setText(R.id.tv_subtotal, df.format(subtotal));
                 break;
             case GoodsEntity.TYPE_PROCESSING://加工方式
 

@@ -39,11 +39,11 @@
     <string name="text_change">找零</string>
     <string name="text_commit_order">提交交易</string>
 
-    <string name="text_receivable_colon">应收:</string>
-    <string name="text_receivable_refound">应退:</string>
-    <string name="text_change_colon">找零:</string>
-    <string name="text_receipts_colon">实收:</string>
-    <string name="text_receipts_refound">实退:</string>
+    <string name="text_receivable_colon">应收：</string>
+    <string name="text_receivable_refound">应退：</string>
+    <string name="text_change_colon">找零：</string>
+    <string name="text_receipts_colon">实收：</string>
+    <string name="text_receipts_refound">实退：</string>
     <string name="text_coupon_colon">优惠:</string>
     <string name="text_delete">删除</string>
     <string name="text_refund_orders">退款</string>

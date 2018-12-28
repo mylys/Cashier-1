@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/y47"
+    android:layout_marginTop="@dimen/y95"
     android:background="@color/color_text_white">
 
     <RelativeLayout
@@ -15,8 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/x45"
             android:text="@string/text_receivable_refound"
-            android:textColor="@color/color_7e7e7e"
-            android:textSize="@dimen/sp_14" />
+            style="@style/SettlementDetailTextStyle" />
 
         <TextView
             android:id="@+id/tv_cash_maney"
@@ -26,7 +25,7 @@
             android:layout_marginEnd="@dimen/x45"
             android:text="￥20"
             android:textColor="@color/color_d64444"
-            android:textSize="@dimen/sp_14"
+            android:textSize="@dimen/text_size_42"
             android:textStyle="bold" />
 
         <View
@@ -46,8 +45,7 @@
             android:layout_below="@+id/line1"
             android:layout_marginStart="@dimen/x45"
             android:text="实退：(现金)"
-            android:textColor="@color/color_7e7e7e"
-            android:textSize="@dimen/sp_14" />
+            style="@style/SettlementDetailTextStyle" />
 
         <TextView
             android:id="@+id/tv_refound_maney"
@@ -58,7 +56,7 @@
             android:layout_marginEnd="@dimen/x45"
             android:text="￥20"
             android:textColor="@color/color_505050"
-            android:textSize="@dimen/sp_14"
+            android:textSize="@dimen/text_size_42"
             android:textStyle="bold" />
 
         <View

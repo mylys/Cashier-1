@@ -221,4 +221,12 @@ public interface HttpService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("api/pay/refund")
     Observable<HttpResult<String>> refund(@HeaderMap Map<String, String> header, @Body RequestBody json);
+
+
+    /**
+     * 现金退款
+     */
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("api/pay/cash")
+    Observable<HttpResult<String>> cash_refund(@HeaderMap Map<String, String> header, @Body RequestBody json);
 }

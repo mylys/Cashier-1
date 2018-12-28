@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -13,6 +14,7 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.base.BaseAppActivity;
 import com.easygo.cashier.module.goods.GoodsFragment;
 import com.easygo.cashier.widget.MyTitleBar;
+import com.niubility.library.utils.ScreenUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +40,12 @@ public class RefundActivity extends BaseAppActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+//        ScreenUtils.hideNavigationBar(this);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_refund);
@@ -57,6 +65,12 @@ public class RefundActivity extends BaseAppActivity {
         transaction.replace(R.id.framelayout, goodsFragment, TAG_REFUND).commit();
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        ScreenUtils.hideNavigationBar(this);
+    }
 
     @Override
     protected void onStart() {
@@ -78,13 +92,14 @@ public class RefundActivity extends BaseAppActivity {
     }
 
 
-    public void toRefundCashFragment() {
+    public void toRefundCashFragment(Bundle bundle) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_REFUND_CASH);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (fragment == null) {
-            refundCashFragment = RefundCashFragment.newInstance();
+            refundCashFragment = RefundCashFragment.newInstance(bundle);
             transaction.add(R.id.framelayout, refundCashFragment, TAG_REFUND_CASH);
         } else {
+            refundCashFragment.setData(bundle);
             transaction.show(refundCashFragment);
         }
         transaction.hide(goodsFragment);

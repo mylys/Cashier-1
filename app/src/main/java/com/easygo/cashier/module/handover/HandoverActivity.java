@@ -311,7 +311,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
         float total_money = 0;
         for (int i = 0; i < size; i++) {
             HandoverSaleResponse saleResponse = data.get(i);
-            count += saleResponse.getCount();
+            count += Integer.valueOf(saleResponse.getCount());
             total_money += saleResponse.getMoney();
 
             sb.append(i+1).append(".")
