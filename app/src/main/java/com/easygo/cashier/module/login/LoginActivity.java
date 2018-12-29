@@ -196,7 +196,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
             dialog.setOnDialogClickListener(new PettyCashDialog.OnDialogClickListener() {
                 @Override
                 public void onClick(String content) {
-                    mPresenter.resever_money(result.getSession_id(), Configs.shop_sn, result.getHandover_id(), Integer.parseInt(content));
+                    mPresenter.resever_money(result.getSession_id(), Configs.shop_sn, result.getHandover_id(),
+                            Integer.parseInt(content.replace(".", "")));
                 }
             });
         }else{

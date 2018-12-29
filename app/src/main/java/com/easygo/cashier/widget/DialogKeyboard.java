@@ -91,7 +91,8 @@ public class DialogKeyboard extends ConstraintLayout {
                     }
                     double price = Double.parseDouble(mEditText.getText().toString().trim());
                     String format = String.format("%.2f", price);
-                    listener.onContent(format.replace(".", ""));
+//                    listener.onContent(format.replace(".", ""));
+                    listener.onContent(format);
                 }
             }
         });
