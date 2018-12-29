@@ -16,6 +16,15 @@ public class GoodsRefundInfo {
     private int is_weigh;
     private int refund;
     private int parent_id;
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public int getParent_id() {
         return parent_id;

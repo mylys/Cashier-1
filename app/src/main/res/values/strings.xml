@@ -118,5 +118,18 @@
     <string name="pay_cash">现金</string>
     <string name="pay_wallet">企业钱包</string>
 
+    <!-- 功能列表 -->
+    <string name="text_function_history">历史订单</string>
+    <string name="text_function_refund">退款</string>
+    <string name="text_function_handover">交接班</string>
+    <string name="text_function_system">进入系统</string>
+    <string name="text_function_language">语言设置</string>
+    <string name="text_function_device">设备状态</string>
+    <string name="text_function_setting">系统设置</string>
+
+    <string name="text_dialog_title_clear">确认情况商品？</string>
+    <string name="text_dialog_cancel">取消</string>
+    <string name="text_dialog_submit">确定</string>
+
 
 </resources>

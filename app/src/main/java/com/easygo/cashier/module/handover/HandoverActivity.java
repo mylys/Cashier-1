@@ -90,6 +90,8 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
     public void init() {
         ARouter.getInstance().inject(this);
 
+        handoverPermission();
+
         clTitle.setCashierAccount(admin_name);
 
         if (mHandoverView == null) {
@@ -113,6 +115,15 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
 //            }
 //        });
 
+    }
+
+    private void handoverPermission() {
+        if (Configs.getRole(Configs.menus[8]) != 1){
+            btnHandover.setVisibility(View.GONE);
+        }
+        if (Configs.getRole(Configs.menus[9]) != 1){
+            btnSalesList.setVisibility(View.GONE);
+        }
     }
 
 
@@ -379,6 +390,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
                 btnPrint.setVisibility(View.VISIBLE);
                 break;
         }
+        handoverPermission();
     }
 
     @Override

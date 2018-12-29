@@ -38,16 +38,16 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
     protected void convert(final BaseViewHolder helper, final GoodsRefundInfo item) {
         final CountTextView countTextView = helper.getView(R.id.tv_refund_num);
 
-        final boolean is_weigh = item.getIs_weigh() == 1;//是否为称重商品(1:是 其他为否)
-        final boolean is_parentId = item.getParent_id() == 0;//是否为加工方式(>0:是 =0否) 称重商品为前提才有加工方式
+        int type = item.getType();//0:正常商品 --- 1:称重商品 --- 2:无码商品 --- 3:加工方式
+
         //设置选择时显示隐藏
         if (item.isSelect()) {
-            if (is_weigh) {
-                countTextView.setVisibility(is_parentId ? View.GONE : View.VISIBLE);
-                helper.getView(R.id.tv_refund_num_no).setVisibility(is_parentId ? View.VISIBLE : View.GONE);
-            } else {
-                countTextView.setVisibility(View.VISIBLE);
-                helper.getView(R.id.tv_refund_num_no).setVisibility(View.GONE);
+            countTextView.setVisibility(View.VISIBLE);
+            helper.getView(R.id.tv_refund_num_no).setVisibility(View.GONE);
+
+            if (type == 1 || type == 3) {
+                countTextView.setVisibility(View.GONE);
+                helper.getView(R.id.tv_refund_num_no).setVisibility(View.VISIBLE);
             }
         } else {
             countTextView.setVisibility(View.GONE);
@@ -59,16 +59,21 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         helper.setImageResource(R.id.image_select, item.isSelect() ? R.drawable.icon_select : R.drawable.icon_no_select);
 
         //设置数据
-        String tv_total_num = is_weigh && is_parentId ? item.getProduct_num() + "g" : item.getProduct_num() + "";
+        String tv_total_num = type == 1 ? item.getProduct_num() + "g" : item.getProduct_num() + "";
         String tv_subtotal = df.format(Double.parseDouble(item.getProduct_subtotal()));
         helper.setText(R.id.tv_product_name, item.getProduct_name())
                 .setText(R.id.tv_product_preferential, item.getProduct_preferential())
                 .setText(R.id.tv_product_price, item.getProduct_price())
                 .setText(R.id.tv_product_subtotal, tv_subtotal)
                 .setText(R.id.tv_product_total_num, tv_total_num)
-                .setText(R.id.tv_refund_subtotal, is_weigh && is_parentId ? tv_subtotal : item.getRefund_subtotal())
-                .setText(R.id.tv_refund_num_no, is_weigh && is_parentId ? tv_total_num : item.getRefund_num())
-                .setText(R.id.tv_refund, item.getRefund() == item.getProduct_num() ? "全退" : "退" + item.getRefund() + "件");
+                .setText(R.id.tv_refund_subtotal, type == 1 || type == 3 ? tv_subtotal : item.getRefund_subtotal())
+                .setText(R.id.tv_refund_num_no, type == 1 || type == 3 ? tv_total_num : item.getRefund_num());
+
+        if (type == 1) {
+            helper.setText(R.id.tv_refund, "全退");
+        } else {
+            helper.setText(R.id.tv_refund, item.getRefund() == item.getProduct_num() ? "全退" : "退" + item.getRefund() + "件");
+        }
 
         countTextView.setCount(item.getRefund_num());
 

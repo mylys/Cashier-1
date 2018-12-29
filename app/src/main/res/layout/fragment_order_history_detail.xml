@@ -201,7 +201,7 @@
         android:layout_height="@dimen/line_height"
         android:layout_marginBottom="@dimen/y99"
         android:background="@color/color_51beaf"
-        app:layout_constraintBottom_toTopOf="@id/btn_refund"
+        app:layout_constraintBottom_toTopOf="@id/btn_print"
         app:layout_constraintEnd_toEndOf="@id/tv_cashier_account"
         app:layout_constraintStart_toStartOf="@id/tv_text_order_no" />
 

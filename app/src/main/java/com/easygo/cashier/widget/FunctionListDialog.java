@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +14,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.easygo.cashier.Configs;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.FunctionListAdapter;
+import com.easygo.cashier.bean.FunctionListBean;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +32,26 @@ public class FunctionListDialog extends DialogFragment {
 
     @BindView(R.id.rv_function)
     RecyclerView rvFunction;
+
+    private int[] functions = new int[]{
+            R.string.text_function_history,
+            R.string.text_function_refund,
+            R.string.text_function_handover,
+            R.string.text_function_system,
+            R.string.text_function_language,
+            R.string.text_function_device,
+            R.string.text_function_setting,
+    };
+
+    private int[] res = new int[]{
+            R.drawable.ic_order_history,
+            R.drawable.ic_refund,
+            R.drawable.ic_shift,
+            R.drawable.ic_enter_system,
+            R.drawable.ic_lauage,
+            R.drawable.ic_device_status,
+            R.drawable.ic_system_setting,
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,27 +76,37 @@ public class FunctionListDialog extends DialogFragment {
     public void onResume() {
         super.onResume();
         Window window = getDialog().getWindow();
-        if(window != null) {
+        if (window != null) {
             window.setLayout(getResources().getDimensionPixelSize(R.dimen.function_list_width),
-                            getResources().getDimensionPixelSize(R.dimen.function_list_height));
+                    getResources().getDimensionPixelSize(R.dimen.function_list_height));
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
-            int uiOptions =View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    |View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    |View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    |View.SYSTEM_UI_FLAG_IMMERSIVE
-                    |View.SYSTEM_UI_FLAG_FULLSCREEN;
+            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
             window.getDecorView().setSystemUiVisibility(uiOptions);
         }
         getDialog().setCanceledOnTouchOutside(false);
     }
 
     public void init() {
-        GridLayoutManager glm = new GridLayoutManager(getContext(), 4);
 
         FunctionListAdapter functionListAdapter = new FunctionListAdapter();
+        ArrayList<Integer> integers = new ArrayList<>();
+
+        if (Configs.getRole(Configs.menus[10]) != 1) {
+            integers.add(5);
+        }
+        if (Configs.getRole(Configs.menus[7]) != 1) {
+            integers.add(2);
+        }
+        if (Configs.getRole(Configs.menus[4]) != 1) {
+            integers.add(0);
+        }
 
         //分割线
         DividerItemDecoration horizontalDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL);
@@ -81,38 +116,46 @@ public class FunctionListDialog extends DialogFragment {
         rvFunction.addItemDecoration(horizontalDecoration);
         rvFunction.addItemDecoration(verticalDecoration);
 
-        rvFunction.setLayoutManager(glm);
+        if (integers.size() < 3) {
+            rvFunction.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        } else {
+            rvFunction.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        }
+
         rvFunction.setAdapter(functionListAdapter);
+        for (int i = 0; i < functions.length; i++) {
+            if (!integers.contains(i)) {
+                functionListAdapter.addData(new FunctionListBean(functions[i], res[i]));
+            }
+        }
 
         functionListAdapter.setOnItemClickListener(new FunctionListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                if(mListener != null) {
+                if (mListener != null) {
                     mListener.onItemClickBefore();
                 }
                 switch (position) {
-                    case 0://历史订单
+                    case R.string.text_function_history:
                         orderHistory();
                         break;
-                    case 1://退款
+                    case R.string.text_function_refund:
                         refund();
                         break;
-                    case 2://交接班
+                    case R.string.text_function_handover:
                         handover();
                         break;
-                    case 3://进入系统
+                    case R.string.text_function_system:
                         enterSystem();
                         break;
-                    case 4://语言设置
+                    case R.string.text_function_language:
                         languageSetting();
                         break;
-                    case 5://设备状态
+                    case R.string.text_function_device:
                         deviceStatus();
                         break;
-                    case 6://系统设置
+                    case R.string.text_function_setting:
                         systemSetting();
-                        break;
-                    default:
                         break;
                 }
                 onItemClickAfter();
@@ -123,7 +166,7 @@ public class FunctionListDialog extends DialogFragment {
     private void onItemClickAfter() {
         dismiss();
 
-        if(mListener != null) {
+        if (mListener != null) {
             mListener.onItemClickAfter();
         }
     }
@@ -171,26 +214,36 @@ public class FunctionListDialog extends DialogFragment {
     }
 
     private OnFunctionListItemListener mListener;
+
     public void setOnFunctionListItemListener(OnFunctionListItemListener listItemListener) {
         this.mListener = listItemListener;
     }
+
     public interface OnFunctionListItemListener {
         void orderHistory();
+
         void refund();
+
         void handover();
+
         void enterSystem();
+
         void languageSetting();
+
         void deviceStatus();
+
         void systemSetting();
 
         void onItemClickBefore();
+
         void onItemClickAfter();
+
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(unbinder != null)
+        if (unbinder != null)
             unbinder.unbind();
     }
 
