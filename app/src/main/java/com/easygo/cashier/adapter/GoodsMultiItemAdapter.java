@@ -41,14 +41,18 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     protected ArrayMap<String, GoodsEntity<GoodsResponse>> data;
     protected ArrayList<String> barcodeData = new ArrayList<>();
 
-
-    //普通商品
-    public void addItem(GoodsResponse t) {
-        String code = t.getBarcode();
+    /** 确保数据集合不为空*/
+    private void ensureNotNull() {
         if (data == null) {
             data = new ArrayMap<>();
             barcodeData = new ArrayList<>();
         }
+    }
+
+    //普通商品
+    public void addItem(GoodsResponse t) {
+        String code = t.getBarcode();
+        ensureNotNull();
         if (!data.containsKey(code)) {
             GoodsEntity<GoodsResponse> goodsNum = new GoodsEntity<>(GoodsEntity.TYPE_GOODS);
             goodsNum.setData(t);
@@ -66,10 +70,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     //重量商品
     public void addWeightItem(GoodsResponse t, int weight) {
         String code = t.getBarcode();
-        if (data == null) {
-            data = new ArrayMap<>();
-            barcodeData = new ArrayList<>();
-        }
+        ensureNotNull();
         if (!data.containsKey(code)) {
             GoodsEntity<GoodsResponse> goodsNum = new GoodsEntity<>(GoodsEntity.TYPE_WEIGHT);
             goodsNum.setData(t);
@@ -87,10 +88,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     //纯加工商品
     public void addOnlyPrcessingItem(GoodsResponse t, int weight) {
         String code = t.getBarcode();
-        if (data == null) {
-            data = new ArrayMap<>();
-            barcodeData = new ArrayList<>();
-        }
+        ensureNotNull();
         GoodsEntity<GoodsResponse> goodsNum = new GoodsEntity<>(GoodsEntity.TYPE_ONLY_PROCESSING);
         goodsNum.setData(t);
         goodsNum.setCount(weight);
@@ -101,10 +99,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     }
     //可选择的加工商品
     public void addPrcessingItem(List<GoodsResponse> list, int weight) {
-        if (data == null) {
-            data = new ArrayMap<>();
-            barcodeData = new ArrayList<>();
-        }
+        ensureNotNull();
         GoodsEntity<GoodsResponse> goodsNum = new GoodsEntity<>(GoodsEntity.TYPE_PROCESSING);
         goodsNum.setCount(weight);
 
@@ -143,6 +138,11 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
 
         int size = t.size();
+        //为商品添加时间戳，唯一识别商品以方便后台增减库存
+        long timeStamp = System.currentTimeMillis();
+        for (int i = 0; i < size; i++) {
+            t.get(i).setIdentity(String.valueOf(timeStamp));
+        }
         if(size == 1) {//商品 （重量、普通、纯加工）
             GoodsResponse goodsResponse = t.get(0);
             String barcode = goodsResponse.getBarcode();
@@ -150,18 +150,31 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             if(goodsResponse.getParent_id() == 0) {//主商品
                 if(BarcodeUtils.isWeightCode(barcode)) {
                     //重量商品
+                    goodsResponse.setType(GoodsResponse.type_weight);
                     addWeightItem(goodsResponse, weight);
                 } else {
                     //普通商品
+                    goodsResponse.setType(GoodsResponse.type_normal);
                     addItem(goodsResponse);
                 }
             }
            else if(goodsResponse.getParent_id() != 0){
                 //纯加工商品
-                addOnlyPrcessingItem(goodsResponse, weight);
+//                addOnlyPrcessingItem(goodsResponse, weight);
+                goodsResponse.setType(GoodsResponse.type_processing);
+                addOnlyPrcessingItem(goodsResponse, 1);
             }
 
         } else {//加工商品
+            GoodsResponse goodsResponse;
+            for (int i = 0; i < size; i++) {
+                goodsResponse = t.get(i);
+                if (goodsResponse.getParent_id() == 0) {//主商品
+                    goodsResponse.setType(GoodsResponse.type_weight);
+                } else {//加工商品
+                    goodsResponse.setType(GoodsResponse.type_processing);
+                }
+            }
             addPrcessingItem(t, weight);
         }
     }
@@ -170,18 +183,20 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     public void addNoCodeItem(float price) {
         String code = String.valueOf(price);
 
+        //为商品添加时间戳，唯一识别商品以方便后台增减库存
+        long timeStamp = System.currentTimeMillis();
+
         GoodsResponse goodsResponse = new GoodsResponse();
         goodsResponse.setCount(1);
         goodsResponse.setBarcode("");
         goodsResponse.setDiscount_price("0.00");
         goodsResponse.setG_sku_id(0);
+        goodsResponse.setIdentity(String.valueOf(timeStamp));
+        goodsResponse.setType(GoodsResponse.type_no_code);
         goodsResponse.setG_sku_name("无码商品");
         goodsResponse.setPrice(code);
 
-        if (data == null) {
-            data = new ArrayMap<>();
-            barcodeData = new ArrayList<>();
-        }
+        ensureNotNull();
         //以单价为key
         if (!data.containsKey(code)) {
             GoodsEntity<GoodsResponse> goodsNum = new GoodsEntity<>(GoodsEntity.TYPE_NO_CODE);
@@ -267,9 +282,9 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         switch (helper.getItemViewType()) {
             case GoodsEntity.TYPE_GOODS://普通商品
             case GoodsEntity.TYPE_NO_CODE://无码商品
-                CountTextView count = ((CountTextView) helper.getView(R.id.count_view));
-                count.setCount(String.valueOf(good_count));
-                count.setOnCountListener(new CountTextView.OnCountListener() {
+                final CountTextView countTextView = ((CountTextView) helper.getView(R.id.count_view));
+                countTextView.setCount(String.valueOf(good_count));
+                countTextView.setOnCountListener(new CountTextView.OnCountListener() {
                     @Override
                     public void onCountChanged(int count) {
                         if(mListener != null) {
@@ -289,6 +304,13 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                             mData.remove(item);
                             notifyItemRemoved(helper.getAdapterPosition());
                         } else {
+                            if(helper.getItemViewType() == GoodsEntity.TYPE_GOODS
+                                    &&  count > good.getOn_sale_count()) {
+                                //数量大于在售数量了
+                                count--;
+                                countTextView.setCount(count + "");
+                            }
+
                             item.setCount(count);
                             notifyItemChanged(helper.getAdapterPosition());
                         }
@@ -341,6 +363,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                         GoodsResponse default_processing = item.getProcessing_list().get(0);
                         item.setProcessing(isChecked? default_processing : null);
                         if(isChecked) {
+                            default_processing.setIdentity(String.valueOf(System.currentTimeMillis()));
                             refreshPrcessingData(helper, default_processing);
                         }
 
@@ -416,6 +439,10 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         if(choice.getProcess_id() != current.getProcess_id()) {//选择了新的加工方式
             GoodsEntity<GoodsResponse> goodsEntity = mData.get(position);
             goodsEntity.setProcessing(choice);
+
+            //设置唯一标识 跟主商品区分开
+            choice.setIdentity(String.valueOf(System.currentTimeMillis()));
+
             current = choice;
             notifyItemChanged(position);
         }

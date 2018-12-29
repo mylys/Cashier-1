@@ -184,6 +184,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
                 .putInt(Constans.KEY_HANDOVER_ID, result.getHandover_id())
                 .apply();
 
+        Configs.cashier_id = result.getCashier_id();
         Configs.admin_name = result.getReal_name();
         Configs.menuBeanList = result.getMenu();
 

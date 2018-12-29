@@ -30,6 +30,7 @@ public class GoodsResponse implements Serializable {
      * birthday_price : 0.00
      * sell_status : 1
      * status : 1
+     * is_weigh : 0
      */
 
     private int g_sku_id;
@@ -55,8 +56,24 @@ public class GoodsResponse implements Serializable {
     private String birthday_price;
     private int sell_status;
     private int status;
+    private int is_weigh;
 
     private int count;
+    /**
+     * 唯一识别码， 扫到商品时的时间戳（毫秒）
+     */
+    private String identity;
+
+    /**
+     * 0: 非重量  1：重量  2：无码商品 3: 加工商品
+     */
+    private int type;
+
+    public static final int type_normal = 0;
+    public static final int type_weight = 1; //加工方式主商品也属于此类
+    public static final int type_no_code = 2;
+    public static final int type_processing = 3;
+
 
     public int getCount() {
         return count;
@@ -64,6 +81,22 @@ public class GoodsResponse implements Serializable {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public int getG_sku_id() {
@@ -248,5 +281,13 @@ public class GoodsResponse implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getIs_weigh() {
+        return is_weigh;
+    }
+
+    public void setIs_weigh(int is_weigh) {
+        this.is_weigh = is_weigh;
     }
 }

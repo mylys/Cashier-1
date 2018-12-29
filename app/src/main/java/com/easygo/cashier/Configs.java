@@ -34,6 +34,7 @@ public class Configs {
 
     /* admin */
     public static String admin_name = "";
+    public static int cashier_id;
 
     /* 登录获取权限列表 --- 全局控制 */
     public static List<LoginResponse.MenuBean> menuBeanList;

@@ -198,7 +198,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         orderHistoryGoodsAdapter.setNewData(orderHistoryInfo.getList());
 //        tvOrderNo.setText(orderHistoryInfo.getTrade_num());
         tvOrderNo.setText((String) orderHistoryInfo.getTrade_no());
-        tvCashierAcount.setText(orderHistoryInfo.getAdmin_name());
+        tvCashierAcount.setText(orderHistoryInfo.getReal_name());
         tvGoodsCount.setText("共" + orderHistoryInfo.getList().size() + "件");
         tvReceipts.setText("实付：￥" + orderHistoryInfo.getBuyer_pay());
 

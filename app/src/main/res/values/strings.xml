@@ -75,6 +75,7 @@
     <string name="text_total_refund_price">件，退款金额：￥ </string>
 
     <!--搜索框-->
+    <string name="text_digits">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
     <string name="text_search_hint_barcode">输入条形码、商品名或编码</string>
     <string name="text_search_hint_order">输入订单单号</string>
     <string name="text_search_hint_product_name">输入商品名</string>
@@ -117,6 +118,7 @@
     <string name="pay_wechat_wallet">微信 + 企业钱包</string>
     <string name="pay_cash">现金</string>
     <string name="pay_wallet">企业钱包</string>
+
 
 
 </resources>

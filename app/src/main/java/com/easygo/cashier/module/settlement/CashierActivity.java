@@ -488,6 +488,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 //        String real_pay = df.format(mRealPay*100);
 
         CreateOrderRequestBody requestBody1 = new CreateOrderRequestBody();
+        requestBody1.setCashier_id(Configs.cashier_id);
         requestBody1.setShop_sn(Configs.shop_sn);
         requestBody1.setTotal_money(Integer.valueOf(total_money));
         requestBody1.setReal_pay(Integer.valueOf(real_pay));
@@ -505,11 +506,18 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
             //商品信息
             goodsBean = new CreateOrderRequestBody.GoodsListBean();
-            goodsBean.setCount(good.getCount());
             data = good.getData();
-
             goodsBean.setG_sku_id(data.getG_sku_id());
-            price = Float.valueOf(data.getPrice());
+            goodsBean.setIdentity(data.getIdentity());
+            //设置类型
+            goodsBean.setType(data.getType());
+
+            goodsBean.setCount(good.getCount());
+            if(good.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
+                price = Float.valueOf(data.getProcess_price());
+            } else {
+                price = Float.valueOf(data.getPrice());
+            }
             goodsBean.setPrice(Integer.valueOf(df.format(price*100)));
             goodsBean.setBarcode(data.getBarcode());
             list.add(goodsBean);
@@ -520,8 +528,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     data = good.getProcessing();
                     if(data != null) {//选择加工
                         goodsBean = new CreateOrderRequestBody.GoodsListBean();
-                        goodsBean.setCount(data.getCount());
                         goodsBean.setG_sku_id(data.getG_sku_id());
+                        goodsBean.setIdentity(data.getIdentity());
+                        //设置类型
+                        goodsBean.setType(data.getType());
+                        goodsBean.setCount(data.getCount());
                         price = Float.valueOf(data.getProcess_price());
                         goodsBean.setPrice(Integer.valueOf(df.format(price*100)));
                         goodsBean.setBarcode(data.getBarcode());
@@ -589,8 +600,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         if(settlementView.needPrint()) {
             print();
         }
-        //弹出钱箱
-        mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, PrintHelper.pop_till);
+        if(mPayWay == PayWayView.WAY_CASH) {//现金支付时
+            //弹出钱箱
+            mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, PrintHelper.pop_till);
+        }
 
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -602,15 +615,23 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public void aliPayFailed(Map<String, Object> map) {
+
         if(HttpExceptionEngine.isBussinessError(map)) {
-            showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
             int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
 
             if(20000 == err_code) {
                 showToast("支付宝： 开始查询订单支付状态");
                 mPresenter.checkAliPayStatus(Test.shop_sn, Configs.order_no);
+            } else {
+                showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
+                if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
+                    mScanCodeDialog.dismiss();
+                }
             }
+        } else {
+            showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
         }
+
     }
 
     @Override
@@ -634,7 +655,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
                     }
                 }, 1000);
+            } else {
+                showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
+                if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
+                    mScanCodeDialog.dismiss();
+                }
             }
+        } else {
+            showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
         }
     }
 
@@ -649,13 +677,19 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     @Override
     public void wechatPayFailed(Map<String, Object> map) {
         if(HttpExceptionEngine.isBussinessError(map)) {
-            showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
             int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
 
             if(20000 == err_code) {
                 showToast("微信： 开始查询订单支付状态");
                 mPresenter.checkWechatPayStatus(Test.shop_sn, Configs.order_no);
+            } else {
+                showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
+                if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
+                    mScanCodeDialog.dismiss();
+                }
             }
+        } else {
+            showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
         }
     }
 
@@ -680,13 +714,20 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
                     }
                 }, 1000);
+            } else {
+                showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
+                if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
+                    mScanCodeDialog.dismiss();
+                }
             }
+        } else {
+            showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
         }
     }
 
     @Override
     public void cashSuccess(String result) {
-        showToast("现金成功");
+        showToast("现金支付成功");
 
         onPaySuccessAfter();
     }
@@ -694,7 +735,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public void cashFailed(Map<String, Object> map) {
-        showToast("现金失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
+        showToast("现金支付失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
     }
 
     @Override

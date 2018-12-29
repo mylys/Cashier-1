@@ -74,23 +74,32 @@ public class UserGoodsScreen extends Presentation {
     }
 
     public void addItem(List<GoodsResponse> result, int weight) {
-        this.mUserGoodsAdapter.addItem(result, weight);
+        if(mUserGoodsAdapter != null)
+            this.mUserGoodsAdapter.addItem(result, weight);
     }
 
     public void addNoCodeItem(float price) {
-        this.mUserGoodsAdapter.addNoCodeItem(price);
+        if(mUserGoodsAdapter != null)
+            this.mUserGoodsAdapter.addNoCodeItem(price);
     }
 
     public void chooseProcessing(int position, GoodsResponse choice) {
-        this.mUserGoodsAdapter.chooseProcessing(position, choice);
+        if(mUserGoodsAdapter != null)
+            this.mUserGoodsAdapter.chooseProcessing(position, choice);
     }
 
     public void onCountChanged(int position, int count) {
+        if(mUserGoodsAdapter == null) {
+            return;
+        }
         if(count == 0) {
             if(position >= 0)
                 onItemRemoved(position);
         } else {
             List<GoodsEntity<GoodsResponse>> data = mUserGoodsAdapter.getData();
+            if(data.size() <= 0) {
+                return;
+            }
             GoodsEntity<GoodsResponse> goodsEntity = data.get(position);
             goodsEntity.setCount(count);
             mUserGoodsAdapter.notifyItemChanged(position);
@@ -113,11 +122,13 @@ public class UserGoodsScreen extends Presentation {
     }
 
     public void clear() {
-        mUserGoodsAdapter.clear();
+        if(mUserGoodsAdapter != null)
+            mUserGoodsAdapter.clear();
     }
 
     //更新位置到最后
     public void toPosition() {
-        recyclerView.smoothScrollToPosition(mUserGoodsAdapter.getItemCount()-1);
+        if(recyclerView != null && mUserGoodsAdapter != null)
+            recyclerView.smoothScrollToPosition(mUserGoodsAdapter.getItemCount()-1);
     }
 }
