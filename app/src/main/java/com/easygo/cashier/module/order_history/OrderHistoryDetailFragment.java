@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +67,10 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     TextView tvReceiptsText;
     @BindView(R.id.tv_refund_text)
     TextView tvRefundText;
+    @BindView(R.id.btn_refund)
+    Button btnRefund;
+    @BindView(R.id.btn_print)
+    Button btnPrint;
     Unbinder unbinder;
 
     /* 获取支付方式，传递给退款Fragment */
@@ -98,6 +103,9 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     }
 
     private void init() {
+        if (Configs.getRole(Configs.menus[5]) != 1) {
+            btnRefund.setVisibility(View.GONE);
+        }
         rvGoods.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         rvGoods.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         orderHistoryGoodsAdapter = new OrderHistoryGoodsAdapter();
@@ -155,19 +163,19 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 .append(PrintHelper.BR);
 
         int count = 0;
-        boolean isWeight = false;
+//        boolean isWeight = false;
         for (int i = 0; i < size; i++) {
             OrderHistorysInfo.ListBean listBean = data.get(i);
 
-            count += Integer.parseInt(listBean.getCount());
-            isWeight = listBean.getCount().equals(listBean.getQuantity());
+            count += listBean.getCount();
+//            isWeight = listBean.getCount().equals(listBean.getQuantity());
 
             sb.append(i + 1).append(".")
                     .append(listBean.getG_sku_name()).append("   ").append(PrintHelper.BR)
                     .append("     ")
                     .append(listBean.getSell_price()).append("   ")
                     .append("0.00").append("   ")
-                    .append(isWeight ? listBean.getQuantity() + "g" : listBean.getCount()).append("   ")
+                    .append(listBean.getType() == 1 ? listBean.getQuantity() + "g" : listBean.getCount()).append("   ")
                     .append(listBean.getMoney()).append(PrintHelper.BR);
         }
 
@@ -205,7 +213,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         tvReceivable.setText("应收：￥" + orderHistoryInfo.getReal_pay());
 //        tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money() + " = ");
 
-        order_number = orderHistoryInfo.getTrade_no() != null ? (String) orderHistoryInfo.getTrade_no() : "";
+        order_number = orderHistoryInfo.getTrade_num() != null ? (String) orderHistoryInfo.getTrade_num() : "";
         total_price = Integer.parseInt(orderHistoryInfo.getTotal_money().replace(".", ""));
 
         switch (orderHistoryInfo.getPay_type()) {

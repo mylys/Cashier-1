@@ -196,67 +196,36 @@ public class OrderHistorysInfo {
 
     public static class ListBean implements Parcelable {
 
+
         /**
-         * o_i_id : 810336
-         * g_sku_id : 13005
-         * barcode : 6902538004045
-         * g_sku_name : 脉动青柠味饮料
-         * s_sku_id : 111859
-         * g_c_name : 饮料类-功能性类
-         * is_weigh : 0
-         * cashier_id : 368
-         * pay_time : 1545913015
-         * status : 2
-         * refund : 0
-         * g_u_id : 12
-         * g_u_name : 瓶
-         * purchase_price : 3.38
-         * sell_price : 0.02
+         * g_sku_name : 发舒服撒发-就是个福
+         * s_sku_id : 111865
+         * type : 3
          * quantity : 1
+         * sell_price : 0.01
+         * refund : 0
          * count : 1
-         * money : 0.02
+         * money : 0.01
          */
 
-        private int o_i_id;
-        private int g_sku_id;
-        private String barcode;
         private String g_sku_name;
         private int s_sku_id;
-        private String g_c_name;
-        private int is_weigh;
-        private int cashier_id;
-        private int pay_time;
-        private int status;
-        private int refund;
-        private int g_u_id;
-        private String g_u_name;
-        private String purchase_price;
+        private int type;
+        private int quantity;
         private String sell_price;
-        private String quantity;
-        private String count;
-        private String money;
-        private int parent_id;
+        private int refund;
+        private int count;
+        private double money;
 
         protected ListBean(Parcel in) {
-            o_i_id = in.readInt();
-            g_sku_id = in.readInt();
-            barcode = in.readString();
             g_sku_name = in.readString();
             s_sku_id = in.readInt();
-            g_c_name = in.readString();
-            is_weigh = in.readInt();
-            cashier_id = in.readInt();
-            pay_time = in.readInt();
-            status = in.readInt();
-            refund = in.readInt();
-            g_u_id = in.readInt();
-            g_u_name = in.readString();
-            purchase_price = in.readString();
+            type = in.readInt();
+            quantity = in.readInt();
             sell_price = in.readString();
-            quantity = in.readString();
-            count = in.readString();
-            money = in.readString();
-            parent_id = in.readInt();
+            refund = in.readInt();
+            count = in.readInt();
+            money = in.readDouble();
         }
 
         public static final Creator<ListBean> CREATOR = new Creator<ListBean>() {
@@ -270,38 +239,6 @@ public class OrderHistorysInfo {
                 return new ListBean[size];
             }
         };
-
-        public int getParent_id() {
-            return parent_id;
-        }
-
-        public void setParent_id(int parent_id) {
-            this.parent_id = parent_id;
-        }
-
-        public int getO_i_id() {
-            return o_i_id;
-        }
-
-        public void setO_i_id(int o_i_id) {
-            this.o_i_id = o_i_id;
-        }
-
-        public int getG_sku_id() {
-            return g_sku_id;
-        }
-
-        public void setG_sku_id(int g_sku_id) {
-            this.g_sku_id = g_sku_id;
-        }
-
-        public String getBarcode() {
-            return barcode;
-        }
-
-        public void setBarcode(String barcode) {
-            this.barcode = barcode;
-        }
 
         public String getG_sku_name() {
             return g_sku_name;
@@ -319,76 +256,20 @@ public class OrderHistorysInfo {
             this.s_sku_id = s_sku_id;
         }
 
-        public String getG_c_name() {
-            return g_c_name;
+        public int getType() {
+            return type;
         }
 
-        public void setG_c_name(String g_c_name) {
-            this.g_c_name = g_c_name;
+        public void setType(int type) {
+            this.type = type;
         }
 
-        public int getIs_weigh() {
-            return is_weigh;
+        public int getQuantity() {
+            return quantity;
         }
 
-        public void setIs_weigh(int is_weigh) {
-            this.is_weigh = is_weigh;
-        }
-
-        public int getCashier_id() {
-            return cashier_id;
-        }
-
-        public void setCashier_id(int cashier_id) {
-            this.cashier_id = cashier_id;
-        }
-
-        public int getPay_time() {
-            return pay_time;
-        }
-
-        public void setPay_time(int pay_time) {
-            this.pay_time = pay_time;
-        }
-
-        public int getStatus() {
-            return status;
-        }
-
-        public void setStatus(int status) {
-            this.status = status;
-        }
-
-        public int getRefund() {
-            return refund;
-        }
-
-        public void setRefund(int refund) {
-            this.refund = refund;
-        }
-
-        public int getG_u_id() {
-            return g_u_id;
-        }
-
-        public void setG_u_id(int g_u_id) {
-            this.g_u_id = g_u_id;
-        }
-
-        public String getG_u_name() {
-            return g_u_name;
-        }
-
-        public void setG_u_name(String g_u_name) {
-            this.g_u_name = g_u_name;
-        }
-
-        public String getPurchase_price() {
-            return purchase_price;
-        }
-
-        public void setPurchase_price(String purchase_price) {
-            this.purchase_price = purchase_price;
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
         }
 
         public String getSell_price() {
@@ -399,27 +280,27 @@ public class OrderHistorysInfo {
             this.sell_price = sell_price;
         }
 
-        public String getQuantity() {
-            return quantity;
+        public int getRefund() {
+            return refund;
         }
 
-        public void setQuantity(String quantity) {
-            this.quantity = quantity;
+        public void setRefund(int refund) {
+            this.refund = refund;
         }
 
-        public String getCount() {
+        public int getCount() {
             return count;
         }
 
-        public void setCount(String count) {
+        public void setCount(int count) {
             this.count = count;
         }
 
-        public String getMoney() {
+        public double getMoney() {
             return money;
         }
 
-        public void setMoney(String money) {
+        public void setMoney(double money) {
             this.money = money;
         }
 
@@ -430,25 +311,14 @@ public class OrderHistorysInfo {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(o_i_id);
-            dest.writeInt(g_sku_id);
-            dest.writeString(barcode);
             dest.writeString(g_sku_name);
             dest.writeInt(s_sku_id);
-            dest.writeString(g_c_name);
-            dest.writeInt(is_weigh);
-            dest.writeInt(cashier_id);
-            dest.writeInt(pay_time);
-            dest.writeInt(status);
-            dest.writeInt(refund);
-            dest.writeInt(g_u_id);
-            dest.writeString(g_u_name);
-            dest.writeString(purchase_price);
+            dest.writeInt(type);
+            dest.writeInt(quantity);
             dest.writeString(sell_price);
-            dest.writeString(quantity);
-            dest.writeString(count);
-            dest.writeString(money);
-            dest.writeInt(parent_id);
+            dest.writeInt(refund);
+            dest.writeInt(count);
+            dest.writeDouble(money);
         }
     }
 }

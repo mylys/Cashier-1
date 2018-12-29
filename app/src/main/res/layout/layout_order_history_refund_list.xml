@@ -46,13 +46,13 @@
 
             <TextView
                 style="@style/RefundList"
-                android:layout_width="@dimen/x165"
+                android:layout_width="@dimen/x180"
                 android:layout_height="match_parent"
                 android:text="@string/text_count_weight" />
 
             <TextView
                 style="@style/RefundList"
-                android:layout_width="@dimen/x195"
+                android:layout_width="@dimen/x180"
                 android:layout_height="match_parent"
                 android:text="@string/text_subtotal" />
 

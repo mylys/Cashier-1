@@ -21,16 +21,21 @@ public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo
     @Override
     protected void convert(BaseViewHolder helper, OrderHistorysInfo.ListBean item) {
         DecimalFormat df = new DecimalFormat("#0.00");
-        int quantity = Integer.parseInt(item.getQuantity());
+        int count = item.getCount();
         String sell_price = item.getSell_price();
 
         helper.getView(R.id.tv_refund).setVisibility(item.getRefund() > 0 ? View.VISIBLE : View.GONE);
         helper.setText(R.id.tv_text_goods_name, item.getG_sku_name())
                 .setText(R.id.tv_text_price, sell_price)
                 .setText(R.id.tv_text_coupon, "0.00")
-                .setText(R.id.tv_text_goods_count, item.getIs_weigh() == 1 && item.getParent_id() == 0 ? quantity + "g" : quantity + "")
-                .setText(R.id.tv_text_subtotal, df.format(Double.parseDouble(item.getMoney())))
-                .setText(R.id.tv_refund, item.getRefund() == Integer.parseInt(item.getCount()) ? "全退" : "退" + item.getRefund() + "件");
+                .setText(R.id.tv_text_goods_count, item.getType() == 1 ? count + "g" : count + "")
+                .setText(R.id.tv_text_subtotal, df.format(item.getMoney()));
+
+        if (item.getType() == 1) {
+            helper.setText(R.id.tv_refund, "全退");
+        } else {
+            helper.setText(R.id.tv_refund, item.getRefund() == item.getCount() ? "全退" : "退" + item.getRefund() + "件");
+        }
 
     }
 }

@@ -34,6 +34,7 @@ import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.module.refund.RefundActivity;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
+import com.easygo.cashier.widget.GeneraDialog;
 import com.easygo.cashier.widget.MySearchView;
 import com.easygo.cashier.widget.NoGoodsDialog;
 import com.easygo.cashier.widget.PettyCashDialog;
@@ -143,8 +144,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     @Override
     protected void init() {
-        if (Configs.menuBeanList != null && Configs.menuBeanList.size() > 0) {
-            btnSettlement.setVisibility(Configs.menuBeanList.get(0).getChild_menus().get(0).getRole() == 1 ? View.VISIBLE : View.GONE);
+        if (Configs.getRole(Configs.menus[1]) != 1) {
+            btnSettlement.setVisibility(View.GONE);
         }
         initView();
 
@@ -310,6 +311,12 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         rvGoods.addItemDecoration(verticalDecoration);
 
         setIntentData();
+        if (Configs.getRole(Configs.menus[21]) != 1) {
+            clNoBarcode.setVisibility(View.GONE);
+        }
+        if (Configs.getRole(Configs.menus[13]) != 1){
+            clPopMoneyBox.setVisibility(View.GONE);
+        }
 
         clSearch.setOnSearchListenerClick(new MySearchView.OnSearhListenerClick() {
             @Override
@@ -499,12 +506,19 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                 break;
             case R.id.btn_clear://清空
-                mGoodsMultiItemAdapter.clear();
+                GeneraDialog generaDialog = GeneraDialog.getInstance("确认清空商品？", "取消", "确定");
+                generaDialog.showCenter(getActivity());
+                generaDialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
+                    @Override
+                    public void onSubmit() {
+                        mGoodsMultiItemAdapter.clear();
 
-                if (mUserGoodsScreen != null) {
-                    mUserGoodsScreen.clear();
-                }
+                        if (mUserGoodsScreen != null) {
+                            mUserGoodsScreen.clear();
+                        }
 
+                    }
+                });
                 break;
             case R.id.btn_settlement://收银 or  退款
                 switch (mType) {

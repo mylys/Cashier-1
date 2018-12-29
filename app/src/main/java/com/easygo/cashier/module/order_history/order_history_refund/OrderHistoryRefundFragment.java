@@ -134,21 +134,21 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         recyclerView.setAdapter(adapter);
         setEmpty();
 
+        DecimalFormat df = new DecimalFormat("#0.00");
         if (data != null) {
             for (OrderHistorysInfo.ListBean bean : data) {
                 GoodsRefundInfo info = new GoodsRefundInfo();
                 info.setProduct_name(bean.getG_sku_name());
                 info.setProduct_price(bean.getSell_price());
-                info.setProduct_subtotal(bean.getMoney());
+                info.setProduct_subtotal(df.format(bean.getMoney()));
                 info.setProduct_preferential("0");
-                info.setIs_weigh(bean.getIs_weigh());
-                info.setProduct_num(Integer.parseInt(bean.getCount()));
+                info.setProduct_num(bean.getCount());
                 info.setS_sku_id(bean.getS_sku_id());
                 info.setRefund_num("1");
                 info.setRefund_subtotal(bean.getSell_price());
                 info.setSelect(false);
+                info.setType(bean.getType());
                 info.setRefund(bean.getRefund());
-                info.setParent_id(bean.getParent_id());
                 adapter.addData(info);
                 infoList.add(info);
             }

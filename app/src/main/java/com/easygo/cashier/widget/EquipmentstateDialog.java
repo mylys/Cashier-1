@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.easygo.cashier.Configs;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.EquipmentState;
 import com.niubility.library.base.BaseDialog;
