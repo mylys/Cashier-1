@@ -1,22 +1,31 @@
 package com.easygo.cashier.module.refund;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.R;
+import com.easygo.cashier.adapter.GoodsEntity;
+import com.easygo.cashier.bean.GoodsResponse;
+import com.easygo.cashier.bean.request.RefundCashRequestBody;
+import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.Keyboard;
 import com.easygo.cashier.widget.PayWayView;
 import com.niubility.library.base.BaseMvpFragment;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView, RefundCashPresenter> implements RefundCashContract.IView {
@@ -34,8 +43,24 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
     private ConfirmDialog confirmDialog;
     private int mPayWay = PayWayView.WAY_CASH;
 
+    /**数量*/
+    private int mGoodsCount;
+    /**总额*/
+    private float mTotalMoney;
+    /**商品数据*/
+    private List<GoodsEntity<GoodsResponse>> mData;
+
+    /**实退*/
+    private float mRealRefundCash;
+
     public static RefundCashFragment newInstance() {
         return new RefundCashFragment();
+    }
+    public static RefundCashFragment newInstance(Bundle bundle) {
+
+        RefundCashFragment refundCashFragment = new RefundCashFragment();
+        refundCashFragment.setArguments(bundle);
+        return refundCashFragment;
     }
 
     @Override
@@ -59,7 +84,20 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
         refundCashView = RefundCashView.create(getActivity());
         framelayout.addView(refundCashView);
 
+        setArgumentsData();
+
         setListener();
+
+        initKeyboard();
+    }
+
+    //初始化数据
+    private void setArgumentsData() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+
+           setData(bundle);
+        }
     }
 
     private void setListener() {
@@ -78,7 +116,7 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
 //                    showToast("实收金额小于应收金额， 请确认！");
 //                }
                 //弹出确认弹窗
-                Bundle bundle = ConfirmDialog.getDataBundle("", 0, PayWayView.WAY_CASH, false, "应退", "实退");
+                Bundle bundle = ConfirmDialog.getDataBundle(mGoodsCount + "", mRealRefundCash, PayWayView.WAY_CASH, false, "应退：", "实退：");
                 confirmDialog = new ConfirmDialog();
                 confirmDialog.setArguments(bundle);
                 confirmDialog.setOnConfirmListener(new ConfirmDialog.OnConfirmListenr() {
@@ -92,31 +130,190 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
         });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
+    private void initKeyboard() {
+        //关联EditText
+        kb.attachEditText(etMoney);
+        etMoney.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = s.toString().trim();
+
+                if(TextUtils.isEmpty(text)) {
+                    mRealRefundCash = mTotalMoney;
+                    //刷新价格
+                    if(refundCashView != null)
+                        refundCashView.setData(mTotalMoney, mRealRefundCash);
+                    return;
+                }
+
+                //以00 . 开头 直接返回
+                if(text.startsWith(".") || text.startsWith("00")) {
+                    s.delete(0, s.length());
+                    return;
+                }
+                float data = Float.valueOf(text);
+
+                if(data > mTotalMoney) {
+                    showToast("实退金额不能大于应退金额！");
+                    s.delete(s.length()-1, s.length());
+                } else {
+                    mRealRefundCash = data;
+
+                    //刷新价格
+                    if(refundCashView != null)
+                        refundCashView.setData(mTotalMoney, mRealRefundCash);
+
+                }
+
+            }
+        });
+    }
+
+    /**设置数据*/
+    public void setData(Bundle bundle) {
+        mGoodsCount = bundle.getInt("goods_count");
+        mTotalMoney = bundle.getFloat("total_money");
+        mData = (List<GoodsEntity<GoodsResponse>>) bundle.getSerializable("goods_data");
+
+        mRealRefundCash = mTotalMoney;
+        if(refundCashView != null) {
+            refundCashView.setData(mTotalMoney, mRealRefundCash);
+        }
     }
 
     @OnClick(R.id.btn_delete)
     public void onViewClicked() {
+        //键盘删除按钮
+        int selectionStart = etMoney.getSelectionStart();
+        Editable editable = etMoney.getText();
+
+        if (editable != null && editable.length() > 0) {
+            if (selectionStart > 0) {
+                editable.delete(selectionStart - 1, selectionStart);
+            }
+        }
 
     }
 
     public void onCommitOrder() {
-        if (mPayWay == PayWayView.WAY_ALIPAY) {
-            if (TextUtils.isEmpty(Configs.order_no)) {
-                showToast("确认提交订单");
-//                createOrder();
-            } else {
-                showToast("订单已经创建 --> " + Configs.order_no);
-            }
-        } else {
-            showToast("开发中");
-        }
+//        if (mPayWay == PayWayView.WAY_ALIPAY) {
+//            if (TextUtils.isEmpty(Configs.order_no)) {
+//                showToast("确认提交订单");
+                refund();
+//            } else {
+//                showToast("订单已经创建 --> " + Configs.order_no);
+//            }
+//        } else {
+//            showToast("开发中");
+//        }
     }
+
+    private void refund() {
+
+        int size = mData.size();
+        RefundCashRequestBody requsetBody = new RefundCashRequestBody();
+        requsetBody.setShop_sn(Configs.shop_sn);
+
+
+//        RefundCashRequestBody.GoodsList goodsList = new RefundCashRequestBody.GoodsList();
+        for (int i = 0; i < size; i++) {
+            GoodsEntity<GoodsResponse> goodsEntity = mData.get(i);
+
+
+        }
+
+
+
+
+
+
+
+
+//        mPresenter.cashRefund();
+
+        printRefund();
+
+    }
+
+    private void printRefund() {
+
+        StringBuilder sb = new StringBuilder();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        sb.append(PrintHelper.CB_left).append(Configs.shop_name).append(PrintHelper.CB_right).append(PrintHelper.BR)
+                .append("时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
+                .append("收银员：").append(Configs.admin_name).append(PrintHelper.BR)
+                .append("--------------------------------").append(PrintHelper.BR)
+                .append("品名  ").append("单价  ").append("优惠  ").append("数量/重量  ").append("小计  ")
+                .append(PrintHelper.BR);
+
+        GoodsEntity<GoodsResponse> goodsEntity;
+        boolean is_processing;
+        int size = mData.size();
+
+        int index = 1;
+        int count;
+        float price;
+        float sub_total;
+        GoodsResponse data;
+        GoodsResponse processing;
+        for (int i = 0; i < size; i++) {
+            goodsEntity = mData.get(i);
+            data = goodsEntity.getData();
+            //加工方式商品
+            processing = goodsEntity.getProcessing();
+
+            price = Float.valueOf(data.getPrice());
+            count = goodsEntity.getCount();
+            sub_total = price * count;
+
+            is_processing = processing != null;
+
+            sb.append(index).append(".")
+                    .append(data.getG_sku_name()).append("   ").append(PrintHelper.BR)
+                    .append("     ")
+                    .append(data.getPrice()).append("   ")
+                    .append(data.getDiscount_price()).append("   ")
+                    .append(is_processing? count + "g" :count).append("   ")
+                    .append(df.format(sub_total)).append(PrintHelper.BR);
+
+
+            if(is_processing) {
+                index++;
+                price = Float.valueOf(processing.getProcess_price());
+                sub_total = price * processing.getCount();
+
+                sb.append(index).append(".")
+                        .append(processing.getG_sku_name()).append("   ").append(PrintHelper.BR)
+                        .append("     ")
+                        .append(processing.getProcess_price()).append("   ")
+                        .append(processing.getDiscount_price()).append("   ")
+                        .append(processing.getCount()).append("   ")
+                        .append(df.format(sub_total)).append(PrintHelper.BR);
+            }
+
+            index++;
+        }
+        sb.append("--------------------------------").append(PrintHelper.BR)
+                .append("退货数：").append(mGoodsCount).append(PrintHelper.BR)
+                .append("退款：").append(df.format(mRealRefundCash)).append("元").append(PrintHelper.BR);
+
+
+
+        mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, sb.toString());
+    }
+
 
     @Override
     public void onDestroy() {
@@ -124,5 +321,25 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
         if (refundCashView != null) {
             refundCashView.release();
         }
+    }
+
+    @Override
+    public void cashRefundSuccess(String result) {
+        printRefund();
+    }
+
+    @Override
+    public void cashRefundFailed(Map<String, Object> map) {
+
+    }
+
+    @Override
+    public void printSuccess(String result) {
+
+    }
+
+    @Override
+    public void printFailed(Map<String, Object> map) {
+
     }
 }

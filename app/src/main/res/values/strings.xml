@@ -45,11 +45,11 @@
     <string name="text_change">找零</string>
     <string name="text_commit_order">提交交易</string>
 
-    <string name="text_receivable_colon">应收:</string>
-    <string name="text_receivable_refound">应退:</string>
-    <string name="text_change_colon">找零:</string>
-    <string name="text_receipts_colon">实收:</string>
-    <string name="text_receipts_refound">实退:</string>
+    <string name="text_receivable_colon">应收：</string>
+    <string name="text_receivable_refound">应退：</string>
+    <string name="text_change_colon">找零：</string>
+    <string name="text_receipts_colon">实收：</string>
+    <string name="text_receipts_refound">实退：</string>
     <string name="text_coupon_colon">优惠:</string>
     <string name="text_delete">删除</string>
     <string name="text_refund_orders">退款</string>
@@ -75,6 +75,7 @@
     <string name="text_total_refund_price">件，退款金额：￥ </string>
 
     <!--搜索框-->
+    <string name="text_digits">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
     <string name="text_search_hint_barcode">输入条形码、商品名或编码</string>
     <string name="text_search_hint_order">输入订单单号</string>
     <string name="text_search_hint_product_name">输入商品名</string>
@@ -130,6 +131,7 @@
     <string name="text_dialog_title_clear">确认情况商品？</string>
     <string name="text_dialog_cancel">取消</string>
     <string name="text_dialog_submit">确定</string>
+
 
 
 </resources>

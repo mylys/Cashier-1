@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.easygo.cashier.R;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -70,6 +72,12 @@ public class RefundCashView extends FrameLayout {
                 }
             }
         });
+    }
+
+    public void setData(float receivable_refund, float refund_cash) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        tvCashManey.setText("￥" + df.format(receivable_refund));
+        tvRefoundManey.setText("￥" + df.format(refund_cash));
     }
 
     public void release() {

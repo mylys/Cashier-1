@@ -9,12 +9,14 @@ public class CreateOrderRequestBody {
     /**
      * goods_list : [{"g_sku_id":5,"count":1,"price":400,"barcode":"096619756803"},{"g_sku_id":200,"count":2,"price":1000,"barcode":"8885012290555"}]
      * goods_count : 2
+     * cashier_id : 358
      * shop_sn : GZ1002
      * total_money : 2400
      * real_pay : 2400
      */
 
     private int goods_count;
+    private int cashier_id;
     private String shop_sn;
     private int total_money;
     private int real_pay;
@@ -26,6 +28,14 @@ public class CreateOrderRequestBody {
 
     public void setGoods_count(int goods_count) {
         this.goods_count = goods_count;
+    }
+
+    public int getCashier_id() {
+        return cashier_id;
+    }
+
+    public void setCashier_id(int cashier_id) {
+        this.cashier_id = cashier_id;
     }
 
     public String getShop_sn() {
@@ -65,12 +75,22 @@ public class CreateOrderRequestBody {
          * g_sku_id : 5
          * count : 1
          * price : 400
+         * type : 0
+         * identity : "0"
          * barcode : 096619756803
          */
 
         private int g_sku_id;
         private int count;
         private int price;
+        /**
+         * 0: 非重量  1：重量  2：无码商品 3: 加工商品
+         */
+        private int type;
+        /**
+         * 唯一识别码， 扫到商品时的时间戳（毫秒）
+         */
+        private String identity;
         private String barcode;
 
         public int getG_sku_id() {
@@ -95,6 +115,22 @@ public class CreateOrderRequestBody {
 
         public void setPrice(int price) {
             this.price = price;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public String getIdentity() {
+            return identity;
+        }
+
+        public void setIdentity(String identity) {
+            this.identity = identity;
         }
 
         public String getBarcode() {

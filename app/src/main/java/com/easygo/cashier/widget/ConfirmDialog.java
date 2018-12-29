@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.easygo.cashier.R;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -94,6 +96,8 @@ public class ConfirmDialog extends DialogFragment {
     }
 
     private void init() {
+        DecimalFormat df = new DecimalFormat("0.00");
+
         boolean visiable = true;
         String[] strings = new String[]{"应收", "实收"};
         Bundle bundle = getArguments();
@@ -116,20 +120,21 @@ public class ConfirmDialog extends DialogFragment {
 
         tvReceivable.setText("￥" + mReceivable);
         tvReceipts.setText("￥" + mReceipts);
-        tvChange.setText("￥" + mChange);
+        tvChange.setText("￥" + df.format(mChange));
         if (!TextUtils.isEmpty(mRefundNum)){
             tvReceivable.setText(mRefundNum + "件");
+            tvTitle.setText(R.string.text_confirm_refund);
         }
 
         switch (mPayWay) {
             case PayWayView.WAY_CASH:
-                tvPayWay.setText("（现金）");
+                tvPayWay.setText("(现金)");
                 break;
             case PayWayView.WAY_ALIPAY:
-                tvPayWay.setText("（支付宝）");
+                tvPayWay.setText("(支付宝)");
                 break;
             case PayWayView.WAY_WECHAT:
-                tvPayWay.setText("（微信）");
+                tvPayWay.setText("(微信)");
                 break;
         }
 

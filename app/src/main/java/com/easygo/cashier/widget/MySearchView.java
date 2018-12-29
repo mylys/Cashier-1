@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,9 @@ public class MySearchView extends ConstraintLayout {
     private ConstraintLayout mClear;
     private String keyword = "";
 
+    /**时间间隔*/
+    private long interval = 1000;
+
 
     public MySearchView(Context context) {
         super(context);
@@ -43,7 +47,7 @@ public class MySearchView extends ConstraintLayout {
     }
 
 
-    private void init(Context context, AttributeSet attrs) {
+    private void init(final Context context, AttributeSet attrs) {
 
         initView(context);
 
@@ -79,6 +83,17 @@ public class MySearchView extends ConstraintLayout {
                 mEditText.setText("");
             }
         });
+
+        final Runnable textRunnable = new Runnable() {
+            @Override
+            public void run() {
+                //两次输入间隔大于 指定时间时
+                if(listener != null) {
+                    Log.i("test", "run: 开始搜索");
+                    listener.onSearch(keyword);
+                }
+            }
+        };
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -94,6 +109,11 @@ public class MySearchView extends ConstraintLayout {
             public void afterTextChanged(Editable s) {
                 keyword = s.toString();
                 mClear.setVisibility(s.length() > 0 ? VISIBLE : GONE);
+
+                //指定时间后调用搜索按钮逻辑
+                mEditText.removeCallbacks(textRunnable);
+                mEditText.postDelayed(textRunnable, interval);
+
             }
         });
 
@@ -150,6 +170,11 @@ public class MySearchView extends ConstraintLayout {
 
     public int getSearchResultWidth() {
         return getWidth() - mSearchBtn.getWidth();
+    }
+
+    //设置时间间隔
+    public void setInterval(long interval) {
+        this.interval = interval;
     }
 
 }

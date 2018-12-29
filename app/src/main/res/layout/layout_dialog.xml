@@ -56,8 +56,8 @@
         style="@style/GoodsListStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/x10"
-        android:text="(现金）"
+        android:layout_marginStart="@dimen/x1"
+        android:text="(现金)"
         app:layout_constraintBottom_toBottomOf="@id/tv_text_receipts"
         app:layout_constraintStart_toEndOf="@id/tv_text_receipts"
         app:layout_constraintTop_toTopOf="@id/tv_text_receipts" />

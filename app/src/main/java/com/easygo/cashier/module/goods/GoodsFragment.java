@@ -1,8 +1,13 @@
 package com.easygo.cashier.module.goods;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.display.DisplayManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -147,7 +152,30 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
         initUserGoodsScreen();
         if (mUserGoodsScreen != null) {
-            mUserGoodsScreen.show();
+            if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mUserGoodsScreen.show();
+            } else {
+                showToast("悬浮窗权限");
+
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, 0);
+            }
+
+//            mUserGoodsScreen.show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == 0) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mUserGoodsScreen.show();
+            } else {
+                showToast("权限没有通过");
+            }
         }
     }
 
@@ -310,11 +338,11 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         DisplayManager mDisplayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
         Display[] displays = mDisplayManager.getDisplays();
 
-//        if (mUserGoodsScreen == null) {
-//            mUserGoodsScreen = new UserGoodsScreen(context,
-//                    displays[displays.length - 1], admin_name);// displays[1]是副屏
-//            mUserGoodsScreen.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-//        }
+        if (mUserGoodsScreen == null && displays.length == 2) {
+            mUserGoodsScreen = new UserGoodsScreen(context,
+                    displays[displays.length - 1], admin_name);// displays[1]是副屏
+            mUserGoodsScreen.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        }
     }
 
     @Override
@@ -426,9 +454,12 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                         //添加无码商品
                         mGoodsMultiItemAdapter.addNoCodeItem(price);
+                        rvGoods.smoothScrollToPosition(mGoodsMultiItemAdapter.getItemCount() - 1);
                         //刷新副屏
-                        if (mUserGoodsScreen != null)
+                        if (mUserGoodsScreen != null) {
                             mUserGoodsScreen.addNoCodeItem(price);
+                            mUserGoodsScreen.toPosition();
+                        }
                     }
                 });
 
@@ -473,8 +504,15 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                         break;
                     case TYPE_REFUND:
                         RefundActivity refundActivity = (RefundActivity) getActivity();
-                        if (refundActivity != null)
-                            refundActivity.toRefundCashFragment();
+                        if (refundActivity != null) {
+
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("goods_count", mGoodsCount);
+                            bundle.putFloat("total_money", mTotalMoney);
+                            bundle.putSerializable("goods_data", (Serializable) mData);
+
+                            refundActivity.toRefundCashFragment(bundle);
+                        }
                         break;
                 }
 
@@ -516,6 +554,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 showToast(err_msg);
             }
         }
+        mGoodWeight = 0;
     }
 
     @Override
