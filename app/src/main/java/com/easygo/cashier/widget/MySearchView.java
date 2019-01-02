@@ -1,9 +1,11 @@
 package com.easygo.cashier.widget;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -116,6 +118,8 @@ public class MySearchView extends ConstraintLayout {
 
             }
         });
+//        mEditText.setRawInputType(Configuration.KEYBOARD_QWERTY);
+        mEditText.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
 
     }
 

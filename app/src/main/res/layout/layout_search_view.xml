@@ -16,8 +16,6 @@
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/x16"
         android:layout_marginEnd="@dimen/x23"
-        android:inputType="number"
-        android:digits="@string/text_digits"
         android:paddingStart="@dimen/x35"
         android:background="@null"
         android:hint="输入条形码、商品名或编码"

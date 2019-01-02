@@ -149,6 +149,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     showToast("实收金额小于应收金额， 请确认！");
                     return;
                 }
+                if(!TextUtils.isEmpty(Configs.order_no)) {
+                    showScanCodeDialog();
+                }
                 //弹出确认弹窗
                 Bundle bundle = ConfirmDialog.getDataBundle(mTotalMoney, mRealPay, mChange, mPayWay);
                 confirmDialog = new ConfirmDialog();
@@ -337,10 +340,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     public void onCommitOrder() {
 
         if(TextUtils.isEmpty(Configs.order_no)) {
-            showToast("确认提交订单");
+//            showToast("确认提交订单");
             createOrder();
         } else {
-            showToast("订单已经创建 --> " + Configs.order_no);
+//            showToast("订单已经创建 --> " + Configs.order_no);
+            onAfterCreateOrder();
         }
 
     }
@@ -554,6 +558,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 //        Configs.order_no = result.getTrade_no();
         Configs.order_no = result.getTrade_num();
 
+        onAfterCreateOrder();
+
+    }
+
+    /**
+     * 创建订单后，调起支付方法
+     */
+    private void onAfterCreateOrder() {
         switch (mPayWay) {
             case PayWayView.WAY_CASH:
 
@@ -569,8 +581,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 showScanCodeDialog();
                 break;
         }
-
-
     }
 
     @Override

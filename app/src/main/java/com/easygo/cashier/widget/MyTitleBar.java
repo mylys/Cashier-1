@@ -92,8 +92,8 @@ public class MyTitleBar extends ConstraintLayout {
         mCashierAccountRight = (TextView) mView.findViewById(R.id.tv_cashier);
 
         mRightIconView = new View[]{
-                mSetting,
-                mNetwork,
+//                mSetting,
+//                mNetwork,
                 mMenu,
         };
         mTitleView = new View[] {
