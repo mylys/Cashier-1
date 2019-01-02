@@ -107,12 +107,10 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 }
                 item.setSelect(!item.isSelect());
                 listener.onListener();
-                int num = 0;
                 for (int i = 0; i < getData().size(); i++) {
-                    if (getData().get(i).isSelect()) {
-                        if (++num != getData().size()) {
-                            listener.onClick(false);
-                        }
+                    if (!getData().get(i).isSelect()) {
+                        listener.onClick(false);
+                        break;
                     }
                 }
                 notifyItemChanged(helper.getLayoutPosition());

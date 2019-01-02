@@ -14,6 +14,8 @@ import com.easygo.cashier.R;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.ToastUtils;
 
+import java.text.DecimalFormat;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class DialogKeyboard extends ConstraintLayout {
@@ -36,6 +38,7 @@ public class DialogKeyboard extends ConstraintLayout {
 
     private TextView[] mTvs;
     private EditText mEditText;
+    private DecimalFormat df = new DecimalFormat("0.00");
 
     public DialogKeyboard(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -50,7 +53,7 @@ public class DialogKeyboard extends ConstraintLayout {
         initAttrs();
     }
 
-    private void initView(Context context) {
+    private void initView(final Context context) {
         mView = LayoutInflater.from(context).inflate(R.layout.layout_dialog_keyboard_view, this, true);
         mTv1 = (TextView) mView.findViewById(R.id.tv_1);
         mTv2 = (TextView) mView.findViewById(R.id.tv_2);
@@ -90,7 +93,7 @@ public class DialogKeyboard extends ConstraintLayout {
                         return;
                     }
                     double price = Double.parseDouble(mEditText.getText().toString().trim());
-                    String format = String.format("%.2f", price);
+                    String format = df.format(price);
 //                    listener.onContent(format.replace(".", ""));
                     listener.onContent(format);
                 }
@@ -119,14 +122,33 @@ public class DialogKeyboard extends ConstraintLayout {
 
                     if (mEditText != null && mEditText.isEnabled()) {
                         Editable editable = mEditText.getText();
-                        String price = mEditText.getText().toString();
-                        if (price.contains(".")) {
-                            if (textView.getText().toString().equals(".")) {
+                        String price = mEditText.getText().toString();//获取输入框内容
+                        String text = textView.getText().toString();//获取点击内容
+                        if (price.length() == 5) {//如果价格长度等于5 最大10000不能加“.”
+                            if (!price.contains(".")) {
                                 return;
                             }
                         }
-                        if (price.length() == 4) {
-                            if (textView.getText().toString().equals(".") || price.contains(".")) {
+                        if (price.contains(".")) {//如果存在“.”,则不能重复添加，并且小数点后只能2位
+                            if (price.substring(price.indexOf(".") + 1, price.length()).length() == 2) {
+                                return;
+                            }
+                            if (text.equals(".")) {
+                                return;
+                            }
+                        }
+                        if (price.length() == 0) {//不能以“0”或者“00”开头
+                            if (text.equals("0") || text.equals("00")) {
+                                return;
+                            }
+                        }
+                        if (price.length() == 3 && Integer.parseInt(price.substring(0, 3)) > 100) {//如果内容等于100,才能再点击00
+                            if (text.equals("00")) {
+                                return;
+                            }
+                        }
+                        if (price.length() == 4) {//限制输入4位数是最大只能9999
+                            if (text.equals(".")) {
                                 editable.append(textView.getText());
                             }
                             return;
