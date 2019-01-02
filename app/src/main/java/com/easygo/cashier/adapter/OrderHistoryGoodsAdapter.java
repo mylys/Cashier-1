@@ -38,4 +38,14 @@ public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo
         }
 
     }
+
+    public int getRefundSize() {
+        int num = 0;
+        for (OrderHistorysInfo.ListBean listBean : getData()) {
+            if (listBean.getRefund() > 0) {
+                num++;
+            }
+        }
+        return num;
+    }
 }

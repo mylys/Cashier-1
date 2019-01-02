@@ -52,7 +52,7 @@ public class Configs {
             310                 //无码商品id
     };
 
-    /* 判断权限id是否存在于权限列表中 并获取role权限是否显示 */
+    /* 判断权限id是否存在于权限列表中 并获取role权限是否显示 (0:无权限，1:有权限，-1:权限不存在) */
     public static int getRole(int permissionId) {
         if (Configs.menuBeanList != null && Configs.menuBeanList.size() > 0) {
             for (LoginResponse.MenuBean parentBean : menuBeanList) {

@@ -31,12 +31,14 @@
             android:id="@+id/dialog_cancel"
             android:layout_width="@dimen/x35"
             android:layout_height="@dimen/y35"
+            android:layout_marginTop="@dimen/y29"
             android:layout_marginEnd="@dimen/x36"
+            android:layout_marginBottom="@dimen/y23"
             android:src="@drawable/ic_close_function_list"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_title" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

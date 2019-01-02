@@ -21,8 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Describe：
- * @author：hgeson
+ * @Describe：历史订单退款item
  * @date：2018-12-19
  */
 public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo, BaseViewHolder> {
@@ -98,9 +97,14 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
             }
         });
 
+        //点击item监听状态变化
         helper.getView(R.id.ll_view).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (item.getRefund() > 0) {
+                    ToastUtils.showToast(mContext, "该商品已退款");
+                    return;
+                }
                 item.setSelect(!item.isSelect());
                 listener.onListener();
                 int num = 0;
@@ -140,7 +144,9 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
 
     public void setClick(boolean click) {
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
-            goodsRefundInfo.setSelect(click);
+            if (goodsRefundInfo.getRefund() == 0) {
+                goodsRefundInfo.setSelect(click);
+            }
         }
         notifyDataSetChanged();
     }
@@ -149,8 +155,9 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         double totalPrcie = 0;
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
             if (goodsRefundInfo.isSelect()) {
-                totalPrcie += Double.parseDouble(goodsRefundInfo.getProduct_price())
-                        * Integer.parseInt(goodsRefundInfo.getRefund_num());
+                //0:正常商品 --- 1:称重商品 --- 2:无码商品 --- 3:加工方式
+                int type = goodsRefundInfo.getType();
+                totalPrcie += Double.parseDouble(type == 1 || type == 3 ? goodsRefundInfo.getProduct_subtotal() : goodsRefundInfo.getRefund_subtotal());
             }
         }
         return df.format(totalPrcie);
@@ -164,6 +171,31 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
             }
         }
         return totalPrcie;
+    }
+
+    public boolean getTotalRefund() {
+        int num = 0;
+        for (GoodsRefundInfo goodsRefundInfo : getData()) {
+            if (goodsRefundInfo.getRefund() > 0) {
+                num++;
+            }
+        }
+        return num == getData().size();
+    }
+
+    /* 退款成功时，模拟退款信息详情 */
+    public void setRefundInfo() {
+        for (GoodsRefundInfo goodsRefundInfo : getData()) {
+            if (goodsRefundInfo.isSelect()) {
+                if (goodsRefundInfo.getType() != 1 && goodsRefundInfo.getType() != 3) {
+                    goodsRefundInfo.setRefund(Integer.parseInt(goodsRefundInfo.getRefund_num()));
+                } else {
+                    goodsRefundInfo.setRefund(1);
+                }
+                goodsRefundInfo.setSelect(false);
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public interface OnItemClickListener {

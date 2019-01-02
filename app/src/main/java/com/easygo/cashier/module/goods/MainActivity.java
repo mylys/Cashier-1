@@ -156,10 +156,10 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
 
                 break;
             case R.id.menu://功能列表
-//                if (goodsFragment.getAdapterSize() == 0){
-//                    ToastUtils.showToast(this,"请先完成收银操作");
-//                    return;
-//                }
+                if (goodsFragment.getAdapterSize() != 0){
+                    ToastUtils.showToast(this,"请先完成收银操作");
+                    return;
+                }
                 FunctionListDialog functionListDialog = new FunctionListDialog();
                 functionListDialog.setOnFunctionListItemListener(mFunctionListItemListener);
                 functionListDialog.show(getSupportFragmentManager(), TAG_FUNCTION_LIST);
@@ -304,13 +304,12 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
         }
     };
 
-    //TODO：待处理...
     private void getPrinterstateShowLoading() {
         Bundle bundle = new Bundle();
         ArrayList<EquipmentState> arrayList = new ArrayList<>();
         arrayList.add(new EquipmentState(getResources().getString(R.string.the_printer), true, true));
-        arrayList.add(new EquipmentState(getResources().getString(R.string.the_code_gun), true, true));
-        arrayList.add(new EquipmentState(getResources().getString(R.string.the_till), true, true));
+//        arrayList.add(new EquipmentState(getResources().getString(R.string.the_code_gun), true, true));
+//        arrayList.add(new EquipmentState(getResources().getString(R.string.the_till), true, true));
         bundle.putString("title", getResources().getString(R.string.device_state));
         bundle.putParcelableArrayList("data", arrayList);
         dialog = EquipmentstateDialog.getInstance(bundle);

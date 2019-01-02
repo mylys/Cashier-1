@@ -49,6 +49,15 @@ public class OrderHistorysInfo {
     private String real_name;
     private List<ListBean> list;
     private boolean isSelect;
+    private int have_refund;
+
+    public int getHave_refund() {
+        return have_refund;
+    }
+
+    public void setHave_refund(int have_refund) {
+        this.have_refund = have_refund;
+    }
 
     public List<ListBean> getList() {
         return list;
