@@ -98,13 +98,13 @@ public class FunctionListDialog extends DialogFragment {
         FunctionListAdapter functionListAdapter = new FunctionListAdapter();
         ArrayList<Integer> integers = new ArrayList<>();
 
-        if (Configs.getRole(Configs.menus[10]) != 1) {
+        if (Configs.getRole(Configs.menus[10]) == 0) {
             integers.add(5);
         }
-        if (Configs.getRole(Configs.menus[7]) != 1) {
+        if (Configs.getRole(Configs.menus[7]) == 0) {
             integers.add(2);
         }
-        if (Configs.getRole(Configs.menus[4]) != 1) {
+        if (Configs.getRole(Configs.menus[4]) == 0) {
             integers.add(0);
         }
 

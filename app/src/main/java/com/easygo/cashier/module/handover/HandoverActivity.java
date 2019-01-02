@@ -118,10 +118,10 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
     }
 
     private void handoverPermission() {
-        if (Configs.getRole(Configs.menus[8]) != 1){
+        if (Configs.getRole(Configs.menus[8]) == 0){
             btnHandover.setVisibility(View.GONE);
         }
-        if (Configs.getRole(Configs.menus[9]) != 1){
+        if (Configs.getRole(Configs.menus[9]) == 0){
             btnSalesList.setVisibility(View.GONE);
         }
     }

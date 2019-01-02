@@ -105,7 +105,7 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
         adapter.setOnItemClickListener(new OrderHistoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClck(int position) {
-                orderHistoryDetailFragment.showOrderHistory(adapter.getData().get(position), Configs.admin_name);
+                orderHistoryDetailFragment.showOrderHistory(adapter.getData().get(position));
             }
         });
 
@@ -139,7 +139,7 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
                 if (orderHistoryDetailFragment != null) {
                     if (orderHistorysInfo.size() > 0) {
                         adapter.setItemClick();
-                        orderHistoryDetailFragment.showOrderHistory(orderHistorysInfo.get(0), Configs.admin_name);
+                        orderHistoryDetailFragment.showOrderHistory(orderHistorysInfo.get(0));
                     }
                 }
                 if (isSearch){

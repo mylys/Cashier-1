@@ -155,6 +155,13 @@ public class MySearchView extends ConstraintLayout {
 
     OnSearhListenerClick listener;
 
+    public void setFocuable(boolean focuable) {
+        mEditText.setFocusable(focuable);
+        mEditText.requestFocus();
+        mEditText.setFocusableInTouchMode(focuable);
+        mEditText.requestFocusFromTouch();
+    }
+
     public interface OnSearhListenerClick {
         void onSearch(String content);
     }

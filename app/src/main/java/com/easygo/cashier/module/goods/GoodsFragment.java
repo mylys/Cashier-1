@@ -143,7 +143,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     @Override
     protected void init() {
-        if (Configs.getRole(Configs.menus[1]) != 1) {
+        if (Configs.getRole(Configs.menus[1]) == 0) {
             btnSettlement.setVisibility(View.GONE);
         }
         initView();
@@ -310,10 +310,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         rvGoods.addItemDecoration(verticalDecoration);
 
         setIntentData();
-        if (Configs.getRole(Configs.menus[21]) != 1) {
+        if (Configs.getRole(Configs.menus[21]) == 0) {
             clNoBarcode.setVisibility(View.GONE);
         }
-        if (Configs.getRole(Configs.menus[13]) != 1){
+        if (Configs.getRole(Configs.menus[13]) == 0){
             clPopMoneyBox.setVisibility(View.GONE);
         }
 

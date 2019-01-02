@@ -9,13 +9,17 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -68,18 +72,23 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     LinearLayout child;
     @BindView(R.id.rl_view)
     RelativeLayout parent;
+    @BindView(R.id.btn_refund)
+    Button btnRefund;
     Unbinder unbinder;
 
     private ConfirmDialog confirmDialog;
     private OrderHistoryRefundAdapter adapter;
 
     private ArrayList<GoodsRefundInfo> infoList = new ArrayList<>();
+    private TestUtils textUtils = new TestUtils();
+
     private String order_number = "";
     private String pay_type = "";
     private String refund_pay_type = "";
+    private String real_name = "";
+    private String order_no_number = "";
     private int total_price = 0;
     private int pay_way = PayWayView.WAY_CASH;
-    private TestUtils textUtils = new TestUtils();
 
     public static OrderHistoryRefundFragment getInstance(Bundle bundle) {
         OrderHistoryRefundFragment fragment = new OrderHistoryRefundFragment();
@@ -110,12 +119,14 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         if (getArguments() != null) {
             data = getArguments().getParcelableArrayList("data");
             order_number = getArguments().getString("order_number");
+            order_no_number = getArguments().getString("order_no_number");
             pay_type = getArguments().getString("pay_type");
+            real_name = getArguments().getString("real_name");
             total_price = getArguments().getInt("total_price");
         }
         tvPayType.setText(getResources().getString(R.string.text_pay_type) + pay_type + getResources().getString(R.string.text_pay));
-        tvOrderNumber.setText(getResources().getString(R.string.text_order_number) + order_number);
-        tvOrderCashier.setText(getResources().getString(R.string.text_cashier) + Configs.admin_name);
+        tvOrderNumber.setText(getResources().getString(R.string.text_order_number) + order_no_number);
+        tvOrderCashier.setText(getResources().getString(R.string.text_cashier) + real_name);
 
         if (pay_type.equals(getResources().getString(R.string.pay_wechat))) {
             refund_pay_type = "wechat";
@@ -141,7 +152,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 info.setProduct_name(bean.getG_sku_name());
                 info.setProduct_price(bean.getSell_price());
                 info.setProduct_subtotal(df.format(bean.getMoney()));
-                info.setProduct_preferential("0");
+                info.setProduct_preferential("0.00");
                 info.setProduct_num(bean.getCount());
                 info.setS_sku_id(bean.getS_sku_id());
                 info.setRefund_num("1");
@@ -152,6 +163,11 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 adapter.addData(info);
                 infoList.add(info);
             }
+        }
+        if (adapter.getTotalRefund()) {
+            btnRefund.setEnabled(false);
+            btnRefund.setBackgroundResource(R.drawable.bg_btn_enable_commit);
+            editRefundcashPrice.setInputType(InputType.TYPE_NULL);
         }
         tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件，退款金额：￥");
         setListener();
@@ -173,6 +189,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 adapter.setClick(checkbox.isChecked());
                 tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件，退款金额：￥");
                 editRefundcashPrice.setText(adapter.getTotalPrice());
+                editRefundcashPrice.setSelection(editRefundcashPrice.getText().toString().length());
             }
         });
         adapter.setOnItemClickListener(new OrderHistoryRefundAdapter.OnItemClickListener() {
@@ -186,6 +203,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
             public void onListener() {
                 tvRefundcashNum.setText(getResources().getString(R.string.text_total_refund_product) + adapter.getTotalNum() + getResources().getString(R.string.text_total_refund_price));
                 editRefundcashPrice.setText(adapter.getTotalPrice());
+                editRefundcashPrice.setSelection(editRefundcashPrice.getText().toString().length());
             }
         });
 
@@ -225,6 +243,27 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                         editRefundcashPrice.setText("");
                     }
                 }
+            }
+        });
+
+        editRefundcashPrice.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                /*判断是否是“GO”键*/
+                if (actionId == EditorInfo.IME_ACTION_GO) {
+                    /*隐藏软键盘*/
+                    InputMethodManager imm = (InputMethodManager) v
+                            .getContext().getSystemService(
+                                    Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(
+                                v.getApplicationWindowToken(), 0);
+                    }
+
+                    searchView.setFocuable(true);
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -283,6 +322,13 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
     @Override
     public void getHistoryRefundSuccess(String message) {
+        adapter.setRefundInfo();
+        if (adapter.getTotalRefund()) {
+            btnRefund.setEnabled(false);
+            btnRefund.setBackgroundResource(R.drawable.bg_btn_enable_commit);
+            editRefundcashPrice.setInputType(InputType.TYPE_NULL);
+        }
+        editRefundcashPrice.setText("0.00");
         ToastUtils.showToast(getActivity(), message);
     }
 
