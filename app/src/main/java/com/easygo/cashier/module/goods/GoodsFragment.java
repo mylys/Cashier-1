@@ -37,6 +37,7 @@ import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.widget.GeneraDialog;
 import com.easygo.cashier.widget.MySearchView;
 import com.easygo.cashier.widget.NoGoodsDialog;
+import com.easygo.cashier.widget.PettyCashDialog;
 import com.easygo.cashier.widget.ProcessingChoiceDialog;
 import com.easygo.cashier.widget.SearchResultWindow;
 import com.niubility.library.base.BaseMvpFragment;
@@ -433,11 +434,13 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_no_barcode://无码商品
-                final NoGoodsDialog dialog = new NoGoodsDialog();
+
+                final PettyCashDialog dialog = new PettyCashDialog();
                 dialog.showCenter(getActivity());
-                dialog.setOnDialogClickListener(new NoGoodsDialog.OnDialogClickListener() {
+                dialog.setNoCode();
+                dialog.setOnDialogClickListener(new PettyCashDialog.OnDialogClickListener() {
                     @Override
-                    public void onDialogClick(String content) {
+                    public void onClick(String content) {
                         if (TextUtils.isEmpty(content)) {
                             showToast("请输入金额");
                             return;
@@ -462,6 +465,38 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                         }
                     }
                 });
+
+
+//
+//                final NoGoodsDialog dialog = new NoGoodsDialog();
+//                dialog.showCenter(getActivity());
+//                dialog.setOnDialogClickListener(new NoGoodsDialog.OnDialogClickListener() {
+//                    @Override
+//                    public void onDialogClick(String content) {
+//                        if (TextUtils.isEmpty(content)) {
+//                            showToast("请输入金额");
+//                            return;
+//                        } else if (content.startsWith(".") || content.startsWith("00")) {
+//                            showToast("请重新输入");
+//                            return;
+//                        }
+//                        float price = Float.valueOf(content);
+//                        if (price == 0) {
+//                            showToast("金额不能等于0");
+//                            return;
+//                        }
+//                        dialog.dismiss();
+//
+//                        //添加无码商品
+//                        mGoodsMultiItemAdapter.addNoCodeItem(price);
+//                        rvGoods.smoothScrollToPosition(mGoodsMultiItemAdapter.getItemCount() - 1);
+//                        //刷新副屏
+//                        if (mUserGoodsScreen != null) {
+//                            mUserGoodsScreen.addNoCodeItem(price);
+//                            mUserGoodsScreen.toPosition();
+//                        }
+//                    }
+//                });
 
 
                 break;
