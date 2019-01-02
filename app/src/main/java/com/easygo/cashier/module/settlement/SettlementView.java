@@ -153,14 +153,14 @@ public class SettlementView extends FrameLayout {
             case PayWayView.WAY_WECHAT://微信
                 tvReceiptsWay.setText(R.string.text_wechat);
                 showAlreadySettlement(false);
-                setScanVisibility(true);
+                setScanVisibility(false);
                 setChangeVisibilty(false);
 
                 break;
             case PayWayView.WAY_ALIPAY://支付宝
                 tvReceiptsWay.setText(R.string.text_alipay);
                 showAlreadySettlement(false);
-                setScanVisibility(true);
+                setScanVisibility(false);
                 setChangeVisibilty(false);
 
                 break;

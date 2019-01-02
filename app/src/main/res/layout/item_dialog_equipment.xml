@@ -10,10 +10,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="@dimen/x38"
         android:layout_weight="1"
         android:textColor="@color/color_505050"
-        android:textSize="14sp" />
+        android:textSize="@dimen/x38" />
 
     <ProgressBar
         android:id="@+id/loading"
@@ -45,9 +45,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="@dimen/x35"
         android:text="@string/device_normal"
         android:textColor="@color/color_16A1E1"
-        android:textSize="14sp" />
+        android:textSize="@dimen/x38" />
 
 </LinearLayout>
