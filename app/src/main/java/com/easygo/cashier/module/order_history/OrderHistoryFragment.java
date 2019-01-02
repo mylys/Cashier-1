@@ -44,6 +44,7 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
     private int pageCount = 10;
     private boolean isSearch = false;
 
+
     public static OrderHistoryFragment newInstance() {
         return new OrderHistoryFragment();
     }
@@ -117,6 +118,11 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
                 mPresenter.post(handover_id, content.length() == 0 ? null : content, page, pageCount);
             }
         });
+    }
+
+    public void toRefresh() {
+        page = 1;
+        mPresenter.post(handover_id, null, page, pageCount);
     }
 
     /* 设置adapter数据 */

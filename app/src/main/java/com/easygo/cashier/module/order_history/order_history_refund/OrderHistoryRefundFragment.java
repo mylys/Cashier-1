@@ -33,6 +33,7 @@ import com.easygo.cashier.adapter.OrderHistoryRefundAdapter;
 import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.RequsetBody;
+import com.easygo.cashier.module.order_history.OrderHistoryActivity;
 import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.MySearchView;
 import com.easygo.cashier.widget.PayWayView;
@@ -322,6 +323,9 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
     @Override
     public void getHistoryRefundSuccess(String message) {
+        if (pay_type.equals(getResources().getString(R.string.pay_cash))) {
+            mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
+        }
         adapter.setRefundInfo();
         if (adapter.getTotalRefund()) {
             btnRefund.setEnabled(false);
@@ -330,6 +334,9 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         }
         editRefundcashPrice.setText("0.00");
         ToastUtils.showToast(getActivity(), message);
+        if (getActivity() != null) {
+            ((OrderHistoryActivity) getActivity()).toRefresh();
+        }
     }
 
     @Override
@@ -338,6 +345,16 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
             showToast("错误信息:" + err_msg);
         }
+    }
+
+    @Override
+    public void popTillSuccess() {
+        Log.i("TAG","弹出钱箱成功");
+    }
+
+    @Override
+    public void popTillFailed(Map<String, Object> map) {
+        showToast("弹出钱箱失败");
     }
 
     @Override

@@ -18,10 +18,14 @@ public class OrderHistoryRefundContract {
 
         void post(String json);
 
+        void popTill(String shop_sn, String printer_sn);
     }
 
     interface IView extends BaseView {
         void getHistoryRefundSuccess(String message);
         void getHistorfRefundFailed(Map<String, Object> map);
+
+        void popTillSuccess();
+        void popTillFailed(Map<String, Object> map);
     }
 }
