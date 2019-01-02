@@ -57,7 +57,8 @@ public class EquipmentstateDialog extends BaseDialog {
         Window window = getDialog().getWindow();
         if (window != null) {
             window.setLayout(getResources().getDimensionPixelSize(R.dimen.equipment_list_width),
-                    getResources().getDimensionPixelSize(R.dimen.equipment_list_height));
+                    data.size() == 1 ? getResources().getDimensionPixelSize(R.dimen.equipment_list_height1) :
+                            getResources().getDimensionPixelSize(R.dimen.equipment_list_height));
         }
         getDialog().setCanceledOnTouchOutside(false);
     }

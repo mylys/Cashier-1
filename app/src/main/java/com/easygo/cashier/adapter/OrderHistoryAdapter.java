@@ -24,7 +24,8 @@ public class OrderHistoryAdapter extends BaseQuickAdapter<OrderHistorysInfo, Bas
         int text_color = mContext.getResources().getColor(R.color.color_505050);
 
         //已退款状态 是否显示
-        helper.getView(R.id.cl_refund).setVisibility(item.getStatus() == 3 ? View.VISIBLE : View.GONE);
+//        helper.getView(R.id.cl_refund).setVisibility(item.getStatus() == 3 ? View.VISIBLE : View.GONE);
+        helper.getView(R.id.cl_refund).setVisibility(item.getHave_refund() == 0 ? View.GONE : View.VISIBLE);
 
         //设置点击状态
         helper.getView(R.id.root).setBackgroundColor(item.isSelect() ? theme : white);

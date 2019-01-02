@@ -506,6 +506,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                 break;
             case R.id.btn_clear://清空
+                if (mGoodsMultiItemAdapter.getItemCount() <= 0){
+                    return;
+                }
                 GeneraDialog generaDialog = GeneraDialog.getInstance("确认清空商品？", "取消", "确定");
                 generaDialog.showCenter(getActivity());
                 generaDialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
@@ -575,7 +578,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     }
 
     public int getAdapterSize() {
-        return mGoodsMultiItemAdapter.getData().size();
+        return mGoodsMultiItemAdapter.getItemCount();
     }
 
     @Override

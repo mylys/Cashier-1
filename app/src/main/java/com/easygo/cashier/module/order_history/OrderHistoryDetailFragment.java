@@ -263,27 +263,35 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         switch (orderHistoryInfo.getStatus()) {
             case 1:
                 break;
-            case 2:
+            case 2://状态为已付款
                 String buyer = orderHistoryInfo.getBuyer();
-                if (!TextUtils.isEmpty(buyer)) {
+                if (buyer != null) {
                     tvBuyer.setVisibility(View.VISIBLE);
-                    tvBuyer.setText("付款人：" + buyer);
+                    tvBuyer.setText(getResources().getString(R.string.text_buyer) + buyer);
                 }
                 break;
             case 3:
-                tvReturnOfGoodsCount.setVisibility(View.VISIBLE);
-                tvRefund.setVisibility(View.VISIBLE);
-                line3.setVisibility(View.VISIBLE);
-
-                double refund_price = 0;
-                if (!TextUtils.isEmpty(orderHistoryInfo.getRefund_fee())) {
-                    refund_price = Double.parseDouble(orderHistoryInfo.getRefund_fee());
-                }
-                String total_refund_str = df.format(refund_price + change_money);
-                tvRefundText.setText(payType + getResources().getString(R.string.text_pay) + "：￥" + total_refund_str + " - 找零：￥" + change_price + " = ");
-                tvRefund.setText("退款：￥" + refund_price);
-                tvReturnOfGoodsCount.setText("共退款" + orderHistoryInfo.getList().size() + "件");
+//                has_refund(orderHistoryInfo, change_money, change_price);//3：状态为退款
                 break;
         }
+
+        if (orderHistoryInfo.getHave_refund() != 0){
+            has_refund(orderHistoryInfo, change_money, change_price);
+        }
+    }
+
+    private void has_refund(OrderHistorysInfo orderHistoryInfo, double change_money, String change_price) {
+        tvRefundText.setVisibility(View.INVISIBLE);
+        tvReturnOfGoodsCount.setVisibility(View.VISIBLE);
+        tvRefund.setVisibility(View.VISIBLE);
+        line3.setVisibility(View.VISIBLE);
+
+//        if (!TextUtils.isEmpty(orderHistoryInfo.getRefund_fee())) {
+//            refund_price = Double.parseDouble(orderHistoryInfo.getRefund_fee());
+//        }
+//        String total_refund_str = df.format(refund_price + change_money);
+//        tvRefundText.setText(payType + getResources().getString(R.string.text_pay) + "：￥" + total_refund_str + " - 找零：￥" + change_price + " = ");
+        tvRefund.setText("退款：￥" + orderHistoryInfo.getRefund_fee());
+        tvReturnOfGoodsCount.setText("共退款" + orderHistoryGoodsAdapter.getRefundSize() + "件");
     }
 }

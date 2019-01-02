@@ -55,6 +55,7 @@
     <!-- 设备状态 -->
     <dimen name="equipment_list_width">@dimen/x633</dimen>
     <dimen name="equipment_list_height">@dimen/x506</dimen>
+    <dimen name="equipment_list_height1">@dimen/x225</dimen>
 
     <!--确认弹窗-->
     <dimen name="dialog_width">@dimen/x600</dimen>

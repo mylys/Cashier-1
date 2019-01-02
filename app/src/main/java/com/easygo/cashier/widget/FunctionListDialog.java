@@ -82,12 +82,12 @@ public class FunctionListDialog extends DialogFragment {
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-            int uiOptions =View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    |View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    |View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    |View.SYSTEM_UI_FLAG_IMMERSIVE
-                    |View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    |View.SYSTEM_UI_FLAG_FULLSCREEN;
+            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
             window.getDecorView().setSystemUiVisibility(uiOptions);
         }
         getDialog().setCanceledOnTouchOutside(false);
@@ -116,12 +116,7 @@ public class FunctionListDialog extends DialogFragment {
         rvFunction.addItemDecoration(horizontalDecoration);
         rvFunction.addItemDecoration(verticalDecoration);
 
-        if (integers.size() < 3) {
-            rvFunction.setLayoutManager(new GridLayoutManager(getContext(), 4));
-        } else {
-            rvFunction.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        }
-
+        rvFunction.setLayoutManager(new GridLayoutManager(getContext(), 4));
         rvFunction.setAdapter(functionListAdapter);
         for (int i = 0; i < functions.length; i++) {
             if (!integers.contains(i)) {
