@@ -40,7 +40,8 @@
         android:layout_marginStart="@dimen/text_size_33"
         android:text="收银员： xxx"
         android:textColor="#ffffff"
-        android:visibility="gone"/>
+        android:textSize="@dimen/text_size_33"
+        android:visibility="visible"/>
 
 
     <ImageView

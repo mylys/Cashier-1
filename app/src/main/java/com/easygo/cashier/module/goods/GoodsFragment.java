@@ -152,33 +152,21 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         initBarcode();
 
         initUserGoodsScreen();
-        if (mUserGoodsScreen != null) {
-            if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)
-                    == PackageManager.PERMISSION_GRANTED) {
-                mUserGoodsScreen.show();
-            } else {
-                showToast("悬浮窗权限");
-
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, 0);
-            }
-
-//            mUserGoodsScreen.show();
-        }
+//        if (mUserGoodsScreen != null) {
+//            if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.SYSTEM_ALERT_WINDOW)
+//                    == PackageManager.PERMISSION_GRANTED) {
+//                mUserGoodsScreen.show();
+//            } else {
+//                showToast("悬浮窗权限");
+//
+//                ActivityCompat.requestPermissions(getActivity(),
+//                        new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, 0);
+//            }
+//
+////            mUserGoodsScreen.show();
+//        }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if(requestCode == 0) {
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mUserGoodsScreen.show();
-            } else {
-                showToast("权限没有通过");
-            }
-        }
-    }
 
     private void initBarcode() {
 
@@ -342,7 +330,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         if (mUserGoodsScreen == null && displays.length == 2) {
             mUserGoodsScreen = new UserGoodsScreen(context,
                     displays[displays.length - 1], admin_name);// displays[1]是副屏
-            mUserGoodsScreen.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+//            mUserGoodsScreen.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            mUserGoodsScreen.show();
         }
     }
 

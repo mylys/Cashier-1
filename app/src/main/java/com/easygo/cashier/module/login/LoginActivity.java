@@ -2,8 +2,10 @@ package com.easygo.cashier.module.login;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.hardware.display.DisplayManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -15,15 +17,21 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
+import com.easygo.cashier.bean.AccountInfo;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
+import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
+import com.easygo.cashier.widget.AccountWindow;
 import com.easygo.cashier.widget.PettyCashDialog;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
+import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -43,6 +51,13 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     EditText etPassword;
     private int is_reserve;
     private PettyCashDialog dialog;
+    private UserGoodsScreen mUserGoodsScreen;
+
+    private AccountInfo mAccountInfo;
+    private final String KEY_ACCOUNTS = "key_accounts";
+    private AccountWindow mAccountWindow;
+
+
 
     @Override
     protected LoginPresenter createPresenter() {
@@ -86,7 +101,125 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 //            etAccount.setText("15017740901");
 //            etPassword.setText("123456");
 //        }
+
+
+        initAccount();
+
+        initUserGoodsScreen();
     }
+
+    private void initAccount() {
+//        etAccount.setShowSoftInputOnFocus(false);
+        mAccountInfo = getSaveAccount();
+
+
+        etAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAcccountWindow();
+            }
+        });
+        etAccount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    showAcccountWindow();
+                }
+//                else {
+//                    if(mAccountWindow != null && mAccountWindow.isShowing()) {
+//                        mAccountWindow.dismiss();
+//                    }
+//                }
+            }
+        });
+    }
+
+    private void showAcccountWindow() {
+        if(mAccountInfo == null) {
+            return;
+        }
+        List<String> accounts = mAccountInfo.getAccounts();
+        if(accounts.size() == 0) {
+            //没有保存过账号 直接返回
+            return;
+        }
+
+        if (mAccountWindow == null) {
+            mAccountWindow = new AccountWindow(this);
+            mAccountWindow.setOutsideTouchable(true);
+//            mAccountWindow.setFocusable(true);
+            mAccountWindow.setElevation(getResources().getDimensionPixelSize(R.dimen.x20));
+            mAccountWindow.setWidth(etAccount.getWidth());
+            mAccountWindow.setHeight(-2);
+            mAccountWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_search_result_frame));
+
+            mAccountWindow.setOnItemClickListener(new AccountWindow.OnItemClickListener() {
+                @Override
+                public void onItemClicked(String account) {
+                    etAccount.setText(account);
+                    mAccountWindow.dismiss();
+                    etPassword.requestFocus();
+                }
+            });
+        }
+        mAccountWindow.setData(accounts);
+        if(!mAccountWindow.isShowing())
+            mAccountWindow.showAsDropDown(etAccount);
+
+    }
+
+    //初始化副屏
+    public void initUserGoodsScreen() {
+        DisplayManager mDisplayManager = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
+        Display[] displays = mDisplayManager.getDisplays();
+
+        if (mUserGoodsScreen == null && displays.length == 2) {
+            mUserGoodsScreen = new UserGoodsScreen(this,
+                    displays[displays.length - 1], "");// displays[1]是副屏
+//            mUserGoodsScreen.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            mUserGoodsScreen.show();
+        }
+    }
+
+    /**获取登录过的账号*/
+    public AccountInfo getSaveAccount() {
+        SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(this);
+        String accounts_string = sp.getString(KEY_ACCOUNTS, "");
+
+        if(!TextUtils.isEmpty(accounts_string)) {
+            return GsonUtils.getInstance().getGson().fromJson(accounts_string, AccountInfo.class);
+
+        } else {
+            return null;
+        }
+    }
+
+    /**保存账号到sp*/
+    public void saveAccount(String save) {
+        if (mAccountInfo == null) {
+            mAccountInfo = new AccountInfo();
+            List<String> accounts = new ArrayList<>();
+            mAccountInfo.setAccounts(accounts);
+        }
+        List<String> accounts = mAccountInfo.getAccounts();
+        //如果该账号已经保存过 直接返回
+        if(accounts.contains(save)) {
+            return;
+        }
+
+        accounts.add(save);
+        //最多保存5个账号, 删除最旧的账号
+        if(accounts.size() == 5) {
+            accounts.remove(0);
+        }
+        SharedPreferences.Editor edit = SharedPreferencesUtils.getInstance().getSharedPreferences(this).edit();
+
+        //转化为json字符串保存
+        String json = GsonUtils.getInstance().getGson().toJson(mAccountInfo);
+        edit.putString(KEY_ACCOUNTS, json).apply();
+
+    }
+
 
     @OnClick({R.id.btn_login})
     public void onClick() {
@@ -176,11 +309,26 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(mUserGoodsScreen != null && mUserGoodsScreen.isShowing()) {
+            mUserGoodsScreen.dismiss();
+        }
+        if(mAccountWindow != null && mAccountWindow.isShowing()) {
+            mAccountWindow.dismiss();
+        }
+    }
+
+    @Override
     public void loginSuccess(final LoginResponse result) {
+        String account = etAccount.getText().toString().trim();
+        saveAccount(account);
+
         SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(this).edit();
         editor.putString(Constans.KEY_ADMIN_NAME, result.getReal_name())
                 .putString(Constans.KEY_SESSION_ID, result.getSession_id())
-                .putString("account", etAccount.getText().toString().trim())
+                .putString("account", account)
                 .putInt(Constans.KEY_HANDOVER_ID, result.getHandover_id())
                 .apply();
 
