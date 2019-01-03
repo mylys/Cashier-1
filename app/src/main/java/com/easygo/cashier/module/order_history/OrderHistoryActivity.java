@@ -81,6 +81,12 @@ public class OrderHistoryActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    public void toRefresh() {
+        if (orderHistoryFragment != null){
+            orderHistoryFragment.toRefresh();
+        }
+    }
+
     @OnClick({R.id.cl_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
