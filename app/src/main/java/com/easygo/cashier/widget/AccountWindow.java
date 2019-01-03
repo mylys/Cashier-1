@@ -32,10 +32,39 @@ public class AccountWindow extends PopupWindow {
 
 
         mRecycleView = ((RecyclerView) view.findViewById(R.id.rv_search_result));
+        mRecycleView.setVerticalScrollBarEnabled(true);
 
         accountAdapter = new AccountAdapter();
 
-        mRecycleView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        mRecycleView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
+                int count = state.getItemCount();
+
+                if (count > 0) {
+                    if(count > 3){
+                        count = 3;
+                    }
+                    int realHeight = 0;
+                    int realWidth = 0;
+                    for(int i = 0;i < count; i++){
+                        View view = recycler.getViewForPosition(0);
+                        if (view != null) {
+                            measureChild(view, widthSpec, heightSpec);
+                            int measuredWidth = View.MeasureSpec.getSize(widthSpec);
+                            int measuredHeight = view.getMeasuredHeight();
+                            realWidth = realWidth > measuredWidth ? realWidth : measuredWidth;
+                            realHeight += measuredHeight;
+                        }
+                        setMeasuredDimension(realWidth, realHeight);
+                    }
+                } else {
+                    super.onMeasure(recycler, state, widthSpec, heightSpec);
+                }
+            }
+        });
+
+
         mRecycleView.setAdapter(accountAdapter);
 
         DividerItemDecoration verticalDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
