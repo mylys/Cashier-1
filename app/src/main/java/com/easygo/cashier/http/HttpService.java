@@ -198,7 +198,7 @@ public interface HttpService {
 
 
     /**
-     * type 1是退出登录，2是返回交接页的数据
+     * 交接班销售列表
      */
     @FormUrlEncoded
     @POST("api/cash/sale")

@@ -340,7 +340,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         if (mUserGoodsScreen == null && displays.length == 2) {
             mUserGoodsScreen = new UserGoodsScreen(context,
                     displays[displays.length - 1], admin_name);// displays[1]是副屏
-//            mUserGoodsScreen.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            mUserGoodsScreen.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             mUserGoodsScreen.show();
         }
     }
@@ -631,6 +631,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         if (mSearchResultWindow == null) {
             mSearchResultWindow = new SearchResultWindow(getContext());
             mSearchResultWindow.setOutsideTouchable(true);
+            mSearchResultWindow.setElevation(getResources().getDimensionPixelSize(R.dimen.x20));
             mSearchResultWindow.setWidth(clSearch.getSearchResultWidth());
             mSearchResultWindow.setHeight(-2);
             mSearchResultWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_search_result_frame));
@@ -638,9 +639,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             mSearchResultWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 //在dismiss中恢复透明度
                 public void onDismiss() {
-                    WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-                    lp.alpha = 1f;
-                    getActivity().getWindow().setAttributes(lp);
+//                    WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+//                    lp.alpha = 1f;
+//                    getActivity().getWindow().setAttributes(lp);
                 }
             });
 
@@ -660,10 +661,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         }
         mSearchResultWindow.setData(result);
         if (!mSearchResultWindow.isShowing()) {
-            WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-            lp.alpha = 0.4f;
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            getActivity().getWindow().setAttributes(lp);
+//            WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+//            lp.alpha = 0.4f;
+//            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+//            getActivity().getWindow().setAttributes(lp);
             mSearchResultWindow.showAsDropDown(clSearch);
         }
     }
