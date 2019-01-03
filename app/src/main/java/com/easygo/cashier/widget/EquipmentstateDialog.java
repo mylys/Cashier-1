@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -56,9 +57,16 @@ public class EquipmentstateDialog extends BaseDialog {
         super.onResume();
         Window window = getDialog().getWindow();
         if (window != null) {
-            window.setLayout(getResources().getDimensionPixelSize(R.dimen.equipment_list_width),
-                    data.size() == 1 ? getResources().getDimensionPixelSize(R.dimen.equipment_list_height1) :
-                            getResources().getDimensionPixelSize(R.dimen.equipment_list_height));
+            window.setLayout(getResources().getDimensionPixelSize(R.dimen.equipment_list_width), data.size() == 1 ? getResources().getDimensionPixelSize(R.dimen.equipment_list_height1) : getResources().getDimensionPixelSize(R.dimen.equipment_list_height));
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
+            window.getDecorView().setSystemUiVisibility(uiOptions);
         }
         getDialog().setCanceledOnTouchOutside(false);
     }

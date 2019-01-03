@@ -113,7 +113,7 @@
             android:paddingBottom="@dimen/y10"
             android:text="0.00"
             android:textColor="@color/color_ed2e2e"
-            android:textSize="14sp" />
+            android:textSize="@dimen/x33" />
 
         <Button
             android:id="@+id/btn_refund"

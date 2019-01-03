@@ -15,7 +15,6 @@
         <item name="android:windowSoftInputMode">adjustUnspecified|stateHidden</item>
     </style>
 
-
     <!--旧设计稿-->
     <style name="TextStyle">
         <item name="android:textColor">@color/color_text</item>
@@ -165,5 +164,9 @@
         <item name="android:gravity">center</item>
     </style>
 
-
+    <!-- 通用dialog -->
+    <style name="GeneralList">
+        <item name="android:textSize">@dimen/text_size_37</item>
+        <item name="android:textColor">@color/color_505050</item>
+    </style>
 </resources>

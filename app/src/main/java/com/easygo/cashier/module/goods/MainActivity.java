@@ -108,7 +108,6 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
-
         tvCashierAcount.setText("收银员: " + admin_name);
 
         Test.detectInputDeviceWithShell();
@@ -156,8 +155,8 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
 
                 break;
             case R.id.menu://功能列表
-                if (goodsFragment.getAdapterSize() != 0){
-                    ToastUtils.showToast(this,"请先完成收银操作");
+                if (goodsFragment.getAdapterSize() != 0) {
+                    ToastUtils.showToast(this, "请先完成收银操作");
                     return;
                 }
                 FunctionListDialog functionListDialog = new FunctionListDialog();
@@ -278,6 +277,13 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
         }
 
         @Override
+        public void entryOrders() {
+            ARouter.getInstance()
+                    .build(ModulePath.entry_orders)
+                    .navigation();
+        }
+
+        @Override
         public void languageSetting() {
 
         }
@@ -340,7 +346,7 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
     protected void onDestroy() {
         super.onDestroy();
 
-        if(dialog != null && dialog.isShow()) {
+        if (dialog != null && dialog.isShow()) {
             dialog.dismiss();
         }
     }

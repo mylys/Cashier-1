@@ -89,12 +89,11 @@ public class DialogKeyboard extends ConstraintLayout {
             public void onClick(View v) {
                 if (mEditText != null && listener != null) {
                     if (mEditText.getText().toString().length() == 0) {
-                        ToastUtils.showToast(getContext(), "请输入备用金额");
+                        ToastUtils.showToast(getContext(), "请输入金额");
                         return;
                     }
                     double price = Double.parseDouble(mEditText.getText().toString().trim());
                     String format = df.format(price);
-//                    listener.onContent(format.replace(".", ""));
                     listener.onContent(format);
                 }
             }
@@ -137,8 +136,8 @@ public class DialogKeyboard extends ConstraintLayout {
                                 return;
                             }
                         }
-                        if (price.length() == 0) {//不能以“0”或者“00”开头
-                            if (text.equals("0") || text.equals("00")) {
+                        if (price.length() == 0) {//不能以“0”或者“00”或者“.”开头
+                            if (text.startsWith(".") || text.startsWith("00") || text.startsWith("0")) {
                                 return;
                             }
                         }

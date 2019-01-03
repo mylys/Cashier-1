@@ -9,6 +9,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
+import com.niubility.library.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     EditText etAccount;
     @BindView(R.id.et_password)
     EditText etPassword;
+    @BindView(R.id.btn_login)
+    Button btnLogin;
     private int is_reserve;
     private PettyCashDialog dialog;
     private UserGoodsScreen mUserGoodsScreen;
@@ -56,7 +60,6 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     private AccountInfo mAccountInfo;
     private final String KEY_ACCOUNTS = "key_accounts";
     private AccountWindow mAccountWindow;
-
 
 
     @Override
@@ -122,7 +125,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         etAccount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
+                if (hasFocus) {
                     showAcccountWindow();
                 }
 //                else {
@@ -135,11 +138,11 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     }
 
     private void showAcccountWindow() {
-        if(mAccountInfo == null) {
+        if (mAccountInfo == null) {
             return;
         }
         List<String> accounts = mAccountInfo.getAccounts();
-        if(accounts.size() == 0) {
+        if (accounts.size() == 0) {
             //没有保存过账号 直接返回
             return;
         }
@@ -163,7 +166,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
             });
         }
         mAccountWindow.setData(accounts);
-        if(!mAccountWindow.isShowing())
+        if (!mAccountWindow.isShowing())
             mAccountWindow.showAsDropDown(etAccount);
 
     }
@@ -181,12 +184,14 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         }
     }
 
-    /**获取登录过的账号*/
+    /**
+     * 获取登录过的账号
+     */
     public AccountInfo getSaveAccount() {
         SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(this);
         String accounts_string = sp.getString(KEY_ACCOUNTS, "");
 
-        if(!TextUtils.isEmpty(accounts_string)) {
+        if (!TextUtils.isEmpty(accounts_string)) {
             return GsonUtils.getInstance().getGson().fromJson(accounts_string, AccountInfo.class);
 
         } else {
@@ -194,7 +199,9 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         }
     }
 
-    /**保存账号到sp*/
+    /**
+     * 保存账号到sp
+     */
     public void saveAccount(String save) {
         if (mAccountInfo == null) {
             mAccountInfo = new AccountInfo();
@@ -203,13 +210,13 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         }
         List<String> accounts = mAccountInfo.getAccounts();
         //如果该账号已经保存过 直接返回
-        if(accounts.contains(save)) {
+        if (accounts.contains(save)) {
             return;
         }
 
         accounts.add(save);
         //最多保存5个账号, 删除最旧的账号
-        if(accounts.size() == 5) {
+        if (accounts.size() == 5) {
             accounts.remove(0);
         }
         SharedPreferences.Editor edit = SharedPreferencesUtils.getInstance().getSharedPreferences(this).edit();
@@ -241,6 +248,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         } else {
             //登录
             mPresenter.login(Configs.shop_sn, account, password);
+            btnLogin.setEnabled(false);
         }
 
     }
@@ -312,10 +320,10 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     protected void onDestroy() {
         super.onDestroy();
 
-        if(mUserGoodsScreen != null && mUserGoodsScreen.isShowing()) {
+        if (mUserGoodsScreen != null && mUserGoodsScreen.isShowing()) {
             mUserGoodsScreen.dismiss();
         }
-        if(mAccountWindow != null && mAccountWindow.isShowing()) {
+        if (mAccountWindow != null && mAccountWindow.isShowing()) {
             mAccountWindow.dismiss();
         }
     }
@@ -348,11 +356,9 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
                             Integer.parseInt(content.replace(".", "")));
                 }
             });
-        }else{
+        } else {
             login();
-
         }
-
     }
 
     private void login() {
@@ -366,7 +372,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
     @Override
     public void loginFailed(Map<String, Object> map) {
-
+        btnLogin.setEnabled(true);
         if (HttpExceptionEngine.isBussinessError(map)) {
             String error_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
             showToast(error_msg);
@@ -411,7 +417,9 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     @Override
     public void reseverMoneySuccess() {
 //        showToast("备用金 成功");
-
+        if (dialog != null && dialog.isShow()) {
+            dialog.dismiss();
+        }
         login();
     }
 

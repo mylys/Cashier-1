@@ -35,6 +35,7 @@ import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.RequsetBody;
 import com.easygo.cashier.module.order_history.OrderHistoryActivity;
 import com.easygo.cashier.widget.ConfirmDialog;
+import com.easygo.cashier.widget.GeneraListDialog;
 import com.easygo.cashier.widget.MySearchView;
 import com.easygo.cashier.widget.PayWayView;
 import com.niubility.library.base.BaseMvpFragment;
