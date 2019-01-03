@@ -319,13 +319,16 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, price, refund_pay_type, adapter.getList());
         String json = GsonUtils.getInstance().getGson().toJson(body);
         mPresenter.post(json);
+        btnRefund.setEnabled(false);
     }
 
     @Override
     public void getHistoryRefundSuccess(String message) {
+        btnRefund.setEnabled(true);
         if (pay_type.equals(getResources().getString(R.string.pay_cash))) {
             mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
         }
+        checkbox.setChecked(false);
         adapter.setRefundInfo();
         if (adapter.getTotalRefund()) {
             btnRefund.setEnabled(false);
@@ -341,6 +344,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
     @Override
     public void getHistorfRefundFailed(Map<String, Object> map) {
+        btnRefund.setEnabled(true);
         if (HttpExceptionEngine.isBussinessError(map)) {
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
             showToast("错误信息:" + err_msg);
@@ -349,7 +353,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
     @Override
     public void popTillSuccess() {
-        Log.i("TAG","弹出钱箱成功");
+        Log.i("TAG", "弹出钱箱成功");
     }
 
     @Override
