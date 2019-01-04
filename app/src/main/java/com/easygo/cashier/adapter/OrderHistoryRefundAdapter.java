@@ -140,6 +140,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         return goodsLists;
     }
 
+    /* 设置全选按钮（true ： 全选 ； false : 全否） */
     public void setClick(boolean click) {
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
             if (goodsRefundInfo.getRefund() == 0) {
@@ -149,6 +150,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         notifyDataSetChanged();
     }
 
+    /* 获取商品选择总额 */
     public String getTotalPrice() {
         double totalPrcie = 0;
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
@@ -161,16 +163,18 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         return df.format(totalPrcie);
     }
 
+    /* 获取商品退货总数量 */
     public int getTotalNum() {
         int totalPrcie = 0;
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
             if (goodsRefundInfo.isSelect()) {
-                totalPrcie++;
+                totalPrcie += Integer.parseInt(goodsRefundInfo.getRefund_num());
             }
         }
         return totalPrcie;
     }
 
+    /* 获取商品已退货数量 */
     public boolean getTotalRefund() {
         int num = 0;
         for (GoodsRefundInfo goodsRefundInfo : getData()) {

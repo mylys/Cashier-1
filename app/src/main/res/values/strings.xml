@@ -30,6 +30,8 @@
     <string name="text_confirm">确认</string>
     <string name="text_pay">支付</string>
     <string name="text_is_processing">是否加工</string>
+    <string name="text_invalid">作废</string>
+    <string name="text_choose">选择</string>
 
     <!--结算页面-->
     <string name="text_combined_payment">组合支付</string>
@@ -69,6 +71,13 @@
     <string name="text_buyer">付款人：</string>
     <string name="text_pay_type">支付方式：</string>
     <string name="text_order_number">订单单号：</string>
+
+    <!-- 挂单详情 -->
+    <string name="text_entry_orders">挂单</string>
+    <string name="text_entry_orders_list">挂单列表</string>
+    <string name="text_entry_orders_time">挂单时间：</string>
+    <string name="text_note">备注：</string>
+    <string name="hint_entry_orders">请输入挂单备注</string>
 
     <!-- 退款 -->
     <string name="text_total_refund_product">共退货</string>
@@ -123,14 +132,41 @@
     <string name="text_function_history">历史订单</string>
     <string name="text_function_refund">退款</string>
     <string name="text_function_handover">交接班</string>
-    <string name="text_function_system">进入系统</string>
+    <string name="text_function_entry">挂单列表</string>
     <string name="text_function_language">语言设置</string>
     <string name="text_function_device">设备状态</string>
     <string name="text_function_setting">系统设置</string>
+    <string name="text_function_system">进入系统</string>
 
+    <!-- 通用dialog -->
     <string name="text_dialog_title_clear">确认情况商品？</string>
     <string name="text_dialog_cancel">取消</string>
     <string name="text_dialog_submit">确定</string>
 
+    <!-- 通用列表dialog -->
+    <!-- 货币符号item-->
+    <string name="text_genera_list_follow_system">跟随系统</string>
+    <string name="text_genera_money">￥</string>
+    <string name="text_genera_nt">NT$</string>
+    <string name="text_genera_hk">HK$</string>
+    <string name="text_genera_pat">PAT.</string>
+    <!-- 网络类型 -->
+    <string name="text_genera_wifi">WIFI</string>
+    <string name="text_genera_3g_mobile">3G移动</string>
+    <string name="text_genera_3g_unicom_telecom">3G联通/电信</string>
+    <string name="text_genera_4g">4G网络</string>
+    <!-- 图片间隔时间 -->
+    <string name="text_genera_seconds_5">5秒</string>
+    <string name="text_genera_seconds_10">10秒</string>
+    <string name="text_genera_seconds_15">15秒</string>
+    <string name="text_genera_seconds_30">30秒</string>
+    <string name="text_genera_seconds_60">60秒</string>
+    <!-- 打印数量 -->
+    <string name="text_genera_number_1">1</string>
+    <string name="text_genera_number_2">2</string>
+    <string name="text_genera_number_3">3</string>
+    <!-- 打印宽度 -->
+    <string name="text_genera_width_58">58mm</string>
+    <string name="text_genera_width_88">88mm</string>
 
 </resources>

@@ -41,7 +41,7 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
     int handover_id = -1;
 
     private int page = 1;
-    private int pageCount = 10;
+    private int pageCount = 20;
     private boolean isSearch = false;
 
 

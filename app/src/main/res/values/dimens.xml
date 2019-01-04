@@ -40,8 +40,6 @@
     <dimen name="margin_1595">@dimen/x1595</dimen>
 
 
-
-
     <!--顶部标题栏高度-->
     <dimen name="title_bar_height">@dimen/y100</dimen>
 
@@ -53,9 +51,17 @@
     <dimen name="function_list_item_height">@dimen/y273</dimen>
 
     <!-- 设备状态 -->
-    <dimen name="equipment_list_width">@dimen/x633</dimen>
+    <dimen name="equipment_list_width">@dimen/x632</dimen>
     <dimen name="equipment_list_height">@dimen/x506</dimen>
     <dimen name="equipment_list_height1">@dimen/x225</dimen>
+
+    <!-- 通用弹窗 -->
+    <dimen name="genera_list_item_width">@dimen/x632</dimen>
+    <dimen name="genera_list_item_height">@dimen/y140</dimen>
+
+    <!-- 通用文字框弹窗 -->
+    <dimen name="genera_edit_width">@dimen/x632</dimen>
+    <dimen name="genera_edit_hight">@dimen/y396</dimen>
 
     <!--确认弹窗-->
     <dimen name="dialog_width">@dimen/x600</dimen>

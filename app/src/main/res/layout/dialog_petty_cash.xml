@@ -45,8 +45,8 @@
     <View
         android:id="@+id/view"
         android:layout_width="@dimen/x633"
-        android:layout_height="@dimen/x1"
-        android:background="@color/color_f5f7fa"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <EditText

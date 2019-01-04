@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,20 +36,22 @@ public class FunctionListDialog extends DialogFragment {
             R.string.text_function_history,
             R.string.text_function_refund,
             R.string.text_function_handover,
-            R.string.text_function_system,
+            R.string.text_function_entry,
             R.string.text_function_language,
             R.string.text_function_device,
             R.string.text_function_setting,
+            R.string.text_function_system,
     };
 
     private int[] res = new int[]{
             R.drawable.ic_order_history,
             R.drawable.ic_refund,
             R.drawable.ic_shift,
-            R.drawable.ic_enter_system,
+            R.drawable.ic_entry_orders,
             R.drawable.ic_lauage,
             R.drawable.ic_device_status,
             R.drawable.ic_system_setting,
+            R.drawable.ic_enter_system,
     };
 
     @Override
@@ -152,6 +153,9 @@ public class FunctionListDialog extends DialogFragment {
                     case R.string.text_function_setting:
                         systemSetting();
                         break;
+                    case R.string.text_function_entry:
+                        entryOrders();
+                        break;
                 }
                 onItemClickAfter();
             }
@@ -169,6 +173,12 @@ public class FunctionListDialog extends DialogFragment {
     public void orderHistory() {
         if (mListener != null) {
             mListener.orderHistory();
+        }
+    }
+
+    public void entryOrders() {
+        if (mListener != null) {
+            mListener.entryOrders();
         }
     }
 
@@ -222,6 +232,8 @@ public class FunctionListDialog extends DialogFragment {
         void handover();
 
         void enterSystem();
+
+        void entryOrders();
 
         void languageSetting();
 

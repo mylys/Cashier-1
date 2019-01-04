@@ -128,6 +128,10 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_refund:
+                if (orderHistoryGoodsAdapter.getItemCount() == 0){
+                    showToast("订单没有商品");
+                    return;
+                }
                 if (getActivity() != null) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList("data", (ArrayList<OrderHistorysInfo.ListBean>) orderHistoryGoodsAdapter.getData());

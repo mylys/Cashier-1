@@ -2,43 +2,43 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cl_bottom_layout"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
     android:layout_width="match_parent"
     android:layout_height="@dimen/y154"
-    android:background="@color/color_f5f7fa">
+    android:background="@color/color_f5f7fa"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
 
     <!--件数-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_goods_count"
+        android:layout_width="@dimen/x324"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="@dimen/x324"
-        android:layout_height="match_parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tv_goods_count"
-            app:layout_constraintBottom_toTopOf="@+id/tv_text_goods_count"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            style="@style/GoodsSettlementDetailStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/y3"
             android:text="0"
-            style="@style/GoodsSettlementDetailStyle" />
+            app:layout_constraintBottom_toTopOf="@+id/tv_text_goods_count"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tv_text_goods_count"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            style="@style/GoodsSettlementDetailTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/y30"
             android:text="@string/text_goods_count"
-            style="@style/GoodsSettlementDetailTextStyle" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -47,40 +47,40 @@
         android:layout_width="@dimen/x1"
         android:layout_height="@dimen/y126"
         android:background="@color/color_d3d3d3"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/cl_goods_count"/>
+        app:layout_constraintStart_toEndOf="@id/cl_goods_count"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--总额-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_total_money"
+        android:layout_width="@dimen/x322"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cl_goods_count"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="@dimen/x322"
-        android:layout_height="match_parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tv_total_money"
-            app:layout_constraintBottom_toTopOf="@+id/tv_text_total_money"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            style="@style/GoodsSettlementDetailStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/y3"
             android:text="￥0.00"
-            style="@style/GoodsSettlementDetailStyle" />
+            app:layout_constraintBottom_toTopOf="@+id/tv_text_total_money"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tv_text_total_money"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            style="@style/GoodsSettlementDetailTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/y30"
             android:text="@string/text_total_money"
-            style="@style/GoodsSettlementDetailTextStyle" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -89,41 +89,41 @@
         android:layout_width="@dimen/x1"
         android:layout_height="@dimen/y126"
         android:background="@color/color_d3d3d3"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/cl_total_money"/>
+        app:layout_constraintStart_toEndOf="@id/cl_total_money"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <!--优惠-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_coupon"
+        android:layout_width="@dimen/x324"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cl_total_money"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="@dimen/x324"
-        android:layout_height="match_parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tv_coupon"
-            app:layout_constraintBottom_toTopOf="@+id/tv_text_coupon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            style="@style/GoodsSettlementDetailStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/y3"
             android:text="￥0.00"
-            style="@style/GoodsSettlementDetailStyle" />
+            app:layout_constraintBottom_toTopOf="@+id/tv_text_coupon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tv_text_coupon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            style="@style/GoodsSettlementDetailTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/y30"
             android:text="@string/text_coupon"
-            style="@style/GoodsSettlementDetailTextStyle" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -132,29 +132,40 @@
         android:layout_width="@dimen/x1"
         android:layout_height="@dimen/y126"
         android:background="@color/color_d3d3d3"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/cl_coupon"/>
+        app:layout_constraintStart_toEndOf="@id/cl_coupon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_orders"
+        android:layout_width="@dimen/x190"
+        android:layout_height="@dimen/y98"
+        android:layout_marginEnd="@dimen/x42"
+        android:background="@drawable/bg_btn_clear"
+        android:text="@string/text_entry_orders"
+        android:textColor="@color/color_text_white"
+        android:textSize="@dimen/text_size_38"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_clear"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_clear"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_settlement"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="@dimen/x190"
         android:layout_height="@dimen/y98"
         android:layout_marginEnd="@dimen/x42"
         android:background="@drawable/bg_btn_clear"
         android:text="清空"
-        android:textStyle="bold"
         android:textColor="@color/color_text_white"
-        android:textSize="@dimen/text_size_38" />
+        android:textSize="@dimen/text_size_38"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_settlement"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_settlement"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/y98"
         android:layout_marginEnd="@dimen/x37"
@@ -162,9 +173,12 @@
         android:paddingStart="@dimen/x25"
         android:paddingEnd="@dimen/x25"
         android:text="收银：  ￥0.00"
-        android:textStyle="bold"
         android:textColor="@color/color_text_white"
-        android:textSize="@dimen/text_size_38" />
+        android:textSize="@dimen/text_size_38"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

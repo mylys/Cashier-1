@@ -2,6 +2,7 @@ package com.easygo.cashier.module.goods;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.display.DisplayManager;
 import android.os.Bundle;
@@ -37,16 +38,23 @@ import com.easygo.cashier.bean.ShopActivityResponse;
 import com.easygo.cashier.module.refund.RefundActivity;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.widget.GeneraDialog;
+import com.easygo.cashier.widget.GeneraEditDialog;
 import com.easygo.cashier.widget.MySearchView;
 import com.easygo.cashier.widget.NoGoodsDialog;
 import com.easygo.cashier.widget.PettyCashDialog;
 import com.easygo.cashier.widget.ProcessingChoiceDialog;
 import com.easygo.cashier.widget.SearchResultWindow;
+import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseMvpFragment;
+import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
+import com.niubility.library.utils.SharedPreferencesUtils;
+import com.niubility.library.utils.ToastUtils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -86,6 +94,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public static final String KEY_ADMIN_NAME = "key_admin_name";
     private String admin_name;
     private GoodsMultiItemAdapter mGoodsMultiItemAdapter;
+
+    private GeneraEditDialog editDialog;
 
     /**
      * 商品数据
@@ -304,7 +314,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         if (Configs.getRole(Configs.menus[21]) == 0) {
             clNoBarcode.setVisibility(View.GONE);
         }
-        if (Configs.getRole(Configs.menus[13]) == 0){
+        if (Configs.getRole(Configs.menus[13]) == 0) {
             clPopMoneyBox.setVisibility(View.GONE);
         }
 
@@ -429,7 +439,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     }
 
 
-    @OnClick({R.id.btn_no_barcode, R.id.btn_pop_money_box, R.id.btn_clear, R.id.btn_settlement})
+    @OnClick({R.id.btn_no_barcode, R.id.btn_pop_money_box, R.id.btn_clear, R.id.btn_settlement, R.id.btn_orders})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_no_barcode://无码商品
@@ -440,13 +450,6 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 dialog.setOnDialogClickListener(new PettyCashDialog.OnDialogClickListener() {
                     @Override
                     public void onClick(String content) {
-                        if (TextUtils.isEmpty(content)) {
-                            showToast("请输入金额");
-                            return;
-                        } else if (content.startsWith(".") || content.startsWith("00")) {
-                            showToast("请重新输入");
-                            return;
-                        }
                         float price = Float.valueOf(content);
                         if (price == 0) {
                             showToast("金额不能等于0");
@@ -505,7 +508,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                 break;
             case R.id.btn_clear://清空
-                if (mGoodsMultiItemAdapter.getItemCount() <= 0){
+                if (mGoodsMultiItemAdapter.getItemCount() <= 0) {
                     return;
                 }
                 GeneraDialog generaDialog = GeneraDialog.getInstance("确认清空商品？", "取消", "确定");
@@ -552,7 +555,35 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                         }
                         break;
                 }
+                break;
+            case R.id.btn_orders:
+                if (mGoodsMultiItemAdapter.getItemCount() <= 0) {
+                    showToast("请先扫描商品");
+                    return;
+                }
+                if (editDialog == null) {
+                    editDialog = new GeneraEditDialog();
+                }
+                editDialog.showCenter(getActivity());
+                editDialog.setTitle(getResources().getString(R.string.text_entry_orders));
+                editDialog.setOnDialogClickListener(new GeneraEditDialog.OnDialogClickListener() {
+                    @Override
+                    public void onContent(String content) {
+                        Date date = new Date();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+                        SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication).edit();
+                        editor.putString(Constans.KEY_ENTRY_ORDERS_NOTE, content)
+                                .putString(Constans.KEY_ENTRY_ORDERS_TIME, sdf.format(date))
+                                .apply();
+
+                        mGoodsMultiItemAdapter.clear();
+
+                        if (mUserGoodsScreen != null) {
+                            mUserGoodsScreen.clear();
+                        }
+                    }
+                });
                 break;
         }
     }
