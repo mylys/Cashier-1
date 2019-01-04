@@ -544,10 +544,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 }
                 break;
             case R.id.btn_orders:
-//                if (mGoodsMultiItemAdapter.getItemCount() <= 0) {
-//                    showToast("请先扫描商品");
-//                    return;
-//                }
+                if (mGoodsMultiItemAdapter.getItemCount() <= 0) {
+                    showToast("请先扫描商品");
+                    return;
+                }
                 if (editDialog == null) {
                     editDialog = new GeneraEditDialog();
                 }
