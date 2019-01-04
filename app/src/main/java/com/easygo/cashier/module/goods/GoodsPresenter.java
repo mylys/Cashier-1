@@ -1,7 +1,9 @@
 package com.easygo.cashier.module.goods;
 
+import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
+import com.easygo.cashier.bean.ShopActivityResponse;
 import com.easygo.cashier.http.HttpAPI;
 import com.easygo.cashier.printer.PrintHelper;
 import com.niubility.library.http.base.HttpClient;
@@ -99,6 +101,44 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
                     @Override
                     protected void onFailure(Map<String, Object> map) {
                         mView.popTillFailed(map);
+                    }
+                });
+    }
+
+    @Override
+    public void goods_activity(String shop_sn) {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().goods_activity(header, shop_sn),
+                new BaseResultObserver<GoodsActivityResponse>() {
+
+                    @Override
+                    protected void onSuccess(GoodsActivityResponse result) {
+                        mView.goodsActivitySuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.goodsActivityFailed(map);
+                    }
+                });
+    }
+
+    @Override
+    public void shop_activity(String shop_sn) {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().shop_activity(header, shop_sn),
+                new BaseResultObserver<ShopActivityResponse>() {
+
+                    @Override
+                    protected void onSuccess(ShopActivityResponse result) {
+                        mView.shopActivitySuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.shopActivityFailed(map);
                     }
                 });
     }

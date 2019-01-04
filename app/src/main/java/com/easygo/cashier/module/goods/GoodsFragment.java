@@ -30,8 +30,10 @@ import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.adapter.GoodsMultiItemAdapter;
+import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
+import com.easygo.cashier.bean.ShopActivityResponse;
 import com.easygo.cashier.module.refund.RefundActivity;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.widget.GeneraDialog;
@@ -333,6 +335,14 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             mUserGoodsScreen.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             mUserGoodsScreen.show();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mPresenter.goods_activity(Configs.shop_sn);
+        mPresenter.shop_activity(Configs.shop_sn);
     }
 
     @Override
@@ -663,6 +673,29 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     @Override
     public void popTillFailed(Map<String, Object> map) {
         showToast("弹出钱箱失败");
+
+    }
+
+    @Override
+    public void goodsActivitySuccess(GoodsActivityResponse result) {
+        Log.i(TAG, "goodsActivitySuccess: 商品促销成功");
+    }
+
+    @Override
+    public void goodsActivityFailed(Map<String, Object> map) {
+        Log.i(TAG, "goodsActivityFailed: 商品促销失败");
+
+    }
+
+    @Override
+    public void shopActivitySuccess(ShopActivityResponse result) {
+        Log.i(TAG, "shopActivitySuccess: 店铺促销成功");
+
+    }
+
+    @Override
+    public void shopActivityFailed(Map<String, Object> map) {
+        Log.i(TAG, "shopActivityFailed: 店铺促销失败");
 
     }
 

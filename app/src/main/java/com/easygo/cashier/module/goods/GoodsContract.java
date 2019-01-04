@@ -1,7 +1,9 @@
 package com.easygo.cashier.module.goods;
 
+import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
+import com.easygo.cashier.bean.ShopActivityResponse;
 import com.niubility.library.mvp.BaseContract;
 import com.niubility.library.mvp.BaseView;
 
@@ -19,6 +21,11 @@ public class GoodsContract {
 
         void popTill(String shop_sn, String printer_sn);
 
+        /**商品促销*/
+        void goods_activity(String shop_sn);
+        /**店铺促销*/
+        void shop_activity(String shop_sn);
+
     }
 
     public interface IView extends BaseView {
@@ -33,6 +40,12 @@ public class GoodsContract {
 
         void popTillSuccess();
         void popTillFailed(Map<String, Object> map);
+
+        void goodsActivitySuccess(GoodsActivityResponse result);
+        void goodsActivityFailed(Map<String, Object> map);
+
+        void shopActivitySuccess(ShopActivityResponse result);
+        void shopActivityFailed(Map<String, Object> map);
 
 
     }

@@ -1,14 +1,15 @@
 package com.easygo.cashier.http;
 
 import com.easygo.cashier.bean.CreateOderResponse;
+import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.HandoverResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
-import com.easygo.cashier.bean.MediaInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
+import com.easygo.cashier.bean.ShopActivityResponse;
 import com.niubility.library.http.base.HttpResult;
 
 import java.util.List;
@@ -16,7 +17,6 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
@@ -26,7 +26,6 @@ import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 public interface HttpService {
 
@@ -229,4 +228,19 @@ public interface HttpService {
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("api/pay/cash")
     Observable<HttpResult<String>> cash_refund(@HeaderMap Map<String, String> header, @Body RequestBody json);
+
+
+    /**
+     * 商品促销
+     */
+    @GET("activity/goods")
+    Observable<HttpResult<GoodsActivityResponse>> goods_activity(@HeaderMap Map<String, String> header, @Query("shop_sn") String shop_sn);
+
+    /**
+     * 店铺促销
+     */
+    @GET("activity/shop")
+    Observable<HttpResult<ShopActivityResponse>> shop_activity(@HeaderMap Map<String, String> header, @Query("shop_sn") String shop_sn);
+
+
 }
