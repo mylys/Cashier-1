@@ -1,14 +1,9 @@
 package com.easygo.cashier.module.goods;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.hardware.display.DisplayManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +26,7 @@ import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.adapter.GoodsMultiItemAdapter;
+import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.module.refund.RefundActivity;
@@ -38,20 +34,21 @@ import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.widget.GeneraDialog;
 import com.easygo.cashier.widget.GeneraEditDialog;
 import com.easygo.cashier.widget.MySearchView;
-import com.easygo.cashier.widget.NoGoodsDialog;
 import com.easygo.cashier.widget.PettyCashDialog;
 import com.easygo.cashier.widget.ProcessingChoiceDialog;
 import com.easygo.cashier.widget.SearchResultWindow;
+import com.google.gson.reflect.TypeToken;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseMvpFragment;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
+import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
-import com.niubility.library.utils.ToastUtils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -348,10 +345,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     @Override
     public void onStart() {
         super.onStart();
-        if (mGoodsMultiItemAdapter != null)
-            mGoodsMultiItemAdapter.clear();
-        if (mUserGoodsScreen != null)
-            mUserGoodsScreen.clear();
+//        if (mGoodsMultiItemAdapter != null)
+//            mGoodsMultiItemAdapter.clear();
+//        if (mUserGoodsScreen != null)
+//            mUserGoodsScreen.clear();
     }
 
     /**
@@ -547,10 +544,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 }
                 break;
             case R.id.btn_orders:
-                if (mGoodsMultiItemAdapter.getItemCount() <= 0) {
-                    showToast("请先扫描商品");
-                    return;
-                }
+//                if (mGoodsMultiItemAdapter.getItemCount() <= 0) {
+//                    showToast("请先扫描商品");
+//                    return;
+//                }
                 if (editDialog == null) {
                     editDialog = new GeneraEditDialog();
                 }
@@ -559,19 +556,41 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 editDialog.setOnDialogClickListener(new GeneraEditDialog.OnDialogClickListener() {
                     @Override
                     public void onContent(String content) {
+                        SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication).edit();
+                        SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication);
+                        String json = sp.getString(Constans.KEY_ENTRY_ORDERS_LIST, "");
+
+                        List<EntryOrders> entryOrders;
+                        if (!TextUtils.isEmpty(json)) {
+                            entryOrders = GsonUtils.getInstance().getGson().fromJson(
+                                    json, new TypeToken<List<EntryOrders>>() {
+                                    }.getType());
+                        } else {
+                            entryOrders = new ArrayList<>();
+                        }
+
+                        EntryOrders orders = new EntryOrders();
                         Date date = new Date();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-                        SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication).edit();
-                        editor.putString(Constans.KEY_ENTRY_ORDERS_NOTE, content)
-                                .putString(Constans.KEY_ENTRY_ORDERS_TIME, sdf.format(date))
-                                .apply();
+                        orders.setEntry_orders_note(content);
+                        orders.setEntry_orders_time(sdf.format(date));
+                        orders.setEntry_orders_total_price(tvTotalMoney.getText().toString());
+                        orders.setEntry_orders_total_number(tvGoodsCount.getText().toString());
+                        orders.setGoodsEntityList(mGoodsMultiItemAdapter.getData());
+                        orders.setSelect(false);
+                        if (entryOrders != null) {
+                            entryOrders.add(orders);
+                        }
+
+                        editor.putString(Constans.KEY_ENTRY_ORDERS_LIST, GsonUtils.getInstance().getGson().toJson(entryOrders)).apply();
 
                         mGoodsMultiItemAdapter.clear();
 
                         if (mUserGoodsScreen != null) {
                             mUserGoodsScreen.clear();
                         }
+                        editDialog.clearInfo();
                     }
                 });
                 break;
@@ -711,5 +730,33 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         if (mProcessingChoiceDialog != null && mProcessingChoiceDialog.isShowing()) {
             mProcessingChoiceDialog.dismiss();
         }
+    }
+
+    // 选择挂单添加item
+    public void addData(EntryOrders entryOrders) {
+        tvTotalMoney.setText(entryOrders.getEntry_orders_total_price());
+        tvGoodsCount.setText(entryOrders.getEntry_orders_total_number());
+        tvCoupon.setText(entryOrders.getEntry_orders_total_price());
+        mGoodsMultiItemAdapter.setOrdersData(entryOrders.getGoodsEntityList());
+
+        if (mUserGoodsScreen != null){
+            mUserGoodsScreen.setOrdersData(entryOrders.getGoodsEntityList());
+        }
+    }
+
+    // 退款或收银 清除界面
+    public void clearInfo() {
+        if (mGoodsMultiItemAdapter != null)
+            mGoodsMultiItemAdapter.clear();
+        if (mUserGoodsScreen != null)
+            mUserGoodsScreen.clear();
+    }
+
+    public void clearFocus() {
+        etBarcode.setFocusable(false);
+        etBarcode.setFocusableInTouchMode(false);
+        etBarcode.clearFocus();
+
+        clSearch.setFocuable(false);
     }
 }

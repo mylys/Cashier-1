@@ -85,25 +85,25 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         int handover_id = sp.getInt(Constans.KEY_HANDOVER_ID, -1);
         String shop_sn = sp.getString(Constans.KEY_SHOP_SN, "");
         String shop_name = sp.getString(Constans.KEY_SHOP_NAME, "");
-//        if(!TextUtils.isEmpty(session_id) && !TextUtils.isEmpty(admin_name)
-//                && !TextUtils.isEmpty(shop_sn) && handover_id != -1) {
-//            //登录状态 直接跳转首页
-//
-//            Configs.shop_sn = shop_sn;
-//            Configs.shop_name = shop_name;
-//
-//            ARouter.getInstance().build(ModulePath.goods)
-//                    .withString("admin_name", admin_name)
-//                    .navigation();
-//            showToast("登录： " + admin_name);
-//            Configs.admin_name = admin_name;
-//            finish();
-//        } else {
+        if(!TextUtils.isEmpty(session_id) && !TextUtils.isEmpty(admin_name)
+                && !TextUtils.isEmpty(shop_sn) && handover_id != -1) {
+            //登录状态 直接跳转首页
+
+            Configs.shop_sn = shop_sn;
+            Configs.shop_name = shop_name;
+
+            ARouter.getInstance().build(ModulePath.goods)
+                    .withString("admin_name", admin_name)
+                    .navigation();
+            showToast("登录： " + admin_name);
+            Configs.admin_name = admin_name;
+            finish();
+        } else {
         String account = sp.getString("account", "");
         etAccount.setText(account);
 //            etAccount.setText("15017740901");
 //            etPassword.setText("123456");
-//        }
+        }
 
 
         initAccount();

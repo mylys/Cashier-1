@@ -74,4 +74,13 @@ public class EntryOrdersActivity extends BaseActivity {
 
         ScreenUtils.hideNavigationBar(this);
     }
+
+    //作废
+    public void toInvaild() {
+        entryOrdersFragment.toInvaild();
+    }
+
+    public void toChoose() {
+        entryOrdersFragment.toChoose();
+    }
 }

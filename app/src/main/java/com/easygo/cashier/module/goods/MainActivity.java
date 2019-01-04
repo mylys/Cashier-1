@@ -8,6 +8,7 @@ import android.hardware.display.DisplayManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +18,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -26,6 +26,7 @@ import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.Test;
+import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.bean.EquipmentState;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.secondary_sreen.SecondaryScreen;
@@ -34,13 +35,19 @@ import com.easygo.cashier.module.status.StatusPresenter;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.EquipmentstateDialog;
 import com.easygo.cashier.widget.FunctionListDialog;
+import com.google.gson.reflect.TypeToken;
+import com.niubility.library.base.BaseApplication;
+import com.niubility.library.base.BaseEvent;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
+import com.niubility.library.constants.Events;
+import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
 import com.niubility.library.utils.ToastUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -104,9 +111,6 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
     @Override
     public void init() {
         ARouter.getInstance().inject(this);
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
 
         tvCashierAcount.setText("收银员: " + admin_name);
 
@@ -278,6 +282,13 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
 
         @Override
         public void entryOrders() {
+            SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication);
+            if (TextUtils.isEmpty(sp.getString(Constans.KEY_ENTRY_ORDERS_LIST, ""))) {
+                showToast("暂无挂单信息");
+                return;
+            }
+//            SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication).edit();
+//            editor.remove(Constans.KEY_ENTRY_ORDERS_LIST).apply();
             ARouter.getInstance()
                     .build(ModulePath.entry_orders)
                     .navigation();
@@ -348,6 +359,19 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
 
         if (dialog != null && dialog.isShow()) {
             dialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onEvent(BaseEvent event) {
+        super.onEvent(event);
+        if (event.getString().equals(Events.ENTRY_ORDERS_VALUE)) {
+            EntryOrders orders = (EntryOrders) event.getObject();
+            goodsFragment.addData(orders);
+        } else if (event.getString().equals(Events.CLEAR_GOODS_INFO)) {
+            goodsFragment.clearInfo();
+        } else if (event.getString().equals(Events.CLOSE_INPUT)) {
+            goodsFragment.clearFocus();
         }
     }
 }
