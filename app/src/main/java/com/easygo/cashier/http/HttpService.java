@@ -233,13 +233,13 @@ public interface HttpService {
     /**
      * 商品促销
      */
-    @GET("activity/goods")
+    @GET("api/activity/goods")
     Observable<HttpResult<GoodsActivityResponse>> goods_activity(@HeaderMap Map<String, String> header, @Query("shop_sn") String shop_sn);
 
     /**
      * 店铺促销
      */
-    @GET("activity/shop")
+    @GET("api/activity/shop")
     Observable<HttpResult<ShopActivityResponse>> shop_activity(@HeaderMap Map<String, String> header, @Query("shop_sn") String shop_sn);
 
 

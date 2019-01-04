@@ -109,6 +109,12 @@
     <string name="text_sale_count">销售单</string>
     <string name="text_refund_count">退货单</string>
     <string name="text_cash_income">现金收入</string>
+    <string name="text_member_package">会员钱包</string>
+    <string name="text_all_refund">总退款金额</string>
+    <string name="text_reserver">备用金</string>
+    <string name="text_receipts_money">实收金额</string>
+    <string name="text_cash_change">找零金额</string>
+    <string name="text_cash_refund">退款现金</string>
     <string name="text_classification">分类</string>
 
     <!-- 设备状态 -->

@@ -16,6 +16,7 @@ public class HandoverResponse {
      * goods_count : null
      * sale_count : 0
      * refund_count : 0
+     * reserve_money : 0.00
      * start_time : 1970-01-01 08:00:00
      */
 
@@ -31,6 +32,7 @@ public class HandoverResponse {
     private int goods_count;
     private int sale_count;
     private int refund_count;
+    private String reserve_money;
     private String start_time;
 
     public String getEnd_time() {
@@ -127,6 +129,14 @@ public class HandoverResponse {
 
     public void setRefund_count(int refund_count) {
         this.refund_count = refund_count;
+    }
+
+    public String getReserve_money() {
+        return reserve_money;
+    }
+
+    public void setReserve_money(String reserve_money) {
+        this.reserve_money = reserve_money;
     }
 
     public String getStart_time() {

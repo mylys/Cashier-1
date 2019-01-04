@@ -613,15 +613,15 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     @Override
     public void getGoodsFailed(Map<String, Object> map) {
-        if (HttpExceptionEngine.isBussinessError(map)) {
+//        if (HttpExceptionEngine.isBussinessError(map)) {
             int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
-            if (20001 == err_code) {
+//            if (20001 == err_code) {
                 showToast(err_msg);
-            } else {
-                showToast(err_msg);
-            }
-        }
+//            } else {
+//                showToast(err_msg);
+//            }
+//        }
         mGoodWeight = 0;
     }
 

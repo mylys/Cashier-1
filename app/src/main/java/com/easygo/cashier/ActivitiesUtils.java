@@ -26,6 +26,31 @@ public class ActivitiesUtils {
     public void parseShopActivity(ShopActivityResponse response) {
         List<ShopActivityResponse.ListBean> list = response.getList();
 
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+            ShopActivityResponse.ListBean listBean = list.get(i);
+
+            int type = listBean.getType();
+            List<ShopActivityResponse.ListBean.ConfigBean> config = listBean.getConfig();
+            int config_size = config.size();
+            for (int j = 0; j < config_size; j++) {
+                ShopActivityResponse.ListBean.ConfigBean configBean = config.get(j);
+//                configBean.getCondition_value()
+
+
+
+            }
+
+
+            if(type == 1) {//金额满减
+
+//                listBean
+            } else if(type == 2) {//折扣
+
+            }
+
+
+        }
 
 
     }

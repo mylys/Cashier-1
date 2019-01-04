@@ -27,6 +27,9 @@ public class HandoverView extends FrameLayout {
     TextView tvAlipay;
     @BindView(R.id.tv_wechat)
     TextView tvWechat;
+    @BindView(R.id.tv_all_refund)
+    TextView tvAllRefund;
+
     @BindView(R.id.tv_total_order_count)
     TextView tvTotalOrderCount;
     @BindView(R.id.tv_sale_count)
@@ -35,8 +38,17 @@ public class HandoverView extends FrameLayout {
     TextView tvRefundCount;
     @BindView(R.id.tv_total_cash)
     TextView tvTotalCash;
+    @BindView(R.id.tv_reserver)
+    TextView tvReserver;
+    @BindView(R.id.tv_receipts)
+    TextView tvReceipts;
+    @BindView(R.id.tv_change)
+    TextView tvChange;
     @BindView(R.id.tv_cash_income)
     TextView tvCashIncome;
+    @BindView(R.id.tv_cash_refund)
+    TextView tvCashRefund;
+
     private View mView;
     private Unbinder unbinder;
 
@@ -74,10 +86,17 @@ public class HandoverView extends FrameLayout {
         tvCash.setText(cash);
         tvAlipay.setText(df.format(result.getAlipay_money()));
         tvWechat.setText(df.format(result.getWx_money()));
+        tvAllRefund.setText(df.format(result.getAll_refund()));
 
         //总现金
         tvTotalCash.setText(cash);
         tvCashIncome.setText(cash);
+
+        tvReserver.setText(result.getReserve_money());
+        float cash_change = result.getCash_change();
+
+        tvReceipts.setText(df.format(cash_money + cash_change));
+        tvCashRefund.setText(df.format(result.getCash_refund()));
 
     }
 

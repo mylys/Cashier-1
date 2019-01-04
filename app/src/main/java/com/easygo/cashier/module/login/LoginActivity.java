@@ -27,10 +27,10 @@ import com.easygo.cashier.widget.PettyCashDialog;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
+import com.niubility.library.utils.DeviceUtils;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
-import com.niubility.library.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -373,10 +373,10 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     @Override
     public void loginFailed(Map<String, Object> map) {
         btnLogin.setEnabled(true);
-        if (HttpExceptionEngine.isBussinessError(map)) {
+//        if (HttpExceptionEngine.isBussinessError(map)) {
             String error_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
             showToast(error_msg);
-        }
+//        }
 
         int errorType = (int) map.get(HttpExceptionEngine.ErrorType);
         int errorCode = (int) map.get(HttpExceptionEngine.ErrorCode);
