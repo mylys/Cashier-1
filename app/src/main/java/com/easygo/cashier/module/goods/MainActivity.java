@@ -25,6 +25,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
+import com.easygo.cashier.SoftKeyboardUtil;
 import com.easygo.cashier.Test;
 import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.bean.EquipmentState;
@@ -370,8 +371,6 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
             goodsFragment.addData(orders);
         } else if (event.getString().equals(Events.CLEAR_GOODS_INFO)) {
             goodsFragment.clearInfo();
-        } else if (event.getString().equals(Events.CLOSE_INPUT)) {
-            goodsFragment.clearFocus();
         }
     }
 }

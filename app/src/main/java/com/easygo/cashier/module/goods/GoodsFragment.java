@@ -751,12 +751,4 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         if (mUserGoodsScreen != null)
             mUserGoodsScreen.clear();
     }
-
-    public void clearFocus() {
-        etBarcode.setFocusable(false);
-        etBarcode.setFocusableInTouchMode(false);
-        etBarcode.clearFocus();
-
-        clSearch.setFocuable(false);
-    }
 }

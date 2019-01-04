@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
+import com.easygo.cashier.SoftKeyboardUtil;
 import com.easygo.cashier.TestUtils;
 import com.niubility.library.base.BaseDialog;
 import com.niubility.library.constants.Events;
@@ -89,8 +90,8 @@ public class GeneraEditDialog extends BaseDialog {
     }
 
     private void dialogDismiss() {
+        SoftKeyboardUtil.hideSoftKeyboard(getActivity(),editInput);
         dismiss();
-        EventUtils.post(Events.CLOSE_INPUT);
     }
 
     public void setTitle(String title) {
@@ -118,14 +119,5 @@ public class GeneraEditDialog extends BaseDialog {
 
     public void showCenter(FragmentActivity activity) {
         showCenter(activity, "DIALOG_GENERA_EDIT");
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        View view = getActivity().getCurrentFocus();
-        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        super.onDismiss(dialog);
-
     }
 }
