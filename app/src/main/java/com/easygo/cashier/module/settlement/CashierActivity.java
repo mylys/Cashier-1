@@ -1,6 +1,7 @@
 package com.easygo.cashier.module.settlement;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -28,6 +29,7 @@ import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.request.CreateOrderRequestBody;
 import com.easygo.cashier.bean.request.PrintRequestBody;
+import com.easygo.cashier.module.goods.GoodsFragment;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.Keyboard;
@@ -35,7 +37,9 @@ import com.easygo.cashier.widget.MyTitleBar;
 import com.easygo.cashier.widget.PayWayView;
 import com.easygo.cashier.widget.ScanCodeDialog;
 import com.niubility.library.base.BaseMvpActivity;
+import com.niubility.library.constants.Events;
 import com.niubility.library.http.exception.HttpExceptionEngine;
+import com.niubility.library.utils.EventUtils;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ScreenUtils;
 
@@ -599,6 +603,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     private void onPaySuccessAfter() {
         mOrderFinished = true;
+        EventUtils.post(Events.CLEAR_GOODS_INFO);
 
         if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
             mScanCodeDialog.setStatus(ScanCodeDialog.STATUS_SUCCESSFUL_RECEIPT);

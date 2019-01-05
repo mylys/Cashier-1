@@ -34,7 +34,7 @@ public class OrderHistoryAdapter extends BaseQuickAdapter<OrderHistorysInfo, Bas
         helper.setTextColor(R.id.tv_money, item.isSelect() ? white : text_color);
         helper.setTextColor(R.id.tv_time, item.isSelect() ? white : text_color);
 
-        helper.setText(R.id.tv_order_no, item.getTrade_no()!=null?(String)item.getTrade_no():"")
+        helper.setText(R.id.tv_order_no, item.getTrade_no() != null ? (String) item.getTrade_no() : "")
                 .setText(R.id.tv_money, "￥" + item.getTotal_money())
                 .setText(R.id.tv_time, getTime);
 
@@ -54,16 +54,22 @@ public class OrderHistoryAdapter extends BaseQuickAdapter<OrderHistorysInfo, Bas
     }
 
     public void setItemClick() {
+        for (OrderHistorysInfo info : getData()) {
+            if (info.isSelect()) {
+                info.setSelect(false);
+            }
+        }
         getData().get(0).setSelect(true);
         notifyDataSetChanged();
     }
 
     private OnItemClickListener listener;
-    public interface OnItemClickListener{
+
+    public interface OnItemClickListener {
         void onItemClck(int position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.listener = onItemClickListener;
     }
 }

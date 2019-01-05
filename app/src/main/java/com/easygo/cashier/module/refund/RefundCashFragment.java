@@ -17,6 +17,9 @@ import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.Keyboard;
 import com.easygo.cashier.widget.PayWayView;
 import com.niubility.library.base.BaseMvpFragment;
+import com.niubility.library.constants.Constans;
+import com.niubility.library.constants.Events;
+import com.niubility.library.utils.EventUtils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -43,19 +46,28 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
     private ConfirmDialog confirmDialog;
     private int mPayWay = PayWayView.WAY_CASH;
 
-    /**数量*/
+    /**
+     * 数量
+     */
     private int mGoodsCount;
-    /**总额*/
+    /**
+     * 总额
+     */
     private float mTotalMoney;
-    /**商品数据*/
+    /**
+     * 商品数据
+     */
     private List<GoodsEntity<GoodsResponse>> mData;
 
-    /**实退*/
+    /**
+     * 实退
+     */
     private float mRealRefundCash;
 
     public static RefundCashFragment newInstance() {
         return new RefundCashFragment();
     }
+
     public static RefundCashFragment newInstance(Bundle bundle) {
 
         RefundCashFragment refundCashFragment = new RefundCashFragment();
@@ -96,7 +108,7 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
         Bundle bundle = getArguments();
         if (bundle != null) {
 
-           setData(bundle);
+            setData(bundle);
         }
     }
 
@@ -148,29 +160,29 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
             public void afterTextChanged(Editable s) {
                 String text = s.toString().trim();
 
-                if(TextUtils.isEmpty(text)) {
+                if (TextUtils.isEmpty(text)) {
                     mRealRefundCash = mTotalMoney;
                     //刷新价格
-                    if(refundCashView != null)
+                    if (refundCashView != null)
                         refundCashView.setData(mTotalMoney, mRealRefundCash);
                     return;
                 }
 
                 //以00 . 开头 直接返回
-                if(text.startsWith(".") || text.startsWith("00")) {
+                if (text.startsWith(".") || text.startsWith("00")) {
                     s.delete(0, s.length());
                     return;
                 }
                 float data = Float.valueOf(text);
 
-                if(data > mTotalMoney) {
+                if (data > mTotalMoney) {
                     showToast("实退金额不能大于应退金额！");
-                    s.delete(s.length()-1, s.length());
+                    s.delete(s.length() - 1, s.length());
                 } else {
                     mRealRefundCash = data;
 
                     //刷新价格
-                    if(refundCashView != null)
+                    if (refundCashView != null)
                         refundCashView.setData(mTotalMoney, mRealRefundCash);
 
                 }
@@ -179,14 +191,16 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
         });
     }
 
-    /**设置数据*/
+    /**
+     * 设置数据
+     */
     public void setData(Bundle bundle) {
         mGoodsCount = bundle.getInt("goods_count");
         mTotalMoney = bundle.getFloat("total_money");
         mData = (List<GoodsEntity<GoodsResponse>>) bundle.getSerializable("goods_data");
 
         mRealRefundCash = mTotalMoney;
-        if(refundCashView != null) {
+        if (refundCashView != null) {
             refundCashView.setData(mTotalMoney, mRealRefundCash);
         }
     }
@@ -209,7 +223,7 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
 //        if (mPayWay == PayWayView.WAY_ALIPAY) {
 //            if (TextUtils.isEmpty(Configs.order_no)) {
 //                showToast("确认提交订单");
-                refund();
+        refund();
 //            } else {
 //                showToast("订单已经创建 --> " + Configs.order_no);
 //            }
@@ -231,12 +245,6 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
 
 
         }
-
-
-
-
-
-
 
 
 //        mPresenter.cashRefund();
@@ -285,11 +293,11 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
                     .append("     ")
                     .append(data.getPrice()).append("   ")
                     .append(data.getDiscount_price()).append("   ")
-                    .append(is_processing? count + "g" :count).append("   ")
+                    .append(is_processing ? count + "g" : count).append("   ")
                     .append(df.format(sub_total)).append(PrintHelper.BR);
 
 
-            if(is_processing) {
+            if (is_processing) {
                 index++;
                 price = Float.valueOf(processing.getProcess_price());
                 sub_total = price * processing.getCount();
@@ -310,7 +318,6 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
                 .append("退款：").append(df.format(mRealRefundCash)).append("元").append(PrintHelper.BR);
 
 
-
         mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, sb.toString());
     }
 
@@ -326,6 +333,7 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
     @Override
     public void cashRefundSuccess(String result) {
         printRefund();
+        EventUtils.post(Events.CLEAR_GOODS_INFO);
     }
 
     @Override

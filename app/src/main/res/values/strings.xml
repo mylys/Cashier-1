@@ -174,5 +174,6 @@
     <!-- 打印宽度 -->
     <string name="text_genera_width_58">58mm</string>
     <string name="text_genera_width_88">88mm</string>
+    <string name="text_product_name">商品数量：</string>
 
 </resources>

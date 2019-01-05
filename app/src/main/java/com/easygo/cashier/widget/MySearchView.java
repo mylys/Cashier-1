@@ -161,9 +161,13 @@ public class MySearchView extends ConstraintLayout {
 
     public void setFocuable(boolean focuable) {
         mEditText.setFocusable(focuable);
-        mEditText.requestFocus();
         mEditText.setFocusableInTouchMode(focuable);
-        mEditText.requestFocusFromTouch();
+
+        if (focuable) {
+            mEditText.requestFocus();
+        }else{
+            mEditText.clearFocus();
+        }
     }
 
     public interface OnSearhListenerClick {

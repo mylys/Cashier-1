@@ -1,16 +1,21 @@
 package com.easygo.cashier.widget;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
+import com.easygo.cashier.SoftKeyboardUtil;
+import com.easygo.cashier.TestUtils;
 import com.niubility.library.base.BaseDialog;
+import com.niubility.library.constants.Events;
+import com.niubility.library.utils.EventUtils;
 import com.niubility.library.utils.ToastUtils;
 
 /**
@@ -23,6 +28,8 @@ public class GeneraEditDialog extends BaseDialog {
     private TextView dialog_submit;
     private ImageView iv_cancel;
     private EditText editInput;
+
+    private TestUtils testUtils = new TestUtils();
 
     private OnDialogClickListener listener;
     private String title = "";
@@ -60,13 +67,13 @@ public class GeneraEditDialog extends BaseDialog {
         iv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+                dialogDismiss();
             }
         });
         dialog_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+                dialogDismiss();
             }
         });
         dialog_submit.setOnClickListener(new View.OnClickListener() {
@@ -77,33 +84,22 @@ public class GeneraEditDialog extends BaseDialog {
                     return;
                 }
                 listener.onContent(editInput.getText().toString().trim());
-                dismiss();
+                dialogDismiss();
             }
         });
+    }
+
+    private void dialogDismiss() {
+        SoftKeyboardUtil.hideSoftKeyboard(getActivity(),editInput);
+        dismiss();
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Window window = getDialog().getWindow();
-        if (window != null) {
-            window.setLayout(getResources().getDimensionPixelSize(R.dimen.genera_edit_width),
-                    getResources().getDimensionPixelSize(R.dimen.genera_edit_hight));
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
-            window.getDecorView().setSystemUiVisibility(uiOptions);
-        }
+    public void clearInfo() {
+        editInput.setText("");
     }
 
     @Override

@@ -494,4 +494,13 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         void onItemRemoved(int position);
     }
 
+    public void setOrdersData(List<GoodsEntity<GoodsResponse>> list){
+        ensureNotNull();
+        for (GoodsEntity<GoodsResponse> entity : list){
+            data.put(entity.getData().getBarcode(),entity);
+            barcodeData.add(entity.getData().getBarcode());
+        }
+        mData.addAll(list);
+        notifyDataSetChanged();
+    }
 }

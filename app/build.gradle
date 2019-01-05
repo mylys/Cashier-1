@@ -20,13 +20,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            buildConfigField("String", "API_URL", "\"http://api.store.ieasygo.cn/\"")
             buildConfigField("String", "API_URL", "\"https://api.pos.esgao.cn/\"")
         }
         dev.initWith(buildTypes.debug)
         dev {
-//            buildConfigField("String", "API_URL", "\"http://api.dev.ieasygo.cn/\"")
-//            buildConfigField("String", "API_URL", "\"http://api.dev.jpcs.esgao.cn/\"")
             buildConfigField("String", "API_URL", "\"https://api.pos.esgao.cn/\"")//正式
 //            buildConfigField("String", "API_URL", "\"http://api.dev.pos.esgao.cn/\"")//开发
         }
@@ -63,5 +60,4 @@ dependencies {
     //ARouter
     implementation 'com.alibaba:arouter-api:1.4.0'
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.1'
-
 }

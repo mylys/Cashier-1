@@ -1,10 +1,10 @@
 package com.easygo.cashier.module.entry_orders;
 
-import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +12,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
+import com.easygo.cashier.adapter.EntryOrdersGoodsAdapter;
+import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.widget.GeneraDialog;
-import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseFragment;
-import com.niubility.library.constants.Constans;
-import com.niubility.library.utils.SharedPreferencesUtils;
+import com.niubility.library.constants.Events;
+import com.niubility.library.utils.EventUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +42,9 @@ public class EntryOrdersDetailFragment extends BaseFragment {
     TextView tvTotalPrice;
     Unbinder unbinder;
 
+    private int position = -1;
+    private EntryOrdersGoodsAdapter adapter = new EntryOrdersGoodsAdapter();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,11 +60,10 @@ public class EntryOrdersDetailFragment extends BaseFragment {
         init();
     }
 
-    @SuppressLint("SetTextI18n")
     private void init() {
-        SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication);
-        tvEntryOrdersTime.setText(sp.getString(Constans.KEY_ENTRY_ORDERS_TIME, ""));
-        tvNote.setText(getResources().getString(R.string.text_note) + sp.getString(Constans.KEY_ENTRY_ORDERS_NOTE, ""));
+        rvGoods.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvGoods.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        rvGoods.setAdapter(adapter);
     }
 
     @Override
@@ -80,15 +83,24 @@ public class EntryOrdersDetailFragment extends BaseFragment {
                 dialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
                     @Override
                     public void onSubmit() {
-
+                        ((EntryOrdersActivity) getActivity()).toInvaild();
                     }
                 });
                 break;
             case R.id.btn_choose:
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
+                ((EntryOrdersActivity)getActivity()).toChoose();
                 break;
+        }
+    }
+
+    public void showEntryOrders(EntryOrders orders) {
+        tvNote.setText(getActivity().getResources().getString(R.string.text_note) + orders.getEntry_orders_note());
+        tvEntryOrdersTime.setText(orders.getEntry_orders_time());
+        tvGoodsCount.setText("共" + orders.getEntry_orders_total_number() + "件");
+        tvTotalPrice.setText("总额：" + orders.getEntry_orders_total_price());
+
+        if (adapter != null) {
+            adapter.setNewData(orders.getGoodsEntityList());
         }
     }
 }
