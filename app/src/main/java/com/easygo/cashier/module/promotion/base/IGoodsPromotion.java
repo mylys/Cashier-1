@@ -1,4 +1,4 @@
-package com.easygo.cashier.module.promotion;
+package com.easygo.cashier.module.promotion.base;
 
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsResponse;

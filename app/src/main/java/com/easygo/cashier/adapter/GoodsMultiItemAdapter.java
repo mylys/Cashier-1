@@ -405,6 +405,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                         }
 
                         remove(helper.getAdapterPosition());
+                        refreshPrice();
                     }
                 });
 
@@ -443,8 +444,13 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             //设置唯一标识 跟主商品区分开
             choice.setIdentity(String.valueOf(System.currentTimeMillis()));
 
+            mData.set(position, goodsEntity);
+
             current = choice;
             notifyItemChanged(position);
+
+            //刷新价格
+            refreshPrice();
         }
     }
 
@@ -453,9 +459,21 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         GoodsEntity<GoodsResponse> goodsEntity = mData.get(position);
         GoodsResponse data = goodsEntity.getData();
 
-        barcodeData.remove(data.getBarcode());
-        this.data.remove(data.getBarcode());
         mData.remove(position);
+        String barcode = data.getBarcode();
+        int size = mData.size();
+        boolean needDeleteBarcode = true;
+        for (int i = 0; i < size; i++) {
+            if(barcode.equals(mData.get(i).getData().getBarcode())) {
+                needDeleteBarcode = false;
+                break;
+            }
+        }
+
+        if(needDeleteBarcode) {
+            barcodeData.remove(barcode);
+            this.data.remove(barcode);
+        }
 
         notifyItemRemoved(position);
         refreshPrice();

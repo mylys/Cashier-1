@@ -131,6 +131,9 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
         GoodsEntity<GoodsResponse> goodsEntity = mData.get(position);
         goodsEntity.setProcessing(choice);
         notifyItemChanged(position);
+
+        //刷新价格
+        refreshPrice();
     }
 
 

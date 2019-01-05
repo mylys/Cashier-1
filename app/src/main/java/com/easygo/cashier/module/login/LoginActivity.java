@@ -72,6 +72,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
             switch (msg.what) {
                 case MSG_GET_SHOP:
+                    removeMessages(MSG_GET_SHOP);
                     mPresenter.init(DeviceUtils.getMacAddress());
                     break;
             }
@@ -343,6 +344,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     protected void onDestroy() {
         super.onDestroy();
 
+        mHandler.removeCallbacksAndMessages(null);
+
         if (mUserGoodsScreen != null && mUserGoodsScreen.isShowing()) {
             mUserGoodsScreen.dismiss();
         }
@@ -437,7 +440,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
                 + ", errorCode: " + errorCode
                 + ", errorMsg: " + errorMsg);
 
-        mHandler.sendEmptyMessageDelayed(MSG_GET_SHOP, 1000);
+        mHandler.sendEmptyMessageDelayed(MSG_GET_SHOP, 2000);
 
     }
 

@@ -66,6 +66,8 @@ public class UserGoodsScreen extends Presentation {
         mUserGoodsAdapter = new UserGoodsAdapter();
         recyclerView.setAdapter(mUserGoodsAdapter);
 
+        mUserGoodsAdapter.setOnItemListener(null);
+
         //分割线
         DividerItemDecoration verticalDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         verticalDecoration.setDrawable(getResources().getDrawable(R.drawable.bg_item_decoration_vertical));

@@ -35,7 +35,7 @@ public interface HttpService {
      * 190001—参数错误
      * 190002—店铺不存在
      */
-    @GET("api/cash_registers/detail")
+    @GET("api/cash_register/detail")
     Observable<HttpResult<InitResponse>> init(@Query("mac_address") String mac_address);
 
 

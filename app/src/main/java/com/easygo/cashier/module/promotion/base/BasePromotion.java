@@ -1,4 +1,4 @@
-package com.easygo.cashier.module.promotion;
+package com.easygo.cashier.module.promotion.base;
 
 public class BasePromotion {
 

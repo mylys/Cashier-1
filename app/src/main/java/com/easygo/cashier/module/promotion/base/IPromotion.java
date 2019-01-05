@@ -1,4 +1,4 @@
-package com.easygo.cashier.module.promotion;
+package com.easygo.cashier.module.promotion.base;
 
 public interface IPromotion {
 
@@ -16,12 +16,13 @@ public interface IPromotion {
     /**减免类型 比例*/
     int OFFER_TYPE_RATIO = 1;
 
-    /**减免类型 比例*/
-    int CONDITION_TYPE_RATIO = 1;
-    /**减免类型 金额*/
+
+
+
+    /**条件类型 偶数*/
+    int CONDITION_TYPE_EVEN = 1;
+    /**条件类型 金额*/
     int CONDITION_TYPE_MONEY = 2;
-
-
 
     /**活动类型 普通*/
     int TYPE_NORMAL = 1;
