@@ -1,6 +1,8 @@
 package com.easygo.cashier;
 
+import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsActivityResponse;
+import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
 
 import java.util.List;
@@ -53,6 +55,14 @@ public class ActivitiesUtils {
         }
 
 
+    }
+
+    public void computeGoodsActivity(GoodsEntity goodsEntity) {
+
+        //根据条码 找到活动id
+        //
+
+//        if()
     }
 
 

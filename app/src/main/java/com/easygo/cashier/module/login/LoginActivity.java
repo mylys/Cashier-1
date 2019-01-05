@@ -3,6 +3,8 @@ package com.easygo.cashier.module.login;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.hardware.display.DisplayManager;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -60,6 +62,21 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     private AccountInfo mAccountInfo;
     private final String KEY_ACCOUNTS = "key_accounts";
     private AccountWindow mAccountWindow;
+
+
+    private static final int MSG_GET_SHOP = 0;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            switch (msg.what) {
+                case MSG_GET_SHOP:
+                    mPresenter.init(DeviceUtils.getMacAddress());
+                    break;
+            }
+        }
+    };
 
 
     @Override
@@ -238,6 +255,12 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 //        if(true)
 //            return;
 
+        if(TextUtils.isEmpty(Configs.shop_sn)) {
+            showToast("初始化失败！");
+            return;
+        }
+
+
         String account = etAccount.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
@@ -310,8 +333,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         if (TextUtils.isEmpty(Configs.shop_sn)) {
 
             //获取shop_sn
-//            mPresenter.init(DeviceUtils.getMacAddress());
-            mPresenter.init("08:ea:40:36:4f:3b");
+            mPresenter.init(DeviceUtils.getMacAddress());
+//            mPresenter.init("08:ea:40:36:4f:3b");
         }
 
     }
@@ -390,9 +413,9 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     @Override
     public void initSuccess(InitResponse result) {
 
-        String shop_sn = result.getShop_sn();
-        String shop_name = result.getShop_name();
-        is_reserve = result.getIs_reserve();
+        String shop_sn = result.getShop().getShop_sn();
+        String shop_name = result.getShop().getShop_sn();
+        is_reserve = result.getShop().getIs_reserve();
 
         SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(this).edit();
         editor.putString(Constans.KEY_SHOP_SN, shop_sn)
@@ -401,6 +424,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
         Configs.shop_name = shop_name;
         Configs.shop_sn = shop_sn;
+        Configs.printer_sn = result.getPrinters().get(0).getDevice_sn();
 
     }
 
@@ -412,6 +436,9 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         Log.i(TAG, "loginFailed: map --> errorType:" + errorType
                 + ", errorCode: " + errorCode
                 + ", errorMsg: " + errorMsg);
+
+        mHandler.sendEmptyMessageDelayed(MSG_GET_SHOP, 1000);
+
     }
 
     @Override
