@@ -359,9 +359,11 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         setProcessingLayout(helper, isChecked);
 
+                        GoodsEntity<GoodsResponse> goodsEntity = mData.get(helper.getAdapterPosition());
+
                         //选择加工时 设置加工商品，否则置空
-                        GoodsResponse default_processing = item.getProcessing_list().get(0);
-                        item.setProcessing(isChecked? default_processing : null);
+                        GoodsResponse default_processing = goodsEntity.getProcessing_list().get(0);
+                        goodsEntity.setProcessing(isChecked? default_processing : null);
                         if(isChecked) {
                             default_processing.setIdentity(String.valueOf(System.currentTimeMillis()));
                             refreshPrcessingData(helper, default_processing);
@@ -371,7 +373,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
                         if(mListener != null) {
                             mListener.onProcessingCheckedChanged(isChecked, helper.getAdapterPosition(),
-                                    item.getProcessing());
+                                    goodsEntity.getProcessing());
                         }
 
                     }
