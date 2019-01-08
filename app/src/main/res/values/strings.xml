@@ -33,6 +33,34 @@
     <string name="text_invalid">作废</string>
     <string name="text_choose">选择</string>
 
+    <!--促销-->
+    <string name="text_current_promotion">正在参与活动：</string>
+
+    <!--会员-->
+    <string name="text_current_member">当前会员：</string>
+    <string name="text_choose_member">选择会员</string>
+    <string name="text_member_price">会员价</string>
+    <string name="text_balance">余额</string>
+    <string name="text_balance_conlon">余额：</string>
+    <string name="text_integral">积分</string>
+    <string name="text_integral_colon">积分：</string>
+    <string name="text_member_card">会员卡号</string>
+    <string name="text_package_balance">钱包余额</string>
+    <string name="text_integral_balance">积分余额</string>
+    <string name="text_nick">昵称</string>
+    <string name="text_telphone">手机号</string>
+    <string name="text_process">操作</string>
+    <string name="text_input_member_tel_or_card">请输入会员手机号/会员卡号</string>
+    <string name="text_no_telphone">搜不到该手机号</string>
+    <string name="text_no_member">暂无此会员</string>
+
+    <!--优惠券-->
+    <string name="text_coupon_coupon">优惠券</string>
+    <string name="text_coupon_coupon_colon">优惠券：</string>
+    <string name="text_input_coupon">请输入优惠券号</string>
+    <string name="text_no_coupon">搜不到该优惠券</string>
+
+
     <!--结算页面-->
     <string name="text_combined_payment">组合支付</string>
     <string name="text_cash">现金</string>

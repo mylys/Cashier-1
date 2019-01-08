@@ -16,17 +16,23 @@
     <dimen name="text_size_33">@dimen/x33</dimen>
     <dimen name="text_size_37">@dimen/x37</dimen>
     <dimen name="text_size_38">@dimen/x38</dimen>
+    <dimen name="text_size_40">@dimen/x40</dimen>
     <dimen name="text_size_42">@dimen/x42</dimen>
     <dimen name="text_size_84">@dimen/x84</dimen>
+    <dimen name="item_goods_height">@dimen/x84</dimen>
+    <dimen name="item_processing_goods_height">@dimen/x170</dimen>
+
+    <dimen name="coupon_icon_size">@dimen/x67</dimen>
+
 
 
     <!--商品标题名称间距-->
-    <dimen name="margin_66">@dimen/x66</dimen>
-    <dimen name="margin_159">@dimen/x159</dimen>
-    <dimen name="margin_362">@dimen/x362</dimen>
-    <dimen name="margin_937">@dimen/x937</dimen>
-    <dimen name="margin_1131">@dimen/x1131</dimen>
-    <dimen name="margin_1327">@dimen/x1327</dimen>
+    <dimen name="margin_57">@dimen/x57</dimen>
+    <dimen name="margin_349">@dimen/x349</dimen>
+    <dimen name="margin_830">@dimen/x830</dimen>
+    <dimen name="margin_1025">@dimen/x1025</dimen>
+    <dimen name="margin_1216">@dimen/x1216</dimen>
+    <dimen name="margin_1392">@dimen/x1392</dimen>
     <dimen name="margin_1645">@dimen/x1645</dimen>
     <dimen name="margin_129">@dimen/x129</dimen>
 

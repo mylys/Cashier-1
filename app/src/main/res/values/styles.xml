@@ -87,6 +87,13 @@
         <item name="android:textColor">@color/color_505050</item>
     </style>
 
+    <!--会员、优惠券-->
+    <style name="ExtraInfoStyle">
+        <item name="android:textSize">@dimen/text_size_29</item>
+        <item name="android:textColor">@color/color_555555</item>
+    </style>
+
+
     <!--弹窗文本-->
     <style name="DialogTextStyle">
         <item name="android:textSize">@dimen/text_size_37</item>
@@ -162,6 +169,7 @@
     <!-- 副屏 -->
     <style name="ViceScreen" parent="GoodsSettlementDetailStyle">
         <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_size_40</item>
     </style>
 
     <!-- 通用dialog -->
