@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y200"
+    android:layout_height="@dimen/item_processing_goods_height"
     android:background="@color/color_text_white">
 
     <TextView
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="1234567890123"
         style="@style/GoodsListStyle"
-        android:layout_marginStart="@dimen/margin_66"
+        android:layout_marginStart="@dimen/margin_57"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/line" />
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:text="农夫山泉"
         style="@style/GoodsListStyle"
-        android:layout_marginStart="@dimen/margin_362"
+        android:layout_marginStart="@dimen/margin_349"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_barcode"
         app:layout_constraintBottom_toBottomOf="@id/tv_barcode"/>
@@ -34,7 +34,18 @@
         android:layout_height="wrap_content"
         android:text="￥6.00"
         style="@style/GoodsListStyle"
-        android:layout_marginStart="@dimen/margin_937"
+        android:layout_marginStart="@dimen/margin_830"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
+
+    <TextView
+        android:id="@+id/tv_member_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/GoodsListStyle"
+        android:layout_marginStart="@dimen/margin_1025"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_barcode"
         app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
@@ -45,7 +56,7 @@
         android:layout_height="wrap_content"
         android:text="￥0.00"
         style="@style/GoodsListStyle"
-        android:layout_marginStart="@dimen/margin_1131"
+        android:layout_marginStart="@dimen/margin_1216"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_barcode"
         app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
@@ -56,7 +67,7 @@
         android:layout_height="wrap_content"
         android:text="￥6.00"
         style="@style/GoodsListStyle"
-        android:layout_marginStart="@dimen/margin_1327"
+        android:layout_marginStart="@dimen/margin_1392"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_barcode"
         app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
@@ -116,7 +127,7 @@
         android:id="@+id/cl_processing"
         android:layout_width="@dimen/x424"
         android:layout_height="@dimen/y68"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@drawable/bg_frame_goods_processing"
         app:layout_constraintTop_toTopOf="@id/cb_processing"
         app:layout_constraintBottom_toBottomOf="@id/cb_processing"
@@ -124,12 +135,16 @@
 
         <TextView
             android:id="@+id/tv_processing_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="龙虾-清蒸"
             style="@style/GoodsListStyle"
             android:layout_marginStart="@dimen/x27"
+            android:layout_marginEnd="@dimen/x27"
+            android:ellipsize="end"
+            android:maxLines="1"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_more"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -213,6 +228,16 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--促销-->
+    <ImageView
+        android:id="@+id/iv_coupon"
+        android:layout_width="@dimen/coupon_icon_size"
+        android:layout_height="@dimen/coupon_icon_size"
+        android:src="@drawable/ic_coupon"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

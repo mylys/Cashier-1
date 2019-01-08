@@ -47,7 +47,7 @@
     <Button
         android:id="@+id/btn_search"
         android:layout_width="@dimen/x177"
-        android:layout_height="@dimen/y96"
+        android:layout_height="match_parent"
         android:text="@string/text_search"
         android:textSize="@dimen/x38"
         android:textColor="@color/color_text_white"

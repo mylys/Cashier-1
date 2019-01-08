@@ -14,12 +14,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <TextView
+        android:id="@+id/tv_text_current_promotion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_current_promotion"
+        style="@style/GoodsListStyle"
+        android:layout_marginTop="@dimen/y35"
+        app:layout_constraintStart_toStartOf="@id/cl_goods_title"
+        app:layout_constraintTop_toBottomOf="@id/title_bar"
+        app:layout_constraintBottom_toTopOf="@id/cl_goods_title"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_promotion"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/x10"
+        app:layout_constraintStart_toEndOf="@id/tv_text_current_promotion"
+        app:layout_constraintTop_toTopOf="@id/tv_text_current_promotion"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_current_promotion">
+
+    </android.support.v7.widget.RecyclerView>
+
+
     <include
         layout="@layout/include_secondary_screen_layout"
         android:layout_width="@dimen/x1832"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/x40"
-        app:layout_constraintTop_toBottomOf="@id/title_bar"
+        app:layout_constraintTop_toBottomOf="@id/tv_text_current_promotion"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/rl"/>
@@ -36,7 +59,7 @@
         android:id="@+id/rl"
         layout="@layout/include_secondary_bottom_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y154"
+        android:layout_height="@dimen/y130"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

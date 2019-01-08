@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cl_bottom_layout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y154"
+    android:layout_height="@dimen/y130"
     android:background="@color/color_f5f7fa"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
@@ -12,7 +12,7 @@
     <!--件数-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_goods_count"
-        android:layout_width="@dimen/x324"
+        android:layout_width="@dimen/x220"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +20,7 @@
 
         <TextView
             android:id="@+id/tv_goods_count"
-            style="@style/GoodsSettlementDetailStyle"
+            style="@style/ViceScreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/y3"
@@ -31,10 +31,10 @@
 
         <TextView
             android:id="@+id/tv_text_goods_count"
-            style="@style/GoodsSettlementDetailTextStyle"
+            style="@style/DetailTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/y30"
+            android:layout_marginBottom="@dimen/y20"
             android:text="@string/text_goods_count"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +45,7 @@
     <View
         android:id="@+id/line1"
         android:layout_width="@dimen/x1"
-        android:layout_height="@dimen/y126"
+        android:layout_height="@dimen/y76"
         android:background="@color/color_d3d3d3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/cl_goods_count"
@@ -54,7 +54,7 @@
     <!--总额-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_total_money"
-        android:layout_width="@dimen/x322"
+        android:layout_width="@dimen/x220"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cl_goods_count"
@@ -62,7 +62,7 @@
 
         <TextView
             android:id="@+id/tv_total_money"
-            style="@style/GoodsSettlementDetailStyle"
+            style="@style/ViceScreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/y3"
@@ -73,10 +73,10 @@
 
         <TextView
             android:id="@+id/tv_text_total_money"
-            style="@style/GoodsSettlementDetailTextStyle"
+            style="@style/DetailTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/y30"
+            android:layout_marginBottom="@dimen/y20"
             android:text="@string/text_total_money"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +87,7 @@
     <View
         android:id="@+id/line2"
         android:layout_width="@dimen/x1"
-        android:layout_height="@dimen/y126"
+        android:layout_height="@dimen/y76"
         android:background="@color/color_d3d3d3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/cl_total_money"
@@ -97,7 +97,7 @@
     <!--优惠-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_coupon"
-        android:layout_width="@dimen/x324"
+        android:layout_width="@dimen/x220"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cl_total_money"
@@ -105,7 +105,7 @@
 
         <TextView
             android:id="@+id/tv_coupon"
-            style="@style/GoodsSettlementDetailStyle"
+            style="@style/ViceScreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/y3"
@@ -116,10 +116,10 @@
 
         <TextView
             android:id="@+id/tv_text_coupon"
-            style="@style/GoodsSettlementDetailTextStyle"
+            style="@style/DetailTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/y30"
+            android:layout_marginBottom="@dimen/y20"
             android:text="@string/text_coupon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -130,7 +130,7 @@
     <View
         android:id="@+id/line3"
         android:layout_width="@dimen/x1"
-        android:layout_height="@dimen/y126"
+        android:layout_height="@dimen/y76"
         android:background="@color/color_d3d3d3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/cl_coupon"
@@ -138,9 +138,9 @@
 
     <Button
         android:id="@+id/btn_orders"
-        android:layout_width="@dimen/x190"
-        android:layout_height="@dimen/y98"
-        android:layout_marginEnd="@dimen/x42"
+        android:layout_width="@dimen/x210"
+        android:layout_height="@dimen/y90"
+        android:layout_marginEnd="@dimen/x30"
         android:background="@drawable/bg_btn_clear"
         android:text="@string/text_entry_orders"
         android:textColor="@color/color_text_white"
@@ -152,9 +152,9 @@
 
     <Button
         android:id="@+id/btn_clear"
-        android:layout_width="@dimen/x190"
-        android:layout_height="@dimen/y98"
-        android:layout_marginEnd="@dimen/x42"
+        android:layout_width="@dimen/x210"
+        android:layout_height="@dimen/y90"
+        android:layout_marginEnd="@dimen/x30"
         android:background="@drawable/bg_btn_clear"
         android:text="清空"
         android:textColor="@color/color_text_white"
@@ -167,11 +167,11 @@
     <Button
         android:id="@+id/btn_settlement"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/y98"
+        android:layout_height="@dimen/y90"
         android:layout_marginEnd="@dimen/x37"
         android:background="@drawable/bg_btn_settlement"
-        android:paddingStart="@dimen/x25"
-        android:paddingEnd="@dimen/x25"
+        android:paddingStart="@dimen/x40"
+        android:paddingEnd="@dimen/x40"
         android:text="收银：  ￥0.00"
         android:textColor="@color/color_text_white"
         android:textSize="@dimen/text_size_38"

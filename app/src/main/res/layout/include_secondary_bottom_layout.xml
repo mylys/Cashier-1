@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:id="@+id/ll1"
-        android:layout_width="@dimen/x324"
+        android:layout_width="@dimen/x220"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
@@ -14,13 +14,14 @@
         <TextView
             android:id="@+id/tv_product_num"
             style="@style/ViceScreen"
-            android:layout_width="@dimen/x324"
+            android:layout_width="@dimen/x220"
             android:layout_height="wrap_content"
             android:text="0" />
 
         <TextView
-            style="@style/ViceScreen"
-            android:layout_width="@dimen/x324"
+            style="@style/DetailTextStyle"
+            android:gravity="center"
+            android:layout_width="@dimen/x220"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/x10"
             android:text="@string/text_goods_count" />
@@ -29,7 +30,7 @@
 
     <LinearLayout
         android:id="@+id/ll2"
-        android:layout_width="@dimen/x324"
+        android:layout_width="@dimen/x220"
         android:layout_height="match_parent"
         android:layout_toEndOf="@+id/view1"
         android:gravity="center"
@@ -38,13 +39,14 @@
         <TextView
             android:id="@+id/tv_product_total_price"
             style="@style/ViceScreen"
-            android:layout_width="@dimen/x324"
+            android:layout_width="@dimen/x220"
             android:layout_height="wrap_content"
             android:text="￥0.00" />
 
         <TextView
-            style="@style/ViceScreen"
-            android:layout_width="@dimen/x324"
+            style="@style/DetailTextStyle"
+            android:gravity="center"
+            android:layout_width="@dimen/x220"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/x10"
             android:text="@string/text_total_money" />
@@ -53,7 +55,7 @@
 
     <LinearLayout
         android:id="@+id/ll3"
-        android:layout_width="@dimen/x324"
+        android:layout_width="@dimen/x220"
         android:layout_height="match_parent"
         android:layout_toEndOf="@+id/view2"
         android:gravity="center"
@@ -62,13 +64,14 @@
         <TextView
             android:id="@+id/tv_product_preferential"
             style="@style/ViceScreen"
-            android:layout_width="@dimen/x324"
+            android:layout_width="@dimen/x220"
             android:layout_height="wrap_content"
             android:text="￥0.00" />
 
         <TextView
-            style="@style/ViceScreen"
-            android:layout_width="@dimen/x324"
+            style="@style/DetailTextStyle"
+            android:gravity="center"
+            android:layout_width="@dimen/x220"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/x10"
             android:text="@string/text_coupon" />
@@ -81,7 +84,7 @@
         android:layout_centerVertical="true"
         android:background="@color/color_d3d3d3"
         android:layout_width="@dimen/x1"
-        android:layout_height="@dimen/y126"/>
+        android:layout_height="@dimen/y76"/>
 
     <View
         android:id="@+id/view2"
@@ -89,14 +92,14 @@
         android:layout_centerVertical="true"
         android:background="@color/color_d3d3d3"
         android:layout_width="@dimen/x1"
-        android:layout_height="@dimen/y126"/>
+        android:layout_height="@dimen/y76"/>
 
     <View
         android:layout_toEndOf="@+id/ll3"
         android:layout_centerVertical="true"
         android:background="@color/color_d3d3d3"
         android:layout_width="@dimen/x1"
-        android:layout_height="@dimen/y126"/>
+        android:layout_height="@dimen/y76"/>
 
     <TextView
         android:layout_centerVertical="true"

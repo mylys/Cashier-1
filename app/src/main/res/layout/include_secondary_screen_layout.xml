@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y97"
+        android:layout_height="@dimen/item_goods_height"
         android:background="@color/color_f5f7fa">
 
         <TextView
@@ -20,7 +20,7 @@
             style="@style/GoodsTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_66"
+            android:layout_marginStart="@dimen/margin_57"
             android:text="@string/text_barcode"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
             style="@style/GoodsTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_362"
+            android:layout_marginStart="@dimen/margin_349"
             android:text="@string/text_goods_name"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,18 +42,30 @@
             style="@style/GoodsTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_937"
+            android:layout_marginStart="@dimen/margin_830"
             android:text="@string/text_price"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_text_member_price"
+            style="@style/GoodsTitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_1025"
+            android:text="@string/text_member_price"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
             android:id="@+id/tv_text_coupon"
             style="@style/GoodsTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_1131"
+            android:layout_marginStart="@dimen/margin_1216"
             android:text="@string/text_coupon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +76,7 @@
             style="@style/GoodsTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_1327"
+            android:layout_marginStart="@dimen/margin_1392"
             android:text="@string/text_subtotal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -84,18 +96,20 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
+        android:id="@+id/line"
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="@dimen/y1"
         android:background="@color/color_d3d3d3"
         app:layout_constraintTop_toBottomOf="@+id/constraint" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/y98"
+        android:layout_height="0dp"
         android:background="@color/color_text_white"
         android:overScrollMode="never"
+        app:layout_constraintTop_toBottomOf="@id/line"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

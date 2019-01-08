@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="1234567890123"
         style="@style/GoodsListStyle"
-        android:layout_marginStart="@dimen/margin_66"
+        android:layout_marginStart="@dimen/margin_57"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:text="农夫山泉"
         style="@style/GoodsListStyle"
-        android:layout_marginStart="@dimen/margin_362"
+        android:layout_marginStart="@dimen/margin_349"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:text="￥6.00"
         style="@style/GoodsListStyle"
-        android:layout_marginStart="@dimen/margin_937"
+        android:layout_marginStart="@dimen/margin_830"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:text="￥0.00"
         style="@style/GoodsListStyle"
-        android:layout_marginStart="@dimen/margin_1131"
+        android:layout_marginStart="@dimen/margin_1216"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:text="￥6.00"
         style="@style/GoodsListStyle"
-        android:layout_marginStart="@dimen/margin_1327"
+        android:layout_marginStart="@dimen/margin_1392"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

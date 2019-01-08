@@ -28,19 +28,55 @@
         android:id="@+id/cl_subtitle"
         layout="@layout/include_subtitle_search_layout" />
 
+    <include
+        android:id="@+id/cl_extra_info"
+        layout="@layout/include_goods_extra_info"
+        android:visibility="gone"/>
+
     <View
         android:id="@+id/line2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_subtitle"
+        app:layout_constraintTop_toBottomOf="@+id/cl_extra_info"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y21"
-        android:background="#F0F3F7" />
+        android:layout_height="@dimen/y1"
+        android:background="#d3d3d3" />
+
+    <!--正在参与的活动-->
+    <TextView
+        android:id="@+id/tv_text_current_promotion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_current_promotion"
+        style="@style/GoodsListStyle"
+        android:layout_marginTop="@dimen/y30"
+        app:layout_constraintStart_toStartOf="@id/cl_goods_title"
+        app:layout_constraintTop_toBottomOf="@id/line2"
+        app:layout_constraintBottom_toTopOf="@id/cl_goods_title"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_promotion"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/x10"
+        app:layout_constraintStart_toEndOf="@id/tv_text_current_promotion"
+        app:layout_constraintTop_toTopOf="@id/tv_text_current_promotion"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_current_promotion">
+
+    </android.support.v7.widget.RecyclerView>
+
 
     <!--商品标题名-->
     <include
         android:id="@+id/cl_goods_title"
-        layout="@layout/include_goods_title_layout" />
+        layout="@layout/include_goods_title_layout"
+        android:layout_width="@dimen/x1832"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/y30"
+        app:layout_constraintTop_toBottomOf="@id/tv_text_current_promotion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cl_bottom_layout"/>
 
 
     <View
@@ -50,8 +86,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cl_subtitle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_height"
-        android:background="@color/color_line" />
-
+        android:background="@color/color_d3d3d3" />
 
     <!--底部清单-->
     <include
@@ -67,21 +102,5 @@
         android:layout_height="@dimen/line_height"
         android:background="@color/color_line" />
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_goods"
-        app:layout_constraintBottom_toTopOf="@+id/line5"
-        app:layout_constraintEnd_toEndOf="@id/cl_goods_title"
-        app:layout_constraintStart_toStartOf="@id/cl_goods_title"
-        app:layout_constraintTop_toBottomOf="@+id/cl_goods_title"
-        android:overScrollMode="never"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:paddingStart="@dimen/x1"
-        android:paddingEnd="@dimen/x1"
-        android:background="@drawable/bg_frame_goods">
-
-
-    </android.support.v7.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
