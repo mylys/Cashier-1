@@ -125,7 +125,7 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
         mPresenter.post(handover_id, null, page, pageCount);
     }
 
-    /* 设置adapter数据 */
+    /* 设置adapter空数据 */
     private void setEmpty() {
         View emptyView = getLayoutInflater().inflate(R.layout.item_empty_view, null);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,

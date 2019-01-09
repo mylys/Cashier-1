@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -29,15 +30,19 @@ import com.easygo.cashier.adapter.GoodsMultiItemAdapter;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.bean.GoodsResponse;
+import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
 import com.easygo.cashier.module.refund.RefundActivity;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
+import com.easygo.cashier.widget.ChooseCouponsDialog;
+import com.easygo.cashier.widget.ChooseMembersDialog;
 import com.easygo.cashier.widget.GeneraDialog;
 import com.easygo.cashier.widget.GeneraEditDialog;
 import com.easygo.cashier.widget.MySearchView;
 import com.easygo.cashier.widget.PettyCashDialog;
 import com.easygo.cashier.widget.ProcessingChoiceDialog;
+import com.easygo.cashier.widget.ScanCodeDialog;
 import com.easygo.cashier.widget.SearchResultWindow;
 import com.google.gson.reflect.TypeToken;
 import com.niubility.library.base.BaseApplication;
@@ -46,6 +51,7 @@ import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
+import com.niubility.library.utils.ToastUtils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -55,6 +61,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -65,6 +72,18 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     public static final String TAG = "GoodsFragment";
 
+    @BindView(R.id.tv_integral)
+    TextView tvIntegral;
+    @BindView(R.id.tv_balance)
+    TextView tvBalance;
+    @BindView(R.id.tv_member)
+    TextView tvMember;
+    @BindView(R.id.cl_extra_info)
+    ConstraintLayout clExtraInfo;
+    @BindView(R.id.cl_member)
+    ConstraintLayout clMember;
+    @BindView(R.id.cl_coupon)
+    ConstraintLayout clCoupon;
     @BindView(R.id.tv_goods_count)
     TextView tvGoodsCount;
     @BindView(R.id.tv_total_money)
@@ -93,6 +112,12 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     private GoodsMultiItemAdapter mGoodsMultiItemAdapter;
 
     private GeneraEditDialog editDialog;
+    private ChooseMembersDialog membersDialog;
+    private ChooseCouponsDialog couponsDialog;
+    private ScanCodeDialog scanCodeDialog;
+
+    /* 是否为会员 */
+    private boolean isMember = false;
 
     /**
      * 商品数据
@@ -225,6 +250,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             //获取称重商品信息
             mPresenter.getGoods(Configs.shop_sn, weight_barcode);
 
+        } else if (BarcodeUtils.isMember(barcode)) {
+            mPresenter.getMember(null, barcode);
         } else {
             //获取商品信息
             mPresenter.getGoods(Configs.shop_sn, barcode);
@@ -436,7 +463,15 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     }
 
 
-    @OnClick({R.id.btn_no_barcode, R.id.btn_pop_money_box, R.id.btn_clear, R.id.btn_settlement, R.id.btn_orders})
+    @OnClick({R.id.btn_no_barcode,
+            R.id.btn_pop_money_box,
+            R.id.btn_clear,
+            R.id.btn_settlement,
+            R.id.btn_orders,
+            R.id.btn_choose_member,
+            R.id.btn_choose_coupon,
+            R.id.iv_cancel_member,
+            R.id.iv_cancel_coupon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_no_barcode://无码商品
@@ -604,7 +639,53 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                     }
                 });
                 break;
+            case R.id.btn_choose_member:
+                if (membersDialog == null) {
+                    membersDialog = new ChooseMembersDialog();
+                }
+                membersDialog.showCenter(getActivity());
+                membersDialog.setTitle(getResources().getString(R.string.text_choose_member));
+                membersDialog.setOnSearchListener(new ChooseMembersDialog.OnSearchListener() {
+                    @Override
+                    public void onSearch(String content) {
+                        mPresenter.getMember(content, null);
+                    }
+                });
+                break;
+            case R.id.btn_choose_coupon:
+                if (couponsDialog == null) {
+                    couponsDialog = new ChooseCouponsDialog();
+                }
+                couponsDialog.showCenter(getActivity());
+                couponsDialog.setTitle(getResources().getString(R.string.text_coupon_coupon));
+                break;
+            case R.id.iv_cancel_member:
+                setHide(clMember);
+                break;
+            case R.id.iv_cancel_coupon:
+                setHide(clCoupon);
+                break;
         }
+    }
+
+    private void setHide(ConstraintLayout constraintLayout){
+        if (constraintLayout == clMember){
+            if (clCoupon.getVisibility() == View.VISIBLE){
+                clMember.setVisibility(View.GONE);
+                return;
+            }
+        }else if (constraintLayout == clCoupon){
+            if (clMember.getVisibility() == View.VISIBLE){
+                clCoupon.setVisibility(View.GONE);
+                return;
+            }
+        }
+        clExtraInfo.setVisibility(View.GONE);
+    }
+
+    public void setShow(ConstraintLayout constraintLayout){
+        constraintLayout.setVisibility(View.VISIBLE);
+        clExtraInfo.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -633,10 +714,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     @Override
     public void getGoodsFailed(Map<String, Object> map) {
 //        if (HttpExceptionEngine.isBussinessError(map)) {
-            int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
-            String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
+        int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
+        String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
 //            if (20001 == err_code) {
-                showToast(err_msg);
+        showToast(err_msg);
 //            } else {
 //                showToast(err_msg);
 //            }
@@ -749,6 +830,32 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     }
 
+    @Override
+    public void getMemberSuccess(MemberInfo memberInfo, String barcode, String phone) {
+        if (!TextUtils.isEmpty(barcode)) {
+            isMember = true;
+            Configs.memberInfo = memberInfo;
+            updateMebmerInfo(memberInfo);
+        } else if (!TextUtils.isEmpty(phone)) {
+            if (membersDialog != null && membersDialog.isShow()) {
+                List<MemberInfo> infos = new ArrayList<>();
+                infos.add(memberInfo);
+                membersDialog.setNewData(infos);
+            }
+        }
+    }
+
+    @Override
+    public void getMemberFailed(Map<String, Object> map, String barcode, String phone) {
+        if (!TextUtils.isEmpty(barcode)) {
+            isMember = false;
+            showScanCodeDialog();
+        } else if (!TextUtils.isEmpty(phone)) {
+            if (membersDialog != null && membersDialog.isShow()) {
+                membersDialog.setNewData(new ArrayList<MemberInfo>());
+            }
+        }
+    }
 
     @Override
     public void onDestroyView() {
@@ -772,7 +879,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         tvCoupon.setText(entryOrders.getEntry_orders_total_price());
         mGoodsMultiItemAdapter.setOrdersData(entryOrders.getGoodsEntityList());
 
-        if (mUserGoodsScreen != null){
+        if (mUserGoodsScreen != null) {
             mUserGoodsScreen.setOrdersData(entryOrders.getGoodsEntityList());
         }
     }
@@ -783,5 +890,24 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             mGoodsMultiItemAdapter.clear();
         if (mUserGoodsScreen != null)
             mUserGoodsScreen.clear();
+    }
+
+    public void showScanCodeDialog() {
+        scanCodeDialog = new ScanCodeDialog(getActivity(), R.style.DialogStyle);
+        WindowManager.LayoutParams lp = scanCodeDialog.getWindow().getAttributes();
+        lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+        lp.y = getResources().getDimensionPixelSize(R.dimen.y411);
+        scanCodeDialog.getWindow().setAttributes(lp);
+        scanCodeDialog.setCanceledOnTouchOutside(false);
+        scanCodeDialog.setCancelable(false);
+        scanCodeDialog.show();
+        scanCodeDialog.setStatus(ScanCodeDialog.STATUS_MEMBER_NULL);
+    }
+
+    public void updateMebmerInfo(MemberInfo info) {
+        setShow(clMember);
+        tvMember.setText(info.getNick_name());
+        tvBalance.setText("￥" + info.getWallet());
+        tvIntegral.setText(info.getIntegral() + "");
     }
 }

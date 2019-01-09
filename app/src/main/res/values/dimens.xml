@@ -8,12 +8,16 @@
     <dimen name="logo_height">@dimen/y60</dimen>
 
     <!--文本大小-->
+    <dimen name="text_size_19">@dimen/x19</dimen>
+    <dimen name="text_size_21">@dimen/x21</dimen>
     <dimen name="text_size_25">@dimen/x25</dimen>
     <dimen name="text_size_28">@dimen/x28</dimen>
     <dimen name="text_size_29">@dimen/x29</dimen>
     <dimen name="text_size_12">@dimen/x12</dimen>
+    <dimen name="text_size_26">@dimen/x26</dimen>
     <dimen name="text_size_30">@dimen/x30</dimen>
     <dimen name="text_size_33">@dimen/x33</dimen>
+    <dimen name="text_size_34">@dimen/x34</dimen>
     <dimen name="text_size_37">@dimen/x37</dimen>
     <dimen name="text_size_38">@dimen/x38</dimen>
     <dimen name="text_size_40">@dimen/x40</dimen>
@@ -23,7 +27,6 @@
     <dimen name="item_processing_goods_height">@dimen/x170</dimen>
 
     <dimen name="coupon_icon_size">@dimen/x67</dimen>
-
 
 
     <!--商品标题名称间距-->
@@ -93,6 +96,5 @@
     <!--扫码框宽高-->
     <dimen name="keyboard_width">@dimen/x545</dimen>
     <dimen name="keyboard_height">@dimen/y545</dimen>
-
 
 </resources>

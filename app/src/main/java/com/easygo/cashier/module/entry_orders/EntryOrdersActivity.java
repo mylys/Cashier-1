@@ -47,6 +47,7 @@ public class EntryOrdersActivity extends BaseActivity {
 
     private void init() {
         clTitle.setCashierAccount(Configs.admin_name);
+        clTitle.setTitle(getResources().getString(R.string.text_entry_orders_list));
 
         fragment = getSupportFragmentManager().findFragmentByTag(TAG_ENTRY_ORDERS);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

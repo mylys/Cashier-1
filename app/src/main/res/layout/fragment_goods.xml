@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@color/color_text_white">
+    android:background="@color/color_text_white"
+    android:orientation="vertical">
 
     <!--获取扫码机条码-->
     <EditText
         android:id="@+id/et_barcode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:inputType="text"
-        android:textColor="#00FFFFFF"
+        android:background="#00FFFFFF"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:inputType="text"
         android:nextFocusDown="@id/et_barcode"
+        android:text=""
+        android:textColor="#00FFFFFF"
         android:visibility="visible"
-        android:background="#00FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <!--搜索栏-->
@@ -31,37 +31,37 @@
     <include
         android:id="@+id/cl_extra_info"
         layout="@layout/include_goods_extra_info"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <View
         android:id="@+id/line2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_extra_info"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y1"
-        android:background="#d3d3d3" />
+        android:background="#d3d3d3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_extra_info" />
 
     <!--正在参与的活动-->
     <TextView
         android:id="@+id/tv_text_current_promotion"
+        style="@style/GoodsListStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_current_promotion"
-        style="@style/GoodsListStyle"
         android:layout_marginTop="@dimen/y30"
+        android:text="@string/text_current_promotion"
+        app:layout_constraintBottom_toTopOf="@id/cl_goods_title"
         app:layout_constraintStart_toStartOf="@id/cl_goods_title"
-        app:layout_constraintTop_toBottomOf="@id/line2"
-        app:layout_constraintBottom_toTopOf="@id/cl_goods_title"/>
+        app:layout_constraintTop_toBottomOf="@id/line2" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_promotion"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/x10"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_current_promotion"
         app:layout_constraintStart_toEndOf="@id/tv_text_current_promotion"
-        app:layout_constraintTop_toTopOf="@id/tv_text_current_promotion"
-        app:layout_constraintBottom_toBottomOf="@id/tv_text_current_promotion">
+        app:layout_constraintTop_toTopOf="@id/tv_text_current_promotion">
 
     </android.support.v7.widget.RecyclerView>
 
@@ -73,20 +73,20 @@
         android:layout_width="@dimen/x1832"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/y30"
-        app:layout_constraintTop_toBottomOf="@id/tv_text_current_promotion"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cl_bottom_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/cl_bottom_layout"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_text_current_promotion" />
 
 
     <View
         android:id="@+id/line4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_subtitle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_height"
-        android:background="@color/color_d3d3d3" />
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_subtitle" />
 
     <!--底部清单-->
     <include
@@ -95,12 +95,12 @@
 
     <View
         android:id="@+id/line5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/cl_bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_height"
-        android:background="@color/color_line" />
+        android:background="@color/color_line"
+        app:layout_constraintBottom_toTopOf="@+id/cl_bottom_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

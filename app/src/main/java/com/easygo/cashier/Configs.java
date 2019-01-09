@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.easygo.cashier.bean.LoginResponse;
+import com.easygo.cashier.bean.MemberInfo;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
@@ -25,6 +26,9 @@ public class Configs {
      * 订单号
      */
     public static String order_no;
+
+    /* 会员信息 */
+    public static MemberInfo memberInfo;
 
     /**
      * 打印机

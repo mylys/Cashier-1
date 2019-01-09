@@ -21,6 +21,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.Configs;
+import com.easygo.cashier.Events;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.Test;
@@ -37,7 +38,6 @@ import com.easygo.cashier.widget.MyTitleBar;
 import com.easygo.cashier.widget.PayWayView;
 import com.easygo.cashier.widget.ScanCodeDialog;
 import com.niubility.library.base.BaseMvpActivity;
-import com.niubility.library.constants.Events;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.EventUtils;
 import com.niubility.library.utils.GsonUtils;
@@ -75,18 +75,26 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     int mGoodsCount;
     @Autowired(name = "coupon")
     float mCoupon;
-    /**订单金额， 应收*/
+    /**
+     * 订单金额， 应收
+     */
     @Autowired(name = "total_money")
     float mTotalMoney;
     @Autowired(name = "goods_data")
     Serializable mGoodsDataSerializable;
 
-    /**商品数据*/
+    /**
+     * 商品数据
+     */
     List<GoodsEntity<GoodsResponse>> mGoodsData;
 
-    /**实收 键盘输入的现金数*/
+    /**
+     * 实收 键盘输入的现金数
+     */
     float mRealPay;
-    /**找零*/
+    /**
+     * 找零
+     */
     float mChange;
 
     private SettlementView settlementView;
@@ -121,6 +129,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     protected void init() {
         ARouter.getInstance().inject(this);
 
+        payWayView.setPayWayShow(new int[]{0, 1, 2, 3, 6});
         settlementView = SettlementView.create(this);
         ((FrameLayout) findViewById(R.id.framelayout)).addView(settlementView);
 
@@ -141,7 +150,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
             @Override
             public void onPrintClicked(boolean isChecked) {
-                if(!isChecked) {
+                if (!isChecked) {
                     showToast("交易完成后将不打印小票");
                 }
 //                print();
@@ -149,11 +158,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
             @Override
             public void onCommitOrderClicked() {
-                if(mRealPay < mTotalMoney) {
+                if (mRealPay < mTotalMoney) {
                     showToast("实收金额小于应收金额， 请确认！");
                     return;
                 }
-                if(!TextUtils.isEmpty(Configs.order_no)) {
+                if (!TextUtils.isEmpty(Configs.order_no)) {
                     showScanCodeDialog();
                 }
                 //弹出确认弹窗
@@ -187,31 +196,31 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             public void afterTextChanged(Editable s) {
                 String text = s.toString().trim();
 
-                if(TextUtils.isEmpty(text)) {
+                if (TextUtils.isEmpty(text)) {
                     mRealPay = mTotalMoney;
                     mChange = 0;
                     //刷新价格
-                    if(settlementView != null)
+                    if (settlementView != null)
                         settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange);
                     return;
                 }
 
                 //以00 . 开头 直接返回
-                if(text.startsWith(".") || text.startsWith("00")) {
+                if (text.startsWith(".") || text.startsWith("00")) {
                     s.delete(0, s.length());
                     return;
                 }
                 float data = Float.valueOf(text);
 
-                if(data < 0.01f && s.length() > 4) {
+                if (data < 0.01f && s.length() > 4) {
                     showToast("找零不能小于0.01元");
-                    s.delete(s.length()-1, s.length());
+                    s.delete(s.length() - 1, s.length());
                 } else {
                     mRealPay = data;
                     mChange = mRealPay - mTotalMoney - mCoupon;
 
                     //刷新价格
-                    if(settlementView != null)
+                    if (settlementView != null)
                         settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange);
 
                 }
@@ -223,15 +232,19 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             @Override
             public void onPayWaySelected(boolean isCombinePay, int pay_way) {
                 mPayWay = pay_way;
+
                 //支付方式选择回调
                 if (settlementView != null) {
                     settlementView.setPayType(isCombinePay, pay_way);
+                    if (pay_way == PayWayView.WAY_COUPON) {
+                        return;
+                    }
 
                     boolean needShowKeyboard = isCombinePay || pay_way == PayWayView.WAY_CASH;
                     //需要输入现金时 显示键盘
-                    etMoney.setVisibility(needShowKeyboard? View.VISIBLE: View.GONE);
-                    btnDelete.setVisibility(needShowKeyboard? View.VISIBLE: View.GONE);
-                    kb.setVisibility(needShowKeyboard? View.VISIBLE: View.GONE);
+                    etMoney.setVisibility(needShowKeyboard ? View.VISIBLE : View.GONE);
+                    btnDelete.setVisibility(needShowKeyboard ? View.VISIBLE : View.GONE);
+                    kb.setVisibility(needShowKeyboard ? View.VISIBLE : View.GONE);
 
                     //清空 刷新价格
                     etMoney.setText("");
@@ -287,7 +300,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             data = good.getData();
             price = Float.valueOf(data.getPrice());
             price_int = Integer.valueOf(df.format(price * 100));
-            goodsListBean.setCount_price(count*price_int);
+            goodsListBean.setCount_price(count * price_int);
 
             goodsListBean.setDiscount(1);
             goodsListBean.setGoods_name(data.getG_sku_name());
@@ -308,9 +321,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
             goodsListBeans.add(goodsListBean);
 
-            if(good.getItemType() == GoodsEntity.TYPE_PROCESSING) {
+            if (good.getItemType() == GoodsEntity.TYPE_PROCESSING) {
                 data = good.getProcessing();
-                if(data != null) {
+                if (data != null) {
                     goodsListBean = new PrintRequestBody.GoodsListBean();
                     price = Float.valueOf(data.getProcess_price());
                     price_int = Integer.valueOf(df.format(price * 100));
@@ -334,7 +347,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         mPresenter.print(GsonUtils.getInstance().getGson().toJson(requestBody));
 
 
-
     }
 
 
@@ -343,7 +355,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
      */
     public void onCommitOrder() {
 
-        if(TextUtils.isEmpty(Configs.order_no)) {
+        if (TextUtils.isEmpty(Configs.order_no)) {
 //            showToast("确认提交订单");
             createOrder();
         } else {
@@ -352,12 +364,13 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         }
 
     }
+
     /**
      * 扫描到的付款码 回调
      */
     public void onScanAuthCode(String auth_code) {
 
-        if(TextUtils.isEmpty(Configs.order_no)) {
+        if (TextUtils.isEmpty(Configs.order_no)) {
             showToast("订单未创建， 请点击提交交易按钮");
         } else {
             if (mScanCodeDialog != null) {
@@ -370,11 +383,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             switch (mPayWay) {
                 case PayWayView.WAY_ALIPAY://支付宝
                     mPresenter.aliPay(Configs.shop_sn, Configs.order_no,
-                            Integer.valueOf(df.format(mTotalMoney*100)), auth_code);
+                            Integer.valueOf(df.format(mTotalMoney * 100)), auth_code);
                     break;
                 case PayWayView.WAY_WECHAT://微信
                     mPresenter.wechatPay(Configs.shop_sn, Configs.order_no,
-                            Integer.valueOf(df.format(mTotalMoney*100)), auth_code);
+                            Integer.valueOf(df.format(mTotalMoney * 100)), auth_code);
                     break;
             }
 
@@ -391,7 +404,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if(mOrderFinished) {
+        if (mOrderFinished) {
             showToast("支付成功！！！");
             return true;
         }
@@ -413,7 +426,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         }
         return onTouchEvent(ev);
     }
-    public  boolean isShouldHideInput(View v, MotionEvent event) {
+
+    public boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
             int[] leftTop = {0, 0};
             //获取输入框当前的location位置
@@ -452,8 +466,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     }
 
 
-
     private ScanCodeDialog mScanCodeDialog;
+
     /**
      * 显示扫码弹窗
      */
@@ -482,7 +496,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         if (settlementView != null) {
             settlementView.release();
         }
-        if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
+        if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
             mScanCodeDialog.dismiss();
         }
         //离开页面 清除订单
@@ -491,8 +505,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     public void createOrder() {
         DecimalFormat df = new DecimalFormat("#");
-        String total_money = df.format(mTotalMoney*100);
-        String real_pay = df.format(mTotalMoney*100 - mCoupon*100);
+        String total_money = df.format(mTotalMoney * 100);
+        String real_pay = df.format(mTotalMoney * 100 - mCoupon * 100);
 //        String real_pay = df.format(mRealPay*100);
 
         CreateOrderRequestBody requestBody1 = new CreateOrderRequestBody();
@@ -521,12 +535,12 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             goodsBean.setType(data.getType());
 
             goodsBean.setCount(good.getCount());
-            if(good.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
+            if (good.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
                 price = Float.valueOf(data.getProcess_price());
             } else {
                 price = Float.valueOf(data.getPrice());
             }
-            goodsBean.setPrice(Integer.valueOf(df.format(price*100)));
+            goodsBean.setPrice(Integer.valueOf(df.format(price * 100)));
             goodsBean.setBarcode(data.getBarcode());
             list.add(goodsBean);
 
@@ -534,7 +548,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             switch (good.getItemType()) {
                 case GoodsEntity.TYPE_PROCESSING:
                     data = good.getProcessing();
-                    if(data != null) {//选择加工
+                    if (data != null) {//选择加工
                         goodsBean = new CreateOrderRequestBody.GoodsListBean();
                         goodsBean.setG_sku_id(data.getG_sku_id());
                         goodsBean.setIdentity(data.getIdentity());
@@ -542,7 +556,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                         goodsBean.setType(data.getType());
                         goodsBean.setCount(data.getCount());
                         price = Float.valueOf(data.getProcess_price());
-                        goodsBean.setPrice(Integer.valueOf(df.format(price*100)));
+                        goodsBean.setPrice(Integer.valueOf(df.format(price * 100)));
                         goodsBean.setBarcode(data.getBarcode());
                         list.add(goodsBean);
                     }
@@ -574,8 +588,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             case PayWayView.WAY_CASH:
 
                 DecimalFormat df = new DecimalFormat("#");
-                String real_pay = df.format(mTotalMoney*100 - mCoupon*100);
-                String change_money = df.format(mChange*100);
+                String real_pay = df.format(mTotalMoney * 100 - mCoupon * 100);
+                String change_money = df.format(mChange * 100);
 
                 mPresenter.cash(Configs.shop_sn, Configs.order_no,
                         Integer.valueOf(real_pay), Integer.valueOf(change_money));
@@ -589,7 +603,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public void createOrderFailed(Map<String, Object> map) {
-        if(HttpExceptionEngine.isBussinessError(map)) {
+        if (HttpExceptionEngine.isBussinessError(map)) {
             showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
         }
     }
@@ -612,10 +626,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         //设置为已收款
         settlementView.setAlreadySettlement();
 
-        if(settlementView.needPrint()) {
+        if (settlementView.needPrint()) {
             print();
         }
-        if(mPayWay == PayWayView.WAY_CASH) {//现金支付时
+        if (mPayWay == PayWayView.WAY_CASH) {//现金支付时
             //弹出钱箱
             mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, PrintHelper.pop_till);
         }
@@ -631,15 +645,15 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     @Override
     public void aliPayFailed(Map<String, Object> map) {
 
-        if(HttpExceptionEngine.isBussinessError(map)) {
+        if (HttpExceptionEngine.isBussinessError(map)) {
             int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
 
-            if(20000 == err_code) {
+            if (20000 == err_code) {
                 showToast("支付宝： 开始查询订单支付状态");
                 mPresenter.checkAliPayStatus(Test.shop_sn, Configs.order_no);
             } else {
                 showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
-                if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
+                if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
                     mScanCodeDialog.dismiss();
                 }
             }
@@ -658,10 +672,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public void checkAlipayStatusFailed(Map<String, Object> map) {
-        if(HttpExceptionEngine.isBussinessError(map)) {
+        if (HttpExceptionEngine.isBussinessError(map)) {
             int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
 
-            if(20000 == err_code) {
+            if (20000 == err_code) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -672,7 +686,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 }, 1000);
             } else {
                 showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
-                if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
+                if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
                     mScanCodeDialog.dismiss();
                 }
             }
@@ -691,15 +705,15 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public void wechatPayFailed(Map<String, Object> map) {
-        if(HttpExceptionEngine.isBussinessError(map)) {
+        if (HttpExceptionEngine.isBussinessError(map)) {
             int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
 
-            if(20000 == err_code) {
+            if (20000 == err_code) {
                 showToast("微信： 开始查询订单支付状态");
                 mPresenter.checkWechatPayStatus(Test.shop_sn, Configs.order_no);
             } else {
                 showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
-                if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
+                if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
                     mScanCodeDialog.dismiss();
                 }
             }
@@ -717,10 +731,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public void checkWechatStatusFailed(Map<String, Object> map) {
-        if(HttpExceptionEngine.isBussinessError(map)) {
+        if (HttpExceptionEngine.isBussinessError(map)) {
             int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
 
-            if(20000 == err_code) {
+            if (20000 == err_code) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -731,7 +745,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 }, 1000);
             } else {
                 showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
-                if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
+                if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
                     mScanCodeDialog.dismiss();
                 }
             }

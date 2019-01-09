@@ -121,7 +121,7 @@
     <!--结算详情页-->
     <style name="SettlementDetailTextStyle">
         <item name="android:textColor">@color/color_7e7e7e</item>
-        <item name="android:textSize">@dimen/text_size_42</item>
+        <item name="android:textSize">@dimen/text_size_34</item>
     </style>
 
     <style name="KeyboardTextStyle">
@@ -176,5 +176,12 @@
     <style name="GeneralList">
         <item name="android:textSize">@dimen/text_size_37</item>
         <item name="android:textColor">@color/color_505050</item>
+    </style>
+
+    <!-- 会员 搜索手机号 -->
+    <style name="SearchMebmer">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_505050</item>
+        <item name="android:textSize">@dimen/text_size_26</item>
     </style>
 </resources>

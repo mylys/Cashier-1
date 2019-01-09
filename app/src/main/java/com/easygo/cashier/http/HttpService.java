@@ -7,6 +7,7 @@ import com.easygo.cashier.bean.HandoverResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
+import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
@@ -76,7 +77,7 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("api/pay/get_info")
     Observable<HttpResult<List<GoodsResponse>>> getGoods(@HeaderMap Map<String, String> header, @Field("shop_sn") String shop_sn,
-                                                        @Field("barcode") String barcode, @Field("type") int type);
+                                                         @Field("barcode") String barcode, @Field("type") int type);
 
     /**
      * 获取商品信息
@@ -241,5 +242,9 @@ public interface HttpService {
     @GET("api/activity/shop")
     Observable<HttpResult<ShopActivityResponse>> shop_activity(@HeaderMap Map<String, String> header, @Query("shop_sn") String shop_sn);
 
-
+    /*
+     * 搜索会员
+     */
+    @GET("/api/member/search")
+    Observable<HttpResult<MemberInfo>> getMembers(@HeaderMap Map<String, String> header, @Query("phone_number") String phone_number, @Query("member_token") String member_token);
 }

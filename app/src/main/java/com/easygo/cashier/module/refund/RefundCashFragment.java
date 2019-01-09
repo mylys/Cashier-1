@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.easygo.cashier.Configs;
+import com.easygo.cashier.Events;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsResponse;
@@ -17,8 +18,6 @@ import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.Keyboard;
 import com.easygo.cashier.widget.PayWayView;
 import com.niubility.library.base.BaseMvpFragment;
-import com.niubility.library.constants.Constans;
-import com.niubility.library.constants.Events;
 import com.niubility.library.utils.EventUtils;
 
 import java.text.DecimalFormat;

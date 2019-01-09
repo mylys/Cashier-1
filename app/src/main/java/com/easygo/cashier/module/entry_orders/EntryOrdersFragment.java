@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.easygo.cashier.Events;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.EntryOrdersAdapter;
 import com.easygo.cashier.bean.EntryOrders;
@@ -19,7 +20,6 @@ import com.google.gson.reflect.TypeToken;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseFragment;
 import com.niubility.library.constants.Constans;
-import com.niubility.library.constants.Events;
 import com.niubility.library.utils.EventUtils;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;

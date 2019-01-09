@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.easygo.cashier.R;
+import com.easygo.cashier.module.promotion.base.Goods;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +25,18 @@ public class PayWayView extends ConstraintLayout {
     private Button mAlipay;
     private Button mWechat;
     private Button mBankCard;
+    private Button mMember;
     private Button mOther;
+    private Button mCoupon;
     public List<View> mButtons;
 
     public static final int WAY_CASH = 0x0000;
     public static final int WAY_ALIPAY = 0x0001;
     public static final int WAY_WECHAT = 0x0002;
-    public static final int WAY_BANK_CARD = 0x0003;
-    public static final int WAY_OTHER = 0x0004;
+    public static final int WAY_MEMBER = 0x0003;
+    public static final int WAY_BANK_CARD = 0x0004;
+    public static final int WAY_OTHER = 0x0005;
+    public static final int WAY_COUPON = 0x0006;
 
     private Button mSelected;
 
@@ -62,12 +67,21 @@ public class PayWayView extends ConstraintLayout {
         mWechat = ((Button) mView.findViewById(R.id.btn_wechat));
         mBankCard = ((Button) mView.findViewById(R.id.btn_bank_card));
         mOther = ((Button) mView.findViewById(R.id.btn_other));
+        mMember = ((Button) mView.findViewById(R.id.btn_member));
+        mCoupon = ((Button) mView.findViewById(R.id.btn_coupon));
 
         mCash.setOnClickListener(listener);
         mAlipay.setOnClickListener(listener);
         mWechat.setOnClickListener(listener);
         mBankCard.setOnClickListener(listener);
         mOther.setOnClickListener(listener);
+        mMember.setOnClickListener(listener);
+        mCoupon.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onPayWaySelected(false, getPayWay(mCoupon));
+            }
+        });
 
         mCombineCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -91,16 +105,19 @@ public class PayWayView extends ConstraintLayout {
             }
         });
 
-
+        mMember.setVisibility(GONE);
         mBankCard.setVisibility(GONE);
         mOther.setVisibility(GONE);
+        mCoupon.setVisibility(GONE);
 
         mButtons = new ArrayList<>();
         mButtons.add(mCash);
         mButtons.add(mAlipay);
         mButtons.add(mWechat);
+        mButtons.add(mMember);
         mButtons.add(mBankCard);
         mButtons.add(mOther);
+        mButtons.add(mCoupon);
 
         mSelected = mCash;
         mSelected.setSelected(true);
@@ -117,7 +134,6 @@ public class PayWayView extends ConstraintLayout {
     private OnClickListener listener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-
             Button clicked = (Button) view;
 
             if (mCombineCheckBox.isChecked()) {
@@ -159,10 +175,14 @@ public class PayWayView extends ConstraintLayout {
                 return WAY_ALIPAY;
             case R.id.btn_wechat:
                 return WAY_WECHAT;
+            case R.id.btn_member:
+                return WAY_MEMBER;
             case R.id.btn_bank_card:
                 return WAY_BANK_CARD;
             case R.id.btn_other:
                 return WAY_OTHER;
+            case R.id.btn_coupon:
+                return WAY_COUPON;
             default:
                 return WAY_CASH;
         }
