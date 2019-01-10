@@ -137,4 +137,8 @@ public class UserGoodsScreen extends Presentation {
     public void setOrdersData(List<GoodsEntity<GoodsResponse>> goodsEntities) {
         mUserGoodsAdapter.addData(goodsEntities);
     }
+
+    public void notifyAdapter() {
+        mUserGoodsAdapter.notifyDataSetChanged();
+    }
 }

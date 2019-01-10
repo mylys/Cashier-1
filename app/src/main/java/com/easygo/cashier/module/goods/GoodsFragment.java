@@ -30,6 +30,8 @@ import com.easygo.cashier.adapter.GoodsMultiItemAdapter;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.bean.GoodsResponse;
+import com.easygo.cashier.bean.MemberDayInfo;
+import com.easygo.cashier.bean.MemberDiscountInfo;
 import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
@@ -115,9 +117,6 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     private ChooseMembersDialog membersDialog;
     private ChooseCouponsDialog couponsDialog;
     private ScanCodeDialog scanCodeDialog;
-
-    /* 是否为会员 */
-    private boolean isMember = false;
 
     /**
      * 商品数据
@@ -660,7 +659,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 couponsDialog.setTitle(getResources().getString(R.string.text_coupon_coupon));
                 break;
             case R.id.iv_cancel_member:
+                Configs.isMember = false;
                 setHide(clMember);
+                updateMebmerInfo(null);
                 break;
             case R.id.iv_cancel_coupon:
                 setHide(clCoupon);
@@ -668,14 +669,14 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         }
     }
 
-    private void setHide(ConstraintLayout constraintLayout){
-        if (constraintLayout == clMember){
-            if (clCoupon.getVisibility() == View.VISIBLE){
+    private void setHide(ConstraintLayout constraintLayout) {
+        if (constraintLayout == clMember) {
+            if (clCoupon.getVisibility() == View.VISIBLE) {
                 clMember.setVisibility(View.GONE);
                 return;
             }
-        }else if (constraintLayout == clCoupon){
-            if (clMember.getVisibility() == View.VISIBLE){
+        } else if (constraintLayout == clCoupon) {
+            if (clMember.getVisibility() == View.VISIBLE) {
                 clCoupon.setVisibility(View.GONE);
                 return;
             }
@@ -683,7 +684,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         clExtraInfo.setVisibility(View.GONE);
     }
 
-    public void setShow(ConstraintLayout constraintLayout){
+    public void setShow(ConstraintLayout constraintLayout) {
         constraintLayout.setVisibility(View.VISIBLE);
         clExtraInfo.setVisibility(View.VISIBLE);
     }
@@ -832,8 +833,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     @Override
     public void getMemberSuccess(MemberInfo memberInfo, String barcode, String phone) {
+        Configs.isMember = true;
         if (!TextUtils.isEmpty(barcode)) {
-            isMember = true;
             Configs.memberInfo = memberInfo;
             updateMebmerInfo(memberInfo);
         } else if (!TextUtils.isEmpty(phone)) {
@@ -848,13 +849,43 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     @Override
     public void getMemberFailed(Map<String, Object> map, String barcode, String phone) {
         if (!TextUtils.isEmpty(barcode)) {
-            isMember = false;
+            Configs.isMember = false;
             showScanCodeDialog();
         } else if (!TextUtils.isEmpty(phone)) {
             if (membersDialog != null && membersDialog.isShow()) {
                 membersDialog.setNewData(new ArrayList<MemberInfo>());
             }
         }
+    }
+
+    @Override
+    public void getMemberDaySuccess(List<MemberDayInfo> memberDayInfos) {
+        if (memberDayInfos != null){
+            if (memberDayInfos.size() == 0){
+                return;
+            }
+            showToast("有会员日活动");
+        }
+    }
+
+    @Override
+    public void getMemberDayFailed(Map<String, Object> map) {
+        Log.e(TAG,"getMemberDayFailed: 无会员日活动");
+    }
+
+    @Override
+    public void getMemberDiscountSuccess(List<MemberDiscountInfo> memberDiscountInfos) {
+        if (memberDiscountInfos != null){
+            if (memberDiscountInfos.size() == 0){
+                return;
+            }
+            showToast("有会员折扣");
+        }
+    }
+
+    @Override
+    public void getMemberDiscountFailed(Map<String, Object> map) {
+        Log.e(TAG,"getMemberDiscountFailed: 无会员折扣");
     }
 
     @Override
@@ -905,9 +936,39 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     }
 
     public void updateMebmerInfo(MemberInfo info) {
-        setShow(clMember);
-        tvMember.setText(info.getNick_name());
-        tvBalance.setText("￥" + info.getWallet());
-        tvIntegral.setText(info.getIntegral() + "");
+        if (Configs.isMember) {
+            setShow(clMember);
+            tvMember.setText(info.getNick_name());
+            tvBalance.setText("￥" + info.getWallet());
+            tvIntegral.setText(info.getIntegral() + "");
+        }
+
+        if (info == null){
+            if (mUserGoodsScreen != null){
+                mUserGoodsScreen.notifyAdapter();
+            }
+        }
+        mGoodsMultiItemAdapter.setMemberData();
+        updateTotalPrice();
+    }
+
+    private DecimalFormat df = new DecimalFormat("#0.00");
+
+    private void updateTotalPrice() {
+        float subtotal_price = 0;
+        for (GoodsEntity<GoodsResponse> entity : mGoodsMultiItemAdapter.getData()) {
+            if (Configs.isMember && entity.getData().isMemberPrice()) {
+                subtotal_price += Float.valueOf(entity.getData().getMembership_price()) * entity.getCount();
+            } else if (entity.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
+                subtotal_price += Float.valueOf(entity.getData().getProcess_price()) * entity.getCount();
+            } else {
+                subtotal_price += Float.valueOf(entity.getData().getPrice()) * entity.getCount();
+            }
+        }
+        tvTotalMoney.setText(df.format(subtotal_price));
+        mTotalMoney = subtotal_price;
+        if (mUserGoodsScreen != null){
+            mUserGoodsScreen.refreshPrice(mGoodsCount, mTotalMoney, mCoupon, mTotalMoney - mCoupon);
+        }
     }
 }

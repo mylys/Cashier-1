@@ -146,6 +146,9 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
             if (goodsRefundInfo.getRefund() == 0) {
                 goodsRefundInfo.setSelect(click);
             }
+            if (goodsRefundInfo.getType() != 1 || goodsRefundInfo.getType() != 3){
+                goodsRefundInfo.setRefund_num(goodsRefundInfo.getProduct_num() + "");
+            }
         }
         notifyDataSetChanged();
     }

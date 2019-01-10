@@ -30,6 +30,9 @@ public class Configs {
     /* 会员信息 */
     public static MemberInfo memberInfo;
 
+    /* 是否为会员 */
+    public static boolean isMember = false;
+
     /**
      * 打印机
      */

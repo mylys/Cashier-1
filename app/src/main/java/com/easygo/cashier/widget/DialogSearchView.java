@@ -59,6 +59,11 @@ public class DialogSearchView extends ConstraintLayout {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 ivClear.setVisibility(s.toString().length() != 0 ? VISIBLE : GONE);
+                if (s.toString().length() == 11){
+                    if (listener != null){
+                        listener.onSearchClick(editText.getText().toString().trim());
+                    }
+                }
             }
 
             @Override

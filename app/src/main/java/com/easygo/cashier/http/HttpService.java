@@ -7,6 +7,8 @@ import com.easygo.cashier.bean.HandoverResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
+import com.easygo.cashier.bean.MemberDayInfo;
+import com.easygo.cashier.bean.MemberDiscountInfo;
 import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
@@ -247,4 +249,13 @@ public interface HttpService {
      */
     @GET("/api/member/search")
     Observable<HttpResult<MemberInfo>> getMembers(@HeaderMap Map<String, String> header, @Query("phone_number") String phone_number, @Query("member_token") String member_token);
+
+    /*
+     * 会员日
+     */
+    @GET("/api/member/day")
+    Observable<HttpResult<List<MemberDayInfo>>> getMembersDay(@HeaderMap Map<String, String> header, @Query("shop_id") String shop_id, @Query("shop_sn") String shop_sn);
+
+    @GET("/api/member/discount")
+    Observable<HttpResult<List<MemberDiscountInfo>>> getMemberDiscount(@HeaderMap Map<String, String> header, @Query("shop_id") String shop_id, @Query("shop_sn") String shop_sn);
 }
