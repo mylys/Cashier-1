@@ -7,13 +7,17 @@ import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
+import com.easygo.cashier.module.promotion.base.BasePromotion;
 import com.easygo.cashier.module.promotion.base.IGoodsPromotion;
+import com.easygo.cashier.module.promotion.base.IPromotion;
 import com.easygo.cashier.module.promotion.base.PromotionGoods;
 import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsFulfilMoneyPromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsBundlePromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsNormalPromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsTimePromotion;
+import com.easygo.cashier.module.promotion.shop.ShopNormalPromotion;
+import com.easygo.cashier.module.promotion.shop.ShopTimePromotion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +44,10 @@ public class ActivitiesUtils {
      */
     private ArrayMap<Integer, BaseGoodsPromotion> needComputeMap = new ArrayMap<>();
 
+    /**
+     * 店铺促销对象集合
+     */
+    private List<BasePromotion> shopList = new ArrayList<>();
 
     private ActivitiesUtils() {}
 
@@ -132,6 +140,8 @@ public class ActivitiesUtils {
         //  1、遍历顾客所购商品
         for (int i = 0; i < size; i++) {
             GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
+            //置零
+            goodsEntity.getData().setDiscount_price("0.00");
             barcode = goodsEntity.getData().getBarcode();
 
             actvitity_id = -1;
@@ -148,16 +158,16 @@ public class ActivitiesUtils {
 
             List<GoodsActivityResponse.ActivitiesBean.GoodsBean> goodsBeans = promotion.getGoodsBeans();
             int goods_size = goodsBeans.size();
-            PromotionGoods promotionGoods = null;
+            PromotionGoods promotionGoods = new PromotionGoods();
             //  4、遍历活动中参与促销的商品 找到各有多少件、小计等相关数据
             for (int j = 0; j < goods_size; j++) {
                 GoodsActivityResponse.ActivitiesBean.GoodsBean goodsBean = goodsBeans.get(j);
                 //判断 比对成功
                 if(barcode.equals(goodsBean.getBarcode())) {
-                    promotionGoods = promotion.getPromotionGoods();
-                    if(promotionGoods == null) {
-                        promotionGoods = new PromotionGoods();
-                    }
+//                    promotionGoods = promotion.getPromotionGoods();
+//                    if(promotionGoods == null) {
+//                        promotionGoods = new PromotionGoods();
+//                    }
 
                     //设置数量、小计、位置等信息
                     PromotionGoods.GoodsBean good = new PromotionGoods.GoodsBean();
@@ -355,5 +365,36 @@ public class ActivitiesUtils {
 //        if()
     }
 
+    public void parseShop(ShopActivityResponse response) {
+
+        List<ShopActivityResponse.ListBean> list = response.getList();
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+            ShopActivityResponse.ListBean listBean = list.get(i);
+            int type = listBean.getType();
+
+            switch (type) {
+                case IPromotion.TYPE_NORMAL:
+                    ShopNormalPromotion normalPromotion = new ShopNormalPromotion();
+                    normalPromotion.setId(listBean.getId());
+                    normalPromotion.setName(listBean.getName());
+                    normalPromotion.setType(listBean.getType());
+                    List<ShopActivityResponse.ListBean.ConfigBean> config = listBean.getConfig();
+                    ShopActivityResponse.ListBean.ConfigBean configBean = config.get(0);
+                    normalPromotion.setCondition_value(Float.valueOf(configBean.getCondition_value()));
+//                    normalPromotion.setEffected_at(configBean.getEffected_at());
+//                    normalPromotion.setExpired_at(configBean.getExpired_at());
+
+                    shopList.add(normalPromotion);
+                    break;
+                case IPromotion.TYPE_TIME:
+                    ShopTimePromotion timePromotion = new ShopTimePromotion();
+                    shopList.add(timePromotion);
+                    break;
+            }
+
+        }
+
+    }
 
 }

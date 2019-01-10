@@ -292,7 +292,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
         final String barcode = good.getBarcode();
         final String price = good.getPrice();
-        float subtotal = Float.valueOf(price) * good_count;
+        float subtotal = Float.valueOf(price) * good_count - Float.valueOf(good.getDiscount_price());
         DecimalFormat df = new DecimalFormat("#0.00");
 
         helper.setText(R.id.tv_barcode, barcode)

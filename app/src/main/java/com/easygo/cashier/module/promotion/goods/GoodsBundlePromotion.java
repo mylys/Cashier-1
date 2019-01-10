@@ -92,40 +92,43 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
 
             //==============================================
 
-            int quotient;//商
-            int remain;//余
-            int min_quotient = total_count;
+            int index = find(total_count, temp);
 
-            int index = -1;
-            float mod_money;//总价改为
+            GoodsActivityResponse.ActivitiesBean.ConfigBean.ListBean current = temp.get(index);
+            int condition_value = Integer.valueOf(current.getCondition_value());
+            float offer_value = Float.valueOf(current.getOffer_value());
 
-            for (int i = 0; i < temp_size; i++) {
-                GoodsActivityResponse.ActivitiesBean.ConfigBean.ListBean listBean = temp.get(i);
-                int condition_value = Integer.valueOf(listBean.getCondition_value());
+            /**
+             * 8     满5件
+             *     A    4                   1
+             *     B    2
+             *     C    3
+             *
+             */
 
-                quotient = total_count / condition_value;
-
-                if(quotient < min_quotient) {
-                    //记录最小的商
-                    min_quotient = quotient;
-                    //记录总价改为
-                    mod_money = Float.valueOf(listBean.getOffer_value());
-                    //记录index
-                    index = i;
-                }
-            }
-
-            //已经找到
-
-
+            List<T> list = new ArrayList<>();
+            T t = new T();
 
             List<PromotionGoods.GoodsBean> goodsBeans = promotionGoods.getGoodsBeans();
             int goods_size = goodsBeans.size();
+            //记录 还差多少件满足
+            int subtract;
             for (int i = 0; i < goods_size; i++) {
                 PromotionGoods.GoodsBean goodsBean = goodsBeans.get(i);
 
-//                pro
+                int count = goodsBean.getCount();
+                T.Good good = new T.Good();
+                good.barcode = goodsBean.getBarcode();
+                good.price = goodsBean.getPrice();
+                if(condition_value > count) {
+                    good.count = count;
+                    good.subtotal = good.price * good.count;
 
+                    t.list.add(good);
+                    subtract = condition_value - count;
+                } else {
+                    subtract = condition_value - count;
+                }
 
 
             }
@@ -141,11 +144,16 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
      * @return
      */
     public int find(int count, List<GoodsActivityResponse.ActivitiesBean.ConfigBean.ListBean> list) {
-        int result = -1;
+        int index = -1;
 
 
-        int min_quotient;
-//        int
+        int min_quotient = count;
+
+        int quotient;
+        int remain;
+
+        boolean remain_is_zero = false;
+
 
         int size = list.size();
         List<Result> resultlist = new ArrayList<>(size);
@@ -153,18 +161,38 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
             GoodsActivityResponse.ActivitiesBean.ConfigBean.ListBean listBean = list.get(i);
             int condition_value = Integer.valueOf(listBean.getCondition_value());
 
-            resultlist.add(new Result(count / condition_value, count % condition_value));
+            quotient = count / condition_value;
+            remain = count % condition_value;
+
+            if(remain == 0) {
+                //余数等于0
+                remain_is_zero = true;
+                if(quotient < min_quotient) {
+                    min_quotient = quotient;
+                    index = i;
+                }
+            }
+
+
+            resultlist.add(new Result(quotient, remain));
         }
 
-        for (int i = 0; i < size; i++) {
-            Result result1 = resultlist.get(i);
-
+        if(remain_is_zero) {
+            return index;
         }
 
+        min_quotient = resultlist.get(0).quotient;
 
+        for (int i = 1; i < size; i++) {
+            Result result = resultlist.get(i);
 
+            if(result.quotient < min_quotient) {
+                min_quotient = result.quotient;
+                index = i;
+            }
+        }
 
-        return result;
+        return index;
     }
 
     public static class Result {
@@ -181,7 +209,7 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
     public static class T {
         private float total_money;
         private float total_promotion_money;
-        private List<Good> list;
+        private List<Good> list = new ArrayList<>();
 
         private static class Good {
 

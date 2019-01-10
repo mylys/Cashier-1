@@ -72,7 +72,7 @@ public class ShopActivityResponse {
             private String effected_at;
             private String expired_at;
             private String condition_value;
-            private String offer_type;
+            private int offer_type;
             private String offer_value;
 
             public String getEffected_at() {
@@ -99,11 +99,11 @@ public class ShopActivityResponse {
                 this.condition_value = condition_value;
             }
 
-            public String getOffer_type() {
+            public int getOffer_type() {
                 return offer_type;
             }
 
-            public void setOffer_type(String offer_type) {
+            public void setOffer_type(int offer_type) {
                 this.offer_type = offer_type;
             }
 
