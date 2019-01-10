@@ -48,6 +48,17 @@
         app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
 
     <TextView
+        android:id="@+id/tv_member_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/GoodsListStyle"
+        android:layout_marginStart="@dimen/margin_1025"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
+
+    <TextView
         android:id="@+id/tv_coupon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

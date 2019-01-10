@@ -109,6 +109,12 @@ public class FunctionListDialog extends DialogFragment {
             integers.add(0);
         }
 
+        integers.add(1);
+        integers.add(3);
+        integers.add(4);
+        integers.add(6);
+        integers.add(7);
+
         //分割线
         DividerItemDecoration horizontalDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL);
         DividerItemDecoration verticalDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);

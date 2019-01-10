@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.Events;
+import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.R;
 import com.easygo.cashier.SoftKeyboardUtil;
 import com.easygo.cashier.bean.MemberInfo;
@@ -84,7 +85,7 @@ public class ChooseMembersDialog extends BaseDialog {
                         .getView(R.id.tv_process).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Configs.memberInfo = item;
+                        MemberUtils.memberInfo = item;
                         EventUtils.post(Events.MEMBER_INFO, item);
                         searchView.setContent("");
                         dialogDismiss();

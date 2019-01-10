@@ -145,9 +145,10 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
             if (goodsRefundInfo.getRefund() == 0) {
                 goodsRefundInfo.setSelect(click);
-            }
-            if (goodsRefundInfo.getType() != 1 || goodsRefundInfo.getType() != 3){
-                goodsRefundInfo.setRefund_num(goodsRefundInfo.getProduct_num() + "");
+                if (goodsRefundInfo.getType() != 1 || goodsRefundInfo.getType() != 3) {
+                    goodsRefundInfo.setRefund_num(goodsRefundInfo.getProduct_num() + "");
+                    goodsRefundInfo.setRefund_subtotal(goodsRefundInfo.getProduct_subtotal());
+                }
             }
         }
         notifyDataSetChanged();

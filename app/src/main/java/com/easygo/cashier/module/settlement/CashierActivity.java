@@ -129,7 +129,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     protected void init() {
         ARouter.getInstance().inject(this);
 
-        payWayView.setPayWayShow(new int[]{0, 1, 2, 3, 6});
+        payWayView.setPayWayShow(new int[]{0, 1, 2});
         settlementView = SettlementView.create(this);
         ((FrameLayout) findViewById(R.id.framelayout)).addView(settlementView);
 

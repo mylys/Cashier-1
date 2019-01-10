@@ -120,7 +120,7 @@ public class UserGoodsScreen extends Presentation {
         tvProductPreferential.setText("￥" + df.format(coupon));
         tvTotalPrice.setText("￥" + df.format(real_pay));
 
-
+        notifyAdapter();
     }
 
     public void clear() {
