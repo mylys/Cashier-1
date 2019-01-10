@@ -104,12 +104,14 @@ public class GoodsActivityResponse {
              * condition_value : 0.00
              * offer_type : 2
              * offer_value : 10.00
+             * offer_value : 10.00
              */
 
             private int condition_type;
             private String condition_value;
             private int offer_type;
             private String offer_value;
+            private List<ListBean> list;
 
             public int getCondition_type() {
                 return condition_type;
@@ -141,6 +143,82 @@ public class GoodsActivityResponse {
 
             public void setOffer_value(String offer_value) {
                 this.offer_value = offer_value;
+            }
+
+            public static class ListBean {
+
+                /**
+                 * barcode : 4800116018021
+                 * effected_at ：10:00:01
+                 * expired_at ：11:24:00
+                 * offer_type ：1
+                 * condition_value : 3
+                 * offer_value : 3.33
+                 */
+
+                private String barcode;
+                private String effected_at;
+                private String expired_at;
+                private String offer_type;
+                private String condition_value;
+                private String offer_value;
+
+
+                public String getEffected_at() {
+                    return effected_at;
+                }
+
+                public void setEffected_at(String effected_at) {
+                    this.effected_at = effected_at;
+                }
+
+                public String getExpired_at() {
+                    return expired_at;
+                }
+
+                public void setExpired_at(String expired_at) {
+                    this.expired_at = expired_at;
+                }
+
+                public String getOffer_type() {
+                    return offer_type;
+                }
+
+                public void setOffer_type(String offer_type) {
+                    this.offer_type = offer_type;
+                }
+
+                public String getBarcode() {
+                    return barcode;
+                }
+
+                public void setBarcode(String barcode) {
+                    this.barcode = barcode;
+                }
+
+                public String getCondition_value() {
+                    return condition_value;
+                }
+
+                public void setCondition_value(String condition_value) {
+                    this.condition_value = condition_value;
+                }
+
+                public String getOffer_value() {
+                    return offer_value;
+                }
+
+                public void setOffer_value(String offer_value) {
+                    this.offer_value = offer_value;
+                }
+            }
+
+            public List<ListBean> getList() {
+                return list;
+            }
+
+            public void setList(List<ListBean> list) {
+                this.list = list;
             }
         }
 

@@ -23,13 +23,16 @@ public class ShopNormalPromotion extends BasePromotion implements IShopPromotion
 
     @Override
     public float getPromotionMoney(float money) {
+        if(!isMeetCondition(money)) {
+            return 0f;
+        }
         switch (getOffer_type()) {
             case OFFER_TYPE_MONEY:
                 return offer_value;
             case OFFER_TYPE_RATIO:
                 return money * (offer_value / 100f);
             default:
-                return 0;
+                return 0f;
         }
     }
 }

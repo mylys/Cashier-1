@@ -34,7 +34,38 @@ public interface IPromotion {
     int TYPE_BUNDLE = 4;
 
 
-    /**获取促销金额*/
-    float getPromotionMoney(float money);
+
+
+
+
+
+
+    String getName();
+    void setName(String name);
+
+    int getId();
+    void setId(int id);
+
+    int getType();
+    void setType(int type);
+
+    long getEffected_at();
+    void setEffected_at(long effected_at);
+
+    long getExpired_at();
+    void setExpired_at(long expired_at);
+
+    int getCondition_type();
+    void setCondition_type(int condition_type);
+
+    float getCondition_value();
+    void setCondition_value(float condition_value);
+
+    int getOffer_type();
+    void setOffer_type(int offer_type);
+
+    float getOffer_value();
+    void setOffer_value(float offer_value);
+
 
 }

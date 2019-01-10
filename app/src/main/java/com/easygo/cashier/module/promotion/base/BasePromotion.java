@@ -1,6 +1,6 @@
 package com.easygo.cashier.module.promotion.base;
 
-public class BasePromotion {
+public class BasePromotion implements IPromotion{
 
     /**促销名称*/
     protected String name;
@@ -28,6 +28,11 @@ public class BasePromotion {
     /**促销金额或者比例， 根据促销类型决定*/
     protected float offer_value;
 
+
+    @Override
+    public int getPromotionClassify() {
+        return IPromotion.PROMOTION_SHOP;
+    }
 
     public String getName() {
         return name;

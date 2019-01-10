@@ -26,6 +26,7 @@ public class GoodsResponse implements Serializable {
      * price : 5.50
      * discount_price : 0.00
      * membership_price : 0.00
+     * is_inventory_limit : 0
      * on_sale_count : 100
      * birthday_price : 0.00
      * sell_status : 1
@@ -52,6 +53,7 @@ public class GoodsResponse implements Serializable {
     private String price;
     private String discount_price;
     private String membership_price;
+    private int is_inventory_limit;
     private int on_sale_count;
     private String birthday_price;
     private int sell_status;
@@ -249,6 +251,14 @@ public class GoodsResponse implements Serializable {
 
     public void setMembership_price(String membership_price) {
         this.membership_price = membership_price;
+    }
+
+    public int getIs_inventory_limit() {
+        return is_inventory_limit;
+    }
+
+    public void setIs_inventory_limit(int is_inventory_limit) {
+        this.is_inventory_limit = is_inventory_limit;
     }
 
     public int getOn_sale_count() {

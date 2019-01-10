@@ -1,7 +1,11 @@
 package com.easygo.cashier.module.promotion.goods;
 
+import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsActivityResponse;
+import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.module.promotion.base.BasePromotion;
+import com.easygo.cashier.module.promotion.base.IPromotion;
+import com.easygo.cashier.module.promotion.base.PromotionGoods;
 
 import java.util.List;
 
@@ -15,6 +19,18 @@ public class BaseGoodsPromotion extends BasePromotion {
 
     /**参与促销的商品列表*/
     protected List<GoodsActivityResponse.ActivitiesBean.GoodsBean> goodsBeans;
+
+    /**用于时段、满额、捆绑促销 多条件的列表*/
+    protected List<GoodsActivityResponse.ActivitiesBean.ConfigBean.ListBean> listBeans;
+
+    /**顾客所购商品参与促销的商品信息*/
+    protected PromotionGoods promotionGoods;
+
+
+    @Override
+    public int getPromotionClassify() {
+        return IPromotion.PROMOTION_GOODS;
+    }
 
     /**是否在商品促销的生效时间内*/
     public boolean isInGoodsEffectedTime() {
@@ -45,5 +61,43 @@ public class BaseGoodsPromotion extends BasePromotion {
 
     public void setGoodsBeans(List<GoodsActivityResponse.ActivitiesBean.GoodsBean> goodsBeans) {
         this.goodsBeans = goodsBeans;
+    }
+
+    public List<GoodsActivityResponse.ActivitiesBean.ConfigBean.ListBean> getListBeans() {
+        return listBeans;
+    }
+
+    public void setListBeans(List<GoodsActivityResponse.ActivitiesBean.ConfigBean.ListBean> listBeans) {
+        this.listBeans = listBeans;
+    }
+
+    public PromotionGoods getPromotionGoods() {
+        return promotionGoods;
+    }
+
+    public void setPromotionGoods(PromotionGoods promotionGoods) {
+        this.promotionGoods = promotionGoods;
+    }
+
+    public void computePromotionGoods() {
+        if(promotionGoods != null) {
+            List<PromotionGoods.GoodsBean> goodsBeans = promotionGoods.getGoodsBeans();
+            int size = goodsBeans.size();
+            int total_count = 0;
+            float total_subtotal = 0;
+
+            for (int i = 0; i < size; i++) {
+                PromotionGoods.GoodsBean goodsBean = goodsBeans.get(i);
+                total_count += goodsBean.getCount();
+                total_subtotal += goodsBean.getSubtotal();
+            }
+            promotionGoods.setTotal_count(total_count);
+            promotionGoods.setTotal_money(total_subtotal);
+        }
+    }
+
+    /**计算促销金额*/
+    public void computePromotionMoney(List<GoodsEntity<GoodsResponse>> data) {
+
     }
 }

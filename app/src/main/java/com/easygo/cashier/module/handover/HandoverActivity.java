@@ -17,6 +17,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
+import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.HandoverResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
 import com.easygo.cashier.module.login.LoginActivity;
@@ -28,6 +29,7 @@ import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -340,7 +342,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
 
         StringBuilder sb = new StringBuilder();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-
+        DecimalFormat df = new DecimalFormat("0.00");
 
         sb.append(PrintHelper.CB_left).append(Configs.shop_name).append(PrintHelper.CB_right).append(PrintHelper.BR)
                 .append("时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
@@ -354,7 +356,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
         float total_money = 0;
         for (int i = 0; i < size; i++) {
             HandoverSaleResponse saleResponse = data.get(i);
-            count += Integer.valueOf(saleResponse.getCount());
+            count += Integer.valueOf(saleResponse.getQuantity());
             total_money += saleResponse.getMoney();
 
             sb.append(i+1).append(".")
@@ -362,12 +364,12 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
             .append(saleResponse.getG_c_name()).append("   ").append(PrintHelper.BR)
             .append("            ")
             .append(saleResponse.getSell_price()).append("   ")
-            .append(saleResponse.getCount()).append("   ")
-            .append(saleResponse.getMoney()).append(PrintHelper.BR);
+            .append(saleResponse.getCount()).append(saleResponse.getType() == GoodsResponse.type_weight?"g": "").append("   ")
+            .append(df.format(saleResponse.getMoney())).append(PrintHelper.BR);
         }
         sb.append("--------------------------------").append(PrintHelper.BR)
         .append("总数量：").append(count).append(PrintHelper.BR)
-        .append("总金额：").append(total_money).append(PrintHelper.BR);
+        .append("总金额：").append(df.format(total_money)).append(PrintHelper.BR);
 
 
         Log.i(TAG, "printHandoverSaleList: sb -> " + sb.toString());

@@ -96,6 +96,7 @@ public class HandoverView extends FrameLayout {
         float cash_change = result.getCash_change();
 
         tvReceipts.setText(df.format(cash_money + cash_change));
+        tvChange.setText(df.format(cash_change));
         tvCashRefund.setText(df.format(result.getCash_refund()));
 
     }

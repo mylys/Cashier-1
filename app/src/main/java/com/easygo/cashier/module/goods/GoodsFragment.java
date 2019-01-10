@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.easygo.cashier.ActivitiesUtils;
 import com.easygo.cashier.BarcodeUtils;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
@@ -261,6 +262,11 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 for (GoodsResponse goodsResponse : processing_list) {
                     Log.i(TAG, "onProcessingClicked: name - " + goodsResponse.getG_sku_name());
                 }
+            }
+
+            @Override
+            public void onSaleCountNotEnough() {
+                showToast("商品库存不足");
             }
 
             @Override
@@ -624,6 +630,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         }
 
         mGoodWeight = 0;
+
+//        ActivitiesUtils.getInstance().promotion(mData);
     }
 
     public int getAdapterSize() {
@@ -729,6 +737,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     @Override
     public void goodsActivitySuccess(GoodsActivityResponse result) {
         Log.i(TAG, "goodsActivitySuccess: 商品促销成功");
+
+        ActivitiesUtils.getInstance().parseGoods(result);
+
     }
 
     @Override

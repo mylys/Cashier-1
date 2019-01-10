@@ -304,11 +304,16 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                             mData.remove(item);
                             notifyItemRemoved(helper.getAdapterPosition());
                         } else {
-                            if(helper.getItemViewType() == GoodsEntity.TYPE_GOODS
+                            if(good.getIs_inventory_limit() == 1 && helper.getItemViewType() == GoodsEntity.TYPE_GOODS
                                     &&  count > good.getOn_sale_count()) {
                                 //数量大于在售数量了
                                 count--;
                                 countTextView.setCount(count + "");
+
+                                if(mListener != null) {
+                                    mListener.onSaleCountNotEnough();
+                                }
+
                             }
 
                             item.setCount(count);
@@ -504,6 +509,8 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     public interface OnItemListener {
         void onPriceChange(float price, int count, float coupon);
         void onProcessingClicked(int position, GoodsResponse cur_processing, List<GoodsResponse> processing_list);
+        void onSaleCountNotEnough();
+
 
         //用于 用户副屏
         /**点击加工选项时*/
