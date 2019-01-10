@@ -1,7 +1,10 @@
 package com.easygo.cashier.module.goods;
 
+import com.easygo.cashier.Configs;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
+import com.easygo.cashier.bean.MemberDayInfo;
+import com.easygo.cashier.bean.MemberDiscountInfo;
 import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
@@ -159,5 +162,39 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
                     }
                 }
         );
+    }
+
+    @Override
+    public void getMemberDay() {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+        subscribeAsyncToResult(HttpAPI.getInstance().httpService().getMembersDay(header, null, Configs.shop_sn),
+                new BaseResultObserver<List<MemberDayInfo>>() {
+                    @Override
+                    protected void onSuccess(List<MemberDayInfo> result) {
+                        mView.getMemberDaySuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.getMemberDayFailed(map);
+                    }
+                });
+    }
+
+    @Override
+    public void getMemberDiscount() {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+        subscribeAsyncToResult(HttpAPI.getInstance().httpService().getMemberDiscount(header, null, Configs.shop_sn),
+                new BaseResultObserver<List<MemberDiscountInfo>>() {
+                    @Override
+                    protected void onSuccess(List<MemberDiscountInfo> result) {
+                        mView.getMemberDiscountSuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.getMemberDiscountFailed(map);
+                    }
+                });
     }
 }

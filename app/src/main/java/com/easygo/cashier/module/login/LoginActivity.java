@@ -334,8 +334,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         if (TextUtils.isEmpty(Configs.shop_sn)) {
 
             //获取shop_sn
-            mPresenter.init(DeviceUtils.getMacAddress());
-//            mPresenter.init("08:ea:40:36:4f:3b");
+//            mPresenter.init(DeviceUtils.getMacAddress());
+            mPresenter.init("08:ea:40:36:4f:3b");
         }
 
     }

@@ -3,6 +3,7 @@ package com.easygo.cashier.adapter;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.easygo.cashier.Configs;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.widget.CountTextView;
@@ -46,8 +47,17 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
                 .setText(R.id.tv_goods_name, good.getG_sku_name())
                 .setText(R.id.tv_price, String.valueOf(price))
                 .setText(R.id.tv_coupon, String.valueOf(good.getDiscount_price()))
-                .setText(R.id.tv_subtotal, String.valueOf(df.format(subtotal)));
+                .setText(R.id.tv_subtotal, String.valueOf(df.format(subtotal)))
+                .setText(R.id.tv_member_price,"0.00");
 
+        float member_price = Float.parseFloat(good.getMembership_price()) * good_count;
+        float subtotal_member = (Float.parseFloat(price) - Float.parseFloat(good.getMembership_price())) * good_count;
+        if (Configs.isMember && good.isMemberPrice()) {
+            subtotal = member_price;
+            helper.setText(R.id.tv_subtotal, df.format(subtotal));
+            helper.setText(R.id.tv_coupon,df.format(subtotal_member));
+            helper.setText(R.id.tv_member_price,good.getMembership_price());
+        }
 
         switch (helper.getItemViewType()) {
             case GoodsEntity.TYPE_GOODS://普通商品

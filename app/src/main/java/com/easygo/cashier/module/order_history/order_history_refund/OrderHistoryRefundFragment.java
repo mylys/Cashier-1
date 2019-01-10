@@ -2,6 +2,7 @@ package com.easygo.cashier.module.order_history.order_history_refund;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -212,6 +213,10 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         searchView.setOnSearchListenerClick(new MySearchView.OnSearhListenerClick() {
             @Override
             public void onSearch(String content) {
+                if (content.length() == 0){
+                    adapter.setNewData(infoList);
+                    return;
+                }
                 ArrayList<GoodsRefundInfo> infos = new ArrayList<>();
                 for (GoodsRefundInfo info : adapter.getData()) {
                     if (info.getProduct_name().contains(content)) {
@@ -291,19 +296,19 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
             ToastUtils.showToast(getActivity(), "退款金额不能为0");
             return;
         }
-        int edit_price;
+        float edit_price;
         if (editRefundcashPrice.getText().toString().contains(".")) {
             DecimalFormat df = new DecimalFormat("0.00");
             double db = Double.parseDouble(editRefundcashPrice.getText().toString());
-            edit_price = Integer.parseInt(df.format(db).replace(".", ""));
+            edit_price = Float.parseFloat(df.format(db).replace(".", ""));
         } else {
-            edit_price = Integer.parseInt(editRefundcashPrice.getText().toString() + "00");
+            edit_price = Float.parseFloat(editRefundcashPrice.getText().toString()) * 100;
         }
         if (edit_price > total_price) {
             ToastUtils.showToast(getActivity(), "输入金额不能大于商品总额");
             return;
         }
-        Bundle bundle = ConfirmDialog.getDataBundle(adapter.getTotalNum() + "", price, pay_way, false, "退货", "实退");
+        Bundle bundle = ConfirmDialog.getDataBundle(adapter.getTotalNum() + "", price, pay_way, false, "退货：", "实退：");
         confirmDialog = new ConfirmDialog();
         confirmDialog.setArguments(bundle);
         confirmDialog.setOnConfirmListener(new ConfirmDialog.OnConfirmListenr() {
@@ -316,8 +321,11 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     }
 
     public void onCommitOrder() {
-        int price = Integer.parseInt(editRefundcashPrice.getText().toString().replace(".", ""));
-        RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, price, refund_pay_type, adapter.getList());
+        DecimalFormat df = new DecimalFormat("0.00");
+        float price = Float.parseFloat(editRefundcashPrice.getText().toString());
+        String format = df.format(price);
+        int prices = Integer.parseInt(format.replace(".",""));
+        RequsetBody body = new RequsetBody(order_number, Configs.shop_sn,prices , refund_pay_type, adapter.getList());
         String json = GsonUtils.getInstance().getGson().toJson(body);
         mPresenter.post(json);
         btnRefund.setEnabled(false);

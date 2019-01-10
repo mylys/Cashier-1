@@ -14,8 +14,6 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.SoftKeyboardUtil;
 import com.easygo.cashier.TestUtils;
 import com.niubility.library.base.BaseDialog;
-import com.niubility.library.constants.Events;
-import com.niubility.library.utils.EventUtils;
 import com.niubility.library.utils.ToastUtils;
 
 /**

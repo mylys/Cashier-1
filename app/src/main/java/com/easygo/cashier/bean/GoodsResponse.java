@@ -60,6 +60,8 @@ public class GoodsResponse implements Serializable {
     private int status;
     private int is_weigh;
 
+
+    private boolean isMember;
     private int count;
     /**
      * 唯一识别码， 扫到商品时的时间戳（毫秒）
@@ -76,6 +78,13 @@ public class GoodsResponse implements Serializable {
     public static final int type_no_code = 2;
     public static final int type_processing = 3;
 
+    public boolean isMemberPrice() {
+        return isMember;
+    }
+
+    public void setMemberPrice(boolean member) {
+        isMember = member;
+    }
 
     public int getCount() {
         return count;

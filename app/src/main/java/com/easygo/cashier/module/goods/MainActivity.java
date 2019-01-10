@@ -367,14 +367,18 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
     @Override
     public void onEvent(BaseEvent event) {
         super.onEvent(event);
-        if (event.getString().equals(Events.ENTRY_ORDERS_VALUE)) {
-            EntryOrders orders = (EntryOrders) event.getObject();
-            goodsFragment.addData(orders);
-        } else if (event.getString().equals(Events.CLEAR_GOODS_INFO)) {
-            goodsFragment.clearInfo();
-        } else if (event.getString().equals(Events.MEMBER_INFO)){
-            MemberInfo info = (MemberInfo) event.getObject();
-            goodsFragment.updateMebmerInfo(info);
+        switch (event.getString()) {
+            case Events.ENTRY_ORDERS_VALUE:
+                EntryOrders orders = (EntryOrders) event.getObject();
+                goodsFragment.addData(orders);
+                break;
+            case Events.CLEAR_GOODS_INFO:
+                goodsFragment.clearInfo();
+                break;
+            case Events.MEMBER_INFO:
+                MemberInfo info = (MemberInfo) event.getObject();
+                goodsFragment.updateMebmerInfo(info);
+                break;
         }
     }
 }

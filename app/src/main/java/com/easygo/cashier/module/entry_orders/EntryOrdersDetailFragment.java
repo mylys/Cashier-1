@@ -16,8 +16,6 @@ import com.easygo.cashier.adapter.EntryOrdersGoodsAdapter;
 import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.widget.GeneraDialog;
 import com.niubility.library.base.BaseFragment;
-import com.niubility.library.constants.Events;
-import com.niubility.library.utils.EventUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
