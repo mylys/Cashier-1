@@ -10,6 +10,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.easygo.cashier.BarcodeUtils;
 import com.easygo.cashier.Configs;
+import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.widget.CountTextView;
@@ -243,14 +244,14 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                     case GoodsEntity.TYPE_NO_CODE:
                         count += good.getCount();
                         coupon += Double.valueOf(good.getData().getDiscount_price());
-                        p = Configs.isMember && member ?
+                        p = MemberUtils.isMember && member ?
                                 Double.valueOf(good.getData().getMembership_price()) : Double.valueOf(good.getData().getPrice());
                         price += p * good.getCount();
                         break;
                     case GoodsEntity.TYPE_WEIGHT:
                         count += 1;
                         coupon += Double.valueOf(good.getData().getDiscount_price());
-                        p = Configs.isMember && member ?
+                        p = MemberUtils.isMember && member ?
                                 Double.valueOf(good.getData().getMembership_price()) : Double.valueOf(good.getData().getPrice());
                         price += p * good.getCount();
                         break;
@@ -258,14 +259,14 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                         count += 1;
                         coupon += Double.valueOf(good.getData().getDiscount_price());
 //                        price += Double.parseDouble(good.getData().getProcess_price()) * good.getCount();
-                        p = Configs.isMember && member ?
+                        p = MemberUtils.isMember && member ?
                                 Double.valueOf(good.getData().getMembership_price()) : Double.valueOf(good.getData().getProcess_price());
                         price += p * good.getCount();
                         break;
                     case GoodsEntity.TYPE_PROCESSING:
                         count += 1;
                         coupon += Double.valueOf(good.getData().getDiscount_price());
-                        p = Configs.isMember && member ?
+                        p = MemberUtils.isMember && member ?
                                 Double.valueOf(good.getData().getMembership_price()) : Double.valueOf(good.getData().getPrice());
                         price += p * good.getCount();
                         //选择加工时 更新价格
@@ -273,7 +274,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                         if (processing != null) {//此时 选择了加工
                             count += 1;
                             coupon += Double.valueOf(processing.getDiscount_price());
-                            p = Configs.isMember && member ?
+                            p = MemberUtils.isMember && member ?
                                     Double.valueOf(good.getData().getMembership_price()) : Double.valueOf(good.getData().getProcess_price());
                             price += p * good.getCount();
                         }
@@ -300,15 +301,19 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 .setText(R.id.tv_price, String.valueOf(price))
                 .setText(R.id.tv_subtotal, String.valueOf(df.format(subtotal)))
                 .setText(R.id.tv_coupon, String.valueOf(good.getDiscount_price()))
-                .setText(R.id.tv_member_price,"0.00");
+                .setText(R.id.tv_member_price, "0.00");
 
         float member_price = Float.parseFloat(good.getMembership_price()) * good_count;
         float subtotal_member = (Float.parseFloat(price) - Float.parseFloat(good.getMembership_price())) * good_count;
-        if (Configs.isMember && good.isMemberPrice()) {
+        if (MemberUtils.isMember && good.isMemberPrice()) {
             subtotal = member_price;
             helper.setText(R.id.tv_subtotal, df.format(subtotal));
-            helper.setText(R.id.tv_coupon,df.format(subtotal_member));
-            helper.setText(R.id.tv_member_price,good.getMembership_price());
+            helper.setText(R.id.tv_coupon, df.format(subtotal_member));
+            helper.setText(R.id.tv_member_price, good.getMembership_price());
+        } else if (MemberUtils.isMember && MemberUtils.isMemberDay) {
+
+        } else if (MemberUtils.isMember && MemberUtils.isMemberDiscount) {
+
         }
 
         switch (helper.getItemViewType()) {
@@ -337,12 +342,12 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                             notifyItemRemoved(helper.getAdapterPosition());
                         } else {
                             if (good.getIs_inventory_limit() == 1 && helper.getItemViewType() == GoodsEntity.TYPE_GOODS
-                                    &&  count > good.getOn_sale_count()) {
+                                    && count > good.getOn_sale_count()) {
                                 //数量大于在售数量了
                                 count--;
                                 countTextView.setCount(count + "");
 
-                                if(mListener != null) {
+                                if (mListener != null) {
                                     mListener.onSaleCountNotEnough();
                                 }
 
@@ -364,9 +369,11 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 view.setCountChangeEnable(false);
 
                 String process_price = good.getProcess_price();
+                float coupon = (Float.parseFloat(process_price) - Float.parseFloat(good.getMembership_price())) * good_count;
                 subtotal = Float.valueOf(process_price);
-                if (Configs.isMember && good.isMemberPrice()) {
+                if (MemberUtils.isMember && good.isMemberPrice()) {
                     subtotal = Float.valueOf(good.getMembership_price()) * good_count;
+                    helper.setText(R.id.tv_coupon, df.format(coupon));
                 }
 
                 helper.setText(R.id.tv_price, String.valueOf(process_price))
@@ -554,6 +561,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         void onPriceChange(float price, int count, float coupon);
 
         void onProcessingClicked(int position, GoodsResponse cur_processing, List<GoodsResponse> processing_list);
+
         void onSaleCountNotEnough();
 
 

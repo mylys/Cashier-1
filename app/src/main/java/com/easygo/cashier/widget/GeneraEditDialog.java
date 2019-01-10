@@ -77,10 +77,6 @@ public class GeneraEditDialog extends BaseDialog {
         dialog_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editInput.getText().toString().length() == 0) {
-                    ToastUtils.showToast(getActivity(), "请输入备注");
-                    return;
-                }
                 listener.onContent(editInput.getText().toString().trim());
                 dialogDismiss();
             }

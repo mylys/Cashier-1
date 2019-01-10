@@ -24,6 +24,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.easygo.cashier.ActivitiesUtils;
 import com.easygo.cashier.BarcodeUtils;
 import com.easygo.cashier.Configs;
+import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
@@ -270,6 +271,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
 
     private void initView() {
+        /* 得到是否有会员日或者有会员折扣信息 */
+        mPresenter.getMemberDay();
+        mPresenter.getMemberDiscount();
+
         rvGoods.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         mGoodsMultiItemAdapter = new GoodsMultiItemAdapter();
@@ -665,7 +670,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 couponsDialog.setTitle(getResources().getString(R.string.text_coupon_coupon));
                 break;
             case R.id.iv_cancel_member:
-                Configs.isMember = false;
+                MemberUtils.isMember = false;
                 setHide(clMember);
                 updateMebmerInfo(null);
                 break;
@@ -844,9 +849,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     @Override
     public void getMemberSuccess(MemberInfo memberInfo, String barcode, String phone) {
-        Configs.isMember = true;
+        MemberUtils.isMember = true;
         if (!TextUtils.isEmpty(barcode)) {
-            Configs.memberInfo = memberInfo;
+            MemberUtils.memberInfo = memberInfo;
             updateMebmerInfo(memberInfo);
         } else if (!TextUtils.isEmpty(phone)) {
             if (membersDialog != null && membersDialog.isShow()) {
@@ -860,7 +865,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     @Override
     public void getMemberFailed(Map<String, Object> map, String barcode, String phone) {
         if (!TextUtils.isEmpty(barcode)) {
-            Configs.isMember = false;
+            MemberUtils.isMember = false;
             showScanCodeDialog();
         } else if (!TextUtils.isEmpty(phone)) {
             if (membersDialog != null && membersDialog.isShow()) {
@@ -875,13 +880,16 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             if (memberDayInfos.size() == 0){
                 return;
             }
-            showToast("有会员日活动");
+            if (MemberUtils.isDateMemberDay(memberDayInfos.get(0))) {
+                MemberUtils.isMemberDay = true;
+            }
         }
     }
 
     @Override
     public void getMemberDayFailed(Map<String, Object> map) {
         Log.e(TAG,"getMemberDayFailed: 无会员日活动");
+        MemberUtils.isMemberDay = false;
     }
 
     @Override
@@ -890,13 +898,15 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             if (memberDiscountInfos.size() == 0){
                 return;
             }
-            showToast("有会员折扣");
+            MemberUtils.isMemberDiscount = true;
+            MemberUtils.discount = (100 - memberDiscountInfos.get(0).getDiscount_amount()) / 100;
         }
     }
 
     @Override
     public void getMemberDiscountFailed(Map<String, Object> map) {
         Log.e(TAG,"getMemberDiscountFailed: 无会员折扣");
+        MemberUtils.isMemberDiscount = false;
     }
 
     @Override
@@ -947,7 +957,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     }
 
     public void updateMebmerInfo(MemberInfo info) {
-        if (Configs.isMember) {
+        if (MemberUtils.isMember) {
             setShow(clMember);
             tvMember.setText(info.getNick_name());
             tvBalance.setText("￥" + info.getWallet());
@@ -968,7 +978,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     private void updateTotalPrice() {
         float subtotal_price = 0;
         for (GoodsEntity<GoodsResponse> entity : mGoodsMultiItemAdapter.getData()) {
-            if (Configs.isMember && entity.getData().isMemberPrice()) {
+            if (MemberUtils.isMember && entity.getData().isMemberPrice()) {
                 subtotal_price += Float.valueOf(entity.getData().getMembership_price()) * entity.getCount();
             } else if (entity.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
                 subtotal_price += Float.valueOf(entity.getData().getProcess_price()) * entity.getCount();

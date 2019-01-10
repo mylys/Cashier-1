@@ -82,7 +82,7 @@ public class SettlementView extends FrameLayout {
     //结算数据
 
     //是否有优惠券
-    private boolean isCoupon = true;
+    private boolean isCoupon = false;
 
     public SettlementView(@NonNull Context context) {
         super(context);

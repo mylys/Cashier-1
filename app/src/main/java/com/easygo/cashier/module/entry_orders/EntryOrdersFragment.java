@@ -24,6 +24,7 @@ import com.niubility.library.utils.EventUtils;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -85,6 +86,7 @@ public class EntryOrdersFragment extends BaseFragment {
 
         list = GsonUtils.getInstance().getGson().fromJson(json, new TypeToken<List<EntryOrders>>() {
         }.getType());
+        Collections.reverse(list);
         adapter.setNewData(list);
         adapter.setItemClick();
 

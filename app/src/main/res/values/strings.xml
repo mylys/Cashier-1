@@ -108,7 +108,7 @@
     <string name="text_entry_orders_list">挂单列表</string>
     <string name="text_entry_orders_time">挂单时间：</string>
     <string name="text_note">备注：</string>
-    <string name="hint_entry_orders">请输入挂单备注</string>
+    <string name="hint_entry_orders">请输入挂单备注(非必填)</string>
 
     <!-- 退款 -->
     <string name="text_total_refund_product">共退货</string>
