@@ -10,7 +10,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.easygo.cashier.R;
-import com.easygo.cashier.module.promotion.base.Goods;
 
 import java.util.ArrayList;
 import java.util.List;
