@@ -2,6 +2,7 @@ package com.easygo.cashier.module.goods;
 
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
+import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
 import com.niubility.library.mvp.BaseContract;
@@ -26,6 +27,8 @@ public class GoodsContract {
         /**店铺促销*/
         void shop_activity(String shop_sn);
 
+        /* 是否为会员 */
+        void getMember(String phone,String barcode);
     }
 
     public interface IView extends BaseView {
@@ -47,6 +50,7 @@ public class GoodsContract {
         void shopActivitySuccess(ShopActivityResponse result);
         void shopActivityFailed(Map<String, Object> map);
 
-
+        void getMemberSuccess(MemberInfo memberInfo,String barcode,String phone);
+        void getMemberFailed(Map<String, Object> map,String barcode,String phone);
     }
 }

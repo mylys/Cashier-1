@@ -2,6 +2,7 @@ package com.easygo.cashier.module.goods;
 
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
+import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
 import com.easygo.cashier.http.HttpAPI;
@@ -56,7 +57,6 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
                     }
                 });
     }
-
 
 
     @Override
@@ -141,5 +141,23 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
                         mView.shopActivityFailed(map);
                     }
                 });
+    }
+
+    @Override
+    public void getMember(final String phone, final String barcode) {
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().getMembers(HttpClient.getInstance().getHeader(), phone, barcode),
+                new BaseResultObserver<MemberInfo>() {
+                    @Override
+                    protected void onSuccess(MemberInfo result) {
+                        mView.getMemberSuccess(result, barcode, phone);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.getMemberFailed(map, barcode, phone);
+                    }
+                }
+        );
     }
 }

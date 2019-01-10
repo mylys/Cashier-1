@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:show_right_account="true"
         app:show_title="true"
-        app:title_text="@string/text_entry_orders_list">
+        app:title_text="@string/text_order_history">
 
     </com.easygo.cashier.widget.MyTitleBar>
 

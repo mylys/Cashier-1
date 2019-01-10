@@ -9,6 +9,10 @@ public class BarcodeUtils {
         return code.startsWith("22");
     }
 
+    public static boolean isMember(String code){
+        return code.startsWith("16") || code.startsWith("18");
+    }
+
     public static String getProductCode(String code) {
         return code.subSequence(0, 7).toString();
     }

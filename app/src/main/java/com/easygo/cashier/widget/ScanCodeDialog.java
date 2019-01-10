@@ -84,6 +84,8 @@ public class ScanCodeDialog extends Dialog {
     public static final int STATUS_SCAN = 0;
     public static final int STATUS_SCANNING = 1;
     public static final int STATUS_SUCCESSFUL_RECEIPT = 2;
+    public static final int STATUS_MEMBER_NULL = 3;
+    public static final int STATUS_COUPON_NULL = 4;
 
     private int mStatus = STATUS_SCAN;
     public void setStatus(int status) {
@@ -112,15 +114,28 @@ public class ScanCodeDialog extends Dialog {
                 mLoading.setVisibility(View.GONE);
                 mTextView.setText(R.string.text_successful_receipt);
 
-//                mHandler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if(isShowing())
-//                            dismiss();
-//                    }
-//                }, 2000);
+                break;
+            case STATUS_MEMBER_NULL:
+            case STATUS_COUPON_NULL:
+                mLogo.setImageResource(R.drawable.icon_null);
+                mLogo.setVisibility(View.VISIBLE);
+                mClose.setVisibility(View.GONE);
+                mLoading.setVisibility(View.GONE);
+                mTextView.setText(status == STATUS_MEMBER_NULL ? R.string.text_no_member : R.string.text_no_coupon);
+
+                delayedDismiss(2000);
                 break;
         }
+    }
+
+    private void delayedDismiss(int delayed) {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (isShowing())
+                    dismiss();
+            }
+        }, delayed);
     }
 
     @Override
