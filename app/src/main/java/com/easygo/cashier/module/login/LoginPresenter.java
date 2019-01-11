@@ -63,16 +63,16 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
 
         subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().reserve_money(header, shop_sn, handover_id, resever_money),
-                new BaseResultObserver<InitResponse>() {
+                new BaseResultObserver<String>() {
                     @Override
-                    protected void onSuccess(InitResponse result) {
-                        mView.initSuccess(result);
+                    protected void onSuccess(String string) {
+                        mView.reseverMoneySuccess();
                     }
 
 
                     @Override
                     protected void onFailure(Map<String, Object> map) {
-                        mView.initFailed(map);
+                        mView.reseverMoneyFailed(map);
                     }
                 });
     }

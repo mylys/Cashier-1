@@ -578,11 +578,13 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                             return;
                         }
 
+                        String balance = MemberUtils.isMember ? tvBalance.getText().toString() : "";
                         ARouter.getInstance().build(ModulePath.settlement)
                                 .withString("admin_name", admin_name)
                                 .withInt("goods_count", mGoodsCount)
                                 .withFloat("coupon", mCoupon)
                                 .withFloat("total_money", mTotalMoney)
+                                .withString("member_balance",balance)
                                 .withSerializable("goods_data", (Serializable) mData)
                                 .navigation();
                         break;
@@ -603,6 +605,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             case R.id.btn_orders:
                 if (mGoodsMultiItemAdapter.getItemCount() <= 0) {
                     showToast("请先扫描商品");
+                    return;
+                }
+                if (MemberUtils.isMember){
+                    showToast("当前存在会员，请先删除会员信息");
                     return;
                 }
                 if (editDialog == null) {

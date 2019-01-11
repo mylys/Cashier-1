@@ -61,10 +61,12 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
                         .setText(R.id.tv_coupon, good.getDiscount_price())
                         .setText(R.id.tv_member_price, good.getMembership_price());
             } else if (MemberUtils.isMemberDay) {
-                if (Float.parseFloat(getTotalPrice()) >= MemberUtils.full){
-                    if (MemberUtils.full_type == 1){
-                        
-                    }
+                if (getFullTotalPrice() >= MemberUtils.full){
+                    float coupon = MemberUtils.getCoupon(getFullTotalPrice(), Float.parseFloat(price), good_count);
+                    subtotal = (Float.parseFloat(price) * good_count) - coupon;
+                    good.setDiscount_price(df.format(coupon));
+                    helper.setText(R.id.tv_subtotal, df.format(subtotal))
+                            .setText(R.id.tv_coupon, good.getDiscount_price());
                 }
             } else if (MemberUtils.isMemberDiscount) {
                 float subtotal_member = (float) (Float.parseFloat(price) - (MemberUtils.discount * Float.parseFloat(price))) * good_count;

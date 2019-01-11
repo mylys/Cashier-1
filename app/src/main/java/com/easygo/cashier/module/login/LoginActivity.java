@@ -33,6 +33,7 @@ import com.niubility.library.utils.DeviceUtils;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
+import com.niubility.library.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +74,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
             switch (msg.what) {
                 case MSG_GET_SHOP:
                     removeMessages(MSG_GET_SHOP);
-                    mPresenter.init(DeviceUtils.getMacAddress());
+//                    mPresenter.init(DeviceUtils.getMacAddress());
+                    mPresenter.init("08:ea:40:36:4f:3b");
                     break;
             }
         }
@@ -256,7 +258,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 //        if(true)
 //            return;
 
-        if(TextUtils.isEmpty(Configs.shop_sn)) {
+        if (TextUtils.isEmpty(Configs.shop_sn)) {
             showToast("初始化失败！");
             return;
         }
@@ -330,7 +332,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     protected void onStart() {
         super.onStart();
 
-
+        Configs.shop_sn = "";
         if (TextUtils.isEmpty(Configs.shop_sn)) {
 
             //获取shop_sn
@@ -370,21 +372,27 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         Configs.admin_name = result.getReal_name();
         Configs.menuBeanList = result.getMenu();
 
-//        if (is_reserve == 1) {
-//            if (dialog == null)
-//                dialog = new PettyCashDialog();
-//
-//            dialog.showCenter(this);
-//            dialog.setOnDialogClickListener(new PettyCashDialog.OnDialogClickListener() {
-//                @Override
-//                public void onClick(String content) {
-//                    mPresenter.resever_money(result.getSession_id(), Configs.shop_sn, result.getHandover_id(),
-//                            Integer.parseInt(content.replace(".", "")));
-//                }
-//            });
-//        } else {
+        if (is_reserve == 1) {
+            if (dialog == null)
+                dialog = new PettyCashDialog();
+
+            dialog.showCenter(this);
+            dialog.setOnDialogClickListener(new PettyCashDialog.OnDialogClickListener() {
+                @Override
+                public void onClick(String content) {
+                    String price;
+                    if (!content.contains(".")) {
+                        price = content + "00";
+                    } else {
+                        price = content.replace(".", "");
+                    }
+                    mPresenter.resever_money(result.getSession_id(), Configs.shop_sn, result.getHandover_id(),
+                            Integer.parseInt(price));
+                }
+            });
+        } else {
             login();
-//        }
+        }
     }
 
     private void login() {
@@ -400,8 +408,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     public void loginFailed(Map<String, Object> map) {
         btnLogin.setEnabled(true);
 //        if (HttpExceptionEngine.isBussinessError(map)) {
-            String error_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
-            showToast(error_msg);
+        String error_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
+        showToast(error_msg);
 //        }
 
         int errorType = (int) map.get(HttpExceptionEngine.ErrorType);
@@ -455,6 +463,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
     @Override
     public void reseverMoneyFailed(Map<String, Object> map) {
-        showToast("备用金 失败");
+        String errorMsg = (String) map.get(HttpExceptionEngine.ErrorMsg);
+        showToast(errorMsg);
     }
 }
