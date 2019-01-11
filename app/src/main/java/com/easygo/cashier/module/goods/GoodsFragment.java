@@ -76,6 +76,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     public static final String TAG = "GoodsFragment";
 
+    @BindView(R.id.tv_text_member_price)
+    TextView tvMemberText;
     @BindView(R.id.tv_integral)
     TextView tvIntegral;
     @BindView(R.id.tv_balance)
@@ -119,6 +121,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     private ChooseMembersDialog membersDialog;
     private ChooseCouponsDialog couponsDialog;
     private ScanCodeDialog scanCodeDialog;
+
+    DecimalFormat df = new DecimalFormat("0.00");
 
     /**
      * 商品数据
@@ -453,8 +457,6 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         mCoupon = coupon;
         float real_pay = price - coupon;
 
-        DecimalFormat df = new DecimalFormat("#0.00");
-
         tvTotalMoney.setText("￥" + df.format(price));
         tvCoupon.setText("￥" + df.format(coupon));
         if (mType == TYPE_GOODS) {
@@ -673,6 +675,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 MemberUtils.isMember = false;
                 setHide(clMember);
                 updateMebmerInfo(null);
+                setMemberVisiable(false);
                 break;
             case R.id.iv_cancel_coupon:
                 setHide(clCoupon);
@@ -898,14 +901,15 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             if (memberDiscountInfos.size() == 0){
                 return;
             }
+            Log.i(TAG,"getMemberDiscountSuccess：有会员固定折扣");
             MemberUtils.isMemberDiscount = true;
-            MemberUtils.discount = (100 - memberDiscountInfos.get(0).getDiscount_amount()) / 100;
+            MemberUtils.discount = (100 - memberDiscountInfos.get(0).getDiscount_amount()) * 0.01;
         }
     }
 
     @Override
     public void getMemberDiscountFailed(Map<String, Object> map) {
-        Log.e(TAG,"getMemberDiscountFailed: 无会员折扣");
+        Log.e(TAG,"getMemberDiscountFailed: 无会员固定折扣");
         MemberUtils.isMemberDiscount = false;
     }
 
@@ -926,9 +930,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     // 选择挂单添加item
     public void addData(EntryOrders entryOrders) {
-        tvTotalMoney.setText(entryOrders.getEntry_orders_total_price());
+        tvTotalMoney.setText("￥" + entryOrders.getEntry_orders_total_price());
         tvGoodsCount.setText(entryOrders.getEntry_orders_total_number());
-        tvCoupon.setText(entryOrders.getEntry_orders_total_price());
+        tvCoupon.setText("￥" + entryOrders.getEntry_orders_total_price());
         mGoodsMultiItemAdapter.setOrdersData(entryOrders.getGoodsEntityList());
 
         if (mUserGoodsScreen != null) {
@@ -965,31 +969,21 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         }
 
         if (info == null){
+            mCoupon = 0;
+            tvCoupon.setText("￥" + df.format(mCoupon));
             if (mUserGoodsScreen != null){
                 mUserGoodsScreen.notifyAdapter();
+                mUserGoodsScreen.setCoupon(df.format(mCoupon));
             }
         }
+        setMemberVisiable(true);
         mGoodsMultiItemAdapter.setMemberData();
-        updateTotalPrice();
     }
 
-    private DecimalFormat df = new DecimalFormat("#0.00");
-
-    private void updateTotalPrice() {
-        float subtotal_price = 0;
-        for (GoodsEntity<GoodsResponse> entity : mGoodsMultiItemAdapter.getData()) {
-            if (MemberUtils.isMember && entity.getData().isMemberPrice()) {
-                subtotal_price += Float.valueOf(entity.getData().getMembership_price()) * entity.getCount();
-            } else if (entity.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
-                subtotal_price += Float.valueOf(entity.getData().getProcess_price()) * entity.getCount();
-            } else {
-                subtotal_price += Float.valueOf(entity.getData().getPrice()) * entity.getCount();
-            }
-        }
-        tvTotalMoney.setText(df.format(subtotal_price));
-        mTotalMoney = subtotal_price;
+    public void setMemberVisiable(boolean visiable){
+        tvMemberText.setVisibility(visiable ? View.VISIBLE : View.GONE);
         if (mUserGoodsScreen != null){
-            mUserGoodsScreen.refreshPrice(mGoodsCount, mTotalMoney, mCoupon, mTotalMoney - mCoupon);
+            mUserGoodsScreen.setMemberVisiable(visiable);
         }
     }
 }

@@ -40,6 +40,7 @@
         app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_member_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -28,10 +28,11 @@ import java.util.List;
  * 5、无码商品
  */
 public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity<GoodsResponse>, BaseViewHolder> {
+    DecimalFormat df;
 
     public GoodsMultiItemAdapter() {
         super(null);
-
+        df = new DecimalFormat("0.00");
         addItemType(GoodsEntity.TYPE_GOODS, R.layout.item_goods);
         addItemType(GoodsEntity.TYPE_WEIGHT, R.layout.item_goods_weight);
         addItemType(GoodsEntity.TYPE_ONLY_PROCESSING, R.layout.item_goods);
@@ -294,26 +295,37 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         final String barcode = good.getBarcode();
         final String price = good.getPrice();
         float subtotal = Float.valueOf(price) * good_count;
-        DecimalFormat df = new DecimalFormat("#0.00");
 
+        good.setDiscount_price("0.00");
+        helper.getView(R.id.tv_member_price).setVisibility(MemberUtils.isMember ? View.VISIBLE : View.GONE);
         helper.setText(R.id.tv_barcode, barcode)
                 .setText(R.id.tv_goods_name, good.getG_sku_name())
                 .setText(R.id.tv_price, String.valueOf(price))
                 .setText(R.id.tv_subtotal, String.valueOf(df.format(subtotal)))
-                .setText(R.id.tv_coupon, String.valueOf(good.getDiscount_price()))
+                .setText(R.id.tv_coupon, good.getDiscount_price())
                 .setText(R.id.tv_member_price, "0.00");
 
-        float member_price = Float.parseFloat(good.getMembership_price()) * good_count;
-        float subtotal_member = (Float.parseFloat(price) - Float.parseFloat(good.getMembership_price())) * good_count;
-        if (MemberUtils.isMember && good.isMemberPrice()) {
-            subtotal = member_price;
-            helper.setText(R.id.tv_subtotal, df.format(subtotal));
-            helper.setText(R.id.tv_coupon, df.format(subtotal_member));
-            helper.setText(R.id.tv_member_price, good.getMembership_price());
-        } else if (MemberUtils.isMember && MemberUtils.isMemberDay) {
+        if (MemberUtils.isMember) {
+            if (good.isMemberPrice()) {                                              //普通会员价计算
+                float coupon = (Float.parseFloat(price) - Float.parseFloat(good.getMembership_price())) * good_count;
+                subtotal = Float.parseFloat(good.getMembership_price()) * good_count;
+                good.setDiscount_price(df.format(coupon));
+                helper.setText(R.id.tv_member_price, good.getMembership_price());
+            } else if (!good.isMemberPrice() && MemberUtils.isMemberDay) {           //会员日计算
+                if (getFullTotalPrice() >= MemberUtils.full){
+                    float coupon = MemberUtils.getCoupon(getFullTotalPrice(), Float.parseFloat(price), good_count);
+                    subtotal = (Float.parseFloat(price) * good_count) - coupon;
+                    good.setDiscount_price(df.format(coupon));
+                }
+            } else if (!MemberUtils.isMemberDay && MemberUtils.isMemberDiscount) {   //会员固定折扣计算
+                float coupon = (float) (Float.parseFloat(price) - (MemberUtils.discount * Float.parseFloat(price))) * good_count;
+                subtotal = (Float.parseFloat(price) * good_count) - coupon;
+                good.setDiscount_price(df.format(coupon));
+            }
 
-        } else if (MemberUtils.isMember && MemberUtils.isMemberDiscount) {
-
+            helper.setText(R.id.tv_subtotal, df.format(subtotal))
+                    .setText(R.id.tv_coupon, good.getDiscount_price());
+            mListener.onPriceChange(Float.parseFloat(getTotalPrice()), getTotalCount(), Float.parseFloat(getTotalCoupon()));
         }
 
         switch (helper.getItemViewType()) {
@@ -597,5 +609,50 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         if (data != null) {
             notifyDataSetChanged();
         }
+    }
+
+    public String getTotalCoupon() {
+        float coupon = 0;
+        for (GoodsEntity<GoodsResponse> entity : mData) {
+            GoodsResponse good = entity.getData();
+            coupon += Float.parseFloat(good.getDiscount_price());
+        }
+        return df.format(coupon);
+    }
+
+    public String getTotalPrice() {
+        float total_price = 0;
+        for (GoodsEntity<GoodsResponse> entity : mData) {
+            GoodsResponse good = entity.getData();
+            if (entity.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
+                total_price += Float.parseFloat(good.getProcess_price()) * entity.getCount();
+            } else {
+                total_price += Float.parseFloat(good.getPrice()) * entity.getCount();
+            }
+        }
+        return df.format(total_price);
+    }
+
+    public Float getFullTotalPrice(){
+        float total_price = 0;
+        for (GoodsEntity<GoodsResponse> entity : mData) {
+            GoodsResponse good = entity.getData();
+            if (!good.isMemberPrice()) {
+                if (entity.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
+                    total_price += Float.parseFloat(good.getProcess_price()) * entity.getCount();
+                } else {
+                    total_price += Float.parseFloat(good.getPrice()) * entity.getCount();
+                }
+            }
+        }
+        return total_price;
+    }
+
+    public int getTotalCount() {
+        int count = 0;
+        for (GoodsEntity<GoodsResponse> entity : mData) {
+            count += entity.getCount();
+        }
+        return count;
     }
 }

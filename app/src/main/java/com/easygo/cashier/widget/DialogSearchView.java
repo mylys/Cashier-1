@@ -22,7 +22,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 public class DialogSearchView extends ConstraintLayout {
     private EditText editText;
     private ImageView ivClear;
-    private TextView tvSearch;
     private OnFocuChangeListener listener;
 
     public interface OnFocuChangeListener{
@@ -48,7 +47,6 @@ public class DialogSearchView extends ConstraintLayout {
         View mView = LayoutInflater.from(context).inflate(R.layout.layout_dialog_search_view, this, true);
         editText = mView.findViewById(R.id.edit_search_phone);
         ivClear = mView.findViewById(R.id.iv_clear);
-        tvSearch = mView.findViewById(R.id.tv_search);
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -58,6 +56,9 @@ public class DialogSearchView extends ConstraintLayout {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() > 11){
+                    return;
+                }
                 ivClear.setVisibility(s.toString().length() != 0 ? VISIBLE : GONE);
                 if (s.toString().length() == 11){
                     if (listener != null){
@@ -79,16 +80,6 @@ public class DialogSearchView extends ConstraintLayout {
             }
         });
 
-        tvSearch.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(getContent())){
-                    return;
-                }
-                listener.onSearchClick(getContent());
-            }
-        });
-
         ivClear.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,10 +93,6 @@ public class DialogSearchView extends ConstraintLayout {
             return editText;
         }
         return null;
-    }
-
-    public void setVisiable(boolean visiable){
-        tvSearch.setVisibility(visiable ? View.VISIBLE : View.GONE);
     }
 
     public String getContent(){

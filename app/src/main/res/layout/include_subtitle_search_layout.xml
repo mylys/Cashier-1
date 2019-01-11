@@ -58,7 +58,6 @@
         android:textColor="@color/color_4cbbac"
         android:layout_marginEnd="@dimen/x42"
         android:background="@drawable/bg_btn_frame"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_choose_member"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -74,7 +73,6 @@
         android:textColor="@color/color_4cbbac"
         android:layout_marginEnd="@dimen/x42"
         android:background="@drawable/bg_btn_frame"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

@@ -137,7 +137,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:visibility="gone"
         android:id="@+id/btn_orders"
         android:layout_width="@dimen/x210"
         android:layout_height="@dimen/y90"

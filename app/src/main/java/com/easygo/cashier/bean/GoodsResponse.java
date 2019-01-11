@@ -60,7 +60,6 @@ public class GoodsResponse implements Serializable {
     private int status;
     private int is_weigh;
 
-
     private boolean isMember;
     private int count;
     /**
