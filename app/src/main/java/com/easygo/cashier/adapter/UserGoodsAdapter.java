@@ -42,22 +42,37 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
         final String barcode = good.getBarcode();
         final String price = good.getPrice();
         float subtotal = Float.valueOf(price) * good_count;
-        DecimalFormat df = new DecimalFormat("#0.00");
 
+        helper.getView(R.id.tv_member_price).setVisibility(MemberUtils.isMember ? View.VISIBLE : View.GONE);
         helper.setText(R.id.tv_barcode, barcode)
                 .setText(R.id.tv_goods_name, good.getG_sku_name())
                 .setText(R.id.tv_price, String.valueOf(price))
                 .setText(R.id.tv_coupon, String.valueOf(good.getDiscount_price()))
                 .setText(R.id.tv_subtotal, String.valueOf(df.format(subtotal)))
-                .setText(R.id.tv_member_price,"0.00");
+                .setText(R.id.tv_member_price, "0.00");
 
-        float member_price = Float.parseFloat(good.getMembership_price()) * good_count;
-        float subtotal_member = (Float.parseFloat(price) - Float.parseFloat(good.getMembership_price())) * good_count;
-        if (MemberUtils.isMember && good.isMemberPrice()) {
-            subtotal = member_price;
-            helper.setText(R.id.tv_subtotal, df.format(subtotal));
-            helper.setText(R.id.tv_coupon,df.format(subtotal_member));
-            helper.setText(R.id.tv_member_price,good.getMembership_price());
+        if (MemberUtils.isMember) {
+            if (good.isMemberPrice()) {
+                float member_price = Float.parseFloat(good.getMembership_price()) * good_count;
+                float subtotal_member = (Float.parseFloat(price) - Float.parseFloat(good.getMembership_price())) * good_count;
+                subtotal = member_price;
+                good.setDiscount_price(df.format(subtotal_member));
+                helper.setText(R.id.tv_subtotal, df.format(subtotal))
+                        .setText(R.id.tv_coupon, good.getDiscount_price())
+                        .setText(R.id.tv_member_price, good.getMembership_price());
+            } else if (MemberUtils.isMemberDay) {
+                if (Float.parseFloat(getTotalPrice()) >= MemberUtils.full){
+                    if (MemberUtils.full_type == 1){
+                        
+                    }
+                }
+            } else if (MemberUtils.isMemberDiscount) {
+                float subtotal_member = (float) (Float.parseFloat(price) - (MemberUtils.discount * Float.parseFloat(price))) * good_count;
+                subtotal = (Float.parseFloat(price) * good_count) - subtotal_member;
+                good.setDiscount_price(df.format(subtotal_member));
+                helper.setText(R.id.tv_subtotal, df.format(subtotal))
+                        .setText(R.id.tv_coupon, good.getDiscount_price());
+            }
         }
 
         switch (helper.getItemViewType()) {
@@ -78,7 +93,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
 
 
                 GoodsResponse processing = item.getProcessing();
-                if(processing != null) {//选择了加工方式
+                if (processing != null) {//选择了加工方式
 
                     //刷新数据
                     refreshPrcessingData(helper, processing);
@@ -112,11 +127,14 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
         }
 
     }
-    /**设置加工方式相关UI 可见性*/
+
+    /**
+     * 设置加工方式相关UI 可见性
+     */
     private void setProcessingLayout(BaseViewHolder helper, boolean showProcessing) {
 
-        helper.getView(R.id.view2).setVisibility(showProcessing? View.VISIBLE: View.GONE);
-        helper.getView(R.id.line).setVisibility(showProcessing? View.VISIBLE: View.GONE);
+        helper.getView(R.id.view2).setVisibility(showProcessing ? View.VISIBLE : View.GONE);
+        helper.getView(R.id.line).setVisibility(showProcessing ? View.VISIBLE : View.GONE);
 
         helper.setVisible(R.id.tv_text_processing_way, showProcessing)
                 .setVisible(R.id.tv_processing_name, showProcessing)
@@ -126,7 +144,10 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
                 .setVisible(R.id.tv_processing_count, showProcessing);
 
     }
-    /**刷新加工方式相关UI 数据*/
+
+    /**
+     * 刷新加工方式相关UI 数据
+     */
     private void refreshPrcessingData(BaseViewHolder helper, GoodsResponse processing) {
         DecimalFormat df = new DecimalFormat("#0.00");
         float processing_subtotal = Float.valueOf(processing.getProcess_price()) * processing.getCount();
@@ -146,6 +167,4 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
         //刷新价格
         refreshPrice();
     }
-
-
 }

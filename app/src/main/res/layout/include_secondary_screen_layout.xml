@@ -49,6 +49,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_text_member_price"
             style="@style/GoodsTitleStyle"
             android:layout_width="wrap_content"

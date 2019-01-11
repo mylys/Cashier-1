@@ -370,21 +370,21 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         Configs.admin_name = result.getReal_name();
         Configs.menuBeanList = result.getMenu();
 
-        if (is_reserve == 1) {
-            if (dialog == null)
-                dialog = new PettyCashDialog();
-
-            dialog.showCenter(this);
-            dialog.setOnDialogClickListener(new PettyCashDialog.OnDialogClickListener() {
-                @Override
-                public void onClick(String content) {
-                    mPresenter.resever_money(result.getSession_id(), Configs.shop_sn, result.getHandover_id(),
-                            Integer.parseInt(content.replace(".", "")));
-                }
-            });
-        } else {
+//        if (is_reserve == 1) {
+//            if (dialog == null)
+//                dialog = new PettyCashDialog();
+//
+//            dialog.showCenter(this);
+//            dialog.setOnDialogClickListener(new PettyCashDialog.OnDialogClickListener() {
+//                @Override
+//                public void onClick(String content) {
+//                    mPresenter.resever_money(result.getSession_id(), Configs.shop_sn, result.getHandover_id(),
+//                            Integer.parseInt(content.replace(".", "")));
+//                }
+//            });
+//        } else {
             login();
-        }
+//        }
     }
 
     private void login() {

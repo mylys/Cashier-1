@@ -63,7 +63,6 @@ public class ChooseMembersDialog extends BaseDialog {
         searchView = rootView.findViewById(R.id.search_view);
         ivCancel = rootView.findViewById(R.id.iv_cancel);
 
-        searchView.setVisiable(true);
         if (!TextUtils.isEmpty(title)) {
             dialog_title.setText(title);
         }

@@ -50,6 +50,7 @@
             style="@style/GoodsTitleStyle" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_text_member_price"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

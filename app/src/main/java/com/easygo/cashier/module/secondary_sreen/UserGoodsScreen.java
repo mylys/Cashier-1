@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
+import android.view.View;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
@@ -40,6 +41,8 @@ public class UserGoodsScreen extends Presentation {
     TextView tvProductPreferential;
     @BindView(R.id.tv_total_price)
     TextView tvTotalPrice;
+    @BindView(R.id.tv_text_member_price)
+    TextView tvTextMember;
     private UserGoodsAdapter mUserGoodsAdapter;
     private String admin_name;
 
@@ -140,5 +143,13 @@ public class UserGoodsScreen extends Presentation {
 
     public void notifyAdapter() {
         mUserGoodsAdapter.notifyDataSetChanged();
+    }
+
+    public void setMemberVisiable(boolean visiable){
+        tvTextMember.setVisibility(visiable ? View.VISIBLE : View.GONE);
+    }
+
+    public void setCoupon(String coupon){
+        tvProductPreferential.setText("￥" + coupon);
     }
 }
