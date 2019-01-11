@@ -22,6 +22,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.Events;
+import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.Test;
@@ -75,6 +76,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     int mGoodsCount;
     @Autowired(name = "coupon")
     float mCoupon;
+    @Autowired(name = "member_balance")
+    String mBalance;
     /**
      * 订单金额， 应收
      */
@@ -82,6 +85,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     float mTotalMoney;
     @Autowired(name = "goods_data")
     Serializable mGoodsDataSerializable;
+
 
     /**
      * 商品数据
@@ -129,14 +133,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     protected void init() {
         ARouter.getInstance().inject(this);
 
-        payWayView.setPayWayShow(new int[]{0, 1, 2, 3, 6});
+        payWayView.setPayWayShow(MemberUtils.isMember ? new int[]{0, 1, 2, 3, 6} : new int[]{0, 1, 2, 6});
         settlementView = SettlementView.create(this);
         ((FrameLayout) findViewById(R.id.framelayout)).addView(settlementView);
 
         clTitle.setCashierAccount(admin_name);
 
         mRealPay = mTotalMoney;
-        settlementView.setData(mTotalMoney, mCoupon, mRealPay, 0);
+        settlementView.setData(mTotalMoney, mCoupon, mRealPay, 0, mBalance);
 
         mGoodsData = (List<GoodsEntity<GoodsResponse>>) this.mGoodsDataSerializable;
 
@@ -201,7 +205,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     mChange = 0;
                     //刷新价格
                     if (settlementView != null)
-                        settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange);
+                        settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange,mBalance);
                     return;
                 }
 
@@ -221,7 +225,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
                     //刷新价格
                     if (settlementView != null)
-                        settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange);
+                        settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange,mBalance);
 
                 }
 

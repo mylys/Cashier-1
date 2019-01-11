@@ -285,6 +285,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             }
             mListener.onPriceChange((float) price, count, (float) coupon);
         }
+        notifyDataSetChanged();
     }
 
 
@@ -382,11 +383,25 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 view.setCountChangeEnable(false);
 
                 String process_price = good.getProcess_price();
-                float coupon = (Float.parseFloat(process_price) - Float.parseFloat(good.getMembership_price())) * good_count;
                 subtotal = Float.valueOf(process_price);
-                if (MemberUtils.isMember && good.isMemberPrice()) {
-                    subtotal = Float.valueOf(good.getMembership_price()) * good_count;
-                    helper.setText(R.id.tv_coupon, df.format(coupon));
+                if (MemberUtils.isMember) {
+                    if (good.isMemberPrice()) {
+                        float coupon = (Float.parseFloat(process_price) - Float.parseFloat(good.getMembership_price()));
+                        subtotal = Float.valueOf(good.getMembership_price());
+                        good.setDiscount_price(df.format(coupon));
+                    }else if (!good.isMemberPrice() && MemberUtils.isMemberDay){
+                        if (getFullTotalPrice() >= MemberUtils.full){
+                            float coupon = MemberUtils.getCoupon(getFullTotalPrice(), Float.parseFloat(process_price), good_count);
+                            subtotal = (Float.parseFloat(process_price)) - coupon;
+                            good.setDiscount_price(df.format(coupon));
+                        }
+                    }else if (!MemberUtils.isMemberDay && MemberUtils.isMemberDiscount){
+                        float coupon = (float) (Float.parseFloat(process_price) - (MemberUtils.discount * Float.parseFloat(process_price))) * good_count;
+                        subtotal = (Float.parseFloat(process_price) * good_count) - coupon;
+                        good.setDiscount_price(df.format(coupon));
+                    }
+                    helper.setText(R.id.tv_coupon, good.getDiscount_price());
+                    mListener.onPriceChange(Float.parseFloat(getTotalPrice()), getTotalCount(), Float.parseFloat(getTotalCoupon()));
                 }
 
                 helper.setText(R.id.tv_price, String.valueOf(process_price))

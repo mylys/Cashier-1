@@ -123,11 +123,6 @@ public class DialogKeyboard extends ConstraintLayout {
                         Editable editable = mEditText.getText();
                         String price = mEditText.getText().toString();//获取输入框内容
                         String text = textView.getText().toString();//获取点击内容
-                        if (price.length() == 5) {//如果价格长度等于5 最大10000不能加“.”
-                            if (!price.contains(".")) {
-                                return;
-                            }
-                        }
                         if (price.contains(".")) {//如果存在“.”,则不能重复添加，并且小数点后只能2位
                             if (price.substring(price.indexOf(".") + 1, price.length()).length() == 2) {
                                 return;
@@ -140,17 +135,6 @@ public class DialogKeyboard extends ConstraintLayout {
                             if (text.startsWith(".") || text.startsWith("00") || (!canInputDecimal && text.startsWith("0"))) {
                                 return;
                             }
-                        }
-                        if (price.length() == 3 && Float.parseFloat(price.substring(0, 3)) > 100) {//如果内容等于100,才能再点击00
-                            if (text.equals("00")) {
-                                return;
-                            }
-                        }
-                        if (price.length() == 4) {//限制输入4位数是最大只能9999
-                            if (text.equals(".")) {
-                                editable.append(textView.getText());
-                            }
-                            return;
                         }
                         editable.append(textView.getText());
                     }

@@ -47,7 +47,7 @@ public interface HttpService {
      */
     @FormUrlEncoded
     @POST("api/cash/reserve")
-    Observable<HttpResult<InitResponse>> reserve_money(@HeaderMap Map<String, String> header,
+    Observable<HttpResult<String>> reserve_money(@HeaderMap Map<String, String> header,
                                                        @Field("shop_sn") String shop_sn,
                                                        @Field("handover_id") int handover_id,
                                                        @Field("reserve_money") int reserve_money);

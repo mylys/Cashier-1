@@ -77,12 +77,13 @@ public class SettlementView extends FrameLayout {
     private float mCoupon;//优惠
     private float mReceipts;//实收
     private float mChange;//找零
+    private String mBalance;//会员钱包余额
 
     private boolean mAlreadySettlement;
     //结算数据
 
     //是否有优惠券
-    private boolean isCoupon = true;
+    private boolean isCoupon = false;
 
     public SettlementView(@NonNull Context context) {
         super(context);
@@ -275,11 +276,12 @@ public class SettlementView extends FrameLayout {
     }
 
 
-    public void setData(float receivable, float coupon, float receipts, float change) {
+    public void setData(float receivable, float coupon, float receipts, float change,String balance) {
         mReceivable = receivable;
         mCoupon = coupon;
         mReceipts = receipts;
         mChange = change;
+        mBalance = balance;
 
         DecimalFormat df = new DecimalFormat("#0.00");
 
@@ -288,6 +290,7 @@ public class SettlementView extends FrameLayout {
         tvCoupon.setText(sign + df.format(mCoupon));
         tvReceipts.setText(sign + df.format(mReceipts));
         tvChange.setText(sign + df.format(mChange));
+        tvTextBalancePrice.setText(mBalance);
     }
 
 

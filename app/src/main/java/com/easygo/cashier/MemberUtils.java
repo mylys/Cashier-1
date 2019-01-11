@@ -84,16 +84,14 @@ public class MemberUtils {
     public static Float getCoupon(float totalPrice, float price, int count) {
         float coupon = 0;
         if (full_type == 1) { //满折扣
-            coupon = (float) (price - (MemberUtils.full_discount * price)) * count;
+            coupon = (float) (((price * count) / totalPrice) * (full - (full * full_discount)));
         } else if (full_type == 2) { //满减
-            coupon = (price / totalPrice) * full_reduction;
+            coupon = ((price * count) / totalPrice) * full_reduction;
         }
         return coupon;
     }
 }
 
 /* 满减折扣价 */
-// 满50块钱 0.9 5
-// 20  price / member_day_totalPrice * discount
-// 30  0.3 * 10 = 3
-// 50  0.5 * 10 = 5
+// 满10块钱 2
+// 10  price / member_day_totalPrice * discount
