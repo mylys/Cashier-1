@@ -275,8 +275,9 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                         if (processing != null) {//此时 选择了加工
                             count += 1;
                             coupon += Double.valueOf(processing.getDiscount_price());
+                            String process_price = good.getData().getProcess_price();
                             p = MemberUtils.isMember && member ?
-                                    Double.valueOf(good.getData().getMembership_price()) : Double.valueOf(good.getData().getProcess_price());
+                                    Double.valueOf(good.getData().getMembership_price()) : Double.valueOf(process_price!=null?process_price: "0.00");
                             price += p * good.getCount();
                         }
                         break;

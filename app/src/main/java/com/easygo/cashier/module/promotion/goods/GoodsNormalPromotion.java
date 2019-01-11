@@ -1,17 +1,14 @@
 package com.easygo.cashier.module.promotion.goods;
 
-import android.util.ArrayMap;
 import android.util.Log;
 
 import com.easygo.cashier.adapter.GoodsEntity;
-import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.module.promotion.base.IGoodsPromotion;
 import com.easygo.cashier.module.promotion.base.IPromotion;
 import com.easygo.cashier.module.promotion.base.PromotionGoods;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 商品普通促销
@@ -124,8 +121,13 @@ public class GoodsNormalPromotion extends BaseGoodsPromotion implements IGoodsPr
             if (goodsBean.getPromotion_money() == PromotionGoods.FLAG_NEED_SET_PROMOTION_MONEY) {
                 //需要设置促销金额的  根据比例计算出促销金额
                 float promotion = (goodsBean.getSubtotal() / temp_subtotal) * promotion_money;
+                Log.i(TAG, "computePromotionMoney: 计算出的 促销金额 -> " + promotion);
                 data.get(goodsBean.getIndex()).getData()
                         .setDiscount_price(String.valueOf(promotion));
+            } else {
+                Log.i(TAG, "computePromotionMoney: 清空促销金额 -> ");
+                data.get(goodsBean.getIndex()).getData()
+                        .setDiscount_price("0.00");
             }
         }
 

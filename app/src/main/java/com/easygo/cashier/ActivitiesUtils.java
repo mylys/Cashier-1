@@ -7,13 +7,18 @@ import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
+import com.easygo.cashier.module.promotion.base.BasePromotion;
 import com.easygo.cashier.module.promotion.base.IGoodsPromotion;
+import com.easygo.cashier.module.promotion.base.IPromotion;
 import com.easygo.cashier.module.promotion.base.PromotionGoods;
 import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsFulfilMoneyPromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsBundlePromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsNormalPromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsTimePromotion;
+import com.easygo.cashier.module.promotion.shop.BaseShopPromotion;
+import com.easygo.cashier.module.promotion.shop.ShopNormalPromotion;
+import com.easygo.cashier.module.promotion.shop.ShopTimePromotion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +45,10 @@ public class ActivitiesUtils {
      */
     private ArrayMap<Integer, BaseGoodsPromotion> needComputeMap = new ArrayMap<>();
 
+    /**
+     * 店铺促销对象集合
+     */
+    private List<BaseShopPromotion> shopList = new ArrayList<>();
 
     private ActivitiesUtils() {}
 
@@ -51,6 +60,10 @@ public class ActivitiesUtils {
         private static final ActivitiesUtils sInstance = new ActivitiesUtils();
     }
 
+    /**
+     * 根据商品促销返回体，解析出促销对象并保存
+     * @param response
+     */
     public void parseGoods(GoodsActivityResponse response) {
         List<GoodsActivityResponse.ActivitiesBean> activities = response.getActivities();
         int size = activities.size();
@@ -117,6 +130,9 @@ public class ActivitiesUtils {
     }
 
 
+    /**
+     * 应用商品促销
+     */
     public void promotion(List<GoodsEntity<GoodsResponse>> data) {
 
         if(barcode2IdMap == null) {
@@ -132,6 +148,8 @@ public class ActivitiesUtils {
         //  1、遍历顾客所购商品
         for (int i = 0; i < size; i++) {
             GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
+            //置零
+            goodsEntity.getData().setDiscount_price("0.00");
             barcode = goodsEntity.getData().getBarcode();
 
             actvitity_id = -1;
@@ -148,16 +166,16 @@ public class ActivitiesUtils {
 
             List<GoodsActivityResponse.ActivitiesBean.GoodsBean> goodsBeans = promotion.getGoodsBeans();
             int goods_size = goodsBeans.size();
-            PromotionGoods promotionGoods = null;
+            PromotionGoods promotionGoods = new PromotionGoods();
             //  4、遍历活动中参与促销的商品 找到各有多少件、小计等相关数据
             for (int j = 0; j < goods_size; j++) {
                 GoodsActivityResponse.ActivitiesBean.GoodsBean goodsBean = goodsBeans.get(j);
                 //判断 比对成功
                 if(barcode.equals(goodsBean.getBarcode())) {
-                    promotionGoods = promotion.getPromotionGoods();
-                    if(promotionGoods == null) {
-                        promotionGoods = new PromotionGoods();
-                    }
+//                    promotionGoods = promotion.getPromotionGoods();
+//                    if(promotionGoods == null) {
+//                        promotionGoods = new PromotionGoods();
+//                    }
 
                     //设置数量、小计、位置等信息
                     PromotionGoods.GoodsBean good = new PromotionGoods.GoodsBean();
@@ -195,20 +213,12 @@ public class ActivitiesUtils {
             promotion.computePromotionMoney(data);
 
         }
-
-
-
     }
 
 
     /**
-     * 商品促销
-     * @param response
+     * 根据商品条码-活动id，解析转换成映射
      */
-    public void parseGoodsActivity(GoodsActivityResponse response) {
-
-    }
-
     public ArrayMap<String, Integer> toMap(List<GoodsActivityResponse.MapBean> mapBeans) {
         ArrayMap<String, Integer> map = new ArrayMap<>();
 
@@ -220,140 +230,43 @@ public class ActivitiesUtils {
 
         return map;
     }
-    public ArrayMap<Integer, BaseGoodsPromotion> getAllPromotionMap(List<BaseGoodsPromotion> promotions) {
-        ArrayMap<Integer, BaseGoodsPromotion> map = new ArrayMap<>();
-
-        int size = promotions.size();
-        for (int i = 0; i < size; i++) {
-            BaseGoodsPromotion promotion = promotions.get(i);
-            map.put(promotion.getId(), promotion);
-        }
-
-        return map;
-    }
-
-
-    public void getGoods(List<GoodsActivityResponse.MapBean> mapBeans, List<BaseGoodsPromotion> promotions,
-                         List<GoodsEntity<GoodsResponse>> data) {
-        //根据顾客购买的商品条码 找到所有活动id
-        ArrayMap<String, Integer> map = toMap(mapBeans);
-
-        //遍历
-        int size = data.size();
-        String barcode;
-        int activity_id;
-        for (int i = 0; i < size; i++) {
-            GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
-
-            if(goodsEntity.getPromotion()== null) {//没有参与促销
-                barcode = goodsEntity.getData().getBarcode();
-                //根据条码 到 条码->活动id 映射中找到活动id
-                if(map.containsKey(barcode)) {
-                    activity_id = map.get(barcode);
-
-                    //根据活动id  找到 促销对象
-                    BaseGoodsPromotion promotion = null;
-                    int promotion_size = promotions.size();
-                    for (int j = 0; j < promotion_size; j++) {
-                        if (activity_id == promotions.get(j).getId()) {
-                            promotion = promotions.get(j);
-                        }
-                    }
-
-                    if(promotion == null || !promotion.isInGoodsEffectedTime()) {
-                        //找不到活动 或者 不在有效时段内 进入下一循环
-                        continue;
-                    }
-
-                    //根据活动id 遍历data 寻找此活动中参数促销的商品及其数量、小计和总数量、总小计
-                    for (int j = 0; j < size; j++) {
-                        
-                    }
-
-
-                }
-
-
-            }
-
-
-        }
-
-        //根据活动id  计算商品的优惠价格
-
-    }
 
     /**
-     * 查找促销活动中参与促销的各个商品的数量、小计，及总数量、总小计，存入PromotionGoods对象
-     * @param data
-     */
-    public void findGoodsInPromotion(List<GoodsEntity<GoodsResponse>> data, BaseGoodsPromotion promotion) {
-
-        PromotionGoods promotionGoods = new PromotionGoods();
-
-
-        List<GoodsActivityResponse.ActivitiesBean.GoodsBean> goodsBeans = promotion.getGoodsBeans();
-        int promotion_goods_size = goodsBeans.size();
-        for (int i = 0; i < promotion_goods_size; i++) {
-            GoodsActivityResponse.ActivitiesBean.GoodsBean goodsBean = goodsBeans.get(i);
-            String barcode = goodsBean.getBarcode();
-            //遍历data 获取商品 数量 小计等
-
-
-
-
-        }
-
-        int size = data.size();
-        for (int i = 0; i < size; i++) {
-            GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
-
-        }
-    }
-
-    /**
-     * 店铺促销
+     * 根据店铺促销返回体，解析出促销对象并保存
      * @param response
      */
-    public void parseShopActivity(ShopActivityResponse response) {
-        List<ShopActivityResponse.ListBean> list = response.getList();
+    public void parseShop(ShopActivityResponse response) {
+        //重置
+        shopList.clear();
 
+        List<ShopActivityResponse.ListBean> list = response.getList();
         int size = list.size();
         for (int i = 0; i < size; i++) {
             ShopActivityResponse.ListBean listBean = list.get(i);
-
             int type = listBean.getType();
-            List<ShopActivityResponse.ListBean.ConfigBean> config = listBean.getConfig();
-            int config_size = config.size();
-            for (int j = 0; j < config_size; j++) {
-                ShopActivityResponse.ListBean.ConfigBean configBean = config.get(j);
-//                configBean.getCondition_value()
 
-
-
+            switch (type) {
+                case IPromotion.TYPE_NORMAL:
+                    ShopNormalPromotion normalPromotion = new ShopNormalPromotion();
+                    fillData(normalPromotion, listBean);
+                    shopList.add(normalPromotion);
+                    break;
+                case IPromotion.TYPE_TIME:
+                    ShopTimePromotion timePromotion = new ShopTimePromotion();
+                    fillData(timePromotion, listBean);
+                    shopList.add(timePromotion);
+                    break;
             }
-
-
-            if(type == 1) {//金额满减
-
-//                listBean
-            } else if(type == 2) {//折扣
-
-            }
-
-
         }
-
-
     }
 
-    public void computeGoodsActivity(GoodsEntity goodsEntity) {
-
-        //根据条码 找到活动id
-        //
-
-//        if()
+    private void fillData(BaseShopPromotion promotion, ShopActivityResponse.ListBean listBean) {
+        promotion.setId(listBean.getId());
+        promotion.setName(listBean.getName());
+        promotion.setType(listBean.getType());
+        promotion.setEffected_at(listBean.getEffected_at());
+        promotion.setExpired_at(listBean.getExpired_at());
+        promotion.setConfigBeans(listBean.getConfig());
     }
-
 
 }

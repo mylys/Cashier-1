@@ -1,13 +1,12 @@
 package com.easygo.cashier.module.promotion.shop;
 
-import com.easygo.cashier.module.promotion.base.BasePromotion;
 import com.easygo.cashier.module.promotion.base.IPromotion;
 import com.easygo.cashier.module.promotion.base.IShopPromotion;
 
 /**
  * 店铺普通促销
  */
-public class ShopNormalPromotion extends BasePromotion implements IShopPromotion {
+public class ShopNormalPromotion extends BaseShopPromotion implements IShopPromotion {
 
 
     @Override
@@ -18,6 +17,9 @@ public class ShopNormalPromotion extends BasePromotion implements IShopPromotion
 
     @Override
     public boolean isMeetCondition(float money) {
+        if(!isInEffectedTime()) {
+            return false;
+        }
         return money >= getCondition_value();
     }
 

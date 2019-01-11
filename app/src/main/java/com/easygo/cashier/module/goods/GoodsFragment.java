@@ -472,6 +472,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             mUserGoodsScreen.refreshPrice(mGoodsCount, mTotalMoney, mCoupon, mTotalMoney - mCoupon);
         }
 
+        ActivitiesUtils.getInstance().promotion(mData);
+
     }
 
 
@@ -727,7 +729,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
         mGoodWeight = 0;
 
-//        ActivitiesUtils.getInstance().promotion(mData);
+        ActivitiesUtils.getInstance().promotion(mData);
     }
 
     public int getAdapterSize() {
