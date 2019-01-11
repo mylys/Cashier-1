@@ -50,6 +50,14 @@ public class ActivitiesUtils {
      */
     private List<BaseShopPromotion> shopList = new ArrayList<>();
 
+
+    private BaseShopPromotion currentShopPromotion;
+    private List<BaseGoodsPromotion> currentGoodsPromotions;
+
+    private float mShopPromotionMoney;
+    private float mGoodsPromotionMoney;
+
+
     private ActivitiesUtils() {}
 
     public static ActivitiesUtils getInstance() {
@@ -152,9 +160,10 @@ public class ActivitiesUtils {
             goodsEntity.getData().setDiscount_price("0.00");
             barcode = goodsEntity.getData().getBarcode();
 
-            actvitity_id = -1;
+//            actvitity_id = -1;
             //  2、根据barcode 去map中找此商品是否有促销信息
-            actvitity_id = barcode2IdMap.get(barcode);
+            Integer integer = barcode2IdMap.get(barcode);
+            actvitity_id = integer == null ? -1: integer;
 
             if(actvitity_id == -1) {
                 //说明此商品没有促销信息
@@ -264,9 +273,76 @@ public class ActivitiesUtils {
         promotion.setId(listBean.getId());
         promotion.setName(listBean.getName());
         promotion.setType(listBean.getType());
-        promotion.setEffected_at(listBean.getEffected_at());
-        promotion.setExpired_at(listBean.getExpired_at());
+        promotion.setGoods_effected_at(listBean.getEffected_at());
+        promotion.setGoods_expired_at(listBean.getExpired_at());
         promotion.setConfigBeans(listBean.getConfig());
     }
+
+    /**
+     * 计算店铺促销
+     * @param total_money 订单总额
+     */
+    public float promotion(float total_money)  {
+        int size = shopList.size();
+        if(size == 0) {
+            return 0f;
+        }
+
+        for (int i = 0; i < size; i++) {
+
+            BaseShopPromotion baseShopPromotion = shopList.get(i);
+            float promotionMoney = baseShopPromotion.getPromotionMoney(total_money);
+
+            if(promotionMoney > 0) {
+                currentShopPromotion = baseShopPromotion;
+                //记录店铺促销金额
+                mShopPromotionMoney = promotionMoney;
+                return promotionMoney;
+            }
+        }
+        return 0f;
+    }
+
+
+    public void getCurrentGoodsPromotions(List<GoodsEntity<GoodsResponse>> data) {
+        mGoodsPromotionMoney = 0f;
+        int size = data.size();
+        BaseGoodsPromotion promotion;
+        if (currentGoodsPromotions == null) {
+            currentGoodsPromotions = new ArrayList<>();
+        } else {
+            currentGoodsPromotions.clear();
+        }
+        for (int i = 0; i < size; i++) {
+
+            promotion = data.get(i).getPromotion();
+            if(promotion != null) {
+                //添加到正在参与的商品促销集合中
+                currentGoodsPromotions.add(promotion);
+                //累加商品促销金额
+                mGoodsPromotionMoney += Float.valueOf(data.get(i).getData().getDiscount_price());
+            }
+        }
+        Log.i(TAG, "getCurrentGoodsPromotions: 商品促销金额 -> " + mGoodsPromotionMoney);
+    }
+
+
+    public boolean hasGoodsPromotion() {
+        return currentGoodsPromotions != null && currentGoodsPromotions.size() != 0;
+    }
+    public boolean hasShopPromotion() {
+        return currentShopPromotion != null;
+    }
+
+    public float getShopPromotionMoney() {
+        return mShopPromotionMoney;
+    }
+
+    public float getGoodsPromotionMoney() {
+        return mGoodsPromotionMoney;
+    }
+
+
+
 
 }

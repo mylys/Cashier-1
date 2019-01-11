@@ -118,15 +118,19 @@ public class GoodsNormalPromotion extends BaseGoodsPromotion implements IGoodsPr
 
         for (int i = 0; i < size; i++) {
             PromotionGoods.GoodsBean goodsBean = goodsBeans.get(i);
+            GoodsEntity<GoodsResponse> goodsEntity = data.get(goodsBean.getIndex());
+
             if (goodsBean.getPromotion_money() == PromotionGoods.FLAG_NEED_SET_PROMOTION_MONEY) {
                 //需要设置促销金额的  根据比例计算出促销金额
                 float promotion = (goodsBean.getSubtotal() / temp_subtotal) * promotion_money;
                 Log.i(TAG, "computePromotionMoney: 计算出的 促销金额 -> " + promotion);
-                data.get(goodsBean.getIndex()).getData()
+                goodsEntity.setPromotion(this);
+                goodsEntity.getData()
                         .setDiscount_price(String.valueOf(promotion));
             } else {
                 Log.i(TAG, "computePromotionMoney: 清空促销金额 -> ");
-                data.get(goodsBean.getIndex()).getData()
+                goodsEntity.setPromotion(null);
+                goodsEntity.getData()
                         .setDiscount_price("0.00");
             }
         }

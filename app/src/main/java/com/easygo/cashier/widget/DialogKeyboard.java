@@ -137,11 +137,11 @@ public class DialogKeyboard extends ConstraintLayout {
                             }
                         }
                         if (price.length() == 0) {//不能以“0”或者“00”或者“.”开头
-                            if (text.startsWith(".") || text.startsWith("00") || text.startsWith("0")) {
+                            if (text.startsWith(".") || text.startsWith("00") || (!canInputDecimal && text.startsWith("0"))) {
                                 return;
                             }
                         }
-                        if (price.length() == 3 && Integer.parseInt(price.substring(0, 3)) > 100) {//如果内容等于100,才能再点击00
+                        if (price.length() == 3 && Float.parseFloat(price.substring(0, 3)) > 100) {//如果内容等于100,才能再点击00
                             if (text.equals("00")) {
                                 return;
                             }
@@ -158,6 +158,12 @@ public class DialogKeyboard extends ConstraintLayout {
             });
         }
 
+    }
+
+    private boolean canInputDecimal = false;
+
+    public void setCanInputDecimal(boolean canInputDecimal) {
+        this.canInputDecimal = canInputDecimal;
     }
 
     public void setLayoutParams(Context context) {

@@ -29,8 +29,8 @@ import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.adapter.GoodsMultiItemAdapter;
-import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.EntryOrders;
+import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.MemberDayInfo;
 import com.easygo.cashier.bean.MemberDiscountInfo;
@@ -55,7 +55,6 @@ import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
-import com.niubility.library.utils.ToastUtils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -141,6 +140,12 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
      * 优惠
      */
     private float mCoupon;
+
+
+    /**
+     * 正在参与的活动列表
+     */
+    private List<String> mJoinActivities;
 
     /**
      * 搜索结果弹窗
@@ -288,7 +293,32 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         mGoodsMultiItemAdapter.setOnItemListener(new GoodsMultiItemAdapter.OnItemListener() {
             @Override
             public void onPriceChange(float price, int count, float coupon) {
-                refreshPrce(price, count, coupon);
+
+//                refreshPrice(price, count, coupon);
+                if(price == 0 && count == 0 && coupon == 0) {
+                    //清空数据时
+                    refreshPrice(price, count, coupon);
+                    return;
+                }
+
+                ActivitiesUtils.getInstance().promotion(mData);
+                ActivitiesUtils.getInstance().getCurrentGoodsPromotions(mData);
+                //判断是否有商品促销
+                if(ActivitiesUtils.getInstance().hasGoodsPromotion()) {
+                    refreshPrice(price, count, ActivitiesUtils.getInstance().getGoodsPromotionMoney());
+                    return;
+                }
+                //判断是否有店铺促销
+                float promotion = ActivitiesUtils.getInstance().promotion(price);
+//                float promotion = ActivitiesUtils.getInstance().promotion(1000);
+                if(promotion > 0) {
+                    //符合店铺促销条件
+                    refreshPrice(price, count, promotion);
+                    return;
+                }
+
+                refreshPrice(price, count, coupon);
+
             }
 
             @Override
@@ -451,7 +481,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     /**
      * 刷新界面显示
      */
-    private void refreshPrce(float price, int count, float coupon) {
+    private void refreshPrice(float price, int count, float coupon) {
         mGoodsCount = count;
         mTotalMoney = price;
         mCoupon = coupon;
@@ -472,8 +502,6 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             mUserGoodsScreen.refreshPrice(mGoodsCount, mTotalMoney, mCoupon, mTotalMoney - mCoupon);
         }
 
-        ActivitiesUtils.getInstance().promotion(mData);
-
     }
 
 
@@ -493,6 +521,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 final PettyCashDialog dialog = new PettyCashDialog();
                 dialog.showCenter(getActivity());
                 dialog.setNoCode();
+                dialog.setCanInputDecimal(true);
                 dialog.setOnDialogClickListener(new PettyCashDialog.OnDialogClickListener() {
                     @Override
                     public void onClick(String content) {
@@ -577,6 +606,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                         if (mTotalMoney <= 0) {
                             showToast("金额不能小于等于0！");
+                            return;
+                        } else if(mTotalMoney - mCoupon <= 0) {
+                            showToast("收银金额不能小于等于0");
                             return;
                         }
 
@@ -843,6 +875,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     @Override
     public void shopActivitySuccess(ShopActivityResponse result) {
         Log.i(TAG, "shopActivitySuccess: 店铺促销成功");
+
+        ActivitiesUtils.getInstance().parseShop(result);
 
     }
 

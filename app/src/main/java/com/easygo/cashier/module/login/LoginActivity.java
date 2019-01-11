@@ -248,32 +248,9 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
     @OnClick({R.id.btn_login})
     public void onClick() {
-//        ARouter.getInstance().build(ModulePath.goods)
-//                .withString("admin_name", "xxx")
-//                .navigation();
-//        finish();
-//
-//        if(true)
-//            return;
 
-        if(TextUtils.isEmpty(Configs.shop_sn)) {
-            showToast("初始化失败！");
-            return;
-        }
-
-
-        String account = etAccount.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
-
-        if (TextUtils.isEmpty(account)) {
-            showToast("账号不能为空！");
-        } else if (TextUtils.isEmpty(password)) {
-            showToast("密码不能为空！");
-        } else {
-            //登录
-            mPresenter.login(Configs.shop_sn, account, password);
-            btnLogin.setEnabled(false);
-        }
+        //获取初始化信息 收银机是否可用
+        mPresenter.init(DeviceUtils.getMacAddress());
 
     }
 
@@ -329,15 +306,6 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     @Override
     protected void onStart() {
         super.onStart();
-
-
-        if (TextUtils.isEmpty(Configs.shop_sn)) {
-
-            //获取shop_sn
-//            mPresenter.init(DeviceUtils.getMacAddress());
-            mPresenter.init("08:ea:40:36:4f:3b");
-        }
-
     }
 
     @Override
@@ -428,6 +396,27 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         Configs.shop_name = shop_name;
         Configs.shop_sn = shop_sn;
         Configs.printer_sn = result.getPrinters().get(0).getDevice_sn();
+
+
+
+        //判断是否禁止登录
+        if("yes".equals(result.getIs_disabled())) {
+            showToast("设备已停用");
+            return;
+        }
+
+        String account = etAccount.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(account)) {
+            showToast("账号不能为空！");
+        } else if (TextUtils.isEmpty(password)) {
+            showToast("密码不能为空！");
+        } else {
+            //登录
+            mPresenter.login(Configs.shop_sn, account, password);
+            btnLogin.setEnabled(false);
+        }
 
     }
 

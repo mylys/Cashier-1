@@ -9,6 +9,7 @@ public class InitResponse {
      * name : 小泽测试6
      * shop_id : 620
      * mac_address : 46:54:65:65:46:54
+     * "is_disabled": "no",
      * printers : [{"id":21,"mac_address":"","device_sn":"454654564"},{"id":22,"mac_address":"","device_sn":"6465454"},{"id":23,"mac_address":"","device_sn":"4545454654"},{"id":25,"mac_address":"","device_sn":"11211313213"},{"id":24,"mac_address":"","device_sn":"444564564"}]
      * shop : {"shop_id":620,"shop_name":"小泽测试88","shop_sn":"84646546","is_reserve":0}
      */
@@ -17,6 +18,7 @@ public class InitResponse {
     private String name;
     private int shop_id;
     private String mac_address;
+    private String is_disabled;
     private ShopBean shop;
     private List<PrintersBean> printers;
 
@@ -50,6 +52,14 @@ public class InitResponse {
 
     public void setMac_address(String mac_address) {
         this.mac_address = mac_address;
+    }
+
+    public String getIs_disabled() {
+        return is_disabled;
+    }
+
+    public void setIs_disabled(String is_disabled) {
+        this.is_disabled = is_disabled;
     }
 
     public ShopBean getShop() {

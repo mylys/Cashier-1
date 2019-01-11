@@ -26,6 +26,7 @@ public class PettyCashDialog extends BaseDialog {
     private int mTitleResId = -1;
     private int mHintResId = -1;
     private boolean mTvCancelVisibility;
+    private boolean canInputDecimal;
 
 
     @Override
@@ -47,6 +48,7 @@ public class PettyCashDialog extends BaseDialog {
         tvCancel = rootView.findViewById(R.id.dialog_cancel);
         key_board = rootView.findViewById(R.id.key_board);
 
+        key_board.setCanInputDecimal(canInputDecimal);
         key_board.attachEditText(editText);
         key_board.setOnSureClickListener(new DialogKeyboard.OnSureClickListener() {
             @Override
@@ -78,6 +80,10 @@ public class PettyCashDialog extends BaseDialog {
         mTitleResId = R.string.text_no_barcode_goods;
         mHintResId = R.string.input_price;
         mTvCancelVisibility = true;
+    }
+
+    public void setCanInputDecimal(boolean canInputDecimal) {
+        this.canInputDecimal = canInputDecimal;
     }
 
     @Override

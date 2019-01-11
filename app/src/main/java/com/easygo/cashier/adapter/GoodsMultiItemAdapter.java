@@ -295,9 +295,9 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
         final String barcode = good.getBarcode();
         final String price = good.getPrice();
-        float subtotal = Float.valueOf(price) * good_count;
+        float subtotal = Float.valueOf(price) * good_count - Float.valueOf(good.getDiscount_price());
 
-        good.setDiscount_price("0.00");
+//        good.setDiscount_price("0.00");
         helper.getView(R.id.tv_member_price).setVisibility(MemberUtils.isMember ? View.VISIBLE : View.GONE);
         helper.setText(R.id.tv_barcode, barcode)
                 .setText(R.id.tv_goods_name, good.getG_sku_name())
@@ -306,7 +306,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 .setText(R.id.tv_coupon, good.getDiscount_price())
                 .setText(R.id.tv_member_price, "0.00");
 
-        if (MemberUtils.isMember) {
+        if (item.getPromotion() == null && MemberUtils.isMember) {
             if (good.isMemberPrice()) {                                              //普通会员价计算
                 float coupon = (Float.parseFloat(price) - Float.parseFloat(good.getMembership_price())) * good_count;
                 subtotal = Float.parseFloat(good.getMembership_price()) * good_count;

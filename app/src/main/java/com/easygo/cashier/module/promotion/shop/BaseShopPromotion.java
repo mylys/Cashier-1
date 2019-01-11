@@ -14,6 +14,21 @@ public class BaseShopPromotion extends BasePromotion {
 
     protected List<ShopActivityResponse.ListBean.ConfigBean> configBeans;
 
+    public long getGoods_effected_at() {
+        return goods_effected_at;
+    }
+
+    public void setGoods_effected_at(long goods_effected_at) {
+        this.goods_effected_at = goods_effected_at;
+    }
+
+    public long getGoods_expired_at() {
+        return goods_expired_at;
+    }
+
+    public void setGoods_expired_at(long goods_expired_at) {
+        this.goods_expired_at = goods_expired_at;
+    }
 
     /**是否在促销的生效时间内*/
     public boolean isInEffectedTime() {
@@ -33,4 +48,9 @@ public class BaseShopPromotion extends BasePromotion {
     public int getPromotionClassify() {
         return PROMOTION_SHOP;
     }
+
+    public float getPromotionMoney(float money) {
+        return 0f;
+    }
+
 }

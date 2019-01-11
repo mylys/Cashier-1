@@ -1,5 +1,7 @@
 package com.easygo.cashier.module.promotion.shop;
 
+import android.util.Log;
+
 import com.easygo.cashier.bean.ShopActivityResponse;
 import com.easygo.cashier.module.promotion.base.IShopPromotion;
 
@@ -13,16 +15,14 @@ import java.util.Locale;
  */
 public class ShopTimePromotion extends BaseShopPromotion implements IShopPromotion {
 
+    private static final String TAG = ShopTimePromotion.class.getSimpleName();
+
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.CHINA);
 
     @Override
-    public boolean isMeetCondition(float money) {
-
-        return false;
-    }
-
-    @Override
     public float getPromotionMoney(float money) {
+
+        Log.i(TAG, "getPromotionMoney: 店铺时段促销");
 
         if(!isInEffectedTime()) {
             return 0f;

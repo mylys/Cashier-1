@@ -222,7 +222,7 @@ public class GoodsResponse implements Serializable {
     }
 
     public String getProcess_price() {
-        return process_price;
+        return process_price == null? "0.00": process_price;
     }
 
     public void setProcess_price(String process_price) {

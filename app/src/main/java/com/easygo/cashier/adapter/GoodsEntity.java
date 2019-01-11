@@ -3,6 +3,7 @@ package com.easygo.cashier.adapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.easygo.cashier.module.promotion.base.IGoodsPromotion;
 import com.easygo.cashier.module.promotion.base.IPromotion;
+import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 
 import java.io.Serializable;
 import java.util.List;
@@ -64,13 +65,13 @@ public class GoodsEntity<T> implements MultiItemEntity, Serializable {
         this.processing = processing;
     }
 
-    private IGoodsPromotion promotion;
+    private BaseGoodsPromotion promotion;
 
-    public IGoodsPromotion getPromotion() {
+    public BaseGoodsPromotion getPromotion() {
         return promotion;
     }
 
-    public void setPromotion(IGoodsPromotion promotion) {
+    public void setPromotion(BaseGoodsPromotion promotion) {
         this.promotion = promotion;
     }
 }
