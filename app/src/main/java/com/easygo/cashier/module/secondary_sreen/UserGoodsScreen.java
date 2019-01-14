@@ -89,7 +89,7 @@ public class UserGoodsScreen extends Presentation {
     }
 
     public void chooseProcessing(int position, GoodsResponse choice) {
-        if(mUserGoodsAdapter != null)
+        if(mUserGoodsAdapter != null && choice != null)
             this.mUserGoodsAdapter.chooseProcessing(position, choice);
     }
 

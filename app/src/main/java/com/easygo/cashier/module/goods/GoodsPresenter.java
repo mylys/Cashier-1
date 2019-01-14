@@ -1,6 +1,7 @@
 package com.easygo.cashier.module.goods;
 
 import com.easygo.cashier.Configs;
+import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.MemberDayInfo;
@@ -11,6 +12,7 @@ import com.easygo.cashier.bean.ShopActivityResponse;
 import com.easygo.cashier.http.HttpAPI;
 import com.easygo.cashier.printer.PrintHelper;
 import com.niubility.library.http.base.HttpClient;
+import com.niubility.library.http.base.HttpResult;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
 
@@ -194,6 +196,23 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
                     @Override
                     protected void onFailure(Map<String, Object> map) {
                         mView.getMemberDiscountFailed(map);
+                    }
+                });
+    }
+
+    @Override
+    public void get_coupon(String coupon) {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+        subscribeAsyncToResult(HttpAPI.getInstance().httpService().get_coupon(header, coupon),
+                new BaseResultObserver<CouponResponse>() {
+                    @Override
+                    protected void onSuccess(CouponResponse result) {
+                        mView.couponSuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.couponFailed(map);
                     }
                 });
     }

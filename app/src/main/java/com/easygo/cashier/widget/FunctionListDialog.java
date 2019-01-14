@@ -32,15 +32,22 @@ public class FunctionListDialog extends DialogFragment {
     @BindView(R.id.rv_function)
     RecyclerView rvFunction;
 
+//    private int[] functions = new int[]{
+//            R.string.text_function_history,
+//            R.string.text_function_refund,
+//            R.string.text_function_handover,
+//            R.string.text_function_entry,
+//            R.string.text_function_language,
+//            R.string.text_function_device,
+//            R.string.text_function_setting,
+//            R.string.text_function_system,
+//    };
+
     private int[] functions = new int[]{
             R.string.text_function_history,
-            R.string.text_function_refund,
             R.string.text_function_handover,
             R.string.text_function_entry,
-            R.string.text_function_language,
             R.string.text_function_device,
-            R.string.text_function_setting,
-            R.string.text_function_system,
     };
 
     private int[] res = new int[]{
@@ -79,7 +86,8 @@ public class FunctionListDialog extends DialogFragment {
         Window window = getDialog().getWindow();
         if (window != null) {
             window.setLayout(getResources().getDimensionPixelSize(R.dimen.function_list_width),
-                    getResources().getDimensionPixelSize(R.dimen.function_list_height));
+//                    getResources().getDimensionPixelSize(R.dimen.function_list_height));
+                    getResources().getDimensionPixelSize(R.dimen.y359));
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 

@@ -1,6 +1,8 @@
 package com.easygo.cashier.module.promotion.base;
 
-public class BasePromotion implements IPromotion{
+import java.io.Serializable;
+
+public class BasePromotion implements IPromotion, Serializable {
 
     /**促销名称*/
     protected String name;

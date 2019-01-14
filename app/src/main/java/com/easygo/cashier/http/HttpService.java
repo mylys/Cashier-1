@@ -1,5 +1,6 @@
 package com.easygo.cashier.http;
 
+import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
@@ -258,4 +259,10 @@ public interface HttpService {
 
     @GET("/api/member/discount")
     Observable<HttpResult<List<MemberDiscountInfo>>> getMemberDiscount(@HeaderMap Map<String, String> header, @Query("shop_id") String shop_id, @Query("shop_sn") String shop_sn);
+
+    @GET("api/v1/cashier/coupon/search")
+    Observable<HttpResult<CouponResponse>> get_coupon(@HeaderMap Map<String, String> header, @Query("coupon_sn") String coupon_sn);
+
+
+
 }

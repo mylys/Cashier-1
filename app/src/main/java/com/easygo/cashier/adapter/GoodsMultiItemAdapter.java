@@ -1,10 +1,13 @@
 package com.easygo.cashier.adapter;
 
 import android.support.v4.util.ArrayMap;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -13,6 +16,8 @@ import com.easygo.cashier.Configs;
 import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.GoodsResponse;
+import com.easygo.cashier.module.promotion.base.BasePromotion;
+import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.widget.CountTextView;
 
 import java.text.DecimalFormat;
@@ -275,7 +280,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                         if (processing != null) {//此时 选择了加工
                             count += 1;
                             coupon += Double.valueOf(processing.getDiscount_price());
-                            String process_price = good.getData().getProcess_price();
+                            String process_price = processing.getProcess_price();
                             p = MemberUtils.isMember && member ?
                                     Double.valueOf(good.getData().getMembership_price()) : Double.valueOf(process_price!=null?process_price: "0.00");
                             price += p * good.getCount();
@@ -285,7 +290,9 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             }
             mListener.onPriceChange((float) price, count, (float) coupon);
         }
-        notifyDataSetChanged();
+        if(MemberUtils.isMember) {
+            notifyDataSetChanged();
+        }
     }
 
 
@@ -298,6 +305,9 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         final String price = good.getPrice();
         float subtotal = Float.valueOf(price) * good_count - Float.valueOf(good.getDiscount_price());
 
+
+        BaseGoodsPromotion promotion = item.getPromotion();
+
 //        good.setDiscount_price("0.00");
         helper.getView(R.id.tv_member_price).setVisibility(MemberUtils.isMember ? View.VISIBLE : View.GONE);
         helper.setText(R.id.tv_barcode, barcode)
@@ -305,9 +315,10 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 .setText(R.id.tv_price, String.valueOf(price))
                 .setText(R.id.tv_subtotal, String.valueOf(df.format(subtotal)))
                 .setText(R.id.tv_coupon, good.getDiscount_price())
-                .setText(R.id.tv_member_price, "0.00");
+                .setText(R.id.tv_member_price, "0.00")
+                .setVisible(R.id.iv_coupon, promotion != null);
 
-        if (item.getPromotion() == null && MemberUtils.isMember) {
+        if (promotion == null && MemberUtils.isMember) {
             if (good.isMemberPrice()) {                                              //普通会员价计算
                 float coupon = (Float.parseFloat(price) - Float.parseFloat(good.getMembership_price())) * good_count;
                 subtotal = Float.parseFloat(good.getMembership_price()) * good_count;
@@ -319,7 +330,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                     subtotal = (Float.parseFloat(price) * good_count) - coupon;
                     good.setDiscount_price(df.format(coupon));
                 }
-            } else if (!MemberUtils.isMemberDay && MemberUtils.isMemberDiscount) {   //会员固定折扣计算
+            } else if (!good.isMemberPrice() && !MemberUtils.isMemberDay && MemberUtils.isMemberDiscount) {   //会员固定折扣计算
                 float coupon = (float) (Float.parseFloat(price) - (MemberUtils.discount * Float.parseFloat(price))) * good_count;
                 subtotal = (Float.parseFloat(price) * good_count) - coupon;
                 good.setDiscount_price(df.format(coupon));
@@ -384,7 +395,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
                 String process_price = good.getProcess_price();
                 subtotal = Float.valueOf(process_price);
-                if (MemberUtils.isMember) {
+                if (promotion == null && MemberUtils.isMember) {
                     if (good.isMemberPrice()) {
                         float coupon = (Float.parseFloat(process_price) - Float.parseFloat(good.getMembership_price()));
                         subtotal = Float.valueOf(good.getMembership_price());
@@ -429,6 +440,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
 
                 //是否加工监听
+                final int adapterPosition = helper.getAdapterPosition();
                 cb_processing.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -447,7 +459,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                         refreshPrice();
 
                         if (mListener != null) {
-                            mListener.onProcessingCheckedChanged(isChecked, helper.getAdapterPosition(),
+                            mListener.onProcessingCheckedChanged(isChecked, adapterPosition,
                                     goodsEntity.getProcessing());
                         }
 
@@ -488,6 +500,21 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
                 break;
         }
+
+        String promotion_name = "";
+        if (promotion != null) {
+            promotion_name = promotion.getName();
+        }
+        final String final_promotion_name = promotion_name;
+        ((ImageView) helper.getView(R.id.iv_coupon)).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(mListener != null) {
+                    return mListener.onPromotionTouch(v, event, final_promotion_name);
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -592,6 +619,13 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
         void onSaleCountNotEnough();
 
+        /**
+         * 按压促销图标时
+         * @param v
+         * @param event
+         */
+        boolean onPromotionTouch(View v, MotionEvent event, String promotion_name);
+
 
         //用于 用户副屏
 
@@ -609,6 +643,8 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
          * item被移除时
          */
         void onItemRemoved(int position);
+
+
     }
 
     public void setOrdersData(List<GoodsEntity<GoodsResponse>> list) {

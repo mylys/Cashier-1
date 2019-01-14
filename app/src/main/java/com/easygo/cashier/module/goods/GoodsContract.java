@@ -1,5 +1,6 @@
 package com.easygo.cashier.module.goods;
 
+import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.MemberDayInfo;
@@ -32,6 +33,8 @@ public class GoodsContract {
         void getMember(String phone,String barcode);//是否为会员
         void getMemberDay();//会员日
         void getMemberDiscount();//会员折扣
+
+        void get_coupon(String coupon);
     }
 
     public interface IView extends BaseView {
@@ -61,5 +64,8 @@ public class GoodsContract {
 
         void getMemberDiscountSuccess(List<MemberDiscountInfo> memberDiscountInfos);
         void getMemberDiscountFailed(Map<String,Object> map);
+
+        void couponSuccess(CouponResponse result);
+        void couponFailed(Map<String,Object> map);
     }
 }

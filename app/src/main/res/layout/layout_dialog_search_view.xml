@@ -7,15 +7,6 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <ImageView
-        android:id="@+id/image_search"
-        android:layout_width="@dimen/x34"
-        android:layout_height="@dimen/y36"
-        android:layout_marginStart="@dimen/x25"
-        android:src="@drawable/icon_search"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/edit_search_phone"
@@ -32,21 +23,32 @@
         android:textColorHint="@color/color_text_ababab"
         android:textSize="@dimen/text_size_28"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/iv_clear"
-        app:layout_constraintStart_toEndOf="@+id/image_search"
+        app:layout_constraintEnd_toStartOf="@+id/image_search"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/iv_clear"
-        android:layout_width="@dimen/x42"
-        android:layout_height="@dimen/y42"
-        android:layout_marginEnd="@dimen/x30"
-        android:src="@drawable/ic_clear"
-        android:visibility="gone"
+        android:id="@+id/image_search"
+        android:layout_width="@dimen/x104"
+        android:layout_height="0dp"
+        android:paddingStart="@dimen/x30"
+        android:paddingEnd="@dimen/x30"
+        android:src="@drawable/ic_search"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_search"
-        app:layout_constraintStart_toEndOf="@+id/edit_search_phone"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!--<ImageView-->
+        <!--android:id="@+id/iv_clear"-->
+        <!--android:layout_width="@dimen/x42"-->
+        <!--android:layout_height="@dimen/y42"-->
+        <!--android:layout_marginEnd="@dimen/x30"-->
+        <!--android:src="@drawable/ic_clear"-->
+        <!--android:visibility="gone"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/tv_search"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/edit_search_phone"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
     <TextView
         android:visibility="gone"

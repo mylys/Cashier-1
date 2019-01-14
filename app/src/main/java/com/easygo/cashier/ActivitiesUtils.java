@@ -57,6 +57,8 @@ public class ActivitiesUtils {
     private float mShopPromotionMoney;
     private float mGoodsPromotionMoney;
 
+    private List<String> currentPromotionNames;
+
 
     private ActivitiesUtils() {}
 
@@ -152,6 +154,12 @@ public class ActivitiesUtils {
         int size = data.size();
         String barcode;
         int actvitity_id;
+
+
+        //重置
+        for (int i = 0; i < size; i++) {
+            data.get(i).setPromotion(null);
+        }
 
         //  1、遍历顾客所购商品
         for (int i = 0; i < size; i++) {
@@ -342,7 +350,30 @@ public class ActivitiesUtils {
         return mGoodsPromotionMoney;
     }
 
+    public List<String> getCurrentPromotionNames() {
+        if(currentPromotionNames == null) {
+            currentPromotionNames = new ArrayList<>();
+        } else {
+            currentPromotionNames.clear();
+        }
 
+        //商品促销
+        if(currentGoodsPromotions != null && currentGoodsPromotions.size() != 0) {
+            int size = currentGoodsPromotions.size();
+            for (int i = 0; i < size; i++) {
+                BaseGoodsPromotion promotion = currentGoodsPromotions.get(i);
+                currentPromotionNames.add(promotion.getName());
+
+            }
+        }
+        //店铺促销
+        else if(currentShopPromotion != null){
+            currentPromotionNames.add((currentShopPromotion.getName()));
+        }
+
+        return currentPromotionNames;
+
+    }
 
 
 }
