@@ -22,14 +22,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 public class DialogSearchView extends ConstraintLayout {
     private EditText editText;
     private ImageView ivClear;
-    private OnFocuChangeListener listener;
+    private OnSearchChangeListener listener;
 
-    public interface OnFocuChangeListener{
-        void onFocuChange(boolean hasFocus);
+    public interface OnSearchChangeListener {
         void onSearchClick(String content);
     }
 
-    public void setOnFoceChangeListener(OnFocuChangeListener listener){
+    public void setOnSearchChangeListener(OnSearchChangeListener listener) {
         this.listener = listener;
     }
 
@@ -56,27 +55,15 @@ public class DialogSearchView extends ConstraintLayout {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().length() > 11){
-                    return;
-                }
                 ivClear.setVisibility(s.toString().length() != 0 ? VISIBLE : GONE);
-                if (s.toString().length() == 11){
-                    if (listener != null){
-                        listener.onSearchClick(editText.getText().toString().trim());
-                    }
+                if (listener != null) {
+                    listener.onSearchClick(editText.getText().toString().trim());
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
-            }
-        });
-
-        editText.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                listener.onFocuChange(hasFocus);
             }
         });
 
@@ -88,24 +75,24 @@ public class DialogSearchView extends ConstraintLayout {
         });
     }
 
-    public EditText getEditText(){
-        if (editText != null){
+    public EditText getEditText() {
+        if (editText != null) {
             return editText;
         }
         return null;
     }
 
-    public String getContent(){
+    public String getContent() {
         return editText.getText().toString().trim();
     }
 
-    public void setHint(String hint){
-        if (editText != null){
+    public void setHint(String hint) {
+        if (editText != null) {
             editText.setHint(hint);
         }
     }
 
-    public void setContent(String string){
+    public void setContent(String string) {
         editText.setText(string);
     }
 }
