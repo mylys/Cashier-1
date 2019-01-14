@@ -105,17 +105,7 @@ public class ChooseMembersDialog extends BaseDialog {
             }
         });
 
-        searchView.setOnFoceChangeListener(new DialogSearchView.OnFocuChangeListener() {
-            @Override
-            public void onFocuChange(boolean hasFocus) {
-                if (!hasFocus) {
-                    if (TextUtils.isEmpty(searchView.getContent())) {
-                        return;
-                    }
-                    listener.onSearch(searchView.getContent());
-                }
-            }
-
+        searchView.setOnSearchChangeListener(new DialogSearchView.OnSearchChangeListener() {
             @Override
             public void onSearchClick(String content) {
                 listener.onSearch(searchView.getContent());
