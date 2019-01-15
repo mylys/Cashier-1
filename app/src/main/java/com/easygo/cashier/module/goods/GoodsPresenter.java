@@ -44,7 +44,7 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
     @Override
     public void searchGoods(String shop_sn, String barcode) {
-        Map<String, String> header = HttpClient.getInstance().getHeader();
+        Map<String, String> header = HttpClient.getInstance().getHeaders();
         subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().getGoods(header, shop_sn, barcode, 2),
                 new BaseResultObserver<List<GoodsResponse>>() {

@@ -384,7 +384,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
                 String process_price = good.getProcess_price();
                 subtotal = Float.valueOf(process_price);
-                if (MemberUtils.isMember) {
+                if (item.getPromotion() == null && MemberUtils.isMember) {
                     if (good.isMemberPrice()) {
                         float coupon = (Float.parseFloat(process_price) - Float.parseFloat(good.getMembership_price()));
                         subtotal = Float.valueOf(good.getMembership_price());
@@ -395,7 +395,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                             subtotal = (Float.parseFloat(process_price)) - coupon;
                             good.setDiscount_price(df.format(coupon));
                         }
-                    }else if (!MemberUtils.isMemberDay && MemberUtils.isMemberDiscount){
+                    }else if (!good.isMemberPrice() && !MemberUtils.isMemberDay && MemberUtils.isMemberDiscount){
                         float coupon = (float) (Float.parseFloat(process_price) - (MemberUtils.discount * Float.parseFloat(process_price))) * good_count;
                         subtotal = (Float.parseFloat(process_price) * good_count) - coupon;
                         good.setDiscount_price(df.format(coupon));

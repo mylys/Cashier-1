@@ -21,6 +21,8 @@ public class SettlementContract {
 
         void print(String json);
         void print_info(String shop_sn, String printer_sn, String info);
+
+        void memberWalletPay(String order_sn, String auth_code);
     }
 
     public interface IView extends BaseView {
@@ -43,5 +45,8 @@ public class SettlementContract {
 
         void printSuccess(String result);
         void printFailed(Map<String, Object> map);
+
+        void memberWalletSuccess(String result);
+        void memberWalletFailed(Map<String, Object> map);
     }
 }

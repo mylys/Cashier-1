@@ -294,8 +294,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             @Override
             public void onPriceChange(float price, int count, float coupon) {
 
-//                refreshPrice(price, count, coupon);
-                if(price == 0 && count == 0 && coupon == 0) {
+                if (price == 0 && count == 0 && coupon == 0) {
                     //清空数据时
                     refreshPrice(price, count, coupon);
                     return;
@@ -304,14 +303,14 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 ActivitiesUtils.getInstance().promotion(mData);
                 ActivitiesUtils.getInstance().getCurrentGoodsPromotions(mData);
                 //判断是否有商品促销
-                if(ActivitiesUtils.getInstance().hasGoodsPromotion()) {
+                if (ActivitiesUtils.getInstance().hasGoodsPromotion()) {
                     refreshPrice(price, count, ActivitiesUtils.getInstance().getGoodsPromotionMoney());
                     return;
                 }
                 //判断是否有店铺促销
                 float promotion = ActivitiesUtils.getInstance().promotion(price);
 //                float promotion = ActivitiesUtils.getInstance().promotion(1000);
-                if(promotion > 0) {
+                if (promotion > 0) {
                     //符合店铺促销条件
                     refreshPrice(price, count, promotion);
                     return;
@@ -513,7 +512,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             R.id.btn_choose_member,
             R.id.btn_choose_coupon,
             R.id.iv_cancel_member,
-            R.id.iv_cancel_coupon})
+            R.id.iv_cancel_coupon,
+            R.id.btn_quick_choose})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_no_barcode://无码商品
@@ -607,7 +607,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                         if (mTotalMoney <= 0) {
                             showToast("金额不能小于等于0！");
                             return;
-                        } else if(mTotalMoney - mCoupon <= 0) {
+                        } else if (mTotalMoney - mCoupon <= 0) {
                             showToast("收银金额不能小于等于0");
                             return;
                         }
@@ -618,7 +618,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                                 .withInt("goods_count", mGoodsCount)
                                 .withFloat("coupon", mCoupon)
                                 .withFloat("total_money", mTotalMoney)
-                                .withString("member_balance",balance)
+                                .withString("member_balance", balance)
                                 .withSerializable("goods_data", (Serializable) mData)
                                 .navigation();
                         break;
@@ -641,7 +641,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                     showToast("请先扫描商品");
                     return;
                 }
-                if (MemberUtils.isMember){
+                if (MemberUtils.isMember) {
                     showToast("当前存在会员，请先删除会员信息");
                     return;
                 }
@@ -719,6 +719,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 break;
             case R.id.iv_cancel_coupon:
                 setHide(clCoupon);
+                break;
+            case R.id.btn_quick_choose:
+                ARouter.getInstance().build(ModulePath.quick).navigation();
                 break;
         }
     }
@@ -921,8 +924,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     @Override
     public void getMemberDaySuccess(List<MemberDayInfo> memberDayInfos) {
-        if (memberDayInfos != null){
-            if (memberDayInfos.size() == 0){
+        if (memberDayInfos != null) {
+            if (memberDayInfos.size() == 0) {
                 return;
             }
             if (MemberUtils.isDateMemberDay(memberDayInfos.get(0))) {
@@ -933,17 +936,17 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     @Override
     public void getMemberDayFailed(Map<String, Object> map) {
-        Log.e(TAG,"getMemberDayFailed: 无会员日活动");
+        Log.e(TAG, "getMemberDayFailed: 无会员日活动");
         MemberUtils.isMemberDay = false;
     }
 
     @Override
     public void getMemberDiscountSuccess(List<MemberDiscountInfo> memberDiscountInfos) {
-        if (memberDiscountInfos != null){
-            if (memberDiscountInfos.size() == 0){
+        if (memberDiscountInfos != null) {
+            if (memberDiscountInfos.size() == 0) {
                 return;
             }
-            Log.i(TAG,"getMemberDiscountSuccess：有会员固定折扣");
+            Log.i(TAG, "getMemberDiscountSuccess：有会员固定折扣");
             MemberUtils.isMemberDiscount = true;
             MemberUtils.discount = (100 - memberDiscountInfos.get(0).getDiscount_amount()) * 0.01;
         }
@@ -951,7 +954,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     @Override
     public void getMemberDiscountFailed(Map<String, Object> map) {
-        Log.e(TAG,"getMemberDiscountFailed: 无会员固定折扣");
+        Log.e(TAG, "getMemberDiscountFailed: 无会员固定折扣");
         MemberUtils.isMemberDiscount = false;
     }
 
@@ -1010,10 +1013,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             tvIntegral.setText(info.getIntegral() + "");
         }
 
-        if (info == null){
+        if (info == null) {
             mCoupon = 0;
             tvCoupon.setText("￥" + df.format(mCoupon));
-            if (mUserGoodsScreen != null){
+            if (mUserGoodsScreen != null) {
                 mUserGoodsScreen.notifyAdapter();
                 mUserGoodsScreen.setCoupon(df.format(mCoupon));
             }
@@ -1022,10 +1025,19 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         mGoodsMultiItemAdapter.setMemberData();
     }
 
-    public void setMemberVisiable(boolean visiable){
+    public void setMemberVisiable(boolean visiable) {
         tvMemberText.setVisibility(visiable ? View.VISIBLE : View.GONE);
-        if (mUserGoodsScreen != null){
+        if (mUserGoodsScreen != null) {
             mUserGoodsScreen.setMemberVisiable(visiable);
+        }
+    }
+
+    private List<GoodsResponse> infos = new ArrayList<>();
+    public void addChooseInfo(List<GoodsResponse> goodsResponses) {
+        for (GoodsResponse info : goodsResponses){
+            infos = new ArrayList<>();
+            infos.add(info);
+            mGoodsMultiItemAdapter.addItem(infos, 1);
         }
     }
 }

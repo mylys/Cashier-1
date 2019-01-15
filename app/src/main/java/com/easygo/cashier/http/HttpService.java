@@ -11,6 +11,7 @@ import com.easygo.cashier.bean.MemberDayInfo;
 import com.easygo.cashier.bean.MemberDiscountInfo;
 import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
+import com.easygo.cashier.bean.QuickClassifyInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
 import com.niubility.library.http.base.HttpResult;
@@ -48,9 +49,9 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("api/cash/reserve")
     Observable<HttpResult<String>> reserve_money(@HeaderMap Map<String, String> header,
-                                                       @Field("shop_sn") String shop_sn,
-                                                       @Field("handover_id") int handover_id,
-                                                       @Field("reserve_money") int reserve_money);
+                                                 @Field("shop_sn") String shop_sn,
+                                                 @Field("handover_id") int handover_id,
+                                                 @Field("reserve_money") int reserve_money);
 
 
     /**
@@ -77,7 +78,7 @@ public interface HttpService {
      * type 1 精确搜索， 2 模糊搜索（此时barcode传关键字）
      */
     @FormUrlEncoded
-    @POST("api/pay/get_info")
+    @POST("api/v1/cashier/pay/get_info")
     Observable<HttpResult<List<GoodsResponse>>> getGoods(@HeaderMap Map<String, String> header, @Field("shop_sn") String shop_sn,
                                                          @Field("barcode") String barcode, @Field("type") int type);
 
@@ -258,4 +259,11 @@ public interface HttpService {
 
     @GET("/api/member/discount")
     Observable<HttpResult<List<MemberDiscountInfo>>> getMemberDiscount(@HeaderMap Map<String, String> header, @Query("shop_id") String shop_id, @Query("shop_sn") String shop_sn);
+
+    @FormUrlEncoded
+    @POST("api/v1/cashier/pay/member_wallet")
+    Observable<HttpResult<String>> member_wallet(@HeaderMap Map<String, String> header, @Field("order_no") String order_no, @Field("auth_code") String auth_code);
+
+    @POST("api/v1/cashier/pay/quick_select")
+    Observable<HttpResult<List<QuickClassifyInfo>>> showLists(@HeaderMap Map<String, String> header);
 }

@@ -244,7 +244,7 @@ public class SettlementView extends FrameLayout {
     }
 
     public void setMemberVisiable(boolean visiable) {
-        cbIntegral.setVisibility(visiable ? View.VISIBLE : View.GONE);
+//        cbIntegral.setVisibility(visiable ? View.VISIBLE : View.GONE);
         view1.setVisibility(visiable ? View.VISIBLE : View.GONE);
         tvTextBalance.setVisibility(visiable ? View.VISIBLE : View.GONE);
         tvTextBalancePrice.setVisibility(visiable ? View.VISIBLE : View.GONE);
