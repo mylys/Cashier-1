@@ -88,6 +88,8 @@ public class ChooseCouponsDialog extends BaseDialog {
                 dismiss();
             }
         });
+
+
     }
 
     public SpannableString priceText(String price) {

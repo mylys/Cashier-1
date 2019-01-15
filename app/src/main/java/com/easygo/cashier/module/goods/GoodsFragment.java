@@ -711,8 +711,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                         orders.setEntry_orders_note(content);
                         orders.setEntry_orders_time(sdf.format(date));
-                        orders.setEntry_orders_total_price(tvTotalMoney.getText().toString());
-                        orders.setEntry_orders_total_number(tvGoodsCount.getText().toString());
+//                        orders.setEntry_orders_total_price(tvTotalMoney.getText().toString());
+//                        orders.setEntry_orders_total_number(tvGoodsCount.getText().toString());
+                        orders.setEntry_orders_total_price(String.valueOf(mTotalMoney));
+                        orders.setEntry_orders_total_number(String.valueOf(mGoodsCount));
                         orders.setGoodsEntityList(mGoodsMultiItemAdapter.getData());
                         orders.setSelect(false);
                         if (entryOrders != null) {
@@ -1024,9 +1026,13 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     // 选择挂单添加item
     public void addData(EntryOrders entryOrders) {
-        tvTotalMoney.setText(entryOrders.getEntry_orders_total_price());
-        tvGoodsCount.setText(entryOrders.getEntry_orders_total_number());
-        tvCoupon.setText("0.00");
+//        tvTotalMoney.setText(entryOrders.getEntry_orders_total_price());
+//        tvGoodsCount.setText(entryOrders.getEntry_orders_total_number());
+//        tvCoupon.setText("0.00");
+
+        refreshPrice(Float.valueOf(entryOrders.getEntry_orders_total_price())
+                , (Integer.valueOf(entryOrders.getEntry_orders_total_number()))
+                , 0);
         mGoodsMultiItemAdapter.setOrdersData(entryOrders.getGoodsEntityList());
 
         if (mUserGoodsScreen != null) {

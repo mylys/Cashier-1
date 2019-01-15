@@ -339,6 +339,11 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         Configs.admin_name = result.getReal_name();
         Configs.menuBeanList = result.getMenu();
 
+
+        //弹出钱箱
+        mPresenter.pop_till(Configs.shop_sn, Configs.printer_sn);
+
+
         if (is_reserve == 1) {
             if (dialog == null)
                 dialog = new PettyCashDialog();
@@ -453,5 +458,15 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     public void reseverMoneyFailed(Map<String, Object> map) {
         String errorMsg = (String) map.get(HttpExceptionEngine.ErrorMsg);
         showToast(errorMsg);
+    }
+
+    @Override
+    public void popTillSuccess() {
+
+    }
+
+    @Override
+    public void popTillFailed(Map<String, Object> map) {
+        showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
     }
 }

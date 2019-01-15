@@ -597,6 +597,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             //不需要清空
             return;
         }
+        ensureNotNull();
         int count = mData.size();
         data.clear();
         barcodeData.clear();

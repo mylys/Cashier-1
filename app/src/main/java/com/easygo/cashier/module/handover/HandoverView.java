@@ -80,24 +80,24 @@ public class HandoverView extends FrameLayout {
         tvRefundCount.setText(String.valueOf(refund_count));
 
         //总销售额
-        float cash_money = result.getCash_money();
+        float cash_money = Float.valueOf(result.getCash_money());
         String cash = df.format(cash_money);
         tvTotalSales.setText(df.format(Float.valueOf(result.getAll_money())));
         tvCash.setText(cash);
-        tvAlipay.setText(df.format(result.getAlipay_money()));
-        tvWechat.setText(df.format(result.getWx_money()));
-        tvAllRefund.setText(df.format(result.getAll_refund()));
+        tvAlipay.setText(df.format(Float.valueOf(result.getAlipay_money())));
+        tvWechat.setText(df.format(Float.valueOf(result.getWx_money())));
+        tvAllRefund.setText(df.format(Float.valueOf(result.getAll_refund())));
 
         //总现金
         tvTotalCash.setText(cash);
         tvCashIncome.setText(cash);
 
         tvReserver.setText(result.getReserve_money());
-        float cash_change = result.getCash_change();
+        float cash_change = Float.valueOf(result.getCash_change());
 
         tvReceipts.setText(df.format(cash_money + cash_change));
         tvChange.setText(df.format(cash_change));
-        tvCashRefund.setText(df.format(result.getCash_refund()));
+        tvCashRefund.setText(df.format(Float.valueOf(result.getCash_refund())));
 
     }
 
