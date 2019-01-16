@@ -249,16 +249,16 @@ public interface HttpService {
     /*
      * 搜索会员
      */
-    @GET("/api/member/search")
+    @GET("api/member/search")
     Observable<HttpResult<MemberInfo>> getMembers(@HeaderMap Map<String, String> header, @Query("phone_number") String phone_number, @Query("member_token") String member_token);
 
     /*
      * 会员日
      */
-    @GET("/api/member/day")
+    @GET("api/member/day")
     Observable<HttpResult<List<MemberDayInfo>>> getMembersDay(@HeaderMap Map<String, String> header, @Query("shop_id") String shop_id, @Query("shop_sn") String shop_sn);
 
-    @GET("/api/member/discount")
+    @GET("api/member/discount")
     Observable<HttpResult<List<MemberDiscountInfo>>> getMemberDiscount(@HeaderMap Map<String, String> header, @Query("shop_id") String shop_id, @Query("shop_sn") String shop_sn);
 
     @FormUrlEncoded
