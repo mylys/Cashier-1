@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
 import com.easygo.cashier.http.HttpAPI;
+import com.easygo.cashier.printer.PrintHelper;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.base.HttpClient;
@@ -73,6 +74,30 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
                     @Override
                     protected void onFailure(Map<String, Object> map) {
                         mView.reseverMoneyFailed(map);
+                    }
+                });
+    }
+
+    @Override
+    public void pop_till(String shop_sn, String printer_sn) {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("shop_sn", shop_sn);
+        requestMap.put("printer_sn", printer_sn);
+        requestMap.put("info", PrintHelper.pop_till);
+
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().printer_info(header, requestMap),
+                new BaseResultObserver<String>() {
+                    @Override
+                    protected void onSuccess(String string) {
+                        mView.popTillSuccess();
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.popTillFailed(map);
                     }
                 });
     }

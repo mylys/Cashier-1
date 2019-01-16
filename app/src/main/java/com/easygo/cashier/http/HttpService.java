@@ -1,5 +1,6 @@
 package com.easygo.cashier.http;
 
+import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
@@ -266,4 +267,7 @@ public interface HttpService {
 
     @POST("api/v1/cashier/pay/quick_select")
     Observable<HttpResult<List<QuickClassifyInfo>>> showLists(@HeaderMap Map<String, String> header);
+
+    @GET("api/v1/cashier/coupon/search")
+    Observable<HttpResult<CouponResponse>> get_coupon(@HeaderMap Map<String, String> header, @Query("coupon_sn") String coupon_sn);
 }

@@ -5,6 +5,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import com.easygo.cashier.widget.MyTitleBar;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.EventUtils;
+import com.niubility.library.utils.GsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,6 +138,7 @@ public class QuickChooseActivity extends BaseMvpActivity<QuickChooseContract.Vie
                         btnSure.setText(getResources().getString(R.string.text_dialog_submit) + "(" + selectBean.size() + ")");
                     }
                 }
+                Log.i("选择商品列表信息 === ",GsonUtils.getInstance().getGson().toJson(selectBean));
             }
         });
     }

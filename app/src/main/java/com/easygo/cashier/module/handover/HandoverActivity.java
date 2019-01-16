@@ -240,6 +240,8 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
                 }
                 during_handover = true;
                 mPresenter.loginout(handover_id);
+                //弹出钱箱
+                mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, PrintHelper.pop_till);
 
                 clearLoginInfo();
 

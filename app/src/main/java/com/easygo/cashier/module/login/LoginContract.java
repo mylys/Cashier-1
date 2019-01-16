@@ -2,7 +2,6 @@ package com.easygo.cashier.module.login;
 
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
-import com.niubility.library.http.base.HttpResult;
 import com.niubility.library.mvp.BaseContract;
 import com.niubility.library.mvp.BaseView;
 
@@ -21,6 +20,7 @@ public class LoginContract {
 
 
          void resever_money(String session_id, String shop_sn, int handover_id, int resever_money);
+         void pop_till(String shop_sn, String printer_sn);
     }
 
     interface IView extends BaseView {
@@ -32,6 +32,9 @@ public class LoginContract {
 
         void reseverMoneySuccess();
         void reseverMoneyFailed(Map<String, Object> map);
+
+        void popTillSuccess();
+        void popTillFailed(Map<String, Object> map);
 
 
     }

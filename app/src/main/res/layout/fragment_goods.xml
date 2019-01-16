@@ -43,28 +43,40 @@
         app:layout_constraintTop_toBottomOf="@+id/cl_extra_info" />
 
     <!--正在参与的活动-->
-    <TextView
-        android:id="@+id/tv_text_current_promotion"
-        style="@style/GoodsListStyle"
-        android:layout_width="wrap_content"
+    <com.easygo.cashier.widget.ActivitiesView
+        android:id="@+id/activities_view"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/y30"
-        android:text="@string/text_current_promotion"
         app:layout_constraintBottom_toTopOf="@id/cl_goods_title"
         app:layout_constraintStart_toStartOf="@id/cl_goods_title"
-        app:layout_constraintTop_toBottomOf="@id/line2" />
+        app:layout_constraintEnd_toEndOf="@id/cl_goods_title"
+        app:layout_constraintTop_toBottomOf="@id/line2"
+        />
 
-    <android.support.v7.widget.RecyclerView
-        android:visibility="gone"
-        android:id="@+id/rv_promotion"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/x10"
-        app:layout_constraintBottom_toBottomOf="@id/tv_text_current_promotion"
-        app:layout_constraintStart_toEndOf="@id/tv_text_current_promotion"
-        app:layout_constraintTop_toTopOf="@id/tv_text_current_promotion">
 
-    </android.support.v7.widget.RecyclerView>
+    <!--<TextView-->
+        <!--android:id="@+id/tv_text_current_promotion"-->
+        <!--style="@style/GoodsListStyle"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/y30"-->
+        <!--android:text="@string/text_current_promotion"-->
+        <!--app:layout_constraintBottom_toTopOf="@id/cl_goods_title"-->
+        <!--app:layout_constraintStart_toStartOf="@id/cl_goods_title"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/line2" />-->
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:visibility="gone"-->
+        <!--android:id="@+id/rv_promotion"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_marginStart="@dimen/x10"-->
+        <!--app:layout_constraintBottom_toBottomOf="@id/tv_text_current_promotion"-->
+        <!--app:layout_constraintStart_toEndOf="@id/tv_text_current_promotion"-->
+        <!--app:layout_constraintTop_toTopOf="@id/tv_text_current_promotion">-->
+
+    <!--</android.support.v7.widget.RecyclerView>-->
 
 
     <!--商品标题名-->
@@ -77,7 +89,7 @@
         app:layout_constraintBottom_toTopOf="@id/cl_bottom_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_text_current_promotion" />
+        app:layout_constraintTop_toBottomOf="@id/activities_view" />
 
 
     <View
