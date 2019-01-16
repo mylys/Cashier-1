@@ -1117,15 +1117,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         for (GoodsResponse info : goodsResponses) {
             List<GoodsResponse> infos = new ArrayList<>();
             infos.add(info);
-            if (!TextUtils.isEmpty(info.getBarcode())) {
-                if (BarcodeUtils.isWeightCode(info.getBarcode())) {//自编码
-                    mGoodsMultiItemAdapter.addItem(infos, BarcodeUtils.getProductWeight(info.getBarcode()));
-                } else {
-                    mGoodsMultiItemAdapter.addItem(infos, 1);
-                }
-            }else{
-                mGoodsMultiItemAdapter.addItem(infos, 1);
-            }
+            mGoodsMultiItemAdapter.addItem(infos, 1);
         }
     }
 }
