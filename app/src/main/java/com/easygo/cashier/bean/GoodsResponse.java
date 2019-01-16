@@ -1,6 +1,8 @@
 package com.easygo.cashier.bean;
 
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 
 public class GoodsResponse implements Serializable {
@@ -42,7 +44,7 @@ public class GoodsResponse implements Serializable {
     private int three_c_id;
     private int four_c_id;
     private String g_c_name;
-    private Object pic_big;
+    private String pic_big;
     private String barcode;
     private int g_u_id;
     private String g_u_name;
@@ -173,11 +175,11 @@ public class GoodsResponse implements Serializable {
         this.g_c_name = g_c_name;
     }
 
-    public Object getPic_big() {
+    public String getPic_big() {
         return pic_big;
     }
 
-    public void setPic_big(Object pic_big) {
+    public void setPic_big(String pic_big) {
         this.pic_big = pic_big;
     }
 
@@ -222,7 +224,7 @@ public class GoodsResponse implements Serializable {
     }
 
     public String getProcess_price() {
-        return process_price == null? "0.00": process_price;
+        return TextUtils.isEmpty(process_price)? "0.00": process_price;
     }
 
     public void setProcess_price(String process_price) {

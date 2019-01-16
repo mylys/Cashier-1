@@ -260,7 +260,8 @@ public interface HttpService {
     @GET("/api/member/discount")
     Observable<HttpResult<List<MemberDiscountInfo>>> getMemberDiscount(@HeaderMap Map<String, String> header, @Query("shop_id") String shop_id, @Query("shop_sn") String shop_sn);
 
-    @GET("api/v1/cashier/coupon/search")
+//    @GET("api/v1/cashier/coupon/search")
+    @GET("http://api.dev.pos.esgao.cn/api/v1/cashier/coupon/search")
     Observable<HttpResult<CouponResponse>> get_coupon(@HeaderMap Map<String, String> header, @Query("coupon_sn") String coupon_sn);
 
 

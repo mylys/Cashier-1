@@ -113,5 +113,16 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="© 2019 版权所有 广州造就科技有限公司"
+        android:textSize="@dimen/x25"
+        android:textColor="@color/color_text_ababab"
+        android:layout_marginBottom="@dimen/y70"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

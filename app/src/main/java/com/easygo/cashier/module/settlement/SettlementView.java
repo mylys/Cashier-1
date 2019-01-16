@@ -2,10 +2,8 @@ package com.easygo.cashier.module.settlement;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -16,7 +14,6 @@ import android.widget.TextView;
 import com.easygo.cashier.R;
 import com.easygo.cashier.widget.ChooseCouponsDialog;
 import com.easygo.cashier.widget.PayWayView;
-import com.easygo.cashier.widget.ScanCodeDialog;
 
 import java.text.DecimalFormat;
 
@@ -227,16 +224,17 @@ public class SettlementView extends FrameLayout {
 
                     break;
             }
-        if (payType == PayWayView.WAY_COUPON) {
-            if (dialog == null) {
-                dialog = new ChooseCouponsDialog();
-            }
-            dialog.showCenter((CashierActivity) getContext());
-            dialog.setTitle(getResources().getString(R.string.text_coupon_coupon));
-        }
+//        if (payType == PayWayView.WAY_COUPON) {
+//            if (dialog == null) {
+//                dialog = new ChooseCouponsDialog();
+//            }
+//            dialog.showCenter((CashierActivity) getContext());
+//            dialog.setTitle(getResources().getString(R.string.text_coupon_coupon));
+//        }
     }
 
     public void setCouponVisiable(boolean isCoupon) {
+        this.isCoupon = isCoupon;
         imageClear.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
         tvTextCouponColon.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
         tvCouponColonPrice.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
@@ -293,6 +291,16 @@ public class SettlementView extends FrameLayout {
         tvTextBalancePrice.setText(mBalance);
     }
 
+    /**
+     * 设置优惠券信息
+     * @param name
+     * @param coupon_discount
+     */
+    public void setCouponInfo(String name, float coupon_discount) {
+        tvTextCouponColon.setText("优惠券：(" + name + ")");
+        tvCouponColonPrice.setText("-" + coupon_discount);
+    }
+
 
     private OnClickListener mListener;
 
@@ -310,6 +318,8 @@ public class SettlementView extends FrameLayout {
         void onPrintClicked(boolean isChecked);
 
         void onCommitOrderClicked();
+
+        void onCancelCoupon();
     }
 
 

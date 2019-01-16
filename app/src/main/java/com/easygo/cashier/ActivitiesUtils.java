@@ -56,6 +56,7 @@ public class ActivitiesUtils {
 
     private float mShopPromotionMoney;
     private float mGoodsPromotionMoney;
+    private boolean with_coupon;
 
     private List<String> currentPromotionNames;
 
@@ -88,13 +89,13 @@ public class ActivitiesUtils {
 
         for (int i = 0; i < size; i++) {
             GoodsActivityResponse.ActivitiesBean activitiesBean = activities.get(i);
-            BaseGoodsPromotion promotion = new BaseGoodsPromotion();
-            promotion.setId(activitiesBean.getId());
-            promotion.setName(activitiesBean.getName());
-            promotion.setType(activitiesBean.getType());
-            promotion.setGoods_effected_at(activitiesBean.getEffected_at());
-            promotion.setGoods_expired_at(activitiesBean.getExpired_at());
-            promotion.setGoodsBeans(activitiesBean.getGoods());
+//            BaseGoodsPromotion promotion = new BaseGoodsPromotion();
+//            promotion.setId(activitiesBean.getId());
+//            promotion.setName(activitiesBean.getName());
+//            promotion.setType(activitiesBean.getType());
+//            promotion.setGoods_effected_at(activitiesBean.getEffected_at());
+//            promotion.setGoods_expired_at(activitiesBean.getExpired_at());
+//            promotion.setGoodsBeans(activitiesBean.getGoods());
 
             GoodsActivityResponse.ActivitiesBean.ConfigBean config = activitiesBean.getConfig();
             int type = activitiesBean.getType();
@@ -117,6 +118,7 @@ public class ActivitiesUtils {
                 case IGoodsPromotion.TYPE_MEET:
                     GoodsFulfilMoneyPromotion moneyPromotion = new GoodsFulfilMoneyPromotion();
                     fillData(moneyPromotion, activitiesBean);
+                    moneyPromotion.setCondition_value(Float.valueOf(activitiesBean.getConfig().getCondition_value()));
                     moneyPromotion.setListBeans(activitiesBean.getConfig().getList());
                     id2PromotionMap.put(activitiesBean.getId(), moneyPromotion);
                     break;
@@ -134,6 +136,8 @@ public class ActivitiesUtils {
         promotion.setId(activitiesBean.getId());
         promotion.setName(activitiesBean.getName());
         promotion.setType(activitiesBean.getType());
+        promotion.setWith_coupon(activitiesBean.getWith_coupon());
+        promotion.setType(activitiesBean.getType());
         promotion.setGoods_effected_at(activitiesBean.getEffected_at());
         promotion.setGoods_expired_at(activitiesBean.getExpired_at());
         promotion.setGoodsBeans(activitiesBean.getGoods());
@@ -149,6 +153,13 @@ public class ActivitiesUtils {
             return;
         } else if(id2PromotionMap == null) {
             return;
+        }
+        needComputeMap.clear();
+
+        if (currentGoodsPromotions == null) {
+            currentGoodsPromotions = new ArrayList<>();
+        } else {
+            currentGoodsPromotions.clear();
         }
 
         int size = data.size();
@@ -281,6 +292,7 @@ public class ActivitiesUtils {
         promotion.setId(listBean.getId());
         promotion.setName(listBean.getName());
         promotion.setType(listBean.getType());
+        promotion.setWith_coupon(listBean.getWith_coupon());
         promotion.setGoods_effected_at(listBean.getEffected_at());
         promotion.setGoods_expired_at(listBean.getExpired_at());
         promotion.setConfigBeans(listBean.getConfig());
@@ -296,15 +308,25 @@ public class ActivitiesUtils {
             return 0f;
         }
 
+        currentShopPromotion = null;
+
+        with_coupon = false;
+
         for (int i = 0; i < size; i++) {
 
             BaseShopPromotion baseShopPromotion = shopList.get(i);
             float promotionMoney = baseShopPromotion.getPromotionMoney(total_money);
 
             if(promotionMoney > 0) {
+                Log.i(TAG, "promotion: " + baseShopPromotion.getName() + ", 促销金额： " + promotionMoney);
                 currentShopPromotion = baseShopPromotion;
                 //记录店铺促销金额
                 mShopPromotionMoney = promotionMoney;
+
+                if(currentShopPromotion.getWith_coupon() == 1) {
+                    with_coupon = true;
+                }
+
                 return promotionMoney;
             }
         }
@@ -321,6 +343,7 @@ public class ActivitiesUtils {
         } else {
             currentGoodsPromotions.clear();
         }
+        with_coupon = true;
         for (int i = 0; i < size; i++) {
 
             promotion = data.get(i).getPromotion();
@@ -329,9 +352,16 @@ public class ActivitiesUtils {
                 currentGoodsPromotions.add(promotion);
                 //累加商品促销金额
                 mGoodsPromotionMoney += Float.valueOf(data.get(i).getData().getDiscount_price());
+                if(promotion.getWith_coupon() == 0) {
+                    with_coupon = false;
+                }
             }
         }
-        Log.i(TAG, "getCurrentGoodsPromotions: 商品促销金额 -> " + mGoodsPromotionMoney);
+        Log.i(TAG, "getCurrentGoodsPromotions: 商品总促销金额 -> " + mGoodsPromotionMoney);
+    }
+
+    public List<BaseGoodsPromotion> getCurrentGoodsPromotions() {
+        return currentGoodsPromotions;
     }
 
 
@@ -340,6 +370,10 @@ public class ActivitiesUtils {
     }
     public boolean hasShopPromotion() {
         return currentShopPromotion != null;
+    }
+
+    public BaseShopPromotion getCurrentShopPromotion() {
+        return currentShopPromotion;
     }
 
     public float getShopPromotionMoney() {
@@ -375,5 +409,7 @@ public class ActivitiesUtils {
 
     }
 
-
+    public boolean isWith_coupon() {
+        return with_coupon;
+    }
 }

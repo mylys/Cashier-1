@@ -14,6 +14,7 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.adapter.UserGoodsAdapter;
 import com.easygo.cashier.bean.GoodsResponse;
+import com.easygo.cashier.widget.ActivitiesView;
 import com.easygo.cashier.widget.MyTitleBar;
 
 import java.text.DecimalFormat;
@@ -33,6 +34,8 @@ public class UserGoodsScreen extends Presentation {
     TextView tvBarcode;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.activities_view)
+    ActivitiesView activitiesView;
     @BindView(R.id.tv_product_num)
     TextView tvProductNum;
     @BindView(R.id.tv_product_total_price)
@@ -151,5 +154,10 @@ public class UserGoodsScreen extends Presentation {
 
     public void setCoupon(String coupon){
         tvProductPreferential.setText("￥" + coupon);
+    }
+
+    public void showCurrentActivities(List<String> data) {
+        activitiesView.setVisibility(data != null? View.VISIBLE: View.GONE);
+        activitiesView.setData(data);
     }
 }

@@ -30,6 +30,9 @@ public class BasePromotion implements IPromotion, Serializable {
     /**促销金额或者比例， 根据促销类型决定*/
     protected float offer_value;
 
+    /**是否可跟优惠券共用，  0：不可以   1：可以*/
+    protected int with_coupon;
+
 
     @Override
     public int getPromotionClassify() {
@@ -106,5 +109,13 @@ public class BasePromotion implements IPromotion, Serializable {
 
     public void setOffer_value(float offer_value) {
         this.offer_value = offer_value;
+    }
+
+    public int getWith_coupon() {
+        return with_coupon;
+    }
+
+    public void setWith_coupon(int with_coupon) {
+        this.with_coupon = with_coupon;
     }
 }

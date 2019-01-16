@@ -340,11 +340,12 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         Configs.menuBeanList = result.getMenu();
 
 
-        //弹出钱箱
-        mPresenter.pop_till(Configs.shop_sn, Configs.printer_sn);
-
-
         if (is_reserve == 1) {
+
+            //弹出钱箱
+            mPresenter.pop_till(Configs.shop_sn, Configs.printer_sn);
+
+
             if (dialog == null)
                 dialog = new PettyCashDialog();
 
@@ -397,7 +398,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     public void initSuccess(InitResponse result) {
 
         String shop_sn = result.getShop().getShop_sn();
-        String shop_name = result.getShop().getShop_sn();
+        String shop_name = result.getShop().getShop_name();
         is_reserve = result.getShop().getIs_reserve();
 
         SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(this).edit();
@@ -440,6 +441,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         Log.i(TAG, "loginFailed: map --> errorType:" + errorType
                 + ", errorCode: " + errorCode
                 + ", errorMsg: " + errorMsg);
+        showToast(errorMsg);
 
         mHandler.sendEmptyMessageDelayed(MSG_GET_SHOP, 2000);
 

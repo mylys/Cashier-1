@@ -41,6 +41,14 @@ public class MemberUtils {
 
     /* 会员信息 */
     public static MemberInfo memberInfo;
+    /* 会员日信息*/
+    public static MemberDayInfo sMemberDayInfo;
+    /* 会员固定折扣信息*/
+    public static MemberDiscountInfo sMemberDiscountInfo;
+    /* 会员日 活动id*/
+    public static int day_rc_id;
+    /* 会员固定折扣 活动id*/
+    public static int discount_rc_id;
 
     //查看当天是否是会员日 得到type == 1 ? 周 : 月 遍历得到日期是否存在于数组中
     public static boolean isDateMemberDay(MemberDayInfo memberDayInfo) {
@@ -73,6 +81,7 @@ public class MemberUtils {
                     } else {
                         full_reduction = itemsBean.getDiscount_amount();
                     }
+                    day_rc_id = itemsBean.getRc_id();
                     return true;
                 }
             }

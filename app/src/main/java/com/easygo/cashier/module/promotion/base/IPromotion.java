@@ -12,9 +12,9 @@ public interface IPromotion {
 
 
     /**减免类型 金额*/
-    int OFFER_TYPE_MONEY = 0;
+    int OFFER_TYPE_MONEY = 1;
     /**减免类型 比例*/
-    int OFFER_TYPE_RATIO = 1;
+    int OFFER_TYPE_RATIO = 2;
 
 
 

@@ -36,6 +36,7 @@ public class OrderHistoryPresenter extends BasePresenter<OrderHistoryContract.IV
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("shop_sn", shop_sn);
         requestMap.put("printer_sn", printer_sn);
+        requestMap.put("times", 1);
         requestMap.put("info", info);
 
         subscribeAsyncToResult(

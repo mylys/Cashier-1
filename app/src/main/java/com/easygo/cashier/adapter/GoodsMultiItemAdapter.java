@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.easygo.cashier.ActivitiesUtils;
 import com.easygo.cashier.BarcodeUtils;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.MemberUtils;
@@ -316,7 +317,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 .setText(R.id.tv_subtotal, String.valueOf(df.format(subtotal)))
                 .setText(R.id.tv_coupon, good.getDiscount_price())
                 .setText(R.id.tv_member_price, "0.00")
-                .setVisible(R.id.iv_coupon, promotion != null);
+                .setVisible(R.id.iv_coupon, promotion != null || ActivitiesUtils.getInstance().hasShopPromotion());
 
         if (promotion == null && MemberUtils.isMember) {
             if (good.isMemberPrice()) {                                              //普通会员价计算

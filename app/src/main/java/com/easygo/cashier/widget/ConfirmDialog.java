@@ -118,8 +118,8 @@ public class ConfirmDialog extends DialogFragment {
         tvTextChange.setVisibility(visiable ? View.VISIBLE : View.GONE);
         tvChange.setVisibility(visiable ? View.VISIBLE : View.GONE);
 
-        tvReceivable.setText("￥" + mReceivable);
-        tvReceipts.setText("￥" + mReceipts);
+        tvReceivable.setText("￥" + df.format(mReceivable));
+        tvReceipts.setText("￥" + df.format(mReceipts));
         tvChange.setText("￥" + df.format(mChange));
         if (!TextUtils.isEmpty(mRefundNum)){
             tvReceivable.setText(mRefundNum + "件");

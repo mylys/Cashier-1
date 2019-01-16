@@ -18,7 +18,7 @@ public class ShopNormalPromotion extends BaseShopPromotion implements IShopPromo
     @Override
     public float getPromotionMoney(float money) {
 
-        Log.i(TAG, "getPromotionMoney: 店铺时段促销");
+        Log.i(TAG, "getPromotionMoney: 店铺普通促销");
 
         if(!isInEffectedTime()) {
             return 0f;
@@ -32,9 +32,10 @@ public class ShopNormalPromotion extends BaseShopPromotion implements IShopPromo
         }
 
         float offer_value = Float.valueOf(configBean.getOffer_value());
+        int offer_type = configBean.getOffer_type();
+        Log.i(TAG, "getPromotionMoney: offer_type - > " + offer_value);
 
-
-        switch (getOffer_type()) {
+        switch (offer_type) {
             case OFFER_TYPE_MONEY:
                 return offer_value;
             case OFFER_TYPE_RATIO:

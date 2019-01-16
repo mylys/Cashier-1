@@ -1,5 +1,7 @@
 package com.easygo.cashier.module.goods;
 
+import android.content.SharedPreferences;
+
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.GoodsActivityResponse;
@@ -11,11 +13,16 @@ import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
 import com.easygo.cashier.http.HttpAPI;
 import com.easygo.cashier.printer.PrintHelper;
+import com.niubility.library.base.BaseApplication;
+import com.niubility.library.constants.Constans;
 import com.niubility.library.http.base.HttpClient;
 import com.niubility.library.http.base.HttpResult;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
+import com.niubility.library.utils.GetSign;
+import com.niubility.library.utils.SharedPreferencesUtils;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,6 +99,7 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("shop_sn", shop_sn);
         requestMap.put("printer_sn", printer_sn);
+        requestMap.put("times", 1);
         requestMap.put("info", PrintHelper.pop_till);
 
         subscribeAsyncToResult(
@@ -201,12 +209,23 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
     }
 
     @Override
-    public void get_coupon(String coupon) {
-        Map<String, String> header = HttpClient.getInstance().getHeader();
+    public void get_coupon(final String coupon) {
+        Map<String, String> header = new HashMap<>();
+        header.put("LC-Appkey", "25");
+
+        SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication);
+        long time = new Date().getTime() / 1000;
+        String session_id = sp.getString(Constans.KEY_SESSION_ID, "");
+
+        header.put("LC-Sign", GetSign.sign(time));
+        header.put("LC-Session", session_id);
+        header.put("LC-Timestamp", String.valueOf(time));
+
         subscribeAsyncToResult(HttpAPI.getInstance().httpService().get_coupon(header, coupon),
                 new BaseResultObserver<CouponResponse>() {
                     @Override
                     protected void onSuccess(CouponResponse result) {
+                        result.setCoupon_sn(coupon);
                         mView.couponSuccess(result);
                     }
 

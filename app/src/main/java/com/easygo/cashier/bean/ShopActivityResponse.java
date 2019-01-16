@@ -20,6 +20,7 @@ public class ShopActivityResponse {
          * id : 699
          * name : 测试活动 v1 (RunnerLee)
          * type : 1
+         * with_coupon : 1
          * effected_at : 1547136000000
          * expired_at : 1547308799000
          * config : [{"effected_at":"00:00","expired_at":"23:59","condition_value":"1000.00","offer_type":1,"offer_value":"10.00"}]
@@ -28,6 +29,7 @@ public class ShopActivityResponse {
         private int id;
         private String name;
         private int type;
+        private int with_coupon;
         private long effected_at;
         private long expired_at;
         private List<ConfigBean> config;
@@ -54,6 +56,14 @@ public class ShopActivityResponse {
 
         public void setType(int type) {
             this.type = type;
+        }
+
+        public int getWith_coupon() {
+            return with_coupon;
+        }
+
+        public void setWith_coupon(int with_coupon) {
+            this.with_coupon = with_coupon;
         }
 
         public long getEffected_at() {

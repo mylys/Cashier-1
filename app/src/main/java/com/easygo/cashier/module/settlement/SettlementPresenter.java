@@ -1,11 +1,19 @@
 package com.easygo.cashier.module.settlement;
 
+import android.content.SharedPreferences;
+
+import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.http.HttpAPI;
+import com.niubility.library.base.BaseApplication;
+import com.niubility.library.constants.Constans;
 import com.niubility.library.http.base.HttpClient;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
+import com.niubility.library.utils.GetSign;
+import com.niubility.library.utils.SharedPreferencesUtils;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -208,6 +216,7 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("shop_sn", shop_sn);
         requestMap.put("printer_sn", printer_sn);
+        requestMap.put("times", 1);
         requestMap.put("info", info);
 
         subscribeAsyncToResult(
@@ -225,5 +234,33 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
                     }
                 });
 
+    }
+
+    @Override
+    public void get_coupon(final String coupon_sn) {
+        Map<String, String> header = new HashMap<>();
+        header.put("LC-Appkey", "25");
+
+        SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication);
+        long time = new Date().getTime() / 1000;
+        String session_id = sp.getString(Constans.KEY_SESSION_ID, "");
+
+        header.put("LC-Sign", GetSign.sign(time));
+        header.put("LC-Session", session_id);
+        header.put("LC-Timestamp", String.valueOf(time));
+
+        subscribeAsyncToResult(HttpAPI.getInstance().httpService().get_coupon(header, coupon_sn),
+                new BaseResultObserver<CouponResponse>() {
+                    @Override
+                    protected void onSuccess(CouponResponse result) {
+                        result.setCoupon_sn(coupon_sn);
+                        mView.couponSuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.couponFailed(map);
+                    }
+                });
     }
 }

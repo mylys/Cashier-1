@@ -121,6 +121,8 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
 
                     }
                 }
+                goodsEntity.setPromotion(this);
+                goodsBean.setPromotion_money(promotion_money);
                 Log.i(TAG, "computePromotionMoney: index -> " + i + ", 促销金额 -> " + promotion_money);
                 goodsEntity.getData().setDiscount_price(String.valueOf(promotion_money));
             }

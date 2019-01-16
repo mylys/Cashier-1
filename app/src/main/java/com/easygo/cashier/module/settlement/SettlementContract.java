@@ -1,5 +1,6 @@
 package com.easygo.cashier.module.settlement;
 
+import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.niubility.library.mvp.BaseContract;
 import com.niubility.library.mvp.BaseView;
@@ -21,6 +22,8 @@ public class SettlementContract {
 
         void print(String json);
         void print_info(String shop_sn, String printer_sn, String info);
+
+        void get_coupon(String coupon_sn);
     }
 
     public interface IView extends BaseView {
@@ -43,5 +46,8 @@ public class SettlementContract {
 
         void printSuccess(String result);
         void printFailed(Map<String, Object> map);
+
+        void couponSuccess(CouponResponse result);
+        void couponFailed(Map<String, Object> map);
     }
 }
