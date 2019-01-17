@@ -136,6 +136,9 @@ public class ConfirmDialog extends DialogFragment {
             case PayWayView.WAY_WECHAT:
                 tvPayWay.setText("(微信)");
                 break;
+            case PayWayView.WAY_MEMBER:
+                tvPayWay.setText("(会员卡)");
+                break;
         }
 
     }

@@ -30,6 +30,7 @@ import com.easygo.cashier.SoftKeyboardUtil;
 import com.easygo.cashier.Test;
 import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.bean.EquipmentState;
+import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.secondary_sreen.SecondaryScreen;
@@ -378,6 +379,10 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
             case Events.MEMBER_INFO:
                 MemberInfo info = (MemberInfo) event.getObject();
                 goodsFragment.updateMebmerInfo(info);
+                break;
+            case Events.QUICK_CHOOSE:
+                List<GoodsResponse> goodsResponses = (List<GoodsResponse>) event.getObject();
+                goodsFragment.addChooseInfo(goodsResponses);
                 break;
         }
     }

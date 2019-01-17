@@ -62,6 +62,7 @@ public class GoodsResponse implements Serializable {
     private int status;
     private int is_weigh;
 
+    private boolean select;
     private boolean isMember;
     private int count;
     /**
@@ -78,6 +79,14 @@ public class GoodsResponse implements Serializable {
     public static final int type_weight = 1; //加工方式主商品也属于此类
     public static final int type_no_code = 2;
     public static final int type_processing = 3;
+
+    public boolean isSelect() {
+        return select;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
+    }
 
     public boolean isMemberPrice() {
         return isMember;
@@ -224,7 +233,7 @@ public class GoodsResponse implements Serializable {
     }
 
     public String getProcess_price() {
-        return TextUtils.isEmpty(process_price)? "0.00": process_price;
+        return TextUtils.isEmpty(process_price) ? "0.00" : process_price;
     }
 
     public void setProcess_price(String process_price) {

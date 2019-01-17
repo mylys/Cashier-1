@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/constraint"
+    android:layout_width="@dimen/x460"
+    android:layout_height="@dimen/y170"
+    android:layout_marginTop="@dimen/x30"
+    android:layout_marginStart="@dimen/x15"
+    android:layout_marginEnd="@dimen/x15"
+    android:background="@drawable/bg_btn_frame">
+
+    <ImageView
+        android:id="@+id/iv_good"
+        android:layout_width="@dimen/x128"
+        android:layout_height="@dimen/y128"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/x21"
+        android:src="@drawable/icon_kong" />
+
+    <TextView
+        android:id="@+id/tv_good_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x26"
+        android:layout_marginTop="@dimen/x26"
+        android:layout_marginEnd="@dimen/x34"
+        android:layout_toEndOf="@+id/iv_good"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="商品名称太长的话就分两行如果更长就..."
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/text_size_28"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_good_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/x26"
+        android:layout_marginBottom="@dimen/x21"
+        android:layout_toEndOf="@+id/iv_good"
+        android:text="￥0.1"
+        android:textColor="@color/color_d64444"
+        android:textSize="@dimen/x33" />
+
+    <ImageView
+        android:id="@+id/iv_select"
+        android:layout_width="@dimen/x35"
+        android:layout_height="@dimen/y35"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/x21"
+        android:layout_marginBottom="@dimen/x21"
+        android:src="@drawable/icon_good_select"
+        android:visibility="gone" />
+
+</RelativeLayout>

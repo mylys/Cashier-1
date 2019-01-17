@@ -1,5 +1,7 @@
 package com.easygo.cashier.bean;
 
+import java.util.List;
+
 /**
  * @Describe：
  * @Date：2019-01-09
@@ -12,7 +14,7 @@ public class MemberInfo {
      * real_name : 张旗伟
      * headimg : https://egmall.esgao.cn/web/statics/images/avatar.png
      * integral : 888
-     * wallet : 348.7
+     * wallet : 333.7
      * consumefee_convert_integral : 1
      * etps_name : 造就科技
      * etps_sn : E100001
@@ -22,6 +24,7 @@ public class MemberInfo {
      * phone : 180****7946
      * nick_name : fantasy
      * is_member : 1
+     * coupons : [{"name":"减3全店","condition_value":"0.01","offer_type":1,"offer_type_str":"立减优惠券","offer_value":"3.00","effected_at":1546876800000,"expired_at":1548950399000}]
      */
 
     private int member_id;
@@ -39,6 +42,7 @@ public class MemberInfo {
     private String phone;
     private String nick_name;
     private int is_member;
+    private List<CouponsBean> coupons;
 
     public int getMember_id() {
         return member_id;
@@ -158,5 +162,89 @@ public class MemberInfo {
 
     public void setIs_member(int is_member) {
         this.is_member = is_member;
+    }
+
+    public List<CouponsBean> getCoupons() {
+        return coupons;
+    }
+
+    public void setCoupons(List<CouponsBean> coupons) {
+        this.coupons = coupons;
+    }
+
+    public static class CouponsBean {
+        /**
+         * name : 减3全店
+         * condition_value : 0.01
+         * offer_type : 1
+         * offer_type_str : 立减优惠券
+         * offer_value : 3.00
+         * effected_at : 1546876800000
+         * expired_at : 1548950399000
+         */
+
+        private String name;
+        private String condition_value;
+        private int offer_type;
+        private String offer_type_str;
+        private String offer_value;
+        private long effected_at;
+        private long expired_at;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getCondition_value() {
+            return condition_value;
+        }
+
+        public void setCondition_value(String condition_value) {
+            this.condition_value = condition_value;
+        }
+
+        public int getOffer_type() {
+            return offer_type;
+        }
+
+        public void setOffer_type(int offer_type) {
+            this.offer_type = offer_type;
+        }
+
+        public String getOffer_type_str() {
+            return offer_type_str;
+        }
+
+        public void setOffer_type_str(String offer_type_str) {
+            this.offer_type_str = offer_type_str;
+        }
+
+        public String getOffer_value() {
+            return offer_value;
+        }
+
+        public void setOffer_value(String offer_value) {
+            this.offer_value = offer_value;
+        }
+
+        public long getEffected_at() {
+            return effected_at;
+        }
+
+        public void setEffected_at(long effected_at) {
+            this.effected_at = effected_at;
+        }
+
+        public long getExpired_at() {
+            return expired_at;
+        }
+
+        public void setExpired_at(long expired_at) {
+            this.expired_at = expired_at;
+        }
     }
 }

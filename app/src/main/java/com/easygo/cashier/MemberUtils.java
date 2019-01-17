@@ -50,7 +50,7 @@ public class MemberUtils {
     /* 会员固定折扣 活动id*/
     public static int discount_rc_id;
 
-    //查看当天是否是会员日 得到type == 1 ? 周 : 月 遍历得到日期是否存在于数组中
+    //查看当天是否是会员日 得到type == 1 ? 周 : 月
     public static boolean isDateMemberDay(MemberDayInfo memberDayInfo) {
         if (memberDayInfo != null) {
             int day = 0;
@@ -93,7 +93,7 @@ public class MemberUtils {
     public static Float getCoupon(float totalPrice, float price, int count) {
         float coupon = 0;
         if (full_type == 1) { //满折扣
-            coupon = (float) (((price * count) / totalPrice) * (full - (full * full_discount)));
+            coupon = (float) (((price * count) / totalPrice) * (totalPrice - (totalPrice * full_discount)));
         } else if (full_type == 2) { //满减
             coupon = ((price * count) / totalPrice) * full_reduction;
         }

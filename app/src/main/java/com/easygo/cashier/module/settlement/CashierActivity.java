@@ -1,12 +1,14 @@
 package com.easygo.cashier.module.settlement;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -47,6 +49,7 @@ import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.EventUtils;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ScreenUtils;
+import com.niubility.library.utils.ToastUtils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -93,7 +96,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     float mTotalMoney;
     @Autowired(name = "goods_data")
     Serializable mGoodsDataSerializable;
-
 
     /**
      * 商品数据
@@ -185,6 +187,12 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 if (!TextUtils.isEmpty(Configs.order_no)) {
                     showScanCodeDialog();
                 }
+                if (MemberUtils.isMember) {
+                    if (mTotalMoney > Float.parseFloat(mBalance.substring(1,mBalance.length()))) {
+                        showToast("会员钱包余额不足，不能进行支付");
+                        return;
+                    }
+                }
                 //弹出确认弹窗
                 Bundle bundle = ConfirmDialog.getDataBundle(mTotalMoney, mRealPay, mChange, mPayWay);
                 confirmDialog = new ConfirmDialog();
@@ -253,7 +261,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
                     //刷新价格
                     if (settlementView != null)
-                        settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange,mBalance);
+                        settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange, mBalance);
 
                 }
 
@@ -427,6 +435,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 case PayWayView.WAY_WECHAT://微信
                     mPresenter.wechatPay(Configs.shop_sn, Configs.order_no,
                             Integer.valueOf(df.format(mTotalMoney * 100)), auth_code);
+                    break;
+                case PayWayView.WAY_MEMBER://会员钱包
+                    mPresenter.memberWalletPay(Configs.order_no,auth_code);
                     break;
             }
 
@@ -778,6 +789,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             case PayWayView.WAY_WECHAT:
                 showScanCodeDialog();
                 break;
+            case PayWayView.WAY_MEMBER:
+                showScanCodeDialog();
+                break;
         }
     }
 
@@ -969,5 +983,18 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     @Override
     public void couponFailed(Map<String, Object> map) {
         showToast((String) map.get(HttpExceptionEngine.ErrorMsg) + ", " + map.get(HttpExceptionEngine.ErrorCode));
+    }
+
+
+    @Override
+    public void memberWalletSuccess(String result) {
+        showToast("支付成功");
+
+        onPaySuccessAfter();
+    }
+
+    @Override
+    public void memberWalletFailed(Map<String, Object> map) {
+        showToast("会员钱包支付失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
     }
 }

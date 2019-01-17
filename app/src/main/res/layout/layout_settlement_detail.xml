@@ -259,6 +259,7 @@
         app:layout_constraintTop_toBottomOf="@id/line5" />
 
     <CheckBox
+        android:visibility="gone"
         android:id="@+id/cb_integral"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

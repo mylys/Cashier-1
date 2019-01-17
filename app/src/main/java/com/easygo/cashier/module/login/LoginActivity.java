@@ -74,7 +74,9 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
             switch (msg.what) {
                 case MSG_GET_SHOP:
                     removeMessages(MSG_GET_SHOP);
-                    mPresenter.init(DeviceUtils.getMacAddress());
+//                    mPresenter.init(DeviceUtils.getMacAddress());
+                    mPresenter.init("08:ea:40:36:4f:3b");
+
                     break;
             }
         }
@@ -251,8 +253,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     public void onClick() {
 
         //获取初始化信息 收银机是否可用
-        mPresenter.init(DeviceUtils.getMacAddress());
-
+//        mPresenter.init(DeviceUtils.getMacAddress());
+        mPresenter.init("08:ea:40:36:4f:3b");
     }
 
     @Override

@@ -103,6 +103,9 @@
     <string name="text_pay_type">支付方式：</string>
     <string name="text_order_number">订单单号：</string>
 
+    <!--快速选择-->
+    <string name="text_quick_choose">快速选择</string>
+
     <!-- 挂单详情 -->
     <string name="text_entry_orders">挂单</string>
     <string name="text_entry_orders_list">挂单列表</string>
