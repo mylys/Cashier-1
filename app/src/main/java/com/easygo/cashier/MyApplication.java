@@ -5,10 +5,12 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.module.permission.PermissionActivity;
 import com.niubility.library.base.BaseApplication;
+import com.niubility.library.utils.ToastUtils;
 
 public class MyApplication extends BaseApplication {
 
@@ -19,6 +21,8 @@ public class MyApplication extends BaseApplication {
         ARouter.openLog();     // 打印日志
         ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
         ARouter.init(this);
+
+        ToastUtils.text_size_times = 1.5f;
     }
 
     @Override

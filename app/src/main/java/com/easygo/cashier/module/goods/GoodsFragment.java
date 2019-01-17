@@ -273,7 +273,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         }
 
         if (TextUtils.isEmpty(barcode)) {
-            showToast("barcode = null");
+//            showToast("barcode = null");
         } else if (BarcodeUtils.isWeightCode(barcode)) {//自编码
 
             String weight_barcode = BarcodeUtils.getProductCode(barcode);

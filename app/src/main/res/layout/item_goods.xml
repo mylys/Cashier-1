@@ -25,6 +25,7 @@
         style="@style/GoodsListStyle"
         android:layout_marginStart="@dimen/margin_349"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_price"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
