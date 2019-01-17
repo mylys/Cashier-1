@@ -4,7 +4,9 @@ import android.content.SharedPreferences;
 
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
+import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.http.HttpAPI;
+import com.easygo.cashier.printer.PrintHelper;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.base.HttpClient;
@@ -213,27 +215,34 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
     public void print_info(String shop_sn, String printer_sn, String info) {
         Map<String, String> header = HttpClient.getInstance().getHeader();
 
-        Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("shop_sn", shop_sn);
-        requestMap.put("printer_sn", printer_sn);
-        requestMap.put("times", 1);
-        requestMap.put("info", info);
+        for (int i = 0; i < PrintHelper.printers_count; i++) {
+            InitResponse.PrintersBean printersBean = PrintHelper.printersBeans.get(i);
+            String device_sn = printersBean.getDevice_sn();
 
-        subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().printer_info(header, requestMap),
-                new BaseResultObserver<String>() {
+            if(!printersBean.canUse(InitResponse.PrintersBean.type_refund)) {
+                return;
+            }
+            Map<String, Object> requestMap = new HashMap<>();
+            requestMap.put("shop_sn", shop_sn);
+            requestMap.put("printer_sn", device_sn);
+            requestMap.put("times", 1);
+            requestMap.put("info", PrintHelper.pop_till);
 
-                    @Override
-                    protected void onSuccess(String result) {
-                        mView.printSuccess(result);
-                    }
+            subscribeAsyncToResult(
+                    HttpAPI.getInstance().httpService().printer_info(header, requestMap),
+                    new BaseResultObserver<String>() {
 
-                    @Override
-                    protected void onFailure(Map<String, Object> map) {
-                        mView.printFailed(map);
-                    }
-                });
+                        @Override
+                        protected void onSuccess(String result) {
+                            mView.printSuccess(result);
+                        }
 
+                        @Override
+                        protected void onFailure(Map<String, Object> map) {
+                            mView.printFailed(map);
+                        }
+                    });
+        }
     }
 
     @Override

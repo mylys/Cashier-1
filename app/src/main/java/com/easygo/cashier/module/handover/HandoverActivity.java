@@ -195,12 +195,15 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
     @Override
     public void loginoutFailed(Map<String, Object> map) {
         during_handover = false;
-        if (HttpExceptionEngine.isBussinessError(map)) {
+//        if (HttpExceptionEngine.isBussinessError(map)) {
+//
+//            String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
+//
+//            showToast("错误信息:" + err_msg);
+//        }
+        String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
 
-            String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
-
-            showToast("错误信息:" + err_msg);
-        }
+        showToast("错误信息:" + err_msg);
     }
 
     @Override

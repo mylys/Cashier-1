@@ -1,5 +1,6 @@
 package com.easygo.cashier.module.status;
 
+import com.easygo.cashier.bean.PrinterStatusResponse;
 import com.niubility.library.mvp.BaseContract;
 import com.niubility.library.mvp.BaseView;
 
@@ -14,7 +15,7 @@ public class StatusContract {
 
     public interface IView extends BaseView {
 
-        void printerStatusSuccess(String result);
+        void printerStatusSuccess(PrinterStatusResponse result);
         void printerStatusFailed(Map<String, Object> map);
     }
 }

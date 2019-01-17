@@ -114,6 +114,7 @@ public class ChooseCouponsDialog extends BaseDialog {
                 dialogDismiss();
             }
         });
+        recyclerView.setVisibility(View.INVISIBLE);
 
         setEmpty();
         setListener();
@@ -166,6 +167,7 @@ public class ChooseCouponsDialog extends BaseDialog {
         if (searchView.getEditText() != null) {
             SoftKeyboardUtil.hideSoftKeyboard(getActivity(), searchView.getEditText());
         }
+        recyclerView.setVisibility(View.INVISIBLE);
         dismiss();
     }
 
@@ -177,6 +179,7 @@ public class ChooseCouponsDialog extends BaseDialog {
         if (adapter != null) {
             adapter.setNewData(infos);
         }
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     private OnSearchListener mListener;

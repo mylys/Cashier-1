@@ -209,6 +209,7 @@ public class OrderHistorysInfo {
         /**
          * g_sku_name : 发舒服撒发-就是个福
          * s_sku_id : 111865
+         * g_u_symbol : g
          * type : 3
          * quantity : 1
          * sell_price : 0.01
@@ -219,6 +220,7 @@ public class OrderHistorysInfo {
 
         private String g_sku_name;
         private int s_sku_id;
+        private String g_u_symbol;
         private int type;
         private int quantity;
         private String sell_price;
@@ -263,6 +265,14 @@ public class OrderHistorysInfo {
 
         public void setS_sku_id(int s_sku_id) {
             this.s_sku_id = s_sku_id;
+        }
+
+        public String getG_u_symbol() {
+            return g_u_symbol;
+        }
+
+        public void setG_u_symbol(String g_u_symbol) {
+            this.g_u_symbol = g_u_symbol;
         }
 
         public int getType() {

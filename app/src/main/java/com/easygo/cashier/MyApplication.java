@@ -25,17 +25,17 @@ public class MyApplication extends BaseApplication {
         ToastUtils.text_size_times = 1.5f;
     }
 
-//    @Override
-//    public boolean isOpenCrashHandler() {
-//        return true;
-//    }
-//
-//    @Override
-//    public void onCrash(Thread t, Throwable e) {
-//        super.onCrash(t, e);
-//
-//        restartAppDelayed(5000);
-//    }
+    @Override
+    public boolean isOpenCrashHandler() {
+        return true;
+    }
+
+    @Override
+    public void onCrash(Thread t, Throwable e) {
+        super.onCrash(t, e);
+
+        restartAppDelayed(5000);
+    }
 
 
     private void restartAppDelayed(long delayMillis) {

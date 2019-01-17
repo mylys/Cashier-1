@@ -1,11 +1,13 @@
 package com.easygo.cashier.module.goods;
 
 import android.content.SharedPreferences;
+import android.gesture.GestureUtils;
 
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
+import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.MemberDayInfo;
 import com.easygo.cashier.bean.MemberDiscountInfo;
 import com.easygo.cashier.bean.MemberInfo;
@@ -53,7 +55,7 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
     @Override
     public void searchGoods(String shop_sn, String barcode) {
-        Map<String, String> header = HttpClient.getInstance().getHeaders();
+        Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().getGoods(header, shop_sn, barcode, 2),
                 new BaseResultObserver<List<GoodsResponse>>() {
@@ -96,26 +98,34 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
         Map<String, String> header = HttpClient.getInstance().getHeader();
 
-        Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("shop_sn", shop_sn);
-        requestMap.put("printer_sn", printer_sn);
-        requestMap.put("times", 1);
-        requestMap.put("info", PrintHelper.pop_till);
+        for (int i = 0; i < PrintHelper.printers_count; i++) {
+            InitResponse.PrintersBean printersBean = PrintHelper.printersBeans.get(i);
+            String device_sn = printersBean.getDevice_sn();
 
-        subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().printer_info(header, requestMap),
-                new BaseResultObserver<String>() {
+            if(!printersBean.canUse(InitResponse.PrintersBean.type_settlement)) {
+                return;
+            }
+            Map<String, Object> requestMap = new HashMap<>();
+            requestMap.put("shop_sn", shop_sn);
+            requestMap.put("printer_sn", device_sn);
+            requestMap.put("times", 1);
+            requestMap.put("info", PrintHelper.pop_till);
 
-                    @Override
-                    protected void onSuccess(String result) {
-                        mView.popTillSuccess();
-                    }
+            subscribeAsyncToResult(
+                    HttpAPI.getInstance().httpService().printer_info(header, requestMap),
+                    new BaseResultObserver<String>() {
 
-                    @Override
-                    protected void onFailure(Map<String, Object> map) {
-                        mView.popTillFailed(map);
-                    }
-                });
+                        @Override
+                        protected void onSuccess(String result) {
+                            mView.popTillSuccess();
+                        }
+
+                        @Override
+                        protected void onFailure(Map<String, Object> map) {
+                            mView.popTillFailed(map);
+                        }
+                    });
+        }
     }
 
     @Override

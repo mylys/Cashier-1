@@ -31,6 +31,7 @@ import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GoodsResponse;
+import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.request.CreateOrderRequestBody;
 import com.easygo.cashier.bean.request.PrintRequestBody;
 import com.easygo.cashier.module.CouponUtils;
@@ -305,95 +306,83 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     }
 
     public void print() {
-        PrintRequestBody requestBody = new PrintRequestBody();
-        //测试代码
-//        requestBody.setGoods_count(2);
-//        requestBody.setOrder_no("2018121417565998545099");
-//        requestBody.setPrinter_sn(Configs.printer_sn);
-//        requestBody.setTimes(2);
-//        requestBody.setShop_sn(Configs.shop_sn);
-        //测试代码
 
-        requestBody.setGoods_count(mGoodsCount);
-        requestBody.setOrder_no(Configs.order_no);
-        requestBody.setPrinter_sn(Configs.printer_sn);
-        requestBody.setTimes(2);
-        requestBody.setShop_sn(Configs.shop_sn);
+        for (int j = 0; j < PrintHelper.printers_count; j++) {
+            InitResponse.PrintersBean printersBean = PrintHelper.printersBeans.get(j);
+            String device_sn = printersBean.getDevice_sn();
+            int print_times = printersBean.getPrint_times();
 
-        ArrayList<PrintRequestBody.GoodsListBean> goodsListBeans = new ArrayList<>();
+            PrintRequestBody requestBody = new PrintRequestBody();
 
-        PrintRequestBody.GoodsListBean goodsListBean;
+            requestBody.setGoods_count(mGoodsCount);
+            requestBody.setOrder_no(Configs.order_no);
+            requestBody.setPrinter_sn(device_sn);
+            requestBody.setTimes(print_times);
+            requestBody.setShop_sn(Configs.shop_sn);
 
+            ArrayList<PrintRequestBody.GoodsListBean> goodsListBeans = new ArrayList<>();
 
-        DecimalFormat df = new DecimalFormat("#");
-        float price;
-        int total_count = mGoodsData.size();
-        for (int i = 0; i < total_count; i++) {
-//        for (int i = 0; i < 2; i++) {
-            //测试代码
-//            goodsListBean.setDiscount(1);
-//            goodsListBean.setGoods_name("a");
-//            goodsListBean.setCount_price(100);
-//            goodsListBean.setPrice(100);
-//            goodsListBean.setCount(1);
-            //测试代码
-
-            goodsListBean = new PrintRequestBody.GoodsListBean();
-            GoodsEntity<GoodsResponse> good = mGoodsData.get(i);
-            int count = good.getCount();
-            GoodsResponse data;
-            Integer price_int;
-
-            data = good.getData();
-            price = Float.valueOf(data.getPrice());
-            price_int = Integer.valueOf(df.format(price * 100));
-            goodsListBean.setCount_price(count * price_int);
-
-            goodsListBean.setDiscount(1);
-            goodsListBean.setGoods_name(data.getG_sku_name());
-            goodsListBean.setPrice(price_int);
-
-            switch (good.getItemType()) {
-                case GoodsEntity.TYPE_WEIGHT:
-                case GoodsEntity.TYPE_ONLY_PROCESSING:
-                case GoodsEntity.TYPE_PROCESSING:
-                    goodsListBean.setCount(count + "g");
-                    break;
-                case GoodsEntity.TYPE_GOODS:
-                default:
-                    goodsListBean.setCount(String.valueOf(count));
-                    break;
-            }
+            PrintRequestBody.GoodsListBean goodsListBean;
 
 
-            goodsListBeans.add(goodsListBean);
+            DecimalFormat df = new DecimalFormat("#");
+            float price;
+            int total_count = mGoodsData.size();
+            for (int i = 0; i < total_count; i++) {
+                goodsListBean = new PrintRequestBody.GoodsListBean();
+                GoodsEntity<GoodsResponse> good = mGoodsData.get(i);
+                int count = good.getCount();
+                GoodsResponse data;
+                Integer price_int;
 
-            if (good.getItemType() == GoodsEntity.TYPE_PROCESSING) {
-                data = good.getProcessing();
-                if (data != null) {
-                    goodsListBean = new PrintRequestBody.GoodsListBean();
-                    price = Float.valueOf(data.getProcess_price());
-                    price_int = Integer.valueOf(df.format(price * 100));
-                    goodsListBean.setCount_price(price_int);
+                data = good.getData();
+                price = Float.valueOf(data.getPrice());
+                price_int = Integer.valueOf(df.format(price * 100));
+                goodsListBean.setCount_price(count * price_int);
 
-                    goodsListBean.setDiscount(1);
-                    goodsListBean.setGoods_name(data.getG_sku_name());
-                    goodsListBean.setPrice(price_int);
+                goodsListBean.setDiscount(1);
+                goodsListBean.setGoods_name(data.getG_sku_name());
+                goodsListBean.setPrice(price_int);
 
-                    goodsListBean.setCount(String.valueOf(data.getCount()));
-
-                    goodsListBeans.add(goodsListBean);
+                switch (good.getItemType()) {
+                    case GoodsEntity.TYPE_WEIGHT:
+                    case GoodsEntity.TYPE_ONLY_PROCESSING:
+                    case GoodsEntity.TYPE_PROCESSING:
+                        goodsListBean.setCount(count + "g");
+                        break;
+                    case GoodsEntity.TYPE_GOODS:
+                    default:
+                        goodsListBean.setCount(String.valueOf(count));
+                        break;
                 }
+
+
+                goodsListBeans.add(goodsListBean);
+
+                if (good.getItemType() == GoodsEntity.TYPE_PROCESSING) {
+                    data = good.getProcessing();
+                    if (data != null) {
+                        goodsListBean = new PrintRequestBody.GoodsListBean();
+                        price = Float.valueOf(data.getProcess_price());
+                        price_int = Integer.valueOf(df.format(price * 100));
+                        goodsListBean.setCount_price(price_int);
+
+                        goodsListBean.setDiscount(1);
+                        goodsListBean.setGoods_name(data.getG_sku_name());
+                        goodsListBean.setPrice(price_int);
+
+                        goodsListBean.setCount(String.valueOf(data.getCount()));
+
+                        goodsListBeans.add(goodsListBean);
+                    }
+                }
+
             }
 
+            requestBody.setGoods_list(goodsListBeans);
+
+            mPresenter.print(GsonUtils.getInstance().getGson().toJson(requestBody));
         }
-
-        requestBody.setGoods_list(goodsListBeans);
-
-
-        mPresenter.print(GsonUtils.getInstance().getGson().toJson(requestBody));
-
-
     }
 
 
@@ -613,9 +602,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         if (settlementView != null) {
             settlementView.release();
         }
-        if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
-            mScanCodeDialog.dismiss();
-        }
+        dismissScanDialog();
         //离开页面 清除订单
         Configs.order_no = null;
     }
@@ -847,9 +834,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 mPresenter.checkAliPayStatus(Test.shop_sn, Configs.order_no);
             } else {
                 showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
-                if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
-                    mScanCodeDialog.dismiss();
-                }
+                dismissScanDialog();
             }
         } else {
             showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
@@ -880,9 +865,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 }, 1000);
             } else {
                 showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
-                if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
-                    mScanCodeDialog.dismiss();
-                }
+                dismissScanDialog();
             }
         } else {
             showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
@@ -907,12 +890,20 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 mPresenter.checkWechatPayStatus(Test.shop_sn, Configs.order_no);
             } else {
                 showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
-                if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
-                    mScanCodeDialog.dismiss();
-                }
+                dismissScanDialog();
             }
         } else {
             showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
+            dismissScanDialog();
+        }
+    }
+
+    /**
+     * 取消扫码弹窗
+     */
+    private void dismissScanDialog() {
+        if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
+            mScanCodeDialog.dismiss();
         }
     }
 
@@ -939,12 +930,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 }, 1000);
             } else {
                 showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
-                if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
-                    mScanCodeDialog.dismiss();
-                }
+                dismissScanDialog();
             }
         } else {
             showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
+            dismissScanDialog();
         }
     }
 
@@ -968,7 +958,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public void printFailed(Map<String, Object> map) {
-        showToast("打印失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
+//        showToast("打印失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
 
     }
 

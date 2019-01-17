@@ -4,13 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.LoginResponse;
-import com.easygo.cashier.bean.MemberInfo;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Configs {

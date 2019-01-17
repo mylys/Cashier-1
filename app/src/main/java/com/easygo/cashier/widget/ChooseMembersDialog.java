@@ -92,6 +92,7 @@ public class ChooseMembersDialog extends BaseDialog {
                 });
             }
         });
+        recyclerView.setVisibility(View.INVISIBLE);
 
         setEmpty();
         setListener();
@@ -124,6 +125,7 @@ public class ChooseMembersDialog extends BaseDialog {
         if (searchView.getEditText() != null) {
             SoftKeyboardUtil.hideSoftKeyboard(getActivity(), searchView.getEditText());
         }
+        recyclerView.setVisibility(View.INVISIBLE);
         dismiss();
     }
 
@@ -141,6 +143,7 @@ public class ChooseMembersDialog extends BaseDialog {
         if (adapter != null) {
             adapter.setNewData(infos);
         }
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     public void setTitle(String title) {

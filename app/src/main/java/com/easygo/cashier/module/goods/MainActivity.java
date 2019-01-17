@@ -32,6 +32,7 @@ import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.bean.EquipmentState;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.MemberInfo;
+import com.easygo.cashier.bean.PrinterStatusResponse;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.secondary_sreen.SecondaryScreen;
 import com.easygo.cashier.module.status.StatusContract;
@@ -337,14 +338,13 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
     }
 
     @Override
-    public void printerStatusSuccess(String result) {
-        //打印机是否正常
-        boolean is_printer_normal = result.equals(PrintHelper.NORMAL);
+    public void printerStatusSuccess(PrinterStatusResponse result) {
+        boolean is_printer_normal = result.getOnline() == 1;
         if (dialog != null && dialog.isShow()) {
             dialog.setNewData(0, getResources().getString(R.string.the_printer), is_printer_normal);
             return;
         }
-        showToast("打印机: " + result);
+        showToast("打印机: " + (is_printer_normal?"在线":"离线"));
     }
 
     @Override
@@ -353,7 +353,6 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
             dialog.setNewData(0, getResources().getString(R.string.the_printer), false);
             return;
         }
-        showToast("打印机可能连接失败");
     }
 
     @Override

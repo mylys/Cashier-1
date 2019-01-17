@@ -18,7 +18,7 @@ public class QuickChoosePresenter extends BasePresenter<QuickChooseContract.View
 
     @Override
     public void getGoodsList() {
-        Map<String, String> header = HttpClient.getInstance().getHeaders();
+        Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(HttpAPI.getInstance().httpService().showLists(header),
                 new BaseResultObserver<List<QuickClassifyInfo>>() {
             @Override

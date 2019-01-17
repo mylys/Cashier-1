@@ -35,6 +35,7 @@ import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.RequsetBody;
 import com.easygo.cashier.module.order_history.OrderHistoryActivity;
+import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.GeneraListDialog;
 import com.easygo.cashier.widget.MySearchView;
@@ -45,8 +46,11 @@ import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ToastUtils;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -335,6 +339,8 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     public void getHistoryRefundSuccess(String message) {
         btnRefund.setEnabled(true);
         if (pay_type.equals(getResources().getString(R.string.pay_cash))) {
+            printRefundInfo();
+
             mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
         }
         checkbox.setChecked(false);
@@ -349,6 +355,46 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         if (getActivity() != null) {
             ((OrderHistoryActivity) getActivity()).toRefresh();
         }
+    }
+
+    private void printRefundInfo() {
+
+        StringBuilder sb = new StringBuilder();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+
+        sb.append(PrintHelper.CB_left).append("退款单").append(PrintHelper.CB_right).append(PrintHelper.BR)
+                .append("订单号：").append(order_no_number).append(PrintHelper.BR)
+                .append("收银员：").append(real_name).append(PrintHelper.BR)
+                .append("时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
+                .append("--------------------------------").append(PrintHelper.BR)
+                .append("品名  ").append("单价  ").append("折扣  ").append("数量/重量  ").append("小计  ")
+                .append(PrintHelper.BR);
+
+
+        int size = infoList.size();
+        for (int i = 0; i < size; i++) {
+            GoodsRefundInfo goodsRefundInfo = infoList.get(i);
+
+            boolean select = goodsRefundInfo.isSelect();
+            if(!select) {
+                continue;
+            }
+
+            sb.append(i+1).append(".")
+                    .append(goodsRefundInfo.getProduct_name()).append("   ").append(PrintHelper.BR)
+                    .append("            ")
+                    .append(goodsRefundInfo.getProduct_price()).append("   ").append(PrintHelper.BR)
+                    .append("1.00    ")
+                    .append(goodsRefundInfo.getRefund_num()).append("   ")
+                    .append(goodsRefundInfo.getRefund_subtotal()).append("   ").append(PrintHelper.BR);
+        }
+        sb.append("--------------------------------").append(PrintHelper.BR)
+                .append("总数量：").append(adapter.getTotalNum()).append(PrintHelper.BR)
+                .append("退款方式：").append(pay_type).append(PrintHelper.BR)
+                .append("退款金额：").append(Float.parseFloat(editRefundcashPrice.getText().toString())).append(PrintHelper.BR);
+
+
+        mPresenter.print_info(Configs.shop_sn, sb.toString());
     }
 
     @Override

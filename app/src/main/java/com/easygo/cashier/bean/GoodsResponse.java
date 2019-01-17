@@ -61,6 +61,7 @@ public class GoodsResponse implements Serializable {
     private int sell_status;
     private int status;
     private int is_weigh;
+    private String g_u_symbol;
 
     private boolean select;
     private boolean isMember;
@@ -318,5 +319,13 @@ public class GoodsResponse implements Serializable {
 
     public void setIs_weigh(int is_weigh) {
         this.is_weigh = is_weigh;
+    }
+
+    public String getG_u_symbol() {
+        return g_u_symbol;
+    }
+
+    public void setG_u_symbol(String g_u_symbol) {
+        this.g_u_symbol = g_u_symbol;
     }
 }

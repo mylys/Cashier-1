@@ -822,6 +822,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                     if(!ActivitiesUtils.getInstance().isWith_coupon()) {
                         showToast("参与的促销活动不可与优惠券公用");
+                        return;
                     }
                 }
 
@@ -833,6 +834,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 couponsDialog.setOnSearchListener(new ChooseCouponsDialog.OnSearchListener() {
                     @Override
                     public void onSearch(String content) {
+                        if(content.length() < 32) {
+                            showToast("优惠券编号至少32位");
+                            return;
+                        }
                         mPresenter.get_coupon(content);
                     }
 

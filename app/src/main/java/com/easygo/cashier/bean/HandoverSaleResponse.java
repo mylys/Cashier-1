@@ -1,5 +1,7 @@
 package com.easygo.cashier.bean;
 
+import android.text.TextUtils;
+
 public class HandoverSaleResponse {
 
 
@@ -13,10 +15,11 @@ public class HandoverSaleResponse {
      * refund : 0
      * count : 3
      * money : 0.06
+     * g_u_symbol : g
      */
 
     private String g_sku_name;
-    private Object g_c_name;
+    private String g_c_name;
     private int s_sku_id;
     private int type;
     private int quantity;
@@ -24,6 +27,7 @@ public class HandoverSaleResponse {
     private int refund;
     private int count;
     private double money;
+    private String g_u_symbol;
 
     public String getG_sku_name() {
         return g_sku_name;
@@ -34,10 +38,10 @@ public class HandoverSaleResponse {
     }
 
     public String getG_c_name() {
-        return g_c_name == null? "": (String) g_c_name;
+        return TextUtils.isEmpty(g_c_name)? "": g_c_name;
     }
 
-    public void setG_c_name(Object g_c_name) {
+    public void setG_c_name(String g_c_name) {
         this.g_c_name = g_c_name;
     }
 
@@ -95,5 +99,13 @@ public class HandoverSaleResponse {
 
     public void setMoney(double money) {
         this.money = money;
+    }
+
+    public String getG_u_symbol() {
+        return g_u_symbol;
+    }
+
+    public void setG_u_symbol(String g_u_symbol) {
+        this.g_u_symbol = g_u_symbol;
     }
 }

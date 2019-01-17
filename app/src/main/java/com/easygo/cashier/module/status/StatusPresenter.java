@@ -1,5 +1,6 @@
 package com.easygo.cashier.module.status;
 
+import com.easygo.cashier.bean.PrinterStatusResponse;
 import com.easygo.cashier.http.HttpAPI;
 import com.niubility.library.http.base.HttpClient;
 import com.niubility.library.http.rx.BaseResultObserver;
@@ -15,10 +16,10 @@ public class StatusPresenter extends BasePresenter<StatusContract.IView> impleme
         Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().printer_status(header, shop_sn, printer_sn),
-                new BaseResultObserver<String>() {
+                new BaseResultObserver<PrinterStatusResponse>() {
 
                     @Override
-                    protected void onSuccess(String result) {
+                    protected void onSuccess(PrinterStatusResponse result) {
                         mView.printerStatusSuccess(result);
                     }
 

@@ -27,12 +27,15 @@
 
     <TextView
         android:id="@+id/tv_goods_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="农夫山泉"
         style="@style/GoodsListStyle"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:layout_marginStart="@dimen/margin_349"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_price"
         app:layout_constraintTop_toTopOf="@id/tv_barcode"
         app:layout_constraintBottom_toBottomOf="@id/tv_barcode"/>
 

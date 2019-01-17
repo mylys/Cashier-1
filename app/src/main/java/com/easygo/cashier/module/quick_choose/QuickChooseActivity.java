@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -86,7 +87,6 @@ public class QuickChooseActivity extends BaseMvpActivity<QuickChooseContract.Vie
 
         rvGoodsList.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
         rvGoodsList.setAdapter(goodsAdapter);
-        setEmpty();
     }
 
     private void initRvClassify() {
@@ -148,6 +148,9 @@ public class QuickChooseActivity extends BaseMvpActivity<QuickChooseContract.Vie
         View emptyView = getLayoutInflater().inflate(R.layout.item_empty_view, null);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
+
+        TextView textView = emptyView.findViewById(R.id.text);
+        textView.setText("请到店铺后台设置商品");
         goodsAdapter.setEmptyView(emptyView);
     }
 
@@ -158,6 +161,7 @@ public class QuickChooseActivity extends BaseMvpActivity<QuickChooseContract.Vie
             goodsResponses.get(0).setSelect(true);
             classifyAdapter.setNewData(goodsResponses);
             goodsAdapter.setNewData(goodsResponses.get(0).getGoods());
+            setEmpty();
         }
     }
 

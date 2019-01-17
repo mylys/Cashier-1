@@ -85,7 +85,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
                 count.setCountChangeEnable(false);
                 break;
             case GoodsEntity.TYPE_WEIGHT://称重商品
-                helper.setText(R.id.tv_count, good_count + "g");
+                helper.setText(R.id.tv_count, good_count + good.getG_u_symbol());
                 break;
             case GoodsEntity.TYPE_ONLY_PROCESSING://纯加工方式
                 CountTextView view = (CountTextView) helper.getView(R.id.count_view);
@@ -104,7 +104,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
                 final boolean is_processing = processing != null;
 
                 //设置加工方式相关控件可见性
-                helper.setText(R.id.tv_count, good_count + "g");
+                helper.setText(R.id.tv_count, good_count + good.getG_u_symbol());
                 setProcessingLayout(helper, is_processing);
 
 

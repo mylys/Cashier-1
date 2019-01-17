@@ -28,7 +28,7 @@ public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo
         helper.setText(R.id.tv_text_goods_name, item.getG_sku_name())
                 .setText(R.id.tv_text_price, sell_price)
                 .setText(R.id.tv_text_coupon, "0.00")
-                .setText(R.id.tv_text_goods_count, item.getType() == 1 ? count + "g" : count + "")
+                .setText(R.id.tv_text_goods_count, item.getType() == 1 ? count + item.getG_u_symbol() : count + "")
                 .setText(R.id.tv_text_subtotal, df.format(item.getMoney()));
 
         if (item.getType() == 1) {
