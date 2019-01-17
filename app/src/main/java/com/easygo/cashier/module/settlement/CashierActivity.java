@@ -535,7 +535,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         List<CreateOrderRequestBody.GoodsListBean> list = new ArrayList<>();
         GoodsEntity<GoodsResponse> good;
         GoodsResponse data;
-        CreateOrderRequestBody.GoodsListBean goodsBean;
+        CreateOrderRequestBody.GoodsListBean goodsBean; 
         float price;
         for (int i = 0; i < size; i++) {
             good = mGoodsData.get(i);
