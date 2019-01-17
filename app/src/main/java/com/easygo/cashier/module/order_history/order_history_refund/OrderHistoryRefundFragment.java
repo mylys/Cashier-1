@@ -357,6 +357,9 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         }
     }
 
+    /**
+     * 打印退款单
+     */
     private void printRefundInfo() {
 
         StringBuilder sb = new StringBuilder();
@@ -382,7 +385,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
             sb.append(i+1).append(".")
                     .append(goodsRefundInfo.getProduct_name()).append("   ").append(PrintHelper.BR)
-                    .append("            ")
+                    .append("    ")
                     .append(goodsRefundInfo.getProduct_price()).append("   ").append(PrintHelper.BR)
                     .append("1.00    ")
                     .append(goodsRefundInfo.getRefund_num()).append("   ")

@@ -6,7 +6,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.easygo.cashier.R;
@@ -76,6 +78,19 @@ public class SearchResultWindow extends PopupWindow {
             }
         });
 
+        setEmpty(context);
+
+
+    }
+
+    /* 设置adapter空数据 */
+    private void setEmpty(Context context) {
+        View emptyView = LayoutInflater.from(context).inflate(R.layout.item_empty_view, null);
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        TextView textView = emptyView.findViewById(R.id.text);
+        textView.setText(context.getResources().getString(R.string.search_null));
+        searchResultAdapter.setEmptyView(emptyView);
     }
 
     public void setData(List<GoodsResponse> data) {

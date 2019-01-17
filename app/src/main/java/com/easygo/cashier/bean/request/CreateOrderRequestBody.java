@@ -105,6 +105,7 @@ public class CreateOrderRequestBody {
          * type : 0
          * identity : "0"
          * barcode : 096619756803
+         * discount :
          */
 
         private int g_sku_id;
@@ -119,6 +120,7 @@ public class CreateOrderRequestBody {
          */
         private String identity;
         private String barcode;
+        private int discount;
 
         public int getG_sku_id() {
             return g_sku_id;
@@ -166,6 +168,14 @@ public class CreateOrderRequestBody {
 
         public void setBarcode(String barcode) {
             this.barcode = barcode;
+        }
+
+        public int getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(int discount) {
+            this.discount = discount;
         }
     }
 

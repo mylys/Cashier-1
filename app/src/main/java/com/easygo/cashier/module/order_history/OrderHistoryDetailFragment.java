@@ -185,7 +185,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                     .append("     ")
                     .append(listBean.getSell_price()).append("   ")
                     .append("0.00").append("   ")
-                    .append(listBean.getType() == 1 ? listBean.getQuantity() + "g" : listBean.getCount()).append("   ")
+                    .append(listBean.getType() == 1 ? listBean.getQuantity() + listBean.getG_u_symbol() : listBean.getCount()).append("   ")
                     .append(listBean.getMoney()).append(PrintHelper.BR);
         }
 

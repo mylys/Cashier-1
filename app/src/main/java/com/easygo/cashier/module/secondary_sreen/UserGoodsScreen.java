@@ -137,7 +137,7 @@ public class UserGoodsScreen extends Presentation {
     //更新位置到最后
     public void toPosition() {
         if(recyclerView != null && mUserGoodsAdapter != null)
-            recyclerView.smoothScrollToPosition(mUserGoodsAdapter.getItemCount()-1);
+            recyclerView.smoothScrollToPosition(mUserGoodsAdapter.getData().size()-1);
     }
 
     public void setOrdersData(List<GoodsEntity<GoodsResponse>> goodsEntities) {

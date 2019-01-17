@@ -213,6 +213,7 @@ public class OrderHistorysInfo {
          * type : 3
          * quantity : 1
          * sell_price : 0.01
+         * discount : 0.01
          * refund : 0
          * count : 1
          * money : 0.01
@@ -224,6 +225,7 @@ public class OrderHistorysInfo {
         private int type;
         private int quantity;
         private String sell_price;
+        private String discount;
         private int refund;
         private int count;
         private double money;
@@ -234,6 +236,7 @@ public class OrderHistorysInfo {
             type = in.readInt();
             quantity = in.readInt();
             sell_price = in.readString();
+            discount = in.readString();
             refund = in.readInt();
             count = in.readInt();
             money = in.readDouble();
@@ -299,6 +302,14 @@ public class OrderHistorysInfo {
             this.sell_price = sell_price;
         }
 
+        public String getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(String discount) {
+            this.discount = discount;
+        }
+
         public int getRefund() {
             return refund;
         }
@@ -335,6 +346,7 @@ public class OrderHistorysInfo {
             dest.writeInt(type);
             dest.writeInt(quantity);
             dest.writeString(sell_price);
+            dest.writeString(discount);
             dest.writeInt(refund);
             dest.writeInt(count);
             dest.writeDouble(money);

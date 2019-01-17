@@ -46,7 +46,6 @@ public class OrderHistoryRefundPresenter extends BasePresenter<OrderHistoryRefun
         for (int i = 0; i < PrintHelper.printers_count; i++) {
             InitResponse.PrintersBean printersBean = PrintHelper.printersBeans.get(i);
             String device_sn = printersBean.getDevice_sn();
-            int print_times = printersBean.getPrint_times();
 
             if(!printersBean.canUse(InitResponse.PrintersBean.type_refund)) {
                 return;
@@ -54,7 +53,7 @@ public class OrderHistoryRefundPresenter extends BasePresenter<OrderHistoryRefun
             Map<String, Object> requestMap = new HashMap<>();
             requestMap.put("shop_sn", shop_sn);
             requestMap.put("printer_sn", device_sn);
-            requestMap.put("times", print_times);
+            requestMap.put("times", 1);
             requestMap.put("info", PrintHelper.pop_till);
 
             subscribeAsyncToResult(
