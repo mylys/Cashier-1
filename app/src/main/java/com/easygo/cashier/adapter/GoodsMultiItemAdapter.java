@@ -61,12 +61,15 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
     //普通商品
     public void addItem(GoodsResponse t) {
+        addItem(t, 1);
+    }
+    public void addItem(GoodsResponse t, int count) {
         String code = t.getBarcode();
         ensureNotNull();
         if (!data.containsKey(code)) {
             GoodsEntity<GoodsResponse> goodsNum = new GoodsEntity<>(GoodsEntity.TYPE_GOODS);
             goodsNum.setData(t);
-            goodsNum.setCount(1);
+            goodsNum.setCount(count);
             barcodeData.add(code);
             data.put(code, goodsNum);
             mData.add(goodsNum);
@@ -166,14 +169,15 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             String barcode = goodsResponse.getBarcode();
 
             if (goodsResponse.getParent_id() == 0) {//主商品
-                if (BarcodeUtils.isWeightCode(barcode)) {
+//                if (BarcodeUtils.isWeightCode(barcode)) {
+                if (goodsResponse.getIs_weigh() == 1) {
                     //重量商品
                     goodsResponse.setType(GoodsResponse.type_weight);
                     addWeightItem(goodsResponse, weight);
                 } else {
                     //普通商品
                     goodsResponse.setType(GoodsResponse.type_normal);
-                    addItem(goodsResponse);
+                    addItem(goodsResponse, weight);
                 }
             } else if (goodsResponse.getParent_id() != 0) {
                 //纯加工商品

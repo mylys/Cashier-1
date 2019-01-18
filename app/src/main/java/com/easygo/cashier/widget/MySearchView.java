@@ -120,7 +120,7 @@ public class MySearchView extends ConstraintLayout {
             }
         });
 //        mEditText.setRawInputType(Configuration.KEYBOARD_QWERTY);
-        mEditText.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
+//        mEditText.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
 
         mEditText.setOnKeyListener(new OnKeyListener() {
             @Override

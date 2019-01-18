@@ -95,6 +95,8 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     private String real_name = "";
     private String order_no_number = "";
     private int total_price = 0;
+    private int refund_status = 0;
+    private int have_refund = 0;
     private int pay_way = PayWayView.WAY_CASH;
 
     public static OrderHistoryRefundFragment getInstance(Bundle bundle) {
@@ -130,6 +132,9 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
             pay_type = getArguments().getString("pay_type");
             real_name = getArguments().getString("real_name");
             total_price = getArguments().getInt("total_price");
+            refund_status = getArguments().getInt("refund_status");
+            have_refund = getArguments().getInt("have_refund");
+
         }
         tvPayType.setText(getResources().getString(R.string.text_pay_type) + pay_type + getResources().getString(R.string.text_pay));
         tvOrderNumber.setText(getResources().getString(R.string.text_order_number) + order_no_number);
@@ -166,6 +171,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 info.setRefund_subtotal(bean.getSell_price());
                 info.setSelect(false);
                 info.setType(bean.getType());
+                info.setIdentity(bean.getIdentity());
                 info.setRefund(bean.getRefund());
                 adapter.addData(info);
                 infoList.add(info);
@@ -292,6 +298,12 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
     @OnClick(R.id.btn_refund)
     public void onViewClicked() {
+        if(refund_status == 1 && have_refund == 0) {//订单有退过款，商品没有退过款
+            //无退货 退过款
+            showToast("此订单已退过款");
+            return;
+        }
+
         if (TextUtils.isEmpty(editRefundcashPrice.getText().toString())) {
             return;
         }
@@ -354,6 +366,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         ToastUtils.showToast(getActivity(), message);
         if (getActivity() != null) {
             ((OrderHistoryActivity) getActivity()).toRefresh();
+            ((OrderHistoryActivity) getActivity()).back();
         }
     }
 
@@ -425,5 +438,9 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         if (unbinder != null) {
             unbinder.unbind();
         }
+    }
+
+    public void refreshData(Bundle bundle) {
+        init();
     }
 }

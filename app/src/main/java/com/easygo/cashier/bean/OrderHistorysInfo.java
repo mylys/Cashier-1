@@ -41,6 +41,7 @@ public class OrderHistorysInfo {
     private String real_pay;
     private String buyer_pay;
     private String change_money;
+    private int refund_status;
     private String refund_fee;
     private int sku_count;
     private int pay_type;
@@ -155,6 +156,14 @@ public class OrderHistorysInfo {
         this.change_money = change_money;
     }
 
+    public int getRefund_status() {
+        return refund_status;
+    }
+
+    public void setRefund_status(int refund_status) {
+        this.refund_status = refund_status;
+    }
+
     public String getRefund_fee() {
         return refund_fee;
     }
@@ -214,6 +223,7 @@ public class OrderHistorysInfo {
          * quantity : 1
          * sell_price : 0.01
          * discount : 0.01
+         * identity : 1547787879989
          * refund : 0
          * count : 1
          * money : 0.01
@@ -226,6 +236,7 @@ public class OrderHistorysInfo {
         private int quantity;
         private String sell_price;
         private String discount;
+        private String identity;
         private int refund;
         private int count;
         private double money;
@@ -237,6 +248,7 @@ public class OrderHistorysInfo {
             quantity = in.readInt();
             sell_price = in.readString();
             discount = in.readString();
+            identity = in.readString();
             refund = in.readInt();
             count = in.readInt();
             money = in.readDouble();
@@ -310,6 +322,14 @@ public class OrderHistorysInfo {
             this.discount = discount;
         }
 
+        public String getIdentity() {
+            return identity;
+        }
+
+        public void setIdentity(String identity) {
+            this.identity = identity;
+        }
+
         public int getRefund() {
             return refund;
         }
@@ -347,6 +367,7 @@ public class OrderHistorysInfo {
             dest.writeInt(quantity);
             dest.writeString(sell_price);
             dest.writeString(discount);
+            dest.writeString(identity);
             dest.writeInt(refund);
             dest.writeInt(count);
             dest.writeDouble(money);

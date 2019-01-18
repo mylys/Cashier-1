@@ -125,6 +125,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 RequsetBody.GoodsList list = new RequsetBody.GoodsList();
                 list.setS_sku_id(item.getS_sku_id());
                 list.setIs_weigh(item.getIs_weigh());
+                list.setIdentity(item.getIdentity());
                 if (item.getIs_weigh() == 1) {
                     if (item.getParent_id() == 0) {
                         list.setCount(item.getProduct_num());

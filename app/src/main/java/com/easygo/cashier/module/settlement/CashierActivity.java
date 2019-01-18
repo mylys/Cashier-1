@@ -147,6 +147,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     protected void init() {
         ARouter.getInstance().inject(this);
 
+        btnCoupon.setVisibility(View.GONE);
+
 //        payWayView.setPayWayShow(MemberUtils.isMember ? new int[]{0, 1, 2, 3, 6} : new int[]{0, 1, 2, 6});
         payWayView.setPayWayShow(MemberUtils.isMember ? new int[]{0, 1, 2, 3} : new int[]{0, 1, 2});
         settlementView = SettlementView.create(this);
@@ -711,6 +713,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             goodsBean.setIdentity(data.getIdentity());
             //设置类型
             goodsBean.setType(data.getType());
+            float discount = Float.valueOf(data.getDiscount_price());
+            goodsBean.setDiscount(Integer.valueOf(df.format(discount * 100)));
 
             goodsBean.setCount(good.getCount());
             if (good.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {

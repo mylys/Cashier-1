@@ -80,6 +80,7 @@ public class QuickChooseActivity extends BaseMvpActivity<QuickChooseContract.Vie
         initRvClassify();
         initRvGoodsList();
         setListener();
+        setEmpty();
     }
 
     private void initRvGoodsList() {
@@ -87,6 +88,8 @@ public class QuickChooseActivity extends BaseMvpActivity<QuickChooseContract.Vie
 
         rvGoodsList.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
         rvGoodsList.setAdapter(goodsAdapter);
+
+        rvGoodsList.setVisibility(View.INVISIBLE);
     }
 
     private void initRvClassify() {
@@ -161,8 +164,8 @@ public class QuickChooseActivity extends BaseMvpActivity<QuickChooseContract.Vie
             goodsResponses.get(0).setSelect(true);
             classifyAdapter.setNewData(goodsResponses);
             goodsAdapter.setNewData(goodsResponses.get(0).getGoods());
-            setEmpty();
         }
+        rvGoodsList.setVisibility(View.VISIBLE);
     }
 
     @Override

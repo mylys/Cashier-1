@@ -66,6 +66,7 @@ public class RequsetBody {
         private int s_sku_id;
         private int count;
         private int is_weigh;
+        private String identity;
 
         public int getIs_weigh() {
             return is_weigh;
@@ -89,6 +90,14 @@ public class RequsetBody {
 
         public void setCount(int count) {
             this.count = count;
+        }
+
+        public String getIdentity() {
+            return identity;
+        }
+
+        public void setIdentity(String identity) {
+            this.identity = identity;
         }
     }
 }
