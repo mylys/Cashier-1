@@ -1,6 +1,9 @@
 package com.easygo.cashier.printer;
 
+import com.easygo.cashier.bean.InitResponse;
+
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 public class PrintHelper {
@@ -34,6 +37,9 @@ public class PrintHelper {
 
     public static final String NORMAL = "在线，工作状态正常。";
     public static final String OFFLINE = "离线";
+
+    public static List<InitResponse.PrintersBean> printersBeans;
+    public static int printers_count;
 
 
 }

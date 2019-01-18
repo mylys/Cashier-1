@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -24,7 +25,9 @@ import com.easygo.cashier.bean.AccountInfo;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
+import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.AccountWindow;
+import com.easygo.cashier.widget.ConfigDialog;
 import com.easygo.cashier.widget.PettyCashDialog;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
@@ -56,6 +59,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     EditText etPassword;
     @BindView(R.id.btn_login)
     Button btnLogin;
+    @BindView(R.id.tv_system)
+    TextView tvSystem;
     private int is_reserve;
     private PettyCashDialog dialog;
     private UserGoodsScreen mUserGoodsScreen;
@@ -63,6 +68,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     private AccountInfo mAccountInfo;
     private final String KEY_ACCOUNTS = "key_accounts";
     private AccountWindow mAccountWindow;
+
+    private ConfigDialog mConfigDialog;
 
 
     private static final int MSG_GET_SHOP = 0;
@@ -75,6 +82,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
                 case MSG_GET_SHOP:
                     removeMessages(MSG_GET_SHOP);
                     mPresenter.init(DeviceUtils.getMacAddress());
+//                    mPresenter.init("08:ea:40:36:4f:3b");
+
                     break;
             }
         }
@@ -104,30 +113,32 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         int handover_id = sp.getInt(Constans.KEY_HANDOVER_ID, -1);
         String shop_sn = sp.getString(Constans.KEY_SHOP_SN, "");
         String shop_name = sp.getString(Constans.KEY_SHOP_NAME, "");
-//        if(!TextUtils.isEmpty(session_id) && !TextUtils.isEmpty(admin_name)
-//                && !TextUtils.isEmpty(shop_sn) && handover_id != -1) {
-//            //登录状态 直接跳转首页
-//
-//            Configs.shop_sn = shop_sn;
-//            Configs.shop_name = shop_name;
-//
-//            ARouter.getInstance().build(ModulePath.goods)
-//                    .withString("admin_name", admin_name)
-//                    .navigation();
-//            showToast("登录： " + admin_name);
-//            Configs.admin_name = admin_name;
-//            finish();
-//        } else {
+        String appkey = sp.getString(Constans.KEY_APPKEY, "");
+        String secret = sp.getString(Constans.KEY_SECRET, "");
         String account = sp.getString("account", "");
         etAccount.setText(account);
 //            etAccount.setText("15017740901");
 //            etPassword.setText("123456");
-//        }
 
 
         initAccount();
 
         initUserGoodsScreen();
+
+        if(TextUtils.isEmpty(appkey) || TextUtils.isEmpty(secret)) {
+            showConfigDialog();
+        }
+
+        //长按 收银系统 弹出配置弹窗
+        tvSystem.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showConfigDialog();
+                return true;
+            }
+        });
+
+
     }
 
     private void initAccount() {
@@ -204,6 +215,15 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     }
 
     /**
+     * 弹出 配置id、secret弹窗
+     */
+    public void showConfigDialog() {
+        mConfigDialog = new ConfigDialog();
+        mConfigDialog.showCenter(this);
+    }
+
+
+    /**
      * 获取登录过的账号
      */
     public AccountInfo getSaveAccount() {
@@ -252,7 +272,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
         //获取初始化信息 收银机是否可用
         mPresenter.init(DeviceUtils.getMacAddress());
-
+//        mPresenter.init("08:ea:40:36:4f:3b");
     }
 
     @Override
@@ -340,11 +360,12 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         Configs.menuBeanList = result.getMenu();
 
 
-        //弹出钱箱
-        mPresenter.pop_till(Configs.shop_sn, Configs.printer_sn);
-
-
         if (is_reserve == 1) {
+
+            //弹出钱箱
+            mPresenter.pop_till(Configs.shop_sn, Configs.printer_sn);
+
+
             if (dialog == null)
                 dialog = new PettyCashDialog();
 
@@ -372,7 +393,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         ARouter.getInstance().build(ModulePath.goods)
                 .withString("admin_name", Configs.admin_name)
                 .navigation();
-        Toast.makeText(this, "登录成功：" + Configs.admin_name, Toast.LENGTH_SHORT).show();
+        showToast("登录成功：" + Configs.admin_name);
         finish();
     }
 
@@ -397,7 +418,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     public void initSuccess(InitResponse result) {
 
         String shop_sn = result.getShop().getShop_sn();
-        String shop_name = result.getShop().getShop_sn();
+        String shop_name = result.getShop().getShop_name();
         is_reserve = result.getShop().getIs_reserve();
 
         SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(this).edit();
@@ -407,7 +428,13 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
         Configs.shop_name = shop_name;
         Configs.shop_sn = shop_sn;
-        Configs.printer_sn = result.getPrinters().get(0).getDevice_sn();
+
+        List<InitResponse.PrintersBean> printers = result.getPrinters();
+        PrintHelper.printers_count = printers.size();
+        if(PrintHelper.printers_count != 0) {
+            Configs.printer_sn = printers.get(0).getDevice_sn();
+        }
+        PrintHelper.printersBeans = printers;
 
 
 
@@ -440,6 +467,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         Log.i(TAG, "loginFailed: map --> errorType:" + errorType
                 + ", errorCode: " + errorCode
                 + ", errorMsg: " + errorMsg);
+        showToast(errorMsg);
 
         mHandler.sendEmptyMessageDelayed(MSG_GET_SHOP, 2000);
 

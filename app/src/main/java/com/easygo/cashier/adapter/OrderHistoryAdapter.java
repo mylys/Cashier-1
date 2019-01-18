@@ -25,7 +25,7 @@ public class OrderHistoryAdapter extends BaseQuickAdapter<OrderHistorysInfo, Bas
 
         //已退款状态 是否显示
 //        helper.getView(R.id.cl_refund).setVisibility(item.getStatus() == 3 ? View.VISIBLE : View.GONE);
-        helper.getView(R.id.cl_refund).setVisibility(item.getHave_refund() == 0 ? View.GONE : View.VISIBLE);
+        helper.getView(R.id.cl_refund).setVisibility(item.getRefund_status() == 0 ? View.GONE : View.VISIBLE);
 
         //设置点击状态
         helper.getView(R.id.root).setBackgroundColor(item.isSelect() ? theme : white);
@@ -35,7 +35,7 @@ public class OrderHistoryAdapter extends BaseQuickAdapter<OrderHistorysInfo, Bas
         helper.setTextColor(R.id.tv_time, item.isSelect() ? white : text_color);
 
         helper.setText(R.id.tv_order_no, item.getTrade_no() != null ? (String) item.getTrade_no() : "")
-                .setText(R.id.tv_money, "￥" + item.getTotal_money())
+                .setText(R.id.tv_money, "￥" + item.getReal_pay())
                 .setText(R.id.tv_time, getTime);
 
         helper.getView(R.id.root).setOnClickListener(new View.OnClickListener() {

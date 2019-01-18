@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -119,8 +120,27 @@ public class MySearchView extends ConstraintLayout {
             }
         });
 //        mEditText.setRawInputType(Configuration.KEYBOARD_QWERTY);
-        mEditText.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
+//        mEditText.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
 
+        mEditText.setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+                    onScanCode(mEditText.getText().toString().trim());
+                }
+                return false;
+            }
+        });
+
+    }
+
+    private void onScanCode(String code) {
+
+    }
+
+    public EditText getEditText() {
+        return mEditText;
     }
 
     private void initView(Context context) {

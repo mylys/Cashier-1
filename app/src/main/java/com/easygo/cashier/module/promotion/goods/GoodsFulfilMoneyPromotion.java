@@ -32,38 +32,47 @@ public class GoodsFulfilMoneyPromotion extends BaseGoodsPromotion implements IGo
 
             if(total_money < getCondition_value()) {
                 //不满足满额促销条件  直接返回
+                Log.i(TAG, "computePromotionMoney: 不满足满额促销条件金额");
                 return;
             }
 
             List<PromotionGoods.GoodsBean> goodsBeans = promotionGoods.getGoodsBeans();
+            int goods_size = goodsBeans.size();
 
             float max_promotion = 0f;
             float subtract = 0;
             int index = -1;
 
-            int size = listBeans.size();
+            int size = this.listBeans.size();
             for (int i = 0; i < size; i++) {
-                GoodsActivityResponse.ActivitiesBean.ConfigBean.ListBean listBean = listBeans.get(i);
-                int offer_value = Integer.valueOf(listBean.getOffer_value());
+                GoodsActivityResponse.ActivitiesBean.ConfigBean.ListBean listBean = this.listBeans.get(i);
+                float offer_value = Float.valueOf(listBean.getOffer_value());
 
-                PromotionGoods.GoodsBean goodsBean = goodsBeans.get(i);
+                for (int j = 0; j < goods_size; j++) {
+                    PromotionGoods.GoodsBean goodsBean = goodsBeans.get(j);
+                    //找到对应商品
+                    if(listBean.getBarcode().equals(goodsBean.getBarcode())) {
 
-                if(goodsBean.getCount() == 0) {
-                    return;
-                }
+                        if (goodsBean.getCount() == 0) {
+                            return;
+                        }
 
-                //计算差价
-                subtract = goodsBean.getPrice() - offer_value;
-                Log.i(TAG, "computePromotionMoney: 第" + i + "个，差价 - " + subtract);
-                if(subtract > max_promotion) {
-                    max_promotion = subtract;
-                    index = i;
+                        //计算差价
+                        subtract = goodsBean.getPrice() - offer_value;
+                        Log.i(TAG, "computePromotionMoney: 第" + i + "个，差价 - " + subtract);
+                        if (subtract > max_promotion) {
+                            max_promotion = subtract;
+                            index = i;
+                        }
+                    }
                 }
             }
 
             if(index != -1) {
-                Log.i(TAG, "computePromotionMoney: 选择第" + index + "个，最大差价 - " + subtract);
+                Log.i(TAG, "computePromotionMoney: 商品满额促销 选择第" + index + "个，最大差价 - " + subtract);
                 PromotionGoods.GoodsBean goodsBean = goodsBeans.get(index);
+                goodsBean.setPromotion_money(subtract);
+                data.get(goodsBean.getIndex()).setPromotion(this);
                 data.get(goodsBean.getIndex()).getData().setDiscount_price(String.valueOf(subtract));
             }
         }

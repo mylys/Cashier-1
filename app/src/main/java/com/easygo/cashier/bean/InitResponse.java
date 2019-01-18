@@ -125,15 +125,36 @@ public class InitResponse {
     }
 
     public static class PrintersBean {
+
+
         /**
          * id : 21
          * mac_address :
          * device_sn : 454654564
+         * print_times : 1
+         * content_types : [1]
          */
 
         private int id;
         private String mac_address;
         private String device_sn;
+        private int print_times;
+
+        /**
+         * 1: 收银, （支付，弹钱箱）
+         * 2：退款
+         * 3：交接班(登陆登出弹钱箱， 交接班信息）
+         * 4：销售列表
+         * 5：历史订单
+         */
+        private List<Integer> content_types;
+
+        public static int type_settlement = 1;
+        public static int type_refund = 2;
+        public static int type_handover = 3;
+        public static int type_sale = 4;
+        public static int type_order_history = 5;
+
 
         public int getId() {
             return id;
@@ -158,5 +179,37 @@ public class InitResponse {
         public void setDevice_sn(String device_sn) {
             this.device_sn = device_sn;
         }
+
+        public int getPrint_times() {
+            return print_times;
+        }
+
+        public void setPrint_times(int print_times) {
+            this.print_times = print_times;
+        }
+
+        public List<Integer> getContent_types() {
+            return content_types;
+        }
+
+        public void setContent_types(List<Integer> content_types) {
+            this.content_types = content_types;
+        }
+
+        /**
+         * 判断打印机是否可用
+         * @param type
+         * @return
+         */
+        public boolean canUse(int type) {
+            for (Integer content_type : content_types) {
+                if(type == content_type) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
     }
 }

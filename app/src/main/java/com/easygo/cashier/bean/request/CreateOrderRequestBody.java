@@ -20,7 +20,10 @@ public class CreateOrderRequestBody {
     private String shop_sn;
     private int total_money;
     private int real_pay;
+    private String coupon_sn;
+    private int coupon_discount;
     private List<GoodsListBean> goods_list;
+    private List<ActivitiesBean> activities;
 
     public int getGoods_count() {
         return goods_count;
@@ -62,12 +65,36 @@ public class CreateOrderRequestBody {
         this.real_pay = real_pay;
     }
 
+    public String getCoupon_sn() {
+        return coupon_sn;
+    }
+
+    public void setCoupon_sn(String coupon_sn) {
+        this.coupon_sn = coupon_sn;
+    }
+
+    public int getCoupon_discount() {
+        return coupon_discount;
+    }
+
+    public void setCoupon_discount(int coupon_discount) {
+        this.coupon_discount = coupon_discount;
+    }
+
     public List<GoodsListBean> getGoods_list() {
         return goods_list;
     }
 
     public void setGoods_list(List<GoodsListBean> goods_list) {
         this.goods_list = goods_list;
+    }
+
+    public List<ActivitiesBean> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(List<ActivitiesBean> activities) {
+        this.activities = activities;
     }
 
     public static class GoodsListBean {
@@ -78,6 +105,7 @@ public class CreateOrderRequestBody {
          * type : 0
          * identity : "0"
          * barcode : 096619756803
+         * discount :
          */
 
         private int g_sku_id;
@@ -92,6 +120,7 @@ public class CreateOrderRequestBody {
          */
         private String identity;
         private String barcode;
+        private int discount;
 
         public int getG_sku_id() {
             return g_sku_id;
@@ -139,6 +168,45 @@ public class CreateOrderRequestBody {
 
         public void setBarcode(String barcode) {
             this.barcode = barcode;
+        }
+
+        public int getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(int discount) {
+            this.discount = discount;
+        }
+    }
+
+    public static class ActivitiesBean {
+
+        private int id;
+        private String type;
+        private int discount;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public int getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(int discount) {
+            this.discount = discount;
         }
     }
 }

@@ -54,7 +54,7 @@ public class HandoverResponse {
     }
 
     public String getCash_money() {
-        return TextUtils.isEmpty(cash_money)? "0.00": all_money;
+        return TextUtils.isEmpty(cash_money)? "0.00": cash_money;
     }
 
     public void setCash_money(String cash_money) {
@@ -62,7 +62,7 @@ public class HandoverResponse {
     }
 
     public String getWx_money() {
-        return TextUtils.isEmpty(wx_money)? "0.00": all_money;
+        return TextUtils.isEmpty(wx_money)? "0.00": wx_money;
     }
 
     public void setWx_money(String wx_money) {
@@ -70,7 +70,7 @@ public class HandoverResponse {
     }
 
     public String getAlipay_money() {
-        return TextUtils.isEmpty(alipay_money)? "0.00": all_money;
+        return TextUtils.isEmpty(alipay_money)? "0.00": alipay_money;
     }
 
     public void setAlipay_money(String alipay_money) {
@@ -78,7 +78,7 @@ public class HandoverResponse {
     }
 
     public String getAll_refund() {
-        return TextUtils.isEmpty(all_refund)? "0.00": all_money;
+        return TextUtils.isEmpty(all_refund)? "0.00": all_refund;
     }
 
     public void setAll_refund(String all_refund) {
@@ -86,7 +86,7 @@ public class HandoverResponse {
     }
 
     public String getCash_refund() {
-        return TextUtils.isEmpty(cash_refund)? "0.00": all_money;
+        return TextUtils.isEmpty(cash_refund)? "0.00": cash_refund;
     }
 
     public void setCash_refund(String cash_refund) {
@@ -94,7 +94,7 @@ public class HandoverResponse {
     }
 
     public String getCash_change() {
-        return TextUtils.isEmpty(cash_change)? "0.00": all_money;
+        return TextUtils.isEmpty(cash_change)? "0.00": cash_change;
     }
 
     public void setCash_change(String cash_change) {
@@ -102,7 +102,7 @@ public class HandoverResponse {
     }
 
     public String getSku_count() {
-        return TextUtils.isEmpty(sku_count)? "0": all_money;
+        return TextUtils.isEmpty(sku_count)? "0": sku_count;
     }
 
     public void setSku_count(String sku_count) {
@@ -110,7 +110,7 @@ public class HandoverResponse {
     }
 
     public String getGoods_count() {
-        return TextUtils.isEmpty(goods_count)? "0": all_money;
+        return TextUtils.isEmpty(goods_count)? "0": goods_count;
     }
 
     public void setGoods_count(String goods_count) {
@@ -134,7 +134,7 @@ public class HandoverResponse {
     }
 
     public String getReserve_money() {
-        return TextUtils.isEmpty(reserve_money)? "0.00": all_money;
+        return TextUtils.isEmpty(reserve_money)? "0.00": reserve_money;
     }
 
     public void setReserve_money(String reserve_money) {

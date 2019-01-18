@@ -118,8 +118,8 @@ public class ConfirmDialog extends DialogFragment {
         tvTextChange.setVisibility(visiable ? View.VISIBLE : View.GONE);
         tvChange.setVisibility(visiable ? View.VISIBLE : View.GONE);
 
-        tvReceivable.setText("￥" + mReceivable);
-        tvReceipts.setText("￥" + mReceipts);
+        tvReceivable.setText("￥" + df.format(mReceivable));
+        tvReceipts.setText("￥" + df.format(mReceipts));
         tvChange.setText("￥" + df.format(mChange));
         if (!TextUtils.isEmpty(mRefundNum)){
             tvReceivable.setText(mRefundNum + "件");
@@ -135,6 +135,9 @@ public class ConfirmDialog extends DialogFragment {
                 break;
             case PayWayView.WAY_WECHAT:
                 tvPayWay.setText("(微信)");
+                break;
+            case PayWayView.WAY_MEMBER:
+                tvPayWay.setText("(会员卡)");
                 break;
         }
 

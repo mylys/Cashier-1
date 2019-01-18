@@ -30,6 +30,7 @@ public class GoodsActivityResponse {
          * effected_at : 1546444800000
          * expired_at : 1546617599000
          * type : 1
+         * with_coupon : 1
          * goods : [{"sku_name":"众合美滋黑椒猪肉脯80g","barcode":"4897064100175","g_sku_id":3},{"sku_name":"众合美滋沙嗲猪肉脯80g","barcode":"4897064100137","g_sku_id":4}]
          * config : {"condition_type":1,"condition_value":"0.00","offer_type":2,"offer_value":"10.00"}
          */
@@ -39,6 +40,7 @@ public class GoodsActivityResponse {
         private long effected_at;
         private long expired_at;
         private int type;
+        private int with_coupon;//是否可与优惠券公用
         private ConfigBean config;
         private List<GoodsBean> goods;
 
@@ -80,6 +82,14 @@ public class GoodsActivityResponse {
 
         public void setType(int type) {
             this.type = type;
+        }
+
+        public int getWith_coupon() {
+            return with_coupon;
+        }
+
+        public void setWith_coupon(int with_coupon) {
+            this.with_coupon = with_coupon;
         }
 
         public ConfigBean getConfig() {

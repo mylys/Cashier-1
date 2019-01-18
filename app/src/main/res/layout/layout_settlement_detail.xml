@@ -115,6 +115,7 @@
         app:layout_constraintEnd_toEndOf="@id/tv_receivable"
         app:layout_constraintTop_toTopOf="@id/tv_text_coupon" />
 
+    <!--优惠券-->
     <TextView
         android:id="@+id/tv_text_coupon_colon"
         style="@style/SettlementDetailTextStyle"
@@ -258,6 +259,7 @@
         app:layout_constraintTop_toBottomOf="@id/line5" />
 
     <CheckBox
+        android:visibility="gone"
         android:id="@+id/cb_integral"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

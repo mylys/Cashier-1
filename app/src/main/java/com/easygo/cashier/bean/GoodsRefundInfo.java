@@ -17,6 +17,7 @@ public class GoodsRefundInfo {
     private int refund;
     private int parent_id;
     private int type;
+    private String identity;
 
     public int getType() {
         return type;
@@ -120,5 +121,13 @@ public class GoodsRefundInfo {
 
     public void setSelect(boolean select) {
         isSelect = select;
+    }
+
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
     }
 }

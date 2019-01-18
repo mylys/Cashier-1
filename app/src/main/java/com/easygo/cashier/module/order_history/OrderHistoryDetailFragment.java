@@ -131,7 +131,13 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 if (orderHistoryGoodsAdapter.getItemCount() == 0){
                     showToast("订单没有商品");
                     return;
+                } else if(mOrderHistorysInfo.getRefund_status() == 1
+                        && mOrderHistorysInfo.getHave_refund() == 0) {//订单有退过款，商品没有退过款
+                    //无退货 退过款
+                    showToast("此订单已退过款");
+                    return;
                 }
+
                 if (getActivity() != null) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList("data", (ArrayList<OrderHistorysInfo.ListBean>) orderHistoryGoodsAdapter.getData());
@@ -140,11 +146,13 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                     bundle.putString("order_number", order_number);
                     bundle.putString("real_name", order_real_name);
                     bundle.putString("order_no_number",order_no_number);
+                    bundle.putInt("refund_status", mOrderHistorysInfo.getRefund_status());
+                    bundle.putInt("have_refund", mOrderHistorysInfo.getHave_refund());
                     ((OrderHistoryActivity) getActivity()).toOrderHistoryRefundFragment(bundle);
                 }
                 break;
             case R.id.btn_print:
-                Toast.makeText(getContext(), "打印单据", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "打印单据", Toast.LENGTH_SHORT).show();
                 printOrderHistoryDetail();
 
                 break;
@@ -185,7 +193,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                     .append("     ")
                     .append(listBean.getSell_price()).append("   ")
                     .append("0.00").append("   ")
-                    .append(listBean.getType() == 1 ? listBean.getQuantity() + "g" : listBean.getCount()).append("   ")
+                    .append(listBean.getType() == 1 ? listBean.getQuantity() + listBean.getG_u_symbol() : listBean.getCount()).append("   ")
                     .append(listBean.getMoney()).append(PrintHelper.BR);
         }
 

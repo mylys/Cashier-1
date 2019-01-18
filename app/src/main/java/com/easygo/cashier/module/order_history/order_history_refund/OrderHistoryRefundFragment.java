@@ -35,6 +35,7 @@ import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.RequsetBody;
 import com.easygo.cashier.module.order_history.OrderHistoryActivity;
+import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.GeneraListDialog;
 import com.easygo.cashier.widget.MySearchView;
@@ -45,8 +46,11 @@ import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ToastUtils;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -91,6 +95,8 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     private String real_name = "";
     private String order_no_number = "";
     private int total_price = 0;
+    private int refund_status = 0;
+    private int have_refund = 0;
     private int pay_way = PayWayView.WAY_CASH;
 
     public static OrderHistoryRefundFragment getInstance(Bundle bundle) {
@@ -126,6 +132,9 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
             pay_type = getArguments().getString("pay_type");
             real_name = getArguments().getString("real_name");
             total_price = getArguments().getInt("total_price");
+            refund_status = getArguments().getInt("refund_status");
+            have_refund = getArguments().getInt("have_refund");
+
         }
         tvPayType.setText(getResources().getString(R.string.text_pay_type) + pay_type + getResources().getString(R.string.text_pay));
         tvOrderNumber.setText(getResources().getString(R.string.text_order_number) + order_no_number);
@@ -162,6 +171,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 info.setRefund_subtotal(bean.getSell_price());
                 info.setSelect(false);
                 info.setType(bean.getType());
+                info.setIdentity(bean.getIdentity());
                 info.setRefund(bean.getRefund());
                 adapter.addData(info);
                 infoList.add(info);
@@ -288,6 +298,12 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
     @OnClick(R.id.btn_refund)
     public void onViewClicked() {
+        if(refund_status == 1 && have_refund == 0) {//订单有退过款，商品没有退过款
+            //无退货 退过款
+            showToast("此订单已退过款");
+            return;
+        }
+
         if (TextUtils.isEmpty(editRefundcashPrice.getText().toString())) {
             return;
         }
@@ -335,6 +351,8 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     public void getHistoryRefundSuccess(String message) {
         btnRefund.setEnabled(true);
         if (pay_type.equals(getResources().getString(R.string.pay_cash))) {
+            printRefundInfo();
+
             mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
         }
         checkbox.setChecked(false);
@@ -348,7 +366,51 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         ToastUtils.showToast(getActivity(), message);
         if (getActivity() != null) {
             ((OrderHistoryActivity) getActivity()).toRefresh();
+            ((OrderHistoryActivity) getActivity()).back();
         }
+    }
+
+    /**
+     * 打印退款单
+     */
+    private void printRefundInfo() {
+
+        StringBuilder sb = new StringBuilder();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+
+        sb.append(PrintHelper.CB_left).append("退款单").append(PrintHelper.CB_right).append(PrintHelper.BR)
+                .append("订单号：").append(order_no_number).append(PrintHelper.BR)
+                .append("收银员：").append(real_name).append(PrintHelper.BR)
+                .append("时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
+                .append("--------------------------------").append(PrintHelper.BR)
+                .append("品名  ").append("单价  ").append("折扣  ").append("数量/重量  ").append("小计  ")
+                .append(PrintHelper.BR);
+
+
+        int size = infoList.size();
+        for (int i = 0; i < size; i++) {
+            GoodsRefundInfo goodsRefundInfo = infoList.get(i);
+
+            boolean select = goodsRefundInfo.isSelect();
+            if(!select) {
+                continue;
+            }
+
+            sb.append(i+1).append(".")
+                    .append(goodsRefundInfo.getProduct_name()).append("   ").append(PrintHelper.BR)
+                    .append("    ")
+                    .append(goodsRefundInfo.getProduct_price()).append("   ").append(PrintHelper.BR)
+                    .append("1.00    ")
+                    .append(goodsRefundInfo.getRefund_num()).append("   ")
+                    .append(goodsRefundInfo.getRefund_subtotal()).append("   ").append(PrintHelper.BR);
+        }
+        sb.append("--------------------------------").append(PrintHelper.BR)
+                .append("总数量：").append(adapter.getTotalNum()).append(PrintHelper.BR)
+                .append("退款方式：").append(pay_type).append(PrintHelper.BR)
+                .append("退款金额：").append(Float.parseFloat(editRefundcashPrice.getText().toString())).append(PrintHelper.BR);
+
+
+        mPresenter.print_info(Configs.shop_sn, sb.toString());
     }
 
     @Override
@@ -376,5 +438,9 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         if (unbinder != null) {
             unbinder.unbind();
         }
+    }
+
+    public void refreshData(Bundle bundle) {
+        init();
     }
 }

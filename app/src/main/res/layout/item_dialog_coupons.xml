@@ -27,7 +27,7 @@
             android:id="@+id/tv_full_use"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/x15"
+            android:layout_marginTop="@dimen/x10"
             android:text="满6元可用"
             android:textColor="@color/color_555555"
             android:textSize="@dimen/text_size_21"
@@ -65,7 +65,7 @@
             android:id="@+id/tv_coupon_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/x18"
+            android:layout_marginTop="@dimen/y11"
             android:text="全店通用"
             android:textColor="@color/color_555555"
             android:textSize="@dimen/text_size_19" />
@@ -74,7 +74,7 @@
             android:id="@+id/tv_coupon_validity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/x10"
+            android:layout_marginTop="@dimen/y5"
             android:text="有效期：2018-12-12至2018-12-15"
             android:textColor="@color/color_text_ababab"
             android:textSize="@dimen/text_size_19" />

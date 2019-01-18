@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/x100"
+    android:background="@drawable/bg_dialog"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:text="配置id、secret"
+        android:textSize="@dimen/text_size_29"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/et_id"
+        android:layout_width="@dimen/login_btn_width"
+        android:layout_height="@dimen/login_btn_height"
+        android:layout_marginTop="@dimen/y74"
+        android:hint="输入id"
+        android:paddingStart="@dimen/x30"
+        android:textSize="@dimen/x28"
+        android:background="@drawable/bg_login_input"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/et_secret"
+        android:layout_width="@dimen/login_btn_width"
+        android:layout_height="@dimen/login_btn_height"
+        android:layout_marginTop="@dimen/y74"
+        android:hint="输入secret"
+        android:paddingStart="@dimen/x30"
+        android:textSize="@dimen/x28"
+        android:background="@drawable/bg_login_input"
+        app:layout_constraintTop_toBottomOf="@id/et_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="@dimen/login_btn_width"
+        android:layout_height="@dimen/login_btn_height"
+        android:layout_marginTop="@dimen/y64"
+        android:text="@string/text_confirm"
+        android:textColor="@color/color_text_white"
+        android:textSize="@dimen/text_size_28"
+        android:background="@drawable/bg_btn_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_secret"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

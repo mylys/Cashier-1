@@ -12,6 +12,8 @@ import com.easygo.cashier.bean.MemberDayInfo;
 import com.easygo.cashier.bean.MemberDiscountInfo;
 import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
+import com.easygo.cashier.bean.PrinterStatusResponse;
+import com.easygo.cashier.bean.QuickClassifyInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
 import com.niubility.library.http.base.HttpResult;
@@ -39,19 +41,19 @@ public interface HttpService {
      * 190001—参数错误
      * 190002—店铺不存在
      */
-    @GET("api/cash_register/detail")
-    Observable<HttpResult<InitResponse>> init(@Query("mac_address") String mac_address);
+    @GET("api/v1/cashier/cash_register/detail")
+    Observable<HttpResult<InitResponse>> init(@HeaderMap Map<String, String> header, @Query("mac_address") String mac_address);
 
 
     /**
      * 备用金
      */
     @FormUrlEncoded
-    @POST("api/cash/reserve")
+    @POST("api/v1/cashier/cash/reserve")
     Observable<HttpResult<String>> reserve_money(@HeaderMap Map<String, String> header,
-                                                       @Field("shop_sn") String shop_sn,
-                                                       @Field("handover_id") int handover_id,
-                                                       @Field("reserve_money") int reserve_money);
+                                                 @Field("shop_sn") String shop_sn,
+                                                 @Field("handover_id") int handover_id,
+                                                 @Field("reserve_money") int reserve_money);
 
 
     /**
@@ -62,7 +64,7 @@ public interface HttpService {
      * 190005—密码错误
      */
     @FormUrlEncoded
-    @POST("api/cash/login")
+    @POST("api/v1/cashier/cash/login")
     Observable<HttpResult<LoginResponse>> login(@HeaderMap Map<String, String> header, @Field("shop_sn") String shop_sn,
                                                 @Field("admin_name") String admin_name, @Field("password") String password);
 
@@ -70,7 +72,7 @@ public interface HttpService {
      * 获取商品列表信息总额及促销信息
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("api/weixin/minapp/eq_s/pay/order_info")
+    @POST("api/v1/cashier/weixin/minapp/eq_s/pay/order_info")
     Observable<HttpResult<RealMoneyResponse>> getRealMoney(@Body RequestBody json);
 
     /**
@@ -78,23 +80,16 @@ public interface HttpService {
      * type 1 精确搜索， 2 模糊搜索（此时barcode传关键字）
      */
     @FormUrlEncoded
-    @POST("api/pay/get_info")
+    @POST("api/v1/cashier/pay/get_info")
     Observable<HttpResult<List<GoodsResponse>>> getGoods(@HeaderMap Map<String, String> header, @Field("shop_sn") String shop_sn,
                                                          @Field("barcode") String barcode, @Field("type") int type);
-
-    /**
-     * 获取商品信息
-     */
-    @GET("api/weixin/minapp/eq_s/pay/goods_by_barcode")
-    Observable<HttpResult<GoodsResponse>> searchGoods(@Query("shop_sn") String shop_sn, @Query("barcode") String barcode,
-                                                      @Query("good_name") String good_name);
 
 
     /**
      * 创建订单
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("api/pay/create_order")
+    @POST("api/v1/cashier/pay/create_order")
     Observable<HttpResult<CreateOderResponse>> createOrder(@HeaderMap Map<String, String> header, @Body RequestBody json);
 
 
@@ -103,7 +98,7 @@ public interface HttpService {
      * method  = pay  支付 , method = query  查询 , method=cancel  撤销
      */
     @FormUrlEncoded
-    @POST("api/pay/alipay")
+    @POST("api/v1/cashier/pay/alipay")
     Observable<HttpResult<String>> alipay(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
 
     /**
@@ -111,7 +106,7 @@ public interface HttpService {
      * method  = pay  支付 , method = query  查询 , method=cancel  撤销
      */
     @FormUrlEncoded
-    @POST("api/pay/alipay")
+    @POST("api/v1/cashier/pay/alipay")
     Observable<HttpResult<String>> checkAlipayStatus(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
 
 
@@ -120,7 +115,7 @@ public interface HttpService {
      * method  = pay  支付 , method = query  查询 , method=cancel  撤销
      */
     @FormUrlEncoded
-    @POST("api/pay/wechat")
+    @POST("api/v1/cashier/pay/wechat")
     Observable<HttpResult<String>> wechatPay(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
 
     /**
@@ -128,7 +123,7 @@ public interface HttpService {
      * method  = pay  支付 , method = query  查询 , method=cancel  撤销
      */
     @FormUrlEncoded
-    @POST("api/pay/wechat")
+    @POST("api/v1/cashier/pay/wechat")
     Observable<HttpResult<String>> checkWechatPayStatus(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
 
 
@@ -136,7 +131,7 @@ public interface HttpService {
      * 现金
      */
     @FormUrlEncoded
-    @POST("api/pay/cash")
+    @POST("api/v1/cashier/pay/cash")
     Observable<HttpResult<String>> cash(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
 
 
@@ -144,29 +139,29 @@ public interface HttpService {
      * 调起会员支付
      */
     @FormUrlEncoded
-    @POST("api/weixin/minapp/eq_s/pay/pay_vip")
+    @POST("api/v1/cashier/weixin/minapp/eq_s/pay/pay_vip")
     Observable<HttpResult<String>> payVip();
 
     /**
      * 打印
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("api/pay/printer")
+    @POST("api/v1/cashier/pay/printer")
     Observable<HttpResult<String>> print(@HeaderMap Map<String, String> header, @Body RequestBody json);
 
     /**
      * 打印机状态
      */
     @FormUrlEncoded
-    @POST("api/pay/printer_status")
-    Observable<HttpResult<String>> printer_status(@HeaderMap Map<String, String> header, @Field("shop_sn") String shop_sn,
-                                                  @Field("printer_sn") String printer_sn);
+    @POST("api/v1/cashier/pay/printer_status")
+    Observable<HttpResult<PrinterStatusResponse>> printer_status(@HeaderMap Map<String, String> header, @Field("shop_sn") String shop_sn,
+                                                                 @Field("printer_sn") String printer_sn);
 
     /**
      * 打印机打印
      */
     @FormUrlEncoded
-    @POST("api/pay/printer_till")
+    @POST("api/v1/cashier/pay/printer_till")
     Observable<HttpResult<String>> printer_info(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
 
 
@@ -174,7 +169,7 @@ public interface HttpService {
      * 钱箱
      */
     @FormUrlEncoded
-    @POST("api/pay/printer_till")
+    @POST("api/v1/cashier/pay/printer_till")
     Observable<HttpResult<String>> pop_till(@HeaderMap Map<String, String> header, @Field("shop_sn") String shop_sn,
                                             @Field("printer_sn") String printer_sn);
 
@@ -184,7 +179,7 @@ public interface HttpService {
      * type 1是退出登录，2是返回交接页的数据
      */
     @FormUrlEncoded
-    @POST("api/cash/loginout")
+    @POST("api/v1/cashier/cash/loginout")
     Observable<HttpResult<HandoverResponse>> handover(@HeaderMap Map<String, String> header, @Field("handover_id") int handover_id,
                                                       @Field("type") int type);
 
@@ -194,7 +189,7 @@ public interface HttpService {
      * type 1是退出登录，2是返回交接页的数据
      */
     @FormUrlEncoded
-    @POST("api/cash/loginout")
+    @POST("api/v1/cashier/cash/loginout")
     Observable<HttpResult<String>> loginout(@HeaderMap Map<String, String> header, @Field("handover_id") int handover_id,
                                             @Field("type") int type);
 
@@ -203,7 +198,7 @@ public interface HttpService {
      * 交接班销售列表
      */
     @FormUrlEncoded
-    @POST("api/cash/sale")
+    @POST("api/v1/cashier/cash/sale")
     Observable<HttpResult<List<HandoverSaleResponse>>> sale_list(@HeaderMap Map<String, String> header, @Field("handover_id") int handover_id);
 
 
@@ -213,7 +208,7 @@ public interface HttpService {
      * keyword 搜索关键词
      */
     @FormUrlEncoded
-    @POST("api/cash/order")
+    @POST("api/v1/cashier/cash/order")
     Observable<HttpResult<List<OrderHistorysInfo>>> getOrderHistory(@HeaderMap Map<String, String> header,
                                                                     @Field("handover_id") int handover_id,
                                                                     @Field("keyword") String keyword,
@@ -221,7 +216,7 @@ public interface HttpService {
                                                                     @Field("count") int count);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("api/pay/refund")
+    @POST("api/v1/cashier/pay/refund")
     Observable<HttpResult<String>> refund(@HeaderMap Map<String, String> header, @Body RequestBody json);
 
 
@@ -229,40 +224,45 @@ public interface HttpService {
      * 现金退款
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("api/pay/cash")
+    @POST("api/v1/cashier/pay/cash")
     Observable<HttpResult<String>> cash_refund(@HeaderMap Map<String, String> header, @Body RequestBody json);
 
 
     /**
      * 商品促销
      */
-    @GET("api/activity/goods")
+    @GET("api/v1/cashier/activity/goods")
     Observable<HttpResult<GoodsActivityResponse>> goods_activity(@HeaderMap Map<String, String> header, @Query("shop_sn") String shop_sn);
 
     /**
      * 店铺促销
      */
-    @GET("api/activity/shop")
+    @GET("api/v1/cashier/activity/shop")
     Observable<HttpResult<ShopActivityResponse>> shop_activity(@HeaderMap Map<String, String> header, @Query("shop_sn") String shop_sn);
 
     /*
      * 搜索会员
      */
-    @GET("/api/member/search")
+    @GET("api/v1/cashier/member/search")
     Observable<HttpResult<MemberInfo>> getMembers(@HeaderMap Map<String, String> header, @Query("phone_number") String phone_number, @Query("member_token") String member_token);
 
     /*
      * 会员日
      */
-    @GET("/api/member/day")
+    @GET("api/v1/cashier/member/day")
     Observable<HttpResult<List<MemberDayInfo>>> getMembersDay(@HeaderMap Map<String, String> header, @Query("shop_id") String shop_id, @Query("shop_sn") String shop_sn);
 
-    @GET("/api/member/discount")
+    @GET("api/v1/cashier/member/discount")
     Observable<HttpResult<List<MemberDiscountInfo>>> getMemberDiscount(@HeaderMap Map<String, String> header, @Query("shop_id") String shop_id, @Query("shop_sn") String shop_sn);
+
+
+    @FormUrlEncoded
+    @POST("api/v1/cashier/pay/member_wallet")
+    Observable<HttpResult<String>> member_wallet(@HeaderMap Map<String, String> header, @Field("order_no") String order_no, @Field("auth_code") String auth_code);
+
+    @POST("api/v1/cashier/pay/quick_select")
+    Observable<HttpResult<List<QuickClassifyInfo>>> showLists(@HeaderMap Map<String, String> header);
 
     @GET("api/v1/cashier/coupon/search")
     Observable<HttpResult<CouponResponse>> get_coupon(@HeaderMap Map<String, String> header, @Query("coupon_sn") String coupon_sn);
-
-
-
 }

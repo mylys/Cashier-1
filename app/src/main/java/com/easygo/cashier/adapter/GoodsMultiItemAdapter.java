@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.easygo.cashier.ActivitiesUtils;
 import com.easygo.cashier.BarcodeUtils;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.MemberUtils;
@@ -60,12 +61,15 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
     //普通商品
     public void addItem(GoodsResponse t) {
+        addItem(t, 1);
+    }
+    public void addItem(GoodsResponse t, int count) {
         String code = t.getBarcode();
         ensureNotNull();
         if (!data.containsKey(code)) {
             GoodsEntity<GoodsResponse> goodsNum = new GoodsEntity<>(GoodsEntity.TYPE_GOODS);
             goodsNum.setData(t);
-            goodsNum.setCount(1);
+            goodsNum.setCount(count);
             barcodeData.add(code);
             data.put(code, goodsNum);
             mData.add(goodsNum);
@@ -165,14 +169,15 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             String barcode = goodsResponse.getBarcode();
 
             if (goodsResponse.getParent_id() == 0) {//主商品
-                if (BarcodeUtils.isWeightCode(barcode)) {
+//                if (BarcodeUtils.isWeightCode(barcode)) {
+                if (goodsResponse.getIs_weigh() == 1) {
                     //重量商品
                     goodsResponse.setType(GoodsResponse.type_weight);
                     addWeightItem(goodsResponse, weight);
                 } else {
                     //普通商品
                     goodsResponse.setType(GoodsResponse.type_normal);
-                    addItem(goodsResponse);
+                    addItem(goodsResponse, weight);
                 }
             } else if (goodsResponse.getParent_id() != 0) {
                 //纯加工商品
@@ -197,7 +202,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
     //无码商品
     public void addNoCodeItem(float price) {
-        String code = String.valueOf(price);
+        String code = String.valueOf(df.format(price));
 
         //为商品添加时间戳，唯一识别商品以方便后台增减库存
         long timeStamp = System.currentTimeMillis();
@@ -298,6 +303,8 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
     @Override
     protected void convert(final BaseViewHolder helper, final GoodsEntity<GoodsResponse> item) {
+        final int position = helper.getAdapterPosition();
+
         final int good_count = item.getCount();
         final GoodsResponse good = item.getData();
 
@@ -316,7 +323,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 .setText(R.id.tv_subtotal, String.valueOf(df.format(subtotal)))
                 .setText(R.id.tv_coupon, good.getDiscount_price())
                 .setText(R.id.tv_member_price, "0.00")
-                .setVisible(R.id.iv_coupon, promotion != null);
+                .setVisible(R.id.iv_coupon, promotion != null || ActivitiesUtils.getInstance().hasShopPromotion());
 
         if (promotion == null && MemberUtils.isMember) {
             if (good.isMemberPrice()) {                                              //普通会员价计算
@@ -350,7 +357,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                     @Override
                     public void onCountChanged(int count) {
                         if (mListener != null) {
-                            mListener.onCountChanged(helper.getAdapterPosition(), count);
+                            mListener.onCountChanged(position, count);
                         }
 
                         if (count == 0) {
@@ -364,7 +371,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                                 data.remove(barcode);
                             }
                             mData.remove(item);
-                            notifyItemRemoved(helper.getAdapterPosition());
+                            notifyItemRemoved(position);
                         } else {
                             if (good.getIs_inventory_limit() == 1 && helper.getItemViewType() == GoodsEntity.TYPE_GOODS
                                     && count > good.getOn_sale_count()) {
@@ -379,7 +386,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                             }
 
                             item.setCount(count);
-                            notifyItemChanged(helper.getAdapterPosition());
+                            notifyItemChanged(position);
                         }
                         //刷新价格
                         refreshPrice();
@@ -387,7 +394,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 });
                 break;
             case GoodsEntity.TYPE_WEIGHT://称重商品
-                helper.setText(R.id.tv_count, good_count + "g");
+                helper.setText(R.id.tv_count, good_count + good.getG_u_symbol());
                 break;
             case GoodsEntity.TYPE_ONLY_PROCESSING://纯加工方式
                 CountTextView view = (CountTextView) helper.getView(R.id.count_view);
@@ -406,7 +413,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                             subtotal = (Float.parseFloat(process_price)) - coupon;
                             good.setDiscount_price(df.format(coupon));
                         }
-                    }else if (!MemberUtils.isMemberDay && MemberUtils.isMemberDiscount){
+                    }else if (!good.isMemberPrice() && !MemberUtils.isMemberDay && MemberUtils.isMemberDiscount){
                         float coupon = (float) (Float.parseFloat(process_price) - (MemberUtils.discount * Float.parseFloat(process_price))) * good_count;
                         subtotal = (Float.parseFloat(process_price) * good_count) - coupon;
                         good.setDiscount_price(df.format(coupon));
@@ -435,18 +442,17 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 final boolean is_processing = cb_processing.isChecked();
 
                 //设置加工方式相关控件可见性
-                helper.setText(R.id.tv_count, good_count + "g");
+                helper.setText(R.id.tv_count, good_count + good.getG_u_symbol());
                 setProcessingLayout(helper, is_processing);
 
 
                 //是否加工监听
-                final int adapterPosition = helper.getAdapterPosition();
                 cb_processing.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         setProcessingLayout(helper, isChecked);
 
-                        GoodsEntity<GoodsResponse> goodsEntity = mData.get(helper.getAdapterPosition());
+                        GoodsEntity<GoodsResponse> goodsEntity = mData.get(position);
 
                         //选择加工时 设置加工商品，否则置空
                         GoodsResponse default_processing = goodsEntity.getProcessing_list().get(0);
@@ -459,7 +465,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                         refreshPrice();
 
                         if (mListener != null) {
-                            mListener.onProcessingCheckedChanged(isChecked, adapterPosition,
+                            mListener.onProcessingCheckedChanged(isChecked, position,
                                     goodsEntity.getProcessing());
                         }
 
@@ -470,7 +476,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                     @Override
                     public void onClick(View v) {
                         if (mListener != null) {
-                            mListener.onProcessingClicked(helper.getAdapterPosition(),
+                            mListener.onProcessingClicked(position,
                                     item.getProcessing(), item.getProcessing_list());
                         }
                     }
@@ -490,10 +496,10 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                     @Override
                     public void onClick(View v) {
                         if (mListener != null) {
-                            mListener.onItemRemoved(helper.getAdapterPosition());
+                            mListener.onItemRemoved(position);
                         }
 
-                        remove(helper.getAdapterPosition());
+                        remove(position);
                         refreshPrice();
                     }
                 });
@@ -568,6 +574,10 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
      * 移除
      */
     public void remove(int position) {
+
+        if(position >= mData.size()) {
+            return;
+        }
         GoodsEntity<GoodsResponse> goodsEntity = mData.get(position);
         GoodsResponse data = goodsEntity.getData();
 

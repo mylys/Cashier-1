@@ -24,7 +24,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
     @Override
     public void login(String shop_sn, String account, String password) {
 
-        Map<String, String> header = HttpClient.getInstance().getLoginHeader();
+//        Map<String, String> header = HttpClient.getInstance().getLoginHeader();
+        Map<String, String> header = HttpClient.getInstance().getLoginSignHeader();
         subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().login(header, shop_sn, account, password),
                 new BaseResultObserver<LoginResponse>() {
@@ -42,8 +43,9 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
 
     @Override
     public void init(String mac_adr) {
+        Map<String, String> header = HttpClient.getInstance().getLoginSignHeader();
         subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().init(mac_adr),
+                HttpAPI.getInstance().httpService().init(header, mac_adr),
                 new BaseResultObserver<InitResponse>() {
                     @Override
                     protected void onSuccess(InitResponse result) {
@@ -82,23 +84,32 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
     public void pop_till(String shop_sn, String printer_sn) {
         Map<String, String> header = HttpClient.getInstance().getHeader();
 
-        Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("shop_sn", shop_sn);
-        requestMap.put("printer_sn", printer_sn);
-        requestMap.put("info", PrintHelper.pop_till);
+        for (int i = 0; i < PrintHelper.printers_count; i++) {
+            InitResponse.PrintersBean printersBean = PrintHelper.printersBeans.get(i);
+            String device_sn = printersBean.getDevice_sn();
 
-        subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().printer_info(header, requestMap),
-                new BaseResultObserver<String>() {
-                    @Override
-                    protected void onSuccess(String string) {
-                        mView.popTillSuccess();
-                    }
+            if(!printersBean.canUse(InitResponse.PrintersBean.type_handover)) {
+                return;
+            }
+            Map<String, Object> requestMap = new HashMap<>();
+            requestMap.put("shop_sn", shop_sn);
+            requestMap.put("printer_sn", device_sn);
+            requestMap.put("times", 1);
+            requestMap.put("info",  PrintHelper.pop_till);
 
-                    @Override
-                    protected void onFailure(Map<String, Object> map) {
-                        mView.popTillFailed(map);
-                    }
-                });
+            subscribeAsyncToResult(
+                    HttpAPI.getInstance().httpService().printer_info(header, requestMap),
+                    new BaseResultObserver<String>() {
+                        @Override
+                        protected void onSuccess(String string) {
+                            mView.popTillSuccess();
+                        }
+
+                        @Override
+                        protected void onFailure(Map<String, Object> map) {
+                            mView.popTillFailed(map);
+                        }
+                    });
+        }
     }
 }

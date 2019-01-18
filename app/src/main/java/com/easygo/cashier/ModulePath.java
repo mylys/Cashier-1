@@ -12,4 +12,5 @@ public class ModulePath {
     public static final String refund = "/module/refund";
     public static final String settlement = "/module/settlement";
     public static final String handover = "/module/handover";
+    public static final String quick = "/module/quick";
 }

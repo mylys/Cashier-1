@@ -26,10 +26,10 @@
             android:name=".module.login.LoginActivity"
             android:screenOrientation="landscape">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<action android:name="android.intent.action.VIEW" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
         <activity android:name=".base.BaseAppActivity" />
@@ -40,6 +40,7 @@
         <activity android:name=".module.refund.RefundActivity" />
         <activity android:name=".module.handover.HandoverActivity" />
         <activity android:name=".module.entry_orders.EntryOrdersActivity" />
+        <activity android:name=".module.quick_choose.QuickChooseActivity" />
         <activity
             android:name=".module.permission.PermissionActivity"
             android:screenOrientation="landscape">

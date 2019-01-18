@@ -2,19 +2,19 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cl_subtitle"
-    app:layout_constraintTop_toBottomOf="@+id/cl_title"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y119">
+    android:layout_height="@dimen/y119"
+    app:layout_constraintTop_toBottomOf="@+id/cl_title">
 
     <!--搜索框-->
     <com.easygo.cashier.widget.MySearchView
         android:id="@+id/cl_search"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="@dimen/x773"
         android:layout_height="@dimen/y80"
-        android:layout_marginStart="@dimen/x42">
+        android:layout_marginStart="@dimen/x42"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
     </com.easygo.cashier.widget.MySearchView>
@@ -24,43 +24,57 @@
         android:id="@+id/btn_no_barcode"
         android:layout_width="@dimen/x183"
         android:layout_height="@dimen/y80"
-        android:text="@string/text_no_barcode_goods"
-        android:textSize="@dimen/text_size_29"
-        android:textColor="@color/color_4cbbac"
-        android:layout_marginStart="@dimen/x42"
+        android:layout_marginStart="@dimen/x30"
         android:background="@drawable/bg_btn_frame"
+        android:text="@string/text_no_barcode_goods"
+        android:textColor="@color/color_4cbbac"
+        android:textSize="@dimen/text_size_29"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cl_search"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--弹出钱箱-->
     <Button
         android:id="@+id/btn_pop_money_box"
         android:layout_width="@dimen/x183"
         android:layout_height="@dimen/y80"
-        android:text="@string/text_pop_money_box"
-        android:textSize="@dimen/text_size_29"
-        android:textColor="@color/color_4cbbac"
-        android:layout_marginStart="@dimen/x42"
+        android:layout_marginStart="@dimen/x30"
         android:background="@drawable/bg_btn_frame"
+        android:text="@string/text_pop_money_box"
+        android:textColor="@color/color_4cbbac"
+        android:textSize="@dimen/text_size_29"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_no_barcode"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--快速选择-->
+    <Button
+        android:id="@+id/btn_quick_choose"
+        android:layout_width="@dimen/x183"
+        android:layout_height="@dimen/y80"
+        android:layout_marginStart="@dimen/x30"
+        android:background="@drawable/bg_btn_frame"
+        android:text="@string/text_quick_choose"
+        android:textColor="@color/color_4cbbac"
+        android:textSize="@dimen/text_size_29"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_pop_money_box"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--优惠券-->
     <Button
         android:id="@+id/btn_choose_coupon"
         android:layout_width="@dimen/x183"
         android:layout_height="@dimen/y80"
-        android:text="@string/text_coupon_coupon"
-        android:textSize="@dimen/text_size_29"
-        android:textColor="@color/color_4cbbac"
-        android:layout_marginEnd="@dimen/x42"
+        android:layout_marginStart="@dimen/x30"
         android:background="@drawable/bg_btn_frame"
+        android:text="@string/text_coupon_coupon"
+        android:textColor="@color/color_4cbbac"
+        android:textSize="@dimen/text_size_29"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_choose_member"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintStart_toEndOf="@id/btn_quick_choose"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <!--选择会员-->
@@ -68,15 +82,14 @@
         android:id="@+id/btn_choose_member"
         android:layout_width="@dimen/x183"
         android:layout_height="@dimen/y80"
-        android:text="@string/text_choose_member"
-        android:textSize="@dimen/text_size_29"
-        android:textColor="@color/color_4cbbac"
-        android:layout_marginEnd="@dimen/x42"
+        android:layout_marginStart="@dimen/x30"
         android:background="@drawable/bg_btn_frame"
+        android:text="@string/text_choose_member"
+        android:textColor="@color/color_4cbbac"
+        android:textSize="@dimen/text_size_29"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
+        app:layout_constraintStart_toEndOf="@id/btn_choose_coupon"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

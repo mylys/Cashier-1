@@ -6,8 +6,6 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
 
-import java.text.DecimalFormat;
-
 public class HandoverSaleListAdapter extends BaseQuickAdapter<HandoverSaleResponse, BaseViewHolder> {
 
     public HandoverSaleListAdapter() {
@@ -24,7 +22,7 @@ public class HandoverSaleListAdapter extends BaseQuickAdapter<HandoverSaleRespon
                 count = String.valueOf(item.getCount());
                 break;
             case GoodsResponse.type_weight:
-                count = String.valueOf(item.getCount() + "g");
+                count = String.valueOf(item.getCount() + item.getG_u_symbol());
                 break;
             default:
                 count = String.valueOf(item.getCount());

@@ -37,13 +37,23 @@ public class ShopTimePromotion extends BaseShopPromotion implements IShopPromoti
         for (int i = 0; i < size; i++) {
             ShopActivityResponse.ListBean.ConfigBean configBean = configBeans.get(i);
 
+            float condition_value = Float.valueOf(configBean.getCondition_value());
+
+            if(money < condition_value) {
+                continue;
+            }
+
             String effected_at = configBean.getEffected_at();
             String expired_at = configBean.getExpired_at();
+            int offer_type = configBean.getOffer_type();
+            float offer_value = Float.valueOf(configBean.getOffer_value());
+
+
 
             //判断 是否在时段内
             if(current.compareTo(effected_at) > 0 && current.compareTo(expired_at) < 0) {
 
-                switch (getOffer_type()) {
+                switch (offer_type) {
                     case OFFER_TYPE_MONEY://金额
 
                         return offer_value;

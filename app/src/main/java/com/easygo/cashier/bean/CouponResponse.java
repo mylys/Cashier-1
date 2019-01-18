@@ -14,6 +14,7 @@ public class CouponResponse {
      */
 
     private String name;
+    private String coupon_sn;
     private String condition_value;
     private int offer_type;
     private String offer_type_str;
@@ -27,6 +28,14 @@ public class CouponResponse {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCoupon_sn() {
+        return coupon_sn;
+    }
+
+    public void setCoupon_sn(String coupon_sn) {
+        this.coupon_sn = coupon_sn;
     }
 
     public String getCondition_value() {

@@ -91,13 +91,17 @@ public class OrderHistoryActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cl_back://返回
-                if (orderHistoryRefundFragment != null && orderHistoryRefundFragment.isVisible()) {
-                    onBackPressed();
-                    return;
-                }
-                finish();
+                back();
                 break;
         }
+    }
+
+    public void back() {
+        if (orderHistoryRefundFragment != null && orderHistoryRefundFragment.isVisible()) {
+            onBackPressed();
+            return;
+        }
+        finish();
     }
 
     @Override

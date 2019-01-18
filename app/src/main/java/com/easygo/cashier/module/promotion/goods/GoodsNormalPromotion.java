@@ -123,7 +123,8 @@ public class GoodsNormalPromotion extends BaseGoodsPromotion implements IGoodsPr
             if (goodsBean.getPromotion_money() == PromotionGoods.FLAG_NEED_SET_PROMOTION_MONEY) {
                 //需要设置促销金额的  根据比例计算出促销金额
                 float promotion = (goodsBean.getSubtotal() / temp_subtotal) * promotion_money;
-                Log.i(TAG, "computePromotionMoney: 计算出的 促销金额 -> " + promotion);
+                Log.i(TAG, "computePromotionMoney: 商品普通促销 促销金额 -> " + promotion);
+                goodsBean.setPromotion_money(promotion);
                 goodsEntity.setPromotion(this);
                 goodsEntity.getData()
                         .setDiscount_price(String.valueOf(promotion));
@@ -149,7 +150,7 @@ public class GoodsNormalPromotion extends BaseGoodsPromotion implements IGoodsPr
                 }
             case IPromotion.OFFER_TYPE_RATIO:
                 if(times != 0) {
-                    return times * getOffer_value();
+                    return subtotal * times * getOffer_value();
                 } else {
                     return subtotal * (getOffer_value() / 100f);
                 }

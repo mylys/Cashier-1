@@ -51,7 +51,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
                 .setText(R.id.tv_subtotal, String.valueOf(df.format(subtotal)))
                 .setText(R.id.tv_member_price, "0.00");
 
-        if (MemberUtils.isMember) {
+        if (item.getPromotion() == null && MemberUtils.isMember) {
             if (good.isMemberPrice()) {
                 float member_price = Float.parseFloat(good.getMembership_price()) * good_count;
                 float subtotal_member = (Float.parseFloat(price) - Float.parseFloat(good.getMembership_price())) * good_count;
@@ -60,7 +60,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
                 helper.setText(R.id.tv_subtotal, df.format(subtotal))
                         .setText(R.id.tv_coupon, good.getDiscount_price())
                         .setText(R.id.tv_member_price, good.getMembership_price());
-            } else if (MemberUtils.isMemberDay) {
+            } else if (!good.isMemberPrice() && MemberUtils.isMemberDay) {
                 if (getFullTotalPrice() >= MemberUtils.full){
                     float coupon = MemberUtils.getCoupon(getFullTotalPrice(), Float.parseFloat(price), good_count);
                     subtotal = (Float.parseFloat(price) * good_count) - coupon;
@@ -68,7 +68,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
                     helper.setText(R.id.tv_subtotal, df.format(subtotal))
                             .setText(R.id.tv_coupon, good.getDiscount_price());
                 }
-            } else if (MemberUtils.isMemberDiscount) {
+            } else if (!good.isMemberPrice() && !MemberUtils.isMemberDay && MemberUtils.isMemberDiscount) {
                 float subtotal_member = (float) (Float.parseFloat(price) - (MemberUtils.discount * Float.parseFloat(price))) * good_count;
                 subtotal = (Float.parseFloat(price) * good_count) - subtotal_member;
                 good.setDiscount_price(df.format(subtotal_member));
@@ -85,7 +85,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
                 count.setCountChangeEnable(false);
                 break;
             case GoodsEntity.TYPE_WEIGHT://称重商品
-                helper.setText(R.id.tv_count, good_count + "g");
+                helper.setText(R.id.tv_count, good_count + good.getG_u_symbol());
                 break;
             case GoodsEntity.TYPE_ONLY_PROCESSING://纯加工方式
                 CountTextView view = (CountTextView) helper.getView(R.id.count_view);
@@ -104,7 +104,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
                 final boolean is_processing = processing != null;
 
                 //设置加工方式相关控件可见性
-                helper.setText(R.id.tv_count, good_count + "g");
+                helper.setText(R.id.tv_count, good_count + good.getG_u_symbol());
                 setProcessingLayout(helper, is_processing);
 
 

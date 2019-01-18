@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.easygo.cashier.ActivitiesUtils;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.Events;
 import com.easygo.cashier.MemberUtils;
@@ -27,12 +28,18 @@ import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.Test;
 import com.easygo.cashier.adapter.GoodsEntity;
+import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GoodsResponse;
+import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.request.CreateOrderRequestBody;
 import com.easygo.cashier.bean.request.PrintRequestBody;
-import com.easygo.cashier.module.goods.GoodsFragment;
+import com.easygo.cashier.module.CouponUtils;
+import com.easygo.cashier.module.promotion.base.PromotionGoods;
+import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
+import com.easygo.cashier.module.promotion.shop.BaseShopPromotion;
 import com.easygo.cashier.printer.PrintHelper;
+import com.easygo.cashier.widget.ChooseCouponsDialog;
 import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.Keyboard;
 import com.easygo.cashier.widget.MyTitleBar;
@@ -43,6 +50,7 @@ import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.EventUtils;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ScreenUtils;
+import com.niubility.library.utils.ToastUtils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -69,6 +77,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     Button btnDelete;
     @BindView(R.id.et_money)
     EditText etMoney;
+    @BindView(R.id.btn_coupon)
+    Button btnCoupon;
 
     @Autowired(name = "admin_name")
     String admin_name;
@@ -76,6 +86,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     int mGoodsCount;
     @Autowired(name = "coupon")
     float mCoupon;
+    @Autowired(name = "coupon_money")
+    float mCouponMoney;
     @Autowired(name = "member_balance")
     String mBalance;
     /**
@@ -85,7 +97,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     float mTotalMoney;
     @Autowired(name = "goods_data")
     Serializable mGoodsDataSerializable;
-
 
     /**
      * 商品数据
@@ -107,6 +118,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     private ConfirmDialog confirmDialog;
 
     private Handler mHandler = new Handler();
+
+    private ChooseCouponsDialog couponsDialog;
+
 
     /**
      * 订单是否支付完成
@@ -133,6 +147,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     protected void init() {
         ARouter.getInstance().inject(this);
 
+        btnCoupon.setVisibility(View.GONE);
+
 //        payWayView.setPayWayShow(MemberUtils.isMember ? new int[]{0, 1, 2, 3, 6} : new int[]{0, 1, 2, 6});
         payWayView.setPayWayShow(MemberUtils.isMember ? new int[]{0, 1, 2, 3} : new int[]{0, 1, 2});
         settlementView = SettlementView.create(this);
@@ -140,8 +156,12 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
         clTitle.setCashierAccount(admin_name);
 
-        mRealPay = mTotalMoney;
+        refreshRealPay();
         settlementView.setData(mTotalMoney, mCoupon, mRealPay, 0, mBalance);
+
+        if(mCouponMoney != 0) {
+            showCouponInfo(CouponUtils.getInstance().getCouponInfo().getName(), mCouponMoney);
+        }
 
         mGoodsData = (List<GoodsEntity<GoodsResponse>>) this.mGoodsDataSerializable;
 
@@ -163,12 +183,18 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
             @Override
             public void onCommitOrderClicked() {
-                if (mRealPay < mTotalMoney) {
+                if (mRealPay < mTotalMoney - mCoupon - mCouponMoney) {
                     showToast("实收金额小于应收金额， 请确认！");
                     return;
                 }
                 if (!TextUtils.isEmpty(Configs.order_no)) {
                     showScanCodeDialog();
+                }
+                if (MemberUtils.isMember) {
+                    if (mTotalMoney > Float.parseFloat(mBalance.substring(1,mBalance.length()))) {
+                        showToast("会员钱包余额不足，不能进行支付");
+                        return;
+                    }
                 }
                 //弹出确认弹窗
                 Bundle bundle = ConfirmDialog.getDataBundle(mTotalMoney, mRealPay, mChange, mPayWay);
@@ -181,6 +207,18 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     }
                 });
                 confirmDialog.show(getSupportFragmentManager(), "tag_tip_dialog");
+            }
+
+            @Override
+            public void onCancelCoupon() {
+                float coupon_discount = CouponUtils.getInstance().getCoupon_discount();
+                mCoupon -= coupon_discount;
+
+                settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange, mBalance);
+
+                //置空
+                CouponUtils.getInstance().setCouponInfo(null);
+
             }
         });
 
@@ -202,11 +240,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 String text = s.toString().trim();
 
                 if (TextUtils.isEmpty(text)) {
-                    mRealPay = mTotalMoney;
                     mChange = 0;
+                    refreshRealPay();
                     //刷新价格
                     if (settlementView != null)
-                        settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange,mBalance);
+                        settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange, mBalance);
                     return;
                 }
 
@@ -222,11 +260,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     s.delete(s.length() - 1, s.length());
                 } else {
                     mRealPay = data;
-                    mChange = mRealPay - mTotalMoney - mCoupon;
+                    mChange = mRealPay - (mTotalMoney - mCoupon - mCouponMoney);
 
                     //刷新价格
                     if (settlementView != null)
-                        settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange,mBalance);
+                        settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange, mBalance);
 
                 }
 
@@ -262,96 +300,91 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     }
 
+    /**
+     * 刷新实收       订单总额-优惠-优惠券优惠 = 实收 - 找零
+     */
+    private void refreshRealPay() {
+        mRealPay = mTotalMoney - mCoupon - mCouponMoney + mChange;
+    }
+
     public void print() {
-        PrintRequestBody requestBody = new PrintRequestBody();
-        //测试代码
-//        requestBody.setGoods_count(2);
-//        requestBody.setOrder_no("2018121417565998545099");
-//        requestBody.setPrinter_sn(Configs.printer_sn);
-//        requestBody.setTimes(2);
-//        requestBody.setShop_sn(Configs.shop_sn);
-        //测试代码
 
-        requestBody.setGoods_count(mGoodsCount);
-        requestBody.setOrder_no(Configs.order_no);
-        requestBody.setPrinter_sn(Configs.printer_sn);
-        requestBody.setTimes(2);
-        requestBody.setShop_sn(Configs.shop_sn);
+        for (int j = 0; j < PrintHelper.printers_count; j++) {
+            InitResponse.PrintersBean printersBean = PrintHelper.printersBeans.get(j);
+            String device_sn = printersBean.getDevice_sn();
+            int print_times = printersBean.getPrint_times();
 
-        ArrayList<PrintRequestBody.GoodsListBean> goodsListBeans = new ArrayList<>();
+            PrintRequestBody requestBody = new PrintRequestBody();
 
-        PrintRequestBody.GoodsListBean goodsListBean;
+            requestBody.setGoods_count(mGoodsCount);
+            requestBody.setOrder_no(Configs.order_no);
+            requestBody.setPrinter_sn(device_sn);
+            requestBody.setTimes(print_times);
+            requestBody.setShop_sn(Configs.shop_sn);
 
+            ArrayList<PrintRequestBody.GoodsListBean> goodsListBeans = new ArrayList<>();
 
-        DecimalFormat df = new DecimalFormat("#");
-        float price;
-        int total_count = mGoodsData.size();
-        for (int i = 0; i < total_count; i++) {
-//        for (int i = 0; i < 2; i++) {
-            //测试代码
-//            goodsListBean.setDiscount(1);
-//            goodsListBean.setGoods_name("a");
-//            goodsListBean.setCount_price(100);
-//            goodsListBean.setPrice(100);
-//            goodsListBean.setCount(1);
-            //测试代码
-
-            goodsListBean = new PrintRequestBody.GoodsListBean();
-            GoodsEntity<GoodsResponse> good = mGoodsData.get(i);
-            int count = good.getCount();
-            GoodsResponse data;
-            Integer price_int;
-
-            data = good.getData();
-            price = Float.valueOf(data.getPrice());
-            price_int = Integer.valueOf(df.format(price * 100));
-            goodsListBean.setCount_price(count * price_int);
-
-            goodsListBean.setDiscount(1);
-            goodsListBean.setGoods_name(data.getG_sku_name());
-            goodsListBean.setPrice(price_int);
-
-            switch (good.getItemType()) {
-                case GoodsEntity.TYPE_WEIGHT:
-                case GoodsEntity.TYPE_ONLY_PROCESSING:
-                case GoodsEntity.TYPE_PROCESSING:
-                    goodsListBean.setCount(count + "g");
-                    break;
-                case GoodsEntity.TYPE_GOODS:
-                default:
-                    goodsListBean.setCount(String.valueOf(count));
-                    break;
-            }
+            PrintRequestBody.GoodsListBean goodsListBean;
 
 
-            goodsListBeans.add(goodsListBean);
+            DecimalFormat df = new DecimalFormat("#");
+            float price;
+            int total_count = mGoodsData.size();
+            for (int i = 0; i < total_count; i++) {
+                goodsListBean = new PrintRequestBody.GoodsListBean();
+                GoodsEntity<GoodsResponse> good = mGoodsData.get(i);
+                int count = good.getCount();
+                GoodsResponse data;
+                Integer price_int;
 
-            if (good.getItemType() == GoodsEntity.TYPE_PROCESSING) {
-                data = good.getProcessing();
-                if (data != null) {
-                    goodsListBean = new PrintRequestBody.GoodsListBean();
-                    price = Float.valueOf(data.getProcess_price());
-                    price_int = Integer.valueOf(df.format(price * 100));
-                    goodsListBean.setCount_price(price_int);
+                data = good.getData();
+                price = Float.valueOf(data.getPrice());
+                price_int = Integer.valueOf(df.format(price * 100));
+                goodsListBean.setCount_price(count * price_int);
 
-                    goodsListBean.setDiscount(1);
-                    goodsListBean.setGoods_name(data.getG_sku_name());
-                    goodsListBean.setPrice(price_int);
+                goodsListBean.setDiscount(1);
+                goodsListBean.setGoods_name(data.getG_sku_name());
+                goodsListBean.setPrice(price_int);
 
-                    goodsListBean.setCount(String.valueOf(data.getCount()));
-
-                    goodsListBeans.add(goodsListBean);
+                switch (good.getItemType()) {
+                    case GoodsEntity.TYPE_WEIGHT:
+                    case GoodsEntity.TYPE_ONLY_PROCESSING:
+                    case GoodsEntity.TYPE_PROCESSING:
+                        goodsListBean.setCount(count + "g");
+                        break;
+                    case GoodsEntity.TYPE_GOODS:
+                    default:
+                        goodsListBean.setCount(String.valueOf(count));
+                        break;
                 }
+
+
+                goodsListBeans.add(goodsListBean);
+
+                if (good.getItemType() == GoodsEntity.TYPE_PROCESSING) {
+                    data = good.getProcessing();
+                    if (data != null) {
+                        goodsListBean = new PrintRequestBody.GoodsListBean();
+                        price = Float.valueOf(data.getProcess_price());
+                        price_int = Integer.valueOf(df.format(price * 100));
+                        goodsListBean.setCount_price(price_int);
+
+                        goodsListBean.setDiscount(1);
+                        goodsListBean.setGoods_name(data.getG_sku_name());
+                        goodsListBean.setPrice(price_int);
+
+                        goodsListBean.setCount(String.valueOf(data.getCount()));
+
+                        goodsListBeans.add(goodsListBean);
+                    }
+                }
+
             }
 
+            requestBody.setGoods_list(goodsListBeans);
+
+            mPresenter.print(GsonUtils.getInstance().getGson().toJson(requestBody));
         }
-
-        requestBody.setGoods_list(goodsListBeans);
-
-
-        mPresenter.print(GsonUtils.getInstance().getGson().toJson(requestBody));
-
-
     }
 
 
@@ -393,6 +426,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 case PayWayView.WAY_WECHAT://微信
                     mPresenter.wechatPay(Configs.shop_sn, Configs.order_no,
                             Integer.valueOf(df.format(mTotalMoney * 100)), auth_code);
+                    break;
+                case PayWayView.WAY_MEMBER://会员钱包
+                    mPresenter.memberWalletPay(Configs.order_no,auth_code);
                     break;
             }
 
@@ -452,11 +488,22 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         return false;
     }
 
-    @OnClick({R.id.cl_back, R.id.btn_delete})
+    @OnClick({R.id.cl_back, R.id.btn_delete, R.id.btn_coupon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cl_back://返回
                 finish();
+                break;
+            case R.id.btn_coupon://优惠券
+                if(ActivitiesUtils.getInstance().hasShopPromotion() || ActivitiesUtils.getInstance().hasGoodsPromotion()) {
+                    if(!ActivitiesUtils.getInstance().isWith_coupon()) {
+                        showToast("促销不可与优惠券共用");
+                        return;
+                    }
+                }
+
+                showCoupon();
+                break;
             case R.id.btn_delete://键盘删除按钮
                 int selectionStart = etMoney.getSelectionStart();
                 Editable editable = etMoney.getText();
@@ -467,6 +514,62 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     }
                 }
                 break;
+        }
+    }
+
+    /**
+     * 显示优惠券弹窗
+     */
+    private void showCoupon() {
+        //判断是否有促销
+        if(ActivitiesUtils.getInstance().hasGoodsPromotion() || ActivitiesUtils.getInstance().hasShopPromotion()) {
+
+            if(!ActivitiesUtils.getInstance().isWith_coupon()) {
+                showToast("参与的促销活动不可与优惠券公用");
+            }
+        }
+
+        if (couponsDialog == null) {
+            couponsDialog = new ChooseCouponsDialog();
+        }
+        couponsDialog.showCenter(this);
+        couponsDialog.setTitle(getResources().getString(R.string.text_coupon_coupon));
+        couponsDialog.setOnSearchListener(new ChooseCouponsDialog.OnSearchListener() {
+            @Override
+            public void onSearch(String content) {
+                mPresenter.get_coupon(content);
+            }
+
+            @Override
+            public void onItemClick(CouponResponse result) {
+
+                //判断优惠券是否满足使用条件
+                boolean canUseCoupon = CouponUtils.getInstance().canUse(result, mTotalMoney - mCoupon);
+                if(!canUseCoupon) {
+                    showToast("不满足优惠券使用条件");
+                    return;
+                }
+
+                CouponUtils.getInstance().setCouponInfo(result);
+                //优惠券优惠金额
+                float couponMoney = CouponUtils.getInstance().getCouponMoney(mTotalMoney - mCoupon);
+
+                mCouponMoney = couponMoney;
+
+                //设置优惠券信息
+                showCouponInfo(result.getName(), couponMoney);
+            }
+        });
+    }
+
+    private void showCouponInfo(String name, float couponMoney) {
+        if (settlementView != null) {
+            settlementView.setCouponVisiable(true);
+            settlementView.setCouponInfo(name, couponMoney);
+
+            refreshRealPay();
+            settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange, mBalance);
+
         }
     }
 
@@ -501,9 +604,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         if (settlementView != null) {
             settlementView.release();
         }
-        if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
-            mScanCodeDialog.dismiss();
-        }
+        dismissScanDialog();
         //离开页面 清除订单
         Configs.order_no = null;
     }
@@ -511,7 +612,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     public void createOrder() {
         DecimalFormat df = new DecimalFormat("#");
         String total_money = df.format(mTotalMoney * 100);
-        String real_pay = df.format(mTotalMoney * 100 - mCoupon * 100);
+        String real_pay = df.format(mTotalMoney * 100 - mCoupon * 100 - mCouponMoney * 100);
 //        String real_pay = df.format(mRealPay*100);
 
         CreateOrderRequestBody requestBody1 = new CreateOrderRequestBody();
@@ -520,6 +621,80 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         requestBody1.setTotal_money(Integer.valueOf(total_money));
         requestBody1.setReal_pay(Integer.valueOf(real_pay));
         requestBody1.setGoods_count(mGoodsCount);
+
+        //促销
+        if (ActivitiesUtils.getInstance().hasGoodsPromotion()) {
+            List<CreateOrderRequestBody.ActivitiesBean> activitiesBeans = new ArrayList<>();
+
+            List<BaseGoodsPromotion> promotions = ActivitiesUtils.getInstance().getCurrentGoodsPromotions();
+
+            int size = promotions.size();
+            for (int i = 0; i < size; i++) {
+                BaseGoodsPromotion promotion = promotions.get(i);
+
+                CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
+
+                activitiesBean.setId(promotion.getId());
+                activitiesBean.setType("goods");
+                PromotionGoods promotionGoods = promotion.getPromotionGoods();
+                List<PromotionGoods.GoodsBean> goodsBeans = promotionGoods.getGoodsBeans();
+                int goods_size = goodsBeans.size();
+
+                float all_promotion_money = 0f;
+                for (int j = 0; j < goods_size; j++) {
+                    all_promotion_money += goodsBeans.get(j).getPromotion_money();
+                }
+                activitiesBean.setDiscount(Integer.valueOf(df.format(all_promotion_money*100)));
+                activitiesBeans.add(activitiesBean);
+            }
+            requestBody1.setActivities(activitiesBeans);
+        }
+        //店铺促销
+        else if(ActivitiesUtils.getInstance().hasShopPromotion()) {
+            List<CreateOrderRequestBody.ActivitiesBean> activitiesBeans = new ArrayList<>();
+
+            BaseShopPromotion promotion = ActivitiesUtils.getInstance().getCurrentShopPromotion();
+            CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
+            activitiesBean.setId(promotion.getId());
+            activitiesBean.setType("shop");
+            String shop_promotion_money = df.format(ActivitiesUtils.getInstance().getShopPromotionMoney() * 100);
+            activitiesBean.setDiscount(Integer.valueOf(shop_promotion_money));
+
+            activitiesBeans.add(activitiesBean);
+            requestBody1.setActivities(activitiesBeans);
+        }
+        //会员
+        else if(MemberUtils.isMember) {
+            List<CreateOrderRequestBody.ActivitiesBean> activitiesBeans = new ArrayList<>();
+
+            //会员日
+            if(MemberUtils.isMemberDay) {
+                CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
+                activitiesBean.setId(MemberUtils.day_rc_id);
+                activitiesBean.setType("member_day");
+                activitiesBean.setDiscount(Integer.valueOf(df.format((mCoupon*100))));
+                activitiesBeans.add(activitiesBean);
+            }
+            //会员固定折扣
+            else if(MemberUtils.isMemberDiscount){
+                CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
+                activitiesBean.setId(MemberUtils.discount_rc_id);
+                activitiesBean.setType("member_discount");
+                activitiesBean.setDiscount(Integer.valueOf(df.format((mCoupon*100))));
+                activitiesBeans.add(activitiesBean);
+            }
+            if(activitiesBeans.size() != 0) {
+                requestBody1.setActivities(activitiesBeans);
+            }
+        }
+
+        //优惠券
+        CouponResponse couponInfo = CouponUtils.getInstance().getCouponInfo();
+        if(couponInfo != null) {
+            requestBody1.setCoupon_sn(couponInfo.getCoupon_sn());
+            requestBody1.setCoupon_discount(Integer.valueOf(
+                    df.format(CouponUtils.getInstance().getCoupon_discount() * 100)));
+        }
 
         int size = mGoodsData.size();
 
@@ -538,6 +713,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             goodsBean.setIdentity(data.getIdentity());
             //设置类型
             goodsBean.setType(data.getType());
+            float discount = Float.valueOf(data.getDiscount_price());
+            goodsBean.setDiscount(Integer.valueOf(df.format(discount * 100)));
 
             goodsBean.setCount(good.getCount());
             if (good.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
@@ -603,6 +780,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             case PayWayView.WAY_WECHAT:
                 showScanCodeDialog();
                 break;
+            case PayWayView.WAY_MEMBER:
+                showScanCodeDialog();
+                break;
         }
     }
 
@@ -658,9 +838,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 mPresenter.checkAliPayStatus(Test.shop_sn, Configs.order_no);
             } else {
                 showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
-                if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
-                    mScanCodeDialog.dismiss();
-                }
+                dismissScanDialog();
             }
         } else {
             showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
@@ -691,9 +869,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 }, 1000);
             } else {
                 showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
-                if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
-                    mScanCodeDialog.dismiss();
-                }
+                dismissScanDialog();
             }
         } else {
             showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
@@ -718,12 +894,20 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 mPresenter.checkWechatPayStatus(Test.shop_sn, Configs.order_no);
             } else {
                 showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
-                if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
-                    mScanCodeDialog.dismiss();
-                }
+                dismissScanDialog();
             }
         } else {
             showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
+            dismissScanDialog();
+        }
+    }
+
+    /**
+     * 取消扫码弹窗
+     */
+    private void dismissScanDialog() {
+        if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
+            mScanCodeDialog.dismiss();
         }
     }
 
@@ -750,12 +934,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 }, 1000);
             } else {
                 showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
-                if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
-                    mScanCodeDialog.dismiss();
-                }
+                dismissScanDialog();
             }
         } else {
             showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
+            dismissScanDialog();
         }
     }
 
@@ -779,7 +962,33 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public void printFailed(Map<String, Object> map) {
-        showToast("打印失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
+//        showToast("打印失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
 
+    }
+
+    @Override
+    public void couponSuccess(CouponResponse result) {
+        //设置优惠券信息
+        List<CouponResponse> list = new ArrayList<>();
+        list.add(result);
+        couponsDialog.setNewData(list);
+    }
+
+    @Override
+    public void couponFailed(Map<String, Object> map) {
+        showToast((String) map.get(HttpExceptionEngine.ErrorMsg) + ", " + map.get(HttpExceptionEngine.ErrorCode));
+    }
+
+
+    @Override
+    public void memberWalletSuccess(String result) {
+        showToast("支付成功");
+
+        onPaySuccessAfter();
+    }
+
+    @Override
+    public void memberWalletFailed(Map<String, Object> map) {
+        showToast("会员钱包支付失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
     }
 }

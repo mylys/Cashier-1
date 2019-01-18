@@ -26,7 +26,7 @@ public class PayWayView extends ConstraintLayout {
     private Button mBankCard;
     private Button mMember;
     private Button mOther;
-    private Button mCoupon;
+//    private Button mCoupon;
     public List<View> mButtons;
 
     public static final int WAY_CASH = 0x0000;
@@ -67,7 +67,7 @@ public class PayWayView extends ConstraintLayout {
         mBankCard = ((Button) mView.findViewById(R.id.btn_bank_card));
         mOther = ((Button) mView.findViewById(R.id.btn_other));
         mMember = ((Button) mView.findViewById(R.id.btn_member));
-        mCoupon = ((Button) mView.findViewById(R.id.btn_coupon));
+//        mCoupon = ((Button) mView.findViewById(R.id.btn_coupon));
 
         mCash.setOnClickListener(listener);
         mAlipay.setOnClickListener(listener);
@@ -75,12 +75,12 @@ public class PayWayView extends ConstraintLayout {
         mBankCard.setOnClickListener(listener);
         mOther.setOnClickListener(listener);
         mMember.setOnClickListener(listener);
-        mCoupon.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onPayWaySelected(false, getPayWay(mCoupon));
-            }
-        });
+//        mCoupon.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mListener.onPayWaySelected(false, getPayWay(mCoupon));
+//            }
+//        });
 
         mCombineCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -107,7 +107,7 @@ public class PayWayView extends ConstraintLayout {
         mMember.setVisibility(GONE);
         mBankCard.setVisibility(GONE);
         mOther.setVisibility(GONE);
-        mCoupon.setVisibility(GONE);
+//        mCoupon.setVisibility(GONE);
 
         mButtons = new ArrayList<>();
         mButtons.add(mCash);
@@ -116,7 +116,7 @@ public class PayWayView extends ConstraintLayout {
         mButtons.add(mMember);
         mButtons.add(mBankCard);
         mButtons.add(mOther);
-        mButtons.add(mCoupon);
+//        mButtons.add(mCoupon);
 
         mSelected = mCash;
         mSelected.setSelected(true);

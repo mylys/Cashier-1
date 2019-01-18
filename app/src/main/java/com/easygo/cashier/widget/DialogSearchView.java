@@ -21,6 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
  */
 public class DialogSearchView extends ConstraintLayout {
     private EditText editText;
+    private ImageView ivSearch;
     private ImageView ivClear;
     private OnSearchChangeListener listener;
 
@@ -45,7 +46,8 @@ public class DialogSearchView extends ConstraintLayout {
     private void init(Context context, AttributeSet attrs) {
         View mView = LayoutInflater.from(context).inflate(R.layout.layout_dialog_search_view, this, true);
         editText = mView.findViewById(R.id.edit_search_phone);
-        ivClear = mView.findViewById(R.id.iv_clear);
+        ivSearch = mView.findViewById(R.id.image_search);
+//        ivClear = mView.findViewById(R.id.iv_clear);
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -55,10 +57,10 @@ public class DialogSearchView extends ConstraintLayout {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                ivClear.setVisibility(s.toString().length() != 0 ? VISIBLE : GONE);
-                if (listener != null) {
-                    listener.onSearchClick(editText.getText().toString().trim());
-                }
+//                ivClear.setVisibility(s.toString().length() != 0 ? VISIBLE : GONE);
+//                if (listener != null) {
+//                    listener.onSearchClick(editText.getText().toString().trim());
+//                }
             }
 
             @Override
@@ -67,12 +69,21 @@ public class DialogSearchView extends ConstraintLayout {
             }
         });
 
-        ivClear.setOnClickListener(new OnClickListener() {
+        ivSearch.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                editText.setText("");
+                if (listener != null) {
+                    listener.onSearchClick(editText.getText().toString().trim());
+                }
             }
         });
+
+//        ivClear.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                editText.setText("");
+//            }
+//        });
     }
 
     public EditText getEditText() {

@@ -41,6 +41,7 @@ public class OrderHistorysInfo {
     private String real_pay;
     private String buyer_pay;
     private String change_money;
+    private int refund_status;
     private String refund_fee;
     private int sku_count;
     private int pay_type;
@@ -155,6 +156,14 @@ public class OrderHistorysInfo {
         this.change_money = change_money;
     }
 
+    public int getRefund_status() {
+        return refund_status;
+    }
+
+    public void setRefund_status(int refund_status) {
+        this.refund_status = refund_status;
+    }
+
     public String getRefund_fee() {
         return refund_fee;
     }
@@ -209,9 +218,12 @@ public class OrderHistorysInfo {
         /**
          * g_sku_name : 发舒服撒发-就是个福
          * s_sku_id : 111865
+         * g_u_symbol : g
          * type : 3
          * quantity : 1
          * sell_price : 0.01
+         * discount : 0.01
+         * identity : 1547787879989
          * refund : 0
          * count : 1
          * money : 0.01
@@ -219,9 +231,12 @@ public class OrderHistorysInfo {
 
         private String g_sku_name;
         private int s_sku_id;
+        private String g_u_symbol;
         private int type;
         private int quantity;
         private String sell_price;
+        private String discount;
+        private String identity;
         private int refund;
         private int count;
         private double money;
@@ -232,6 +247,8 @@ public class OrderHistorysInfo {
             type = in.readInt();
             quantity = in.readInt();
             sell_price = in.readString();
+            discount = in.readString();
+            identity = in.readString();
             refund = in.readInt();
             count = in.readInt();
             money = in.readDouble();
@@ -265,6 +282,14 @@ public class OrderHistorysInfo {
             this.s_sku_id = s_sku_id;
         }
 
+        public String getG_u_symbol() {
+            return g_u_symbol;
+        }
+
+        public void setG_u_symbol(String g_u_symbol) {
+            this.g_u_symbol = g_u_symbol;
+        }
+
         public int getType() {
             return type;
         }
@@ -287,6 +312,22 @@ public class OrderHistorysInfo {
 
         public void setSell_price(String sell_price) {
             this.sell_price = sell_price;
+        }
+
+        public String getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(String discount) {
+            this.discount = discount;
+        }
+
+        public String getIdentity() {
+            return identity;
+        }
+
+        public void setIdentity(String identity) {
+            this.identity = identity;
         }
 
         public int getRefund() {
@@ -325,6 +366,8 @@ public class OrderHistorysInfo {
             dest.writeInt(type);
             dest.writeInt(quantity);
             dest.writeString(sell_price);
+            dest.writeString(discount);
+            dest.writeString(identity);
             dest.writeInt(refund);
             dest.writeInt(count);
             dest.writeDouble(money);

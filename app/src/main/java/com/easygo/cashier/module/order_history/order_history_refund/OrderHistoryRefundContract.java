@@ -19,6 +19,8 @@ public class OrderHistoryRefundContract {
         void post(String json);
 
         void popTill(String shop_sn, String printer_sn);
+
+        void print_info(String shop_sn, String info);
     }
 
     interface IView extends BaseView {

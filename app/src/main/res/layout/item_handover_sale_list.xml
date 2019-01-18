@@ -30,6 +30,7 @@
         android:layout_marginStart="@dimen/margin_661"
         android:layout_marginEnd="@dimen/x22"
         android:text="@string/text_classification"
+        android:maxLines="1"
         android:ellipsize="end"
         style="@style/GoodsListStyle" />
 
