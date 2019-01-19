@@ -147,7 +147,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     protected void init() {
         ARouter.getInstance().inject(this);
 
-        btnCoupon.setVisibility(View.GONE);
+//        btnCoupon.setVisibility(View.GONE);
 
 //        payWayView.setPayWayShow(MemberUtils.isMember ? new int[]{0, 1, 2, 3, 6} : new int[]{0, 1, 2, 6});
         payWayView.setPayWayShow(MemberUtils.isMember ? new int[]{0, 1, 2, 3} : new int[]{0, 1, 2});
@@ -183,12 +183,13 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
             @Override
             public void onCommitOrderClicked() {
-                if (mRealPay < mTotalMoney - mCoupon - mCouponMoney) {
-                    showToast("实收金额小于应收金额， 请确认！");
-                    return;
-                }
+//                if (mRealPay < mTotalMoney - mCoupon - mCouponMoney) {
+//                    showToast("实收金额小于应收金额， 请确认！");
+//                    return;
+//                }
                 if (!TextUtils.isEmpty(Configs.order_no)) {
                     showScanCodeDialog();
+                    return;
                 }
                 if (MemberUtils.isMember) {
                     if (mTotalMoney > Float.parseFloat(mBalance.substring(1,mBalance.length()))) {
@@ -260,7 +261,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     s.delete(s.length() - 1, s.length());
                 } else {
                     mRealPay = data;
-                    mChange = mRealPay - (mTotalMoney - mCoupon - mCouponMoney);
+                    float pay = mTotalMoney - mCoupon - mCouponMoney;
+                    if(pay == 0) {
+                        pay = 0;
+                    }
+                    mChange = mRealPay - pay;
 
                     //刷新价格
                     if (settlementView != null)
@@ -305,6 +310,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
      */
     private void refreshRealPay() {
         mRealPay = mTotalMoney - mCoupon - mCouponMoney + mChange;
+        if(mRealPay < 0) {
+            mRealPay = 0;
+        }
     }
 
     public void print() {
@@ -407,6 +415,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
      * 扫描到的付款码 回调
      */
     public void onScanAuthCode(String auth_code) {
+
+        if(TextUtils.isEmpty(auth_code)) {
+            return;
+        }
 
         if (TextUtils.isEmpty(Configs.order_no)) {
             showToast("订单未创建， 请点击提交交易按钮");
@@ -622,35 +634,41 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         requestBody1.setReal_pay(Integer.valueOf(real_pay));
         requestBody1.setGoods_count(mGoodsCount);
 
-        //促销
-        if (ActivitiesUtils.getInstance().hasGoodsPromotion()) {
-            List<CreateOrderRequestBody.ActivitiesBean> activitiesBeans = new ArrayList<>();
-
-            List<BaseGoodsPromotion> promotions = ActivitiesUtils.getInstance().getCurrentGoodsPromotions();
-
-            int size = promotions.size();
-            for (int i = 0; i < size; i++) {
-                BaseGoodsPromotion promotion = promotions.get(i);
-
-                CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
-
-                activitiesBean.setId(promotion.getId());
-                activitiesBean.setType("goods");
-                PromotionGoods promotionGoods = promotion.getPromotionGoods();
-                List<PromotionGoods.GoodsBean> goodsBeans = promotionGoods.getGoodsBeans();
-                int goods_size = goodsBeans.size();
-
-                float all_promotion_money = 0f;
-                for (int j = 0; j < goods_size; j++) {
-                    all_promotion_money += goodsBeans.get(j).getPromotion_money();
-                }
-                activitiesBean.setDiscount(Integer.valueOf(df.format(all_promotion_money*100)));
-                activitiesBeans.add(activitiesBean);
-            }
-            requestBody1.setActivities(activitiesBeans);
+        if(MemberUtils.isMember && MemberUtils.memberInfo != null) {
+            requestBody1.setMember_id(MemberUtils.memberInfo.getMember_id());
+            requestBody1.setMember_card_no(MemberUtils.memberInfo.getCard_no());
         }
+
+//        //促销
+//        if (ActivitiesUtils.getInstance().hasGoodsPromotion()) {
+//            List<CreateOrderRequestBody.ActivitiesBean> activitiesBeans = new ArrayList<>();
+//
+//            List<BaseGoodsPromotion> promotions = ActivitiesUtils.getInstance().getCurrentGoodsPromotions();
+//
+//            int size = promotions.size();
+//            for (int i = 0; i < size; i++) {
+//                BaseGoodsPromotion promotion = promotions.get(i);
+//
+//                CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
+//
+//                activitiesBean.setId(promotion.getId());
+//                activitiesBean.setType("goods");
+//                PromotionGoods promotionGoods = promotion.getPromotionGoods();
+//                List<PromotionGoods.GoodsBean> goodsBeans = promotionGoods.getGoodsBeans();
+//                int goods_size = goodsBeans.size();
+//
+//                float all_promotion_money = 0f;
+//                for (int j = 0; j < goods_size; j++) {
+//                    all_promotion_money += goodsBeans.get(j).getPromotion_money();
+//                }
+//                activitiesBean.setDiscount(Integer.valueOf(df.format(all_promotion_money*100)));
+//                activitiesBeans.add(activitiesBean);
+//            }
+//            requestBody1.setActivities(activitiesBeans);
+//        }
+//        else
         //店铺促销
-        else if(ActivitiesUtils.getInstance().hasShopPromotion()) {
+        if(ActivitiesUtils.getInstance().hasShopPromotion()) {
             List<CreateOrderRequestBody.ActivitiesBean> activitiesBeans = new ArrayList<>();
 
             BaseShopPromotion promotion = ActivitiesUtils.getInstance().getCurrentShopPromotion();
@@ -663,30 +681,30 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             activitiesBeans.add(activitiesBean);
             requestBody1.setActivities(activitiesBeans);
         }
-        //会员
-        else if(MemberUtils.isMember) {
-            List<CreateOrderRequestBody.ActivitiesBean> activitiesBeans = new ArrayList<>();
-
-            //会员日
-            if(MemberUtils.isMemberDay) {
-                CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
-                activitiesBean.setId(MemberUtils.day_rc_id);
-                activitiesBean.setType("member_day");
-                activitiesBean.setDiscount(Integer.valueOf(df.format((mCoupon*100))));
-                activitiesBeans.add(activitiesBean);
-            }
-            //会员固定折扣
-            else if(MemberUtils.isMemberDiscount){
-                CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
-                activitiesBean.setId(MemberUtils.discount_rc_id);
-                activitiesBean.setType("member_discount");
-                activitiesBean.setDiscount(Integer.valueOf(df.format((mCoupon*100))));
-                activitiesBeans.add(activitiesBean);
-            }
-            if(activitiesBeans.size() != 0) {
-                requestBody1.setActivities(activitiesBeans);
-            }
-        }
+//        //会员
+//        else if(MemberUtils.isMember) {
+//            List<CreateOrderRequestBody.ActivitiesBean> activitiesBeans = new ArrayList<>();
+//
+//            //会员日
+//            if(MemberUtils.isMemberDay) {
+//                CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
+//                activitiesBean.setId(MemberUtils.day_rc_id);
+//                activitiesBean.setType("member_day");
+//                activitiesBean.setDiscount(Integer.valueOf(df.format((mCoupon*100))));
+//                activitiesBeans.add(activitiesBean);
+//            }
+//            //会员固定折扣
+//            else if(MemberUtils.isMemberDiscount){
+//                CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
+//                activitiesBean.setId(MemberUtils.discount_rc_id);
+//                activitiesBean.setType("member_discount");
+//                activitiesBean.setDiscount(Integer.valueOf(df.format((mCoupon*100))));
+//                activitiesBeans.add(activitiesBean);
+//            }
+//            if(activitiesBeans.size() != 0) {
+//                requestBody1.setActivities(activitiesBeans);
+//            }
+//        }
 
         //优惠券
         CouponResponse couponInfo = CouponUtils.getInstance().getCouponInfo();
@@ -770,7 +788,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             case PayWayView.WAY_CASH:
 
                 DecimalFormat df = new DecimalFormat("#");
-                String real_pay = df.format(mTotalMoney * 100 - mCoupon * 100);
+                float pay = mTotalMoney * 100 - mCoupon * 100;
+                if(pay < 0) {
+                    pay = 0;
+                }
+                String real_pay = df.format(pay);
                 String change_money = df.format(mChange * 100);
 
                 mPresenter.cash(Configs.shop_sn, Configs.order_no,

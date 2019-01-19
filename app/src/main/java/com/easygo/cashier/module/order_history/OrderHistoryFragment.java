@@ -132,8 +132,13 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
         adapter.setEmptyView(emptyView);
     }
 
-    public void print(String info) {
-        mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, info);
+    //type 为0 时 为历史订单打印 ，  1时 为退款打印
+    public void print(String info, int type) {
+        mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, info, type);
+    }
+
+    public void printRefundInfo(String info) {
+        mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, info, 1);
     }
 
     @Override

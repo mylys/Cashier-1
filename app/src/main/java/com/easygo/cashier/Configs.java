@@ -10,6 +10,8 @@ import com.niubility.library.utils.SharedPreferencesUtils;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+
 public class Configs {
 
     /**
@@ -50,6 +52,7 @@ public class Configs {
             302, 303, 304, 305, //支付id（支付宝支付id，微信支付id，现金支付id）
             310                 //无码商品id
     };
+    public static Long interval = 60L;
 
     /* 判断权限id是否存在于权限列表中 并获取role权限是否显示 (0:无权限，1:有权限，-1:权限不存在) */
     public static int getRole(int permissionId) {

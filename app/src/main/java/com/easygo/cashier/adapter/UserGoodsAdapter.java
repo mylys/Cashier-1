@@ -41,41 +41,19 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
 
         final String barcode = good.getBarcode();
         final String price = good.getPrice();
-        float subtotal = Float.valueOf(price) * good_count;
+        float subtotal = Float.valueOf(price) * good_count - Float.valueOf(good.getDiscount_price());
+
+        if(subtotal < 0) {
+            subtotal = 0;
+        }
 
         helper.getView(R.id.tv_member_price).setVisibility(MemberUtils.isMember ? View.VISIBLE : View.GONE);
         helper.setText(R.id.tv_barcode, barcode)
                 .setText(R.id.tv_goods_name, good.getG_sku_name())
                 .setText(R.id.tv_price, String.valueOf(price))
-                .setText(R.id.tv_coupon, String.valueOf(good.getDiscount_price()))
+                .setText(R.id.tv_coupon,  df.format(Float.valueOf(good.getDiscount_price())))
                 .setText(R.id.tv_subtotal, String.valueOf(df.format(subtotal)))
-                .setText(R.id.tv_member_price, "0.00");
-
-        if (item.getPromotion() == null && MemberUtils.isMember) {
-            if (good.isMemberPrice()) {
-                float member_price = Float.parseFloat(good.getMembership_price()) * good_count;
-                float subtotal_member = (Float.parseFloat(price) - Float.parseFloat(good.getMembership_price())) * good_count;
-                subtotal = member_price;
-                good.setDiscount_price(df.format(subtotal_member));
-                helper.setText(R.id.tv_subtotal, df.format(subtotal))
-                        .setText(R.id.tv_coupon, good.getDiscount_price())
-                        .setText(R.id.tv_member_price, good.getMembership_price());
-            } else if (!good.isMemberPrice() && MemberUtils.isMemberDay) {
-                if (getFullTotalPrice() >= MemberUtils.full){
-                    float coupon = MemberUtils.getCoupon(getFullTotalPrice(), Float.parseFloat(price), good_count);
-                    subtotal = (Float.parseFloat(price) * good_count) - coupon;
-                    good.setDiscount_price(df.format(coupon));
-                    helper.setText(R.id.tv_subtotal, df.format(subtotal))
-                            .setText(R.id.tv_coupon, good.getDiscount_price());
-                }
-            } else if (!good.isMemberPrice() && !MemberUtils.isMemberDay && MemberUtils.isMemberDiscount) {
-                float subtotal_member = (float) (Float.parseFloat(price) - (MemberUtils.discount * Float.parseFloat(price))) * good_count;
-                subtotal = (Float.parseFloat(price) * good_count) - subtotal_member;
-                good.setDiscount_price(df.format(subtotal_member));
-                helper.setText(R.id.tv_subtotal, df.format(subtotal))
-                        .setText(R.id.tv_coupon, good.getDiscount_price());
-            }
-        }
+                .setText(R.id.tv_member_price, good.getMembership_price());
 
         switch (helper.getItemViewType()) {
             case GoodsEntity.TYPE_GOODS://普通商品
@@ -106,25 +84,6 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
                 //设置加工方式相关控件可见性
                 helper.setText(R.id.tv_count, good_count + good.getG_u_symbol());
                 setProcessingLayout(helper, is_processing);
-
-
-                //是否加工监听
-//                cb_processing.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                    @Override
-//                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                        setProcessingLayout(helper, isChecked);
-//
-//                        //选择加工时 设置加工商品，否则置空
-//                        GoodsResponse default_processing = item.getProcessing_list().get(0);
-//                        item.setProcessing(isChecked? default_processing : null);
-//                        if(isChecked) {
-//                            refreshPrcessingData(helper, default_processing);
-//                        }
-//
-//                        refreshPrice();
-//                    }
-//                });
-
                 break;
         }
 
@@ -152,7 +111,12 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
      */
     private void refreshPrcessingData(BaseViewHolder helper, GoodsResponse processing) {
         DecimalFormat df = new DecimalFormat("#0.00");
-        float processing_subtotal = Float.valueOf(processing.getProcess_price()) * processing.getCount();
+        float processing_subtotal = Float.valueOf(processing.getProcess_price()) * processing.getCount()
+                -  Float.valueOf(processing.getDiscount_price());
+
+        if(processing_subtotal < 0) {
+            processing_subtotal = 0;
+        }
 
         helper.setText(R.id.tv_processing_name, processing.getG_sku_name())
                 .setText(R.id.tv_processing_price, processing.getProcess_price())

@@ -163,9 +163,21 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 //0:正常商品 --- 1:称重商品 --- 2:无码商品 --- 3:加工方式
                 int type = goodsRefundInfo.getType();
                 totalPrcie += Double.parseDouble(type == 1 || type == 3 ? goodsRefundInfo.getProduct_subtotal() : goodsRefundInfo.getRefund_subtotal());
+                totalPrcie -= Double.parseDouble(goodsRefundInfo.getProduct_preferential());
             }
         }
         return df.format(totalPrcie);
+    }
+
+    /* 获取商品总优惠 */
+    public float getTotalCoupon() {
+        double totalCoupon = 0f;
+        for (GoodsRefundInfo goodsRefundInfo : getData()) {
+            if (goodsRefundInfo.isSelect()) {
+                totalCoupon += Double.parseDouble(goodsRefundInfo.getProduct_preferential());
+            }
+        }
+        return (float) totalCoupon;
     }
 
     /* 获取商品退货总数量 */

@@ -76,6 +76,13 @@ public class ActivitiesUtils {
      * @param response
      */
     public void parseGoods(GoodsActivityResponse response) {
+
+        if (currentGoodsPromotions == null) {
+            currentGoodsPromotions = new ArrayList<>();
+        } else {
+            currentGoodsPromotions.clear();
+        }
+
         List<GoodsActivityResponse.ActivitiesBean> activities = response.getActivities();
         int size = activities.size();
         if(size == 0) {
@@ -156,12 +163,6 @@ public class ActivitiesUtils {
         }
         needComputeMap.clear();
 
-        if (currentGoodsPromotions == null) {
-            currentGoodsPromotions = new ArrayList<>();
-        } else {
-            currentGoodsPromotions.clear();
-        }
-
         int size = data.size();
         String barcode;
         int actvitity_id;
@@ -170,6 +171,10 @@ public class ActivitiesUtils {
         //重置
         for (int i = 0; i < size; i++) {
             data.get(i).setPromotion(null);
+        }
+        for (Map.Entry<Integer, BaseGoodsPromotion> entry : id2PromotionMap.entrySet()) {
+            BaseGoodsPromotion promotion = entry.getValue();
+            promotion.setPromotionGoods(null);
         }
 
         //  1、遍历顾客所购商品
@@ -194,7 +199,10 @@ public class ActivitiesUtils {
 
             List<GoodsActivityResponse.ActivitiesBean.GoodsBean> goodsBeans = promotion.getGoodsBeans();
             int goods_size = goodsBeans.size();
-            PromotionGoods promotionGoods = new PromotionGoods();
+            PromotionGoods promotionGoods = promotion.getPromotionGoods();
+            if(promotionGoods == null) {
+                promotionGoods = new PromotionGoods();
+            }
             //  4、遍历活动中参与促销的商品 找到各有多少件、小计等相关数据
             for (int j = 0; j < goods_size; j++) {
                 GoodsActivityResponse.ActivitiesBean.GoodsBean goodsBean = goodsBeans.get(j);
@@ -209,7 +217,7 @@ public class ActivitiesUtils {
                     PromotionGoods.GoodsBean good = new PromotionGoods.GoodsBean();
                     good.setIndex(i);//设置在data数据源中的位置
                     good.setBarcode(barcode);
-                    good.setCount(goodsEntity.getCount());
+                    good.setCount(goodsEntity.getItemType() == GoodsEntity.TYPE_PROCESSING? 1: goodsEntity.getCount());
                     good.setPrice(Float.valueOf(goodsEntity.getData().getPrice()));
                     good.setSubtotal(goodsEntity.getCount() * Float.valueOf(goodsEntity.getData().getPrice()));
                     promotionGoods.getGoodsBeans().add(good);
@@ -396,7 +404,12 @@ public class ActivitiesUtils {
             int size = currentGoodsPromotions.size();
             for (int i = 0; i < size; i++) {
                 BaseGoodsPromotion promotion = currentGoodsPromotions.get(i);
-                currentPromotionNames.add(promotion.getName());
+                String name = promotion.getName();
+
+                if(currentPromotionNames.contains(name)) {
+                    continue;
+                }
+                currentPromotionNames.add(name);
 
             }
         }

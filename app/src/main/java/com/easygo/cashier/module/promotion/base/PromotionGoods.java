@@ -2,6 +2,7 @@ package com.easygo.cashier.module.promotion.base;
 
 import android.support.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * 顾客所购买的商品中 参与促销的所有商品信息
  */
-public class PromotionGoods {
+public class PromotionGoods implements Serializable {
 
     public static final int FLAG_DONT_SET_PROMOTION_MONEY = -1;
     public static final int FLAG_NEED_SET_PROMOTION_MONEY = 0;
@@ -19,7 +20,7 @@ public class PromotionGoods {
     private List<GoodsBean> goodsBeans = new ArrayList<>();//商品信息
 
 
-    public static class GoodsBean implements Comparable<GoodsBean> {
+    public static class GoodsBean implements Comparable<GoodsBean>, Serializable {
 
         /**
          * 在顾客购买商品列表中的序号

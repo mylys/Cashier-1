@@ -265,4 +265,9 @@ public interface HttpService {
 
     @GET("api/v1/cashier/coupon/search")
     Observable<HttpResult<CouponResponse>> get_coupon(@HeaderMap Map<String, String> header, @Query("coupon_sn") String coupon_sn);
+
+    @GET("api/v1/cashier/cash_register/heartbeat")
+    Observable<HttpResult<String>> heartbeat(@HeaderMap Map<String, String> header);
+
+
 }

@@ -278,7 +278,7 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
                 int remain = good_count - needCount;
                 //更新数量、小计
                 goodsBean.setCount(remain);
-                goodsBean.setSubtotal(remain * goodsBean.getSubtotal());
+                goodsBean.setSubtotal(remain * goodsBean.getPrice());
                 //已经完整添加到Rule.list
                 break;
             }

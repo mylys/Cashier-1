@@ -2,19 +2,26 @@ package com.easygo.cashier;
 
 import android.util.Log;
 
+import com.easygo.cashier.adapter.GoodsEntity;
+import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.MemberDayInfo;
 import com.easygo.cashier.bean.MemberDiscountInfo;
 import com.easygo.cashier.bean.MemberInfo;
 import com.niubility.library.utils.ToastUtils;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
  * @Describe：会员系统Utils
  * @Date：2019-01-10
+ *
+ * 18027347946
  */
 public class MemberUtils {
     private static final String TAG = MemberUtils.class.getSimpleName();
@@ -49,6 +56,9 @@ public class MemberUtils {
     public static int day_rc_id;
     /* 会员固定折扣 活动id*/
     public static int discount_rc_id;
+
+    /**正在参与会员活动*/
+    public static List<String> currentNames = new ArrayList<>();
 
     //查看当天是否是会员日 得到type == 1 ? 周 : 月
     public static boolean isDateMemberDay(MemberDayInfo memberDayInfo) {
@@ -99,6 +109,121 @@ public class MemberUtils {
         }
         return coupon;
     }
+
+    /**
+     * 计算各个商品的会员价或者优惠
+     */
+    public static void computeMember(List<GoodsEntity<GoodsResponse>> data) {
+        int size = data.size();
+
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        float fullTotalPrice = getFullTotalPrice(data);
+        currentNames.clear();
+
+        for (int i = 0; i < size; i++) {
+            GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
+            if (goodsEntity.getPromotion() != null) {//此商品已有商品促销
+                return;
+            } else {
+                GoodsResponse good = goodsEntity.getData();
+                int good_count = goodsEntity.getCount();
+                float price = 0;
+
+                if(goodsEntity.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
+                    price = Float.valueOf(good.getProcess_price());
+                } else {
+                    price = Float.valueOf(good.getPrice());
+                }
+
+                float membership_price = Float.valueOf(good.getMembership_price());
+
+                //获取每种商品的优惠价格
+                float coupon = getCoupon(good, good_count, fullTotalPrice, price, membership_price);
+                good.setDiscount_price(df.format(coupon));
+
+                if(goodsEntity.getItemType() == GoodsEntity.TYPE_PROCESSING) {
+                    GoodsResponse processing = goodsEntity.getProcessing();
+
+                    if(processing != null) {
+                        price = Float.valueOf(processing.getProcess_price());
+
+                        membership_price = Float.valueOf(processing.getMembership_price());
+                        coupon = getCoupon(processing, good_count, fullTotalPrice, price, membership_price);
+                        processing.setDiscount_price(df.format(coupon));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 根据价格 计算各商品优惠
+     * @param good
+     * @param good_count
+     * @param fullTotalPrice
+     * @param price
+     * @param membership_price
+     * @return
+     */
+    public static float getCoupon(GoodsResponse good, int good_count, float fullTotalPrice, float price, float membership_price) {
+
+        float coupon = 0f;
+        if(good.isMemberPrice()) {//有会员价
+            coupon = (price - membership_price) * good_count;
+            currentNames.add("会员价");
+            Log.i(TAG, "getCoupon: 会员价 优惠 -> " + coupon);
+        } else if (!good.isMemberPrice() && MemberUtils.isMemberDay) {           //会员日计算
+            if (fullTotalPrice >= MemberUtils.full){
+                coupon = MemberUtils.getCoupon(fullTotalPrice, price, good_count);
+                currentNames.add("会员日");
+                Log.i(TAG, "getCoupon: 会员日 优惠 -> " + coupon);
+            } else if(MemberUtils.isMemberDiscount){
+                coupon = (float) (price - (MemberUtils.discount * price)) * good_count;
+                currentNames.add("会员固定折扣");
+                Log.i(TAG, "getCoupon: 会员固定折扣 优惠 -> " + coupon);
+            }
+        } else if (!good.isMemberPrice() && !MemberUtils.isMemberDay && MemberUtils.isMemberDiscount) {   //会员固定折扣计算
+            coupon = (float) (price - (MemberUtils.discount * price)) * good_count;
+            currentNames.add("会员固定折扣");
+            Log.i(TAG, "getCoupon: 会员固定折扣 （2）  优惠 -> " + coupon);
+        }
+        return coupon;
+    }
+
+
+    public static Float getFullTotalPrice(List<GoodsEntity<GoodsResponse>> data){
+        float total_price = 0;
+        for (GoodsEntity<GoodsResponse> entity : data) {
+            GoodsResponse good = entity.getData();
+            if (entity.getPromotion() == null && !good.isMemberPrice()) {
+                if (entity.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
+                    total_price += Float.parseFloat(good.getProcess_price()) * entity.getCount();
+                } else if(entity.getItemType() == GoodsEntity.TYPE_PROCESSING){
+                    total_price += Float.parseFloat(good.getPrice()) * entity.getCount();
+
+                    GoodsResponse processing = entity.getProcessing();
+                    if (processing != null) {//此时 选择了加工
+                        total_price += Double.valueOf(processing.getProcess_price());
+                    }
+                } else {
+                    total_price += Float.parseFloat(good.getPrice()) * entity.getCount();
+                }
+            }
+        }
+        return total_price;
+    }
+
+
+    public static void reset() {
+        isMember = false;
+        isMemberDay = false;
+        isMemberDiscount = false;
+    }
+
+
+
+
 }
 
 /* 满减折扣价 */

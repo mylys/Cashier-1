@@ -2,6 +2,7 @@ package com.easygo.cashier.module.goods;
 
 import android.content.SharedPreferences;
 import android.gesture.GestureUtils;
+import android.util.Log;
 
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.bean.CouponResponse;
@@ -19,6 +20,7 @@ import com.niubility.library.base.BaseApplication;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.base.HttpClient;
 import com.niubility.library.http.base.HttpResult;
+import com.niubility.library.http.rx.BaseErrorObserver;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
 import com.niubility.library.utils.GetSign;
@@ -28,7 +30,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.RequestBody;
 
 public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implements GoodsContract.IPresenter {
@@ -220,17 +227,18 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
     @Override
     public void get_coupon(final String coupon) {
-        Map<String, String> header = new HashMap<>();
-        header.put("LC-Appkey", "25");
+//        Map<String, String> header = new HashMap<>();
+//        header.put("LC-Appkey", "25");
+//
+//        SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication);
+//        long time = new Date().getTime() / 1000;
+//        String session_id = sp.getString(Constans.KEY_SESSION_ID, "");
+//
+//        header.put("LC-Sign", GetSign.sign(time));
+//        header.put("LC-Session", session_id);
+//        header.put("LC-Timestamp", String.valueOf(time));
 
-        SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication);
-        long time = new Date().getTime() / 1000;
-        String session_id = sp.getString(Constans.KEY_SESSION_ID, "");
-
-        header.put("LC-Sign", GetSign.sign(time));
-        header.put("LC-Session", session_id);
-        header.put("LC-Timestamp", String.valueOf(time));
-
+        Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(HttpAPI.getInstance().httpService().get_coupon(header, coupon),
                 new BaseResultObserver<CouponResponse>() {
                     @Override
@@ -244,5 +252,33 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
                         mView.couponFailed(map);
                     }
                 });
+    }
+
+    @Override
+    public void heartbeat() {
+        Observable<Object> retry = Observable.interval(Configs.interval, TimeUnit.SECONDS)
+                .flatMap(new Function<Long, ObservableSource<?>>() {
+                    @Override
+                    public ObservableSource<HttpResult<String>> apply(Long aLong) throws Exception {
+                        Map<String, String> header = HttpClient.getInstance().getHeader();
+                        return HttpAPI.getInstance().httpService().heartbeat(header);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .retry();  // retry保证请求失败后能重新订阅
+
+        BaseErrorObserver<Object> observer = new BaseErrorObserver<Object>() {
+            @Override
+            public void onNext(Object s) {
+                Log.i("heartbeat", "onNext: 心跳--------");
+            }
+
+            @Override
+            protected void onFailure(Map<String, Object> map) {
+
+            }
+        };
+        retry.subscribe(observer);
+        mCompositeDisposable.add(observer);
     }
 }

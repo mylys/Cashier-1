@@ -1,7 +1,9 @@
 package com.easygo.cashier.module.login;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
+import com.easygo.cashier.Configs;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
 import com.easygo.cashier.http.HttpAPI;
@@ -9,6 +11,8 @@ import com.easygo.cashier.printer.PrintHelper;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.base.HttpClient;
+import com.niubility.library.http.base.HttpResult;
+import com.niubility.library.http.rx.BaseErrorObserver;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
 import com.niubility.library.utils.GetSign;
@@ -17,6 +21,12 @@ import com.niubility.library.utils.SharedPreferencesUtils;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 public class LoginPresenter extends BasePresenter<LoginContract.IView> implements LoginContract.IPresenter{
 
@@ -111,5 +121,33 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
                         }
                     });
         }
+    }
+
+    @Override
+    public void heartbeat() {
+        Observable<Object> retry = Observable.interval(Configs.interval, TimeUnit.SECONDS)
+                .flatMap(new Function<Long, ObservableSource<?>>() {
+                    @Override
+                    public ObservableSource<HttpResult<String>> apply(Long aLong) throws Exception {
+                        Map<String, String> header = HttpClient.getInstance().getHeader();
+                        return HttpAPI.getInstance().httpService().heartbeat(header);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .retry();  // retry保证请求失败后能重新订阅
+
+        BaseErrorObserver<Object> observer = new BaseErrorObserver<Object>() {
+            @Override
+            public void onNext(Object s) {
+                Log.i("heartbeat", "onNext: 心跳--------");
+            }
+
+            @Override
+            protected void onFailure(Map<String, Object> map) {
+
+            }
+        };
+        retry.subscribe(observer);
+        mCompositeDisposable.add(observer);
     }
 }

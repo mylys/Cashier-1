@@ -16,7 +16,7 @@ public class OrderHistoryContract {
     public interface IPresenter extends BaseContract.Presenter {
 
         void post(int handover_id, String keyword, int page, int count);
-        void print_info(String shop_sn, String printer_sn, String info);
+        void print_info(String shop_sn, String printer_sn, String info, int type);
     }
 
     interface IView extends BaseView {

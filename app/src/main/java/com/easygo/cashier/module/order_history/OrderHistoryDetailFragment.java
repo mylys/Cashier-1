@@ -1,6 +1,7 @@
 package com.easygo.cashier.module.order_history;
 
 import android.os.Bundle;
+import android.support.annotation.AnyThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -141,6 +142,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 if (getActivity() != null) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList("data", (ArrayList<OrderHistorysInfo.ListBean>) orderHistoryGoodsAdapter.getData());
+                    bundle.putParcelableArrayList("activities", (ArrayList<OrderHistorysInfo.ActivitiesBean>) mOrderHistorysInfo.getActivities());
                     bundle.putString("pay_type", payType);
                     bundle.putInt("total_price", total_price);
                     bundle.putString("order_number", order_number);
@@ -181,26 +183,38 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 .append(PrintHelper.BR);
 
         int count = 0;
+        float total_discount = 0f;
+        float discount = 0f;
 //        boolean isWeight = false;
         for (int i = 0; i < size; i++) {
             OrderHistorysInfo.ListBean listBean = data.get(i);
 
             count += listBean.getCount();
 //            isWeight = listBean.getCount().equals(listBean.getQuantity());
+            discount = Float.valueOf(listBean.getDiscount());
+            total_discount += discount;
 
             sb.append(i + 1).append(".")
                     .append(listBean.getG_sku_name()).append("   ").append(PrintHelper.BR)
                     .append("     ")
                     .append(listBean.getSell_price()).append("   ")
-                    .append("0.00").append("   ")
+                    .append(listBean.getDiscount()).append("   ")
                     .append(listBean.getType() == 1 ? listBean.getQuantity() + listBean.getG_u_symbol() : listBean.getCount()).append("   ")
                     .append(listBean.getMoney()).append(PrintHelper.BR);
         }
 
+        if(total_discount == 0) {//商品促销金额为0 检查店铺促销金额
+            List<OrderHistorysInfo.ActivitiesBean> activities = mOrderHistorysInfo.getActivities();
+            if(activities != null && activities.size() != 0) {
+                total_discount = Float.valueOf(activities.get(0).getDiscount_money());
+            }
+        }
+        DecimalFormat df = new DecimalFormat("0.00");
+
         sb.append("--------------------------------").append(PrintHelper.BR)
                 .append("总数量：").append(count).append(PrintHelper.BR)
                 .append("原价：").append(mOrderHistorysInfo.getTotal_money()).append("元").append(PrintHelper.BR)
-                .append("优惠：").append("0.00").append("元").append(PrintHelper.BR)
+                .append("优惠：").append(df.format(total_discount)).append("元").append(PrintHelper.BR)
                 .append("总金额：").append(mOrderHistorysInfo.getTotal_money()).append("元").append(PrintHelper.BR)
                 .append("支付方式：").append(payType).append(PrintHelper.BR)
                 .append("实收：").append(mOrderHistorysInfo.getBuyer_pay()).append("元").append(PrintHelper.BR)
@@ -212,7 +226,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         if (parentFragment != null) {
             OrderHistoryFragment fragment = (OrderHistoryFragment) parentFragment;
 
-            fragment.print(sb.toString());
+            fragment.print(sb.toString(), 0);
         }
 
     }
@@ -220,7 +234,11 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     public void showOrderHistory(OrderHistorysInfo orderHistoryInfo) {
 
         this.mOrderHistorysInfo = orderHistoryInfo;
+        List<OrderHistorysInfo.ActivitiesBean> activities = orderHistoryInfo.getActivities();
 
+        boolean have_shop_promotion = activities != null && activities.size() > 0;
+
+        orderHistoryGoodsAdapter.setHaveShopPromotion(have_shop_promotion);
         orderHistoryGoodsAdapter.setNewData(orderHistoryInfo.getList());
         tvOrderNo.setText(orderHistoryInfo.getTrade_no());
         tvCashierAcount.setText(orderHistoryInfo.getReal_name() == null ? "" : orderHistoryInfo.getReal_name());
@@ -228,7 +246,13 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         tvReceipts.setText("实付：￥" + orderHistoryInfo.getBuyer_pay());
 
         tvReceivable.setText("应收：￥" + orderHistoryInfo.getReal_pay());
-//        tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money() + " = ");
+        if(have_shop_promotion) {
+            OrderHistorysInfo.ActivitiesBean activitiesBean = activities.get(0);
+            tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money()
+                    + " - 优惠：￥" + activitiesBean.getDiscount_money() + " = ");
+        } else {
+            tvReceivableText.setText("");
+        }
 
         order_real_name = orderHistoryInfo.getReal_name() == null ? "" : orderHistoryInfo.getReal_name();
         order_number = orderHistoryInfo.getTrade_num();
@@ -287,7 +311,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 break;
         }
 
-        if (orderHistoryInfo.getHave_refund() != 0){
+        if (orderHistoryInfo.getRefund_status() != 0){
             has_refund(orderHistoryInfo, change_money, change_price);
         }
     }

@@ -8,6 +8,7 @@ import com.easygo.cashier.module.promotion.base.IGoodsPromotion;
 import com.easygo.cashier.module.promotion.base.IPromotion;
 import com.easygo.cashier.module.promotion.base.PromotionGoods;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class GoodsNormalPromotion extends BaseGoodsPromotion implements IGoodsPr
     @Override
     public void computePromotionMoney(List<GoodsEntity<GoodsResponse>> data) {
 
-        Log.i(TAG, "computePromotionMoney: 普通促销");
+        Log.i(TAG, "computePromotionMoney: 商品普通促销");
 
         if(promotionGoods == null) {
             return;
@@ -39,7 +40,6 @@ public class GoodsNormalPromotion extends BaseGoodsPromotion implements IGoodsPr
 
         //促销金额
         float promotion_money = 0f;
-        float temp_subtotal = 0f;
         int count;
 
         //  1、判断是否满足 促销条件
@@ -50,47 +50,56 @@ public class GoodsNormalPromotion extends BaseGoodsPromotion implements IGoodsPr
                     //商品总数小于2  则不满足 偶数件 直接返回
                     return;
                 }
-                int times = total_count / 2;
 
-                promotion_money = getPromotionMoney(times, 0);
+                List<Rule> rules = new ArrayList<>();
+
+                getRules(rules, goodsBeans, total_count);
 
 
-                int remain = 0;
+                int rules_size = rules.size();
+                for (int i = 0; i < rules_size; i++) {
+                    Rule rule = rules.get(i);
 
-                int current_count = 0;
-                int current_times = 0;
-
-                int temp_count = 0;
-
-                //遍历
-
-                /**
-                 * 3    (0+3)/2 = 1...1
-                 * 1    (1+1)/2 = 1...0
-                 * 2    (0+2)/2 = 1...0
-                 * 1    (0+1)/2 = 1...0
-                 */
-
-                for (int i = 0; i < size; i++) {
-                    PromotionGoods.GoodsBean goodsBean = goodsBeans.get(i);
-                    count = goodsBean.getCount();
-                    current_count += count;
-
-                    if(count == 0) {
+                    if(rule.list.size() != 2) {//不足2种商品的
+                        if(rule.list.get(0).count != 2)//同种商品不足2件
                         continue;
                     }
 
-                    temp_count = remain + count;
-
-                    current_times += temp_count / 2;
-                    remain = temp_count % 2;
-
-                    if(!(i == size - 1 && temp_count == 1)) {
-                        //最后一个 商品数为
-                        goodsBean.setPromotion_money(PromotionGoods.FLAG_NEED_SET_PROMOTION_MONEY);
-                        temp_subtotal += goodsBean.getSubtotal();
-                    }
+                    rule.computeTotalMoney();
+                    rule.computePromotionMoney();
                 }
+
+
+                int rule_list_size;
+
+                int goods_size = goodsBeans.size();
+                for (int i = 0; i < goods_size; i++) {
+                    PromotionGoods.GoodsBean goodsBean = goodsBeans.get(i);
+                    int index = goodsBean.getIndex();
+                    GoodsEntity<GoodsResponse> goodsEntity = data.get(index);
+
+                    promotion_money = 0f;
+
+                    //遍历 合并每个规则对象中的同一商品的促销金额
+                    for (int j = 0; j < rules_size; j++) {
+                        Rule rule = rules.get(j);
+
+                        rule_list_size = rule.list.size();
+
+                        for (int k = 0; k < rule_list_size; k++) {
+                            Rule.Good good = rule.list.get(k);
+                            if(good.index == index) {
+                                promotion_money += good.promotion_money;
+                            }
+
+                        }
+                    }
+                    goodsEntity.setPromotion(this);
+                    goodsBean.setPromotion_money(promotion_money);
+                    Log.i(TAG, "computePromotionMoney: 商品普通（偶数件） index -> " + index + ", 促销金额 -> " + promotion_money);
+                    goodsEntity.getData().setDiscount_price(String.valueOf(promotion_money));
+                }
+
                 break;
             case IPromotion.CONDITION_TYPE_MONEY:
                 if(total_money < condition_value) {
@@ -98,7 +107,7 @@ public class GoodsNormalPromotion extends BaseGoodsPromotion implements IGoodsPr
                     return;
                 }
 
-                promotion_money = getPromotionMoney(0, temp_subtotal);
+                promotion_money = getPromotionMoney(total_money);
 
                 for (int i = 0; i < size; i++) {
                     PromotionGoods.GoodsBean goodsBean = goodsBeans.get(i);
@@ -107,55 +116,156 @@ public class GoodsNormalPromotion extends BaseGoodsPromotion implements IGoodsPr
                     if(count == 0) {
                         return;
                     }
+                    GoodsEntity<GoodsResponse> goodsEntity = data.get(goodsBean.getIndex());
 
-                    goodsBean.setPromotion_money(PromotionGoods.FLAG_NEED_SET_PROMOTION_MONEY);
-
+                    //需要设置促销金额的  根据比例计算出促销金额
+                    float promotion = (goodsBean.getSubtotal() / total_money) * promotion_money;
+                    Log.i(TAG, "computePromotionMoney: 商品普通（满金额） index -> " + goodsBean.getIndex()
+                            + ", 促销金额 -> " + promotion);
+                    goodsBean.setPromotion_money(promotion);
+                    goodsEntity.setPromotion(this);
+                    goodsEntity.getData().setDiscount_price(String.valueOf(promotion));
                 }
-
                 break;
         }
+    }
 
+    private void getRules(List<Rule> list, List<PromotionGoods.GoodsBean> goodsBeans, int count) {
 
+        //创建一个规则对象
+        Rule rule = new Rule(getOffer_type(), getOffer_value());
+
+        //记录还需添加多少件 才能满足 指定件数
+        int needCount = 2;
+
+        int size = goodsBeans.size();
         for (int i = 0; i < size; i++) {
             PromotionGoods.GoodsBean goodsBean = goodsBeans.get(i);
-            GoodsEntity<GoodsResponse> goodsEntity = data.get(goodsBean.getIndex());
 
-            if (goodsBean.getPromotion_money() == PromotionGoods.FLAG_NEED_SET_PROMOTION_MONEY) {
-                //需要设置促销金额的  根据比例计算出促销金额
-                float promotion = (goodsBean.getSubtotal() / temp_subtotal) * promotion_money;
-                Log.i(TAG, "computePromotionMoney: 商品普通促销 促销金额 -> " + promotion);
-                goodsBean.setPromotion_money(promotion);
-                goodsEntity.setPromotion(this);
-                goodsEntity.getData()
-                        .setDiscount_price(String.valueOf(promotion));
-            } else {
-                Log.i(TAG, "computePromotionMoney: 清空促销金额 -> ");
-                goodsEntity.setPromotion(null);
-                goodsEntity.getData()
-                        .setDiscount_price("0.00");
+            int good_count = goodsBean.getCount();
+            if(good_count == 0) {
+                //此商品已经添加到T.list中，跳过
+                continue;
+            }
+            Rule.Good good = new Rule.Good();
+            good.index = goodsBean.getIndex();
+            good.price = goodsBean.getPrice();
+            if(needCount > good_count) {//指定数量大于此商品数量， 将此商品全部添加到Rule.list
+                good.count = good_count;
+                good.subtotal = good.price * good.count;
+
+                rule.list.add(good);
+                //计算还需要添加多少件才能满足 指定件数
+                needCount = needCount - good_count;
+
+                //更新数量、小计
+                goodsBean.setCount(0);
+                goodsBean.setSubtotal(0f);
+
+            } else {//指定数量小于此商品数量，将指定数量添加到Rule.list
+                good.count = needCount;
+                good.subtotal = good.price * good.count;
+
+                rule.list.add(good);
+
+                int remain = good_count - needCount;
+                //更新数量、小计
+                goodsBean.setCount(remain);
+                goodsBean.setSubtotal(remain * goodsBean.getPrice());
+                //已经完整添加到Rule.list
+                break;
             }
         }
 
+        //将规则对象添加到list
+        list.add(rule);
+
+        count -= 2;
+
+        if(count > 0)
+            getRules(list, goodsBeans, count);
+
     }
 
-    private float getPromotionMoney(int times, float subtotal) {
-
+    private float getPromotionMoney(float subtotal) {
         switch (getOffer_type()) {
             case IPromotion.OFFER_TYPE_MONEY:
-
-                if(times != 0) {
-                    return times * getOffer_value();
-                } else {
-                    return getOffer_value();
-                }
+                return getOffer_value();
             case IPromotion.OFFER_TYPE_RATIO:
-                if(times != 0) {
-                    return subtotal * times * getOffer_value();
-                } else {
-                    return subtotal * (getOffer_value() / 100f);
-                }
+                return subtotal * (getOffer_value() / 100f);
             default:
                 return 0f;
+        }
+    }
+
+
+    /**
+     * 偶数件封装对象，
+     */
+    private static class Rule {
+        /**减免类型*/
+        private int offer_type;
+        /**减免金额/比例*/
+        private float offer_value;
+
+        Rule(int offer_type, float offer_value) {
+            this.offer_type = offer_type;
+            this.offer_value = offer_value;
+        }
+
+        /**本部分商品总价*/
+        private float total_money;
+        /**本部分商品总促销金额*/
+        private float total_promotion_money;
+        /**本部分商品列表*/
+        private List<Good> list = new ArrayList<>(2);
+
+        private static class Good {
+
+            /**商品在数据源中的位置*/
+            private int index;
+            /**商品数量*/
+            private int count;
+            /**商品单价*/
+            private float price;
+            /**商品小计*/
+            private float subtotal;
+            /**商品促销金额*/
+            private float promotion_money;
+        }
+
+        private float getPromotionMoney(float total_money) {
+            switch (offer_type) {
+                case IPromotion.OFFER_TYPE_MONEY:
+                    return offer_value;
+                case IPromotion.OFFER_TYPE_RATIO:
+                    return total_money * (offer_value / 100f);
+                default:
+                    return 0f;
+            }
+        }
+
+        /**计算本部分商品总价*/
+        private void computeTotalMoney() {
+            int size = list.size();
+
+            for (int i = 0; i < size; i++) {
+                Good good = list.get(i);
+                total_money += good.subtotal;
+            }
+
+            total_promotion_money = getPromotionMoney(total_money);
+
+        }
+
+        /**计算各商品促销金额*/
+        private void computePromotionMoney() {
+            int size = list.size();
+            for (int i = 0; i < size; i++) {
+                Good good = list.get(i);
+
+                good.promotion_money = (good.subtotal/total_money) * total_promotion_money;
+            }
         }
     }
 }

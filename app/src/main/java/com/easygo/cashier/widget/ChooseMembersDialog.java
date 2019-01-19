@@ -67,6 +67,8 @@ public class ChooseMembersDialog extends BaseDialog {
             dialog_title.setText(title);
         }
 
+        searchView.setContent("13662358320");
+
         DividerItemDecoration verticalDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         verticalDecoration.setDrawable(getResources().getDrawable(R.drawable.bg_item_decoration_vertical));
 

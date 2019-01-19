@@ -14,6 +14,9 @@ import java.text.DecimalFormat;
 
 public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo.ListBean, BaseViewHolder> {
 
+    private boolean have_shop_promotion = false;
+
+
     public OrderHistoryGoodsAdapter() {
         super(R.layout.item_order_history_detail_list);
     }
@@ -32,7 +35,7 @@ public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo
                 .setText(R.id.tv_text_goods_count, item.getType() == 1 ? count + item.getG_u_symbol() : count + "")
                 .setText(R.id.tv_text_subtotal, df.format(item.getMoney()));
 
-        helper.setVisible(R.id.image_discount, Float.valueOf(discount) > 0);
+        helper.setVisible(R.id.image_discount, Float.valueOf(discount) > 0 || have_shop_promotion);
 
         if (item.getType() == 1) {
             helper.setText(R.id.tv_refund, "全退");
@@ -50,5 +53,9 @@ public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo
             }
         }
         return num;
+    }
+
+    public void setHaveShopPromotion(boolean have_shop_promotion) {
+        this.have_shop_promotion = have_shop_promotion;
     }
 }

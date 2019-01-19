@@ -67,6 +67,10 @@ public class OrderHistoryActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    public void printRefundInfo(String info) {
+        orderHistoryFragment.printRefundInfo(info);
+    }
+
     public void toOrderHistoryRefundFragment(Bundle bundle) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_ORDER_HISTORY_REFUND);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

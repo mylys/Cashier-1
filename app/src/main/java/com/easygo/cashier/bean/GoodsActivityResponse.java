@@ -1,8 +1,9 @@
 package com.easygo.cashier.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class GoodsActivityResponse {
+public class GoodsActivityResponse implements Serializable {
 
     private List<ActivitiesBean> activities;
     private List<MapBean> map;
@@ -23,7 +24,7 @@ public class GoodsActivityResponse {
         this.map = map;
     }
 
-    public static class ActivitiesBean {
+    public static class ActivitiesBean  implements Serializable {
         /**
          * id : 374
          * name : testing 10004
@@ -108,7 +109,7 @@ public class GoodsActivityResponse {
             this.goods = goods;
         }
 
-        public static class ConfigBean {
+        public static class ConfigBean implements Serializable {
             /**
              * condition_type : 1
              * condition_value : 0.00
@@ -155,7 +156,7 @@ public class GoodsActivityResponse {
                 this.offer_value = offer_value;
             }
 
-            public static class ListBean {
+            public static class ListBean  implements Serializable {
 
                 /**
                  * barcode : 4800116018021
@@ -232,7 +233,7 @@ public class GoodsActivityResponse {
             }
         }
 
-        public static class GoodsBean {
+        public static class GoodsBean implements Serializable {
             /**
              * sku_name : 众合美滋黑椒猪肉脯80g
              * barcode : 4897064100175

@@ -10,7 +10,7 @@ public class BarcodeUtils {
     }
 
     public static boolean isMember(String code){
-        return code.startsWith("16") || code.startsWith("18");
+        return code.length() == 18 && (code.startsWith("16") || code.startsWith("18")) ;
     }
 
     public static String getProductCode(String code) {
@@ -19,7 +19,7 @@ public class BarcodeUtils {
 
     public static int getProductWeight(String code) {
 //        String weight = code.subSequence(7, 12).toString();
-        String weight = code.subSequence(13, code.length()).toString();
+        String weight = code.subSequence(12, 16).toString();
         return Integer.valueOf(weight);
     }
 }

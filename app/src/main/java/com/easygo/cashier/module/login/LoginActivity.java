@@ -138,6 +138,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
             }
         });
 
+        //发送心跳
+        mPresenter.heartbeat();
 
     }
 

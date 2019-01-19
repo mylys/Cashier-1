@@ -18,6 +18,7 @@ public class GoodsRefundInfo {
     private int parent_id;
     private int type;
     private String identity;
+    private String discount;
 
     public int getType() {
         return type;
@@ -129,5 +130,13 @@ public class GoodsRefundInfo {
 
     public void setIdentity(String identity) {
         this.identity = identity;
+    }
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
     }
 }

@@ -21,6 +21,8 @@ public class LoginContract {
 
          void resever_money(String session_id, String shop_sn, int handover_id, int resever_money);
          void pop_till(String shop_sn, String printer_sn);
+
+         void heartbeat();
     }
 
     interface IView extends BaseView {

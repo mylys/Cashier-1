@@ -174,7 +174,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     private UserGoodsScreen mUserGoodsScreen;
 
-    private boolean start = false;
+    private boolean start = true;
 
 
     public static GoodsFragment newInstance() {
@@ -215,11 +215,15 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
         initUserGoodsScreen();
 
-        btnChooseCoupon.setVisibility(View.GONE);
-        btnChooseMember.setVisibility(View.GONE);
+//        btnChooseCoupon.setVisibility(View.GONE);
+//        btnChooseMember.setVisibility(View.GONE);
 
 //        mPresenter.goods_activity(Configs.shop_sn);
 //        mPresenter.shop_activity(Configs.shop_sn);
+
+
+        //发送心跳
+        mPresenter.heartbeat();
 
     }
 
@@ -407,81 +411,88 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
      * @param coupon
      */
     private void computePrice(float price, int count, float coupon) {
-//        if(price == 0 && count == 0 && coupon == 0) {
-//            //清空数据时
-//            refreshPrice(price, count, coupon);
-//            showCurrentActivities(null);
-//            return;
-//        }
-//
-//        ActivitiesUtils.getInstance().promotion(mData);
-//        ActivitiesUtils.getInstance().getCurrentGoodsPromotions(mData);
-//        //判断是否有商品促销
-//        if(ActivitiesUtils.getInstance().hasGoodsPromotion()) {
-//
-//            //刷新正在参加的活动
-//            showCurrentActivities(ActivitiesUtils.getInstance().getCurrentPromotionNames());
-//
-//            //优惠券
-//            if(CouponUtils.getInstance().getCouponInfo() != null
-//                    && ActivitiesUtils.getInstance().isWith_coupon()) {
-//                float couponMoney = CouponUtils.getInstance().getCouponMoney(price);
-//                mCouponMoney = couponMoney;
-//
-//                Log.i(TAG, "商品促销: 优惠券 优惠价格 --> " + couponMoney);
-//                refreshPrice(price, count,
-//                        ActivitiesUtils.getInstance().getGoodsPromotionMoney() + couponMoney);
-//
-//            } else {
-//                refreshPrice(price, count, ActivitiesUtils.getInstance().getGoodsPromotionMoney());
-//            }
-//
-//            return;
-//        }
-//        //判断是否有店铺促销
-//        float promotion = ActivitiesUtils.getInstance().promotion(price);
-//        if(promotion > 0) {
-//            //符合店铺促销条件
-//            showCurrentActivities(ActivitiesUtils.getInstance().getCurrentPromotionNames());
-//
-//            //刷新界面显示促销
-////            mGoodsMultiItemAdapter.notifyDataSetChanged();
-//
-//            //优惠券
-//            if(CouponUtils.getInstance().getCouponInfo() != null
-//                    && ActivitiesUtils.getInstance().isWith_coupon()) {
-//                float couponMoney = CouponUtils.getInstance().getCouponMoney(price);
-//                mCouponMoney = couponMoney;
-//
-//                Log.i(TAG, "店铺促销: 优惠券 优惠价格 --> " + couponMoney);
-//                refreshPrice(price, count, promotion + couponMoney);
-//
-//            } else {
-//                refreshPrice(price, count, promotion);
-//            }
-//
-//            return;
-//        }
-//
-//        if(CouponUtils.getInstance().getCouponInfo() != null) {
-//            float couponMoney = CouponUtils.getInstance().getCouponMoney(price);
-//            mCouponMoney = couponMoney;
-//
-//            Log.i(TAG, " 优惠券 优惠价格 --> " + couponMoney);
-//            refreshPrice(price, count, couponMoney);
-//            return;
-//        }
-//
-//
-////                if(MemberUtils.isMember) {
-////                    List<String> list = new ArrayList<>();
-////                    list.add("会员价优惠");
-////                    MemberUtils.is
-////                }
+        if(price == 0 && count == 0 && coupon == 0) {
+            //清空数据时
+            refreshPrice(price, count, coupon);
+            showCurrentActivities(null);
+            return;
+        }
+
+        //是否可以跟优惠券共用
+        boolean with_coupon = false;
+
+        ActivitiesUtils.getInstance().promotion(mData);
+        ActivitiesUtils.getInstance().getCurrentGoodsPromotions(mData);
+        //判断是否有商品促销
+        if(ActivitiesUtils.getInstance().hasGoodsPromotion()) {
+
+            //刷新正在参加的活动
+            showCurrentActivities(ActivitiesUtils.getInstance().getCurrentPromotionNames());
 
 
+            if(!MemberUtils.isMember) {//不是会员时
+                coupon = ActivitiesUtils.getInstance().getGoodsPromotionMoney();
+            } else {
+
+                //计算会员价、日、折扣
+                MemberUtils.computeMember(mData);
+
+                coupon = Float.valueOf(mGoodsMultiItemAdapter.getTotalCoupon());
+            }
+
+            with_coupon = ActivitiesUtils.getInstance().isWith_coupon();
+        } else {
+            //判断是否有店铺促销
+            coupon = ActivitiesUtils.getInstance().promotion(price);
+            if(coupon > 0) {
+                //符合店铺促销条件
+                showCurrentActivities(ActivitiesUtils.getInstance().getCurrentPromotionNames());
+
+                //刷新界面显示促销
+                mGoodsMultiItemAdapter.notifyDataSetChanged();
+
+                with_coupon = ActivitiesUtils.getInstance().isWith_coupon();
+
+            }
+            //判断是否有会员
+            else if(MemberUtils.isMember) {
+                //计算会员价、日、折扣
+                MemberUtils.computeMember(mData);
+
+                coupon = Float.valueOf(mGoodsMultiItemAdapter.getTotalCoupon());
+
+                with_coupon = true;
+
+                //清除正在参与活动
+                showCurrentActivities(MemberUtils.currentNames);
+                //刷新界面显示促销
+                mGoodsMultiItemAdapter.notifyDataSetChanged();
+            }
+            //没有任何促销优惠
+            else {
+                //清除正在参与活动
+                showCurrentActivities(null);
+                //刷新界面显示促销
+                mGoodsMultiItemAdapter.notifyDataSetChanged();
+            }
+        }
+        //判断是否有优惠券可用
+        if(with_coupon) {
+            if (CouponUtils.getInstance().getCouponInfo() != null) {
+                float couponMoney = CouponUtils.getInstance().getCouponMoney(price);
+
+                Log.i(TAG, " 优惠券 优惠价格 --> " + couponMoney);
+                mCouponMoney = couponMoney;
+
+                coupon += mCouponMoney;
+
+            }
+        } else {
+            //取消优惠券
+            cancelCoupon();
+        }
+        //刷新价格
         refreshPrice(price, count, coupon);
-        showCurrentActivities(null);
     }
 
 
@@ -586,6 +597,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         mCoupon = coupon;
         float real_pay = price - coupon;
 
+        if(real_pay < 0) {
+            real_pay = 0;
+        }
+
         tvTotalMoney.setText("￥" + df.format(price));
         tvCoupon.setText("￥" + df.format(coupon));
         if (mType == TYPE_GOODS) {
@@ -598,7 +613,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
         //刷新用户副屏界面 价格
         if (mUserGoodsScreen != null) {
-            mUserGoodsScreen.refreshPrice(mGoodsCount, mTotalMoney, mCoupon, mTotalMoney - mCoupon);
+            mUserGoodsScreen.refreshPrice(mGoodsCount, mTotalMoney, mCoupon, real_pay);
         }
 
     }
@@ -671,13 +686,14 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 switch (mType) {
                     case TYPE_GOODS:
 
-                        if (mTotalMoney <= 0) {
-                            showToast("金额不能小于等于0！");
-                            return;
-                        } else if (mTotalMoney - mCoupon <= 0) {
-                            showToast("收银金额不能小于等于0");
+                        if (mTotalMoney < 0) {
+                            showToast("订单金额不能小于0！");
                             return;
                         }
+//                        else if (real_pay < 0) {
+//                            showToast("收银金额不能小于0！");
+//                            return;
+//                        }
 
                         String balance = MemberUtils.isMember ? tvBalance.getText().toString() : "";
                         ARouter.getInstance().build(ModulePath.settlement)
@@ -770,7 +786,13 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 membersDialog.setOnSearchListener(new ChooseMembersDialog.OnSearchListener() {
                     @Override
                     public void onSearch(String content) {
-                        mPresenter.getMember(content, null);
+
+                        if(BarcodeUtils.isMember(content)) {
+                            mPresenter.getMember(null, content);
+                        } else {
+                            mPresenter.getMember(content, null);
+                        }
+
                     }
                 });
                 break;
@@ -779,7 +801,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 if(ActivitiesUtils.getInstance().hasGoodsPromotion() || ActivitiesUtils.getInstance().hasShopPromotion()) {
 
                     if(!ActivitiesUtils.getInstance().isWith_coupon()) {
-                        showToast("参与的促销活动不可与优惠券公用");
+                        showToast("参与的促销活动不可与优惠券共用");
                         return;
                     }
                 }
@@ -828,14 +850,26 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 setMemberVisiable(false);
                 break;
             case R.id.iv_cancel_coupon:
-                setHide(clCoupon);
-                CouponUtils.getInstance().setCouponInfo(null);
-                mCouponMoney = 0f;
+                cancelCoupon();
                 break;
             case R.id.btn_quick_choose:
                 ARouter.getInstance().build(ModulePath.quick).navigation();
                 break;
         }
+    }
+
+    /**
+     * 取消优惠券
+     */
+    private void cancelCoupon() {
+        setHide(clCoupon);
+        CouponUtils.getInstance().setCouponInfo(null);
+
+        mCoupon -= mCouponMoney;
+
+        mCouponMoney = 0f;
+
+        refreshPrice(mTotalMoney, mGoodsCount, mCoupon);
     }
 
     private void setHide(ConstraintLayout constraintLayout) {
@@ -860,8 +894,16 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     @Override
     public void getGoodsSuccess(List<GoodsResponse> result) {
+        if(result == null || result.size() == 0) {
+            showToast("商品不存在");
+            return;
+        }
 
-        mGoodsMultiItemAdapter.addItem(result, mGoodWeight != 0 ? mGoodWeight : 1);
+        boolean add_success = mGoodsMultiItemAdapter.addItem(result, mGoodWeight != 0 ? mGoodWeight : 1);
+        if(!add_success) {
+            showToast("商品库存不足");
+            return;
+        }
         rvGoods.smoothScrollToPosition(mGoodsMultiItemAdapter.getData().size() - 1);
 
         if (mUserGoodsScreen != null) {
@@ -931,7 +973,13 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 @Override
                 public void onSearchResultClicked(List<GoodsResponse> list) {
                     //添加
-                    mGoodsMultiItemAdapter.addItem(list, 1);
+                    boolean add_success = mGoodsMultiItemAdapter.addItem(list, 1);
+                    if(!add_success) {
+                        showToast("商品库存不足");
+                        clSearch.clearText();
+                        mSearchResultWindow.dismiss();
+                        return;
+                    }
                     rvGoods.smoothScrollToPosition(mGoodsMultiItemAdapter.getData().size() - 1);
                     //刷新副屏
                     if (mUserGoodsScreen != null) {
@@ -1158,14 +1206,18 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             tvIntegral.setText(info.getIntegral() + "");
         }
 
+        computePrice(mTotalMoney, mGoodsCount, 0);
+
         if (info == null) {
-            mCoupon = 0;
-            tvCoupon.setText("￥" + df.format(mCoupon));
-            if (mUserGoodsScreen != null) {
-                mUserGoodsScreen.notifyAdapter();
-                mUserGoodsScreen.setCoupon(df.format(mCoupon));
-            }
+            MemberUtils.reset();
         }
+//            mCoupon = 0;
+//            tvCoupon.setText("￥" + df.format(mCoupon));
+//            if (mUserGoodsScreen != null) {
+//                mUserGoodsScreen.notifyAdapter();
+//                mUserGoodsScreen.setCoupon(df.format(mCoupon));
+//            }
+//        }
         setMemberVisiable(true);
         mGoodsMultiItemAdapter.setMemberData();
     }
@@ -1185,7 +1237,22 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         for (GoodsResponse info : goodsResponses) {
             List<GoodsResponse> infos = new ArrayList<>();
             infos.add(info);
-            mGoodsMultiItemAdapter.addItem(infos, 1);
+            boolean add_success = mGoodsMultiItemAdapter.addItem(infos, 1);
+            if(!add_success) {
+                showToast("商品库存不足");
+                return;
+            }
+            rvGoods.smoothScrollToPosition(mGoodsMultiItemAdapter.getData().size() - 1);
+
+            if (mUserGoodsScreen != null) {
+                //没有显示时 显示用户商品列表副屏页面
+                if (!mUserGoodsScreen.isShowing())
+                    mUserGoodsScreen.show();
+
+                //刷新用户商品列表页面数据
+                mUserGoodsScreen.addItem(infos, 1);
+                mUserGoodsScreen.toPosition();
+            }
         }
     }
 }

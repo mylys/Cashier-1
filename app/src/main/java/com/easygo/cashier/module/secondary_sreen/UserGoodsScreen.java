@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.TextView;
@@ -101,11 +102,15 @@ public class UserGoodsScreen extends Presentation {
             return;
         }
         if(count == 0) {
+
+
             if(position >= 0)
                 onItemRemoved(position);
         } else {
             List<GoodsEntity<GoodsResponse>> data = mUserGoodsAdapter.getData();
-            if(data.size() <= 0) {
+            if(position < 0 || position >= data.size()) {
+
+                Log.i("screen", "onCountChanged: position - " + position + ", count - " + count);
                 return;
             }
             GoodsEntity<GoodsResponse> goodsEntity = data.get(position);

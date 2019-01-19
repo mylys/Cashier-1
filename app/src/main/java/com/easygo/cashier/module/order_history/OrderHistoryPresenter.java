@@ -32,7 +32,7 @@ public class OrderHistoryPresenter extends BasePresenter<OrderHistoryContract.IV
     }
 
     @Override
-    public void print_info(String shop_sn, String printer_sn, String info) {
+    public void print_info(String shop_sn, String printer_sn, String info, int type) {
         Map<String, String> header = HttpClient.getInstance().getHeader();
 
         for (int i = 0; i < PrintHelper.printers_count; i++) {
@@ -40,7 +40,17 @@ public class OrderHistoryPresenter extends BasePresenter<OrderHistoryContract.IV
             String device_sn = printersBean.getDevice_sn();
             int print_times = printersBean.getPrint_times();
 
-            if(!printersBean.canUse(InitResponse.PrintersBean.type_settlement)) {
+            if(type == 0) {
+                if(!printersBean.canUse(InitResponse.PrintersBean.type_order_history)) {
+                    return;
+                }
+            } else {
+                if(!printersBean.canUse(InitResponse.PrintersBean.type_refund)) {
+                    return;
+                }
+            }
+
+            if(!printersBean.canUse(InitResponse.PrintersBean.type_order_history)) {
                 return;
             }
             Map<String, Object> requestMap = new HashMap<>();

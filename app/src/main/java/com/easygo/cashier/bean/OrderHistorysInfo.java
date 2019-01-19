@@ -49,6 +49,7 @@ public class OrderHistorysInfo {
     private String admin_name;
     private String real_name;
     private List<ListBean> list;
+    private List<ActivitiesBean> activities;
     private boolean isSelect;
     private int have_refund;
 
@@ -66,6 +67,14 @@ public class OrderHistorysInfo {
 
     public void setList(List<ListBean> list) {
         this.list = list;
+    }
+
+    public List<ActivitiesBean> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(List<ActivitiesBean> activities) {
+        this.activities = activities;
     }
 
     public boolean isSelect() {
@@ -371,6 +380,61 @@ public class OrderHistorysInfo {
             dest.writeInt(refund);
             dest.writeInt(count);
             dest.writeDouble(money);
+        }
+    }
+
+    public static class ActivitiesBean implements Parcelable {
+
+        /**
+         * activity_name : test
+         * discount_money : 1.00
+         */
+
+        private String activity_name;
+        private String discount_money;
+
+        protected ActivitiesBean(Parcel in) {
+            activity_name = in.readString();
+            discount_money = in.readString();
+        }
+
+        public static final Creator<ActivitiesBean> CREATOR = new Creator<ActivitiesBean>() {
+            @Override
+            public ActivitiesBean createFromParcel(Parcel in) {
+                return new ActivitiesBean(in);
+            }
+
+            @Override
+            public ActivitiesBean[] newArray(int size) {
+                return new ActivitiesBean[size];
+            }
+        };
+
+        public String getActivity_name() {
+            return activity_name;
+        }
+
+        public void setActivity_name(String activity_name) {
+            this.activity_name = activity_name;
+        }
+
+        public String getDiscount_money() {
+            return discount_money;
+        }
+
+        public void setDiscount_money(String discount_money) {
+            this.discount_money = discount_money;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(activity_name);
+            dest.writeString(discount_money);
         }
     }
 }

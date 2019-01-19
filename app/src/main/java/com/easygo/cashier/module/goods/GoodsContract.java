@@ -35,6 +35,8 @@ public class GoodsContract {
         void getMemberDiscount();//会员折扣
 
         void get_coupon(String coupon);
+        /**心跳*/
+        void heartbeat();
     }
 
     public interface IView extends BaseView {

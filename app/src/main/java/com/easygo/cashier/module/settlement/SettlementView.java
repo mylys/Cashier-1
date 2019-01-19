@@ -298,7 +298,8 @@ public class SettlementView extends FrameLayout {
      */
     public void setCouponInfo(String name, float coupon_discount) {
         tvTextCouponColon.setText("优惠券：(" + name + ")");
-        tvCouponColonPrice.setText("-" + coupon_discount);
+        DecimalFormat df = new DecimalFormat("0.00");
+        tvCouponColonPrice.setText("-" + df.format(coupon_discount));
     }
 
 
