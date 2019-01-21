@@ -171,21 +171,29 @@ public class MemberUtils {
         float coupon = 0f;
         if(good.isMemberPrice()) {//有会员价
             coupon = (price - membership_price) * good_count;
-            currentNames.add("会员价");
+            if(!currentNames.contains("会员价")) {
+                currentNames.add("会员价");
+            }
             Log.i(TAG, "getCoupon: 会员价 优惠 -> " + coupon);
         } else if (!good.isMemberPrice() && MemberUtils.isMemberDay) {           //会员日计算
             if (fullTotalPrice >= MemberUtils.full){
                 coupon = MemberUtils.getCoupon(fullTotalPrice, price, good_count);
-                currentNames.add("会员日");
+                if(!currentNames.contains("会员日")) {
+                    currentNames.add("会员日");
+                }
                 Log.i(TAG, "getCoupon: 会员日 优惠 -> " + coupon);
             } else if(MemberUtils.isMemberDiscount){
                 coupon = (float) (price - (MemberUtils.discount * price)) * good_count;
-                currentNames.add("会员固定折扣");
+                if(!currentNames.contains("会员固定折扣")) {
+                    currentNames.add("会员固定折扣");
+                }
                 Log.i(TAG, "getCoupon: 会员固定折扣 优惠 -> " + coupon);
             }
         } else if (!good.isMemberPrice() && !MemberUtils.isMemberDay && MemberUtils.isMemberDiscount) {   //会员固定折扣计算
             coupon = (float) (price - (MemberUtils.discount * price)) * good_count;
-            currentNames.add("会员固定折扣");
+            if(!currentNames.contains("会员固定折扣")) {
+                currentNames.add("会员固定折扣");
+            }
             Log.i(TAG, "getCoupon: 会员固定折扣 （2）  优惠 -> " + coupon);
         }
         return coupon;

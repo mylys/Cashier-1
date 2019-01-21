@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.easygo.cashier.Configs;
@@ -81,6 +82,7 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
         DividerItemDecoration verticalDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         verticalDecoration.setDrawable(getResources().getDrawable(R.drawable.bg_item_decoration_vertical_order_history));
         rvOrderHistory.addItemDecoration(verticalDecoration);
+        rvOrderHistory.setVisibility(View.INVISIBLE);
         setEmpty();
         setListener();
     }
@@ -129,6 +131,8 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
         View emptyView = getLayoutInflater().inflate(R.layout.item_empty_view, null);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
+        TextView view = emptyView.findViewById(R.id.text);
+        view.setText(getResources().getString(R.string.text_no_order));
         adapter.setEmptyView(emptyView);
     }
 
@@ -164,6 +168,7 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
                 adapter.addData(orderHistorysInfo);
                 adapter.loadMoreComplete();
             }
+            rvOrderHistory.setVisibility(View.VISIBLE);
         }
     }
 

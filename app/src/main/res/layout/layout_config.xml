@@ -13,32 +13,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/et_id"
-        android:layout_width="@dimen/login_btn_width"
-        android:layout_height="@dimen/login_btn_height"
-        android:layout_marginTop="@dimen/y74"
-        android:hint="输入id"
-        android:paddingStart="@dimen/x30"
-        android:textSize="@dimen/x28"
-        android:background="@drawable/bg_login_input"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_config"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintBottom_toTopOf="@id/btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <EditText
-        android:id="@+id/et_secret"
-        android:layout_width="@dimen/login_btn_width"
-        android:layout_height="@dimen/login_btn_height"
-        android:layout_marginTop="@dimen/y74"
-        android:hint="输入secret"
-        android:paddingStart="@dimen/x30"
-        android:textSize="@dimen/x28"
-        android:background="@drawable/bg_login_input"
-        app:layout_constraintTop_toBottomOf="@id/et_id"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="@dimen/login_btn_width"
+            android:layout_height="@dimen/login_btn_height"
+            android:layout_marginTop="@dimen/y74"
+            android:hint="输入password"
+            android:paddingStart="@dimen/x30"
+            android:textSize="@dimen/x28"
+            android:background="@drawable/bg_login_input"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
+
+        <EditText
+            android:id="@+id/et_id"
+            android:layout_width="@dimen/login_btn_width"
+            android:layout_height="@dimen/login_btn_height"
+            android:layout_marginTop="@dimen/y74"
+            android:hint="输入id"
+            android:paddingStart="@dimen/x30"
+            android:textSize="@dimen/x28"
+            android:visibility="gone"
+            android:background="@drawable/bg_login_input"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/et_secret"
+            android:layout_width="@dimen/login_btn_width"
+            android:layout_height="@dimen/login_btn_height"
+            android:layout_marginTop="@dimen/y74"
+            android:hint="输入secret"
+            android:paddingStart="@dimen/x30"
+            android:paddingEnd="@dimen/x30"
+            android:textSize="@dimen/x28"
+            android:visibility="gone"
+            android:background="@drawable/bg_login_input"
+            app:layout_constraintTop_toBottomOf="@id/et_id"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/btn"
@@ -51,7 +79,7 @@
         android:background="@drawable/bg_btn_login"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_secret"
+        app:layout_constraintTop_toBottomOf="@id/cl_config"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

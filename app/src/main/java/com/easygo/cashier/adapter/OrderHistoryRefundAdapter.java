@@ -163,7 +163,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 //0:正常商品 --- 1:称重商品 --- 2:无码商品 --- 3:加工方式
                 int type = goodsRefundInfo.getType();
                 totalPrcie += Double.parseDouble(type == 1 || type == 3 ? goodsRefundInfo.getProduct_subtotal() : goodsRefundInfo.getRefund_subtotal());
-                totalPrcie -= Double.parseDouble(goodsRefundInfo.getProduct_preferential());
+//                totalPrcie -= Double.parseDouble(goodsRefundInfo.getProduct_preferential());
             }
         }
         return df.format(totalPrcie);

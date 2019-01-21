@@ -88,6 +88,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
             }
         }
     };
+    private SharedPreferences sp;
 
 
     @Override
@@ -107,7 +108,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
     @Override
     protected void init() {
-        SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getApplicationContext());
+        sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getApplicationContext());
         String session_id = sp.getString(Constans.KEY_SESSION_ID, "");
         String admin_name = sp.getString(Constans.KEY_ADMIN_NAME, "");
         int handover_id = sp.getInt(Constans.KEY_HANDOVER_ID, -1);
@@ -127,6 +128,9 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
         if(TextUtils.isEmpty(appkey) || TextUtils.isEmpty(secret)) {
             showConfigDialog();
+        } else {
+            //发送心跳
+            mPresenter.heartbeat();
         }
 
         //长按 收银系统 弹出配置弹窗
@@ -138,8 +142,6 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
             }
         });
 
-        //发送心跳
-        mPresenter.heartbeat();
 
     }
 
@@ -271,6 +273,14 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
     @OnClick({R.id.btn_login})
     public void onClick() {
+
+        String appkey = sp.getString(Constans.KEY_APPKEY, "");
+        String secret = sp.getString(Constans.KEY_SECRET, "");
+
+        if(TextUtils.isEmpty(appkey) || TextUtils.isEmpty(secret)) {
+            showToast("请先配置id、secret");
+            return;
+        }
 
         //获取初始化信息 收银机是否可用
         mPresenter.init(DeviceUtils.getMacAddress());

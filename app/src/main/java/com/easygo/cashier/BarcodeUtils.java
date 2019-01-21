@@ -14,7 +14,8 @@ public class BarcodeUtils {
     }
 
     public static String getProductCode(String code) {
-        return code.subSequence(0, 7).toString();
+//        return code.subSequence(0, 7).toString();
+        return code.subSequence(2, 7).toString();
     }
 
     public static int getProductWeight(String code) {

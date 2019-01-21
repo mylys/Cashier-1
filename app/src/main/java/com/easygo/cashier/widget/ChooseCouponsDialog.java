@@ -72,7 +72,7 @@ public class ChooseCouponsDialog extends BaseDialog {
         //正式服优惠券
 //        searchView.setContent("RYH463c3484cb6e4f9f04c6437bda07d69d");
 //        searchView.setContent("UYHacdfb070859c7348024c8cd2b6bb5983");
-        searchView.setContent("UYH889b4480567ddec65b1a4f629077588c");
+//        searchView.setContent("UYH889b4480567ddec65b1a4f629077588c");
 
         if (!TextUtils.isEmpty(title)) {
             dialog_title.setText(title);

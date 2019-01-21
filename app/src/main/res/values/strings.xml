@@ -102,6 +102,7 @@
     <string name="text_buyer">付款人：</string>
     <string name="text_pay_type">支付方式：</string>
     <string name="text_order_number">订单单号：</string>
+    <string name="text_no_order">暂无订单信息</string>
 
     <!--快速选择-->
     <string name="text_quick_choose">快速选择</string>

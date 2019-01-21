@@ -19,6 +19,8 @@ public class GoodsRefundInfo {
     private int type;
     private String identity;
     private String discount;
+    private float total_discount;
+    private String g_u_symbol;
 
     public int getType() {
         return type;
@@ -138,5 +140,21 @@ public class GoodsRefundInfo {
 
     public void setDiscount(String discount) {
         this.discount = discount;
+    }
+
+    public float getTotal_discount() {
+        return total_discount;
+    }
+
+    public void setTotal_discount(float total_discount) {
+        this.total_discount = total_discount;
+    }
+
+    public String getG_u_symbol() {
+        return g_u_symbol;
+    }
+
+    public void setG_u_symbol(String g_u_symbol) {
+        this.g_u_symbol = g_u_symbol;
     }
 }

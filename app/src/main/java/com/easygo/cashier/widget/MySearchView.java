@@ -128,6 +128,7 @@ public class MySearchView extends ConstraintLayout {
 
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
                     onScanCode(mEditText.getText().toString().trim());
+                    mEditText.getText().delete(mEditText.length()-1, mEditText.length());
                 }
                 return false;
             }

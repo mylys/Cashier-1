@@ -12,7 +12,7 @@
         android:id="@+id/image_discount"
         android:layout_width="@dimen/x66"
         android:layout_height="@dimen/y66"
-        android:src="@drawable/ic_coupon"
+        android:src="@drawable/ic_promotion"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

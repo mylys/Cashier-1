@@ -150,7 +150,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 //        btnCoupon.setVisibility(View.GONE);
 
 //        payWayView.setPayWayShow(MemberUtils.isMember ? new int[]{0, 1, 2, 3, 6} : new int[]{0, 1, 2, 6});
-        payWayView.setPayWayShow(MemberUtils.isMember ? new int[]{0, 1, 2, 3} : new int[]{0, 1, 2});
+        if(getPayMoney() <= 0) {//支付金额为 小于等于0时 只能现金支付
+            payWayView.setPayWayShow(new int[]{0});
+        } else {
+            payWayView.setPayWayShow(MemberUtils.isMember ? new int[]{0, 1, 2, 3} : new int[]{0, 1, 2});
+        }
         settlementView = SettlementView.create(this);
         ((FrameLayout) findViewById(R.id.framelayout)).addView(settlementView);
 
@@ -187,12 +191,12 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 //                    showToast("实收金额小于应收金额， 请确认！");
 //                    return;
 //                }
-                if (!TextUtils.isEmpty(Configs.order_no)) {
+                if (!TextUtils.isEmpty(Configs.order_no) && mPayWay != PayWayView.WAY_CASH) {
                     showScanCodeDialog();
                     return;
                 }
-                if (MemberUtils.isMember) {
-                    if (mTotalMoney > Float.parseFloat(mBalance.substring(1,mBalance.length()))) {
+                if (MemberUtils.isMember && mPayWay == PayWayView.WAY_MEMBER) {
+                    if (getPayMoney() > Float.parseFloat(mBalance.substring(1,mBalance.length()))) {
                         showToast("会员钱包余额不足，不能进行支付");
                         return;
                     }
@@ -261,8 +265,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     s.delete(s.length() - 1, s.length());
                 } else {
                     mRealPay = data;
-                    float pay = mTotalMoney - mCoupon - mCouponMoney;
-                    if(pay == 0) {
+                    float pay = getPayMoney();
+                    if(pay < 0) {
                         pay = 0;
                     }
                     mChange = mRealPay - pay;
@@ -309,7 +313,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
      * 刷新实收       订单总额-优惠-优惠券优惠 = 实收 - 找零
      */
     private void refreshRealPay() {
-        mRealPay = mTotalMoney - mCoupon - mCouponMoney + mChange;
+        mRealPay = getPayMoney() + mChange;
         if(mRealPay < 0) {
             mRealPay = 0;
         }
@@ -428,16 +432,21 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             }
 //            showToast("付款码 --> " + auth_code);
 
+            float real_pay = getPayMoney();
+            if(real_pay <= 0) {
+                real_pay = 0.1f;
+            }
+
             //请求接口
             DecimalFormat df = new DecimalFormat("#");
             switch (mPayWay) {
                 case PayWayView.WAY_ALIPAY://支付宝
                     mPresenter.aliPay(Configs.shop_sn, Configs.order_no,
-                            Integer.valueOf(df.format(mTotalMoney * 100)), auth_code);
+                            Integer.valueOf(df.format(real_pay * 100)), auth_code);
                     break;
                 case PayWayView.WAY_WECHAT://微信
                     mPresenter.wechatPay(Configs.shop_sn, Configs.order_no,
-                            Integer.valueOf(df.format(mTotalMoney * 100)), auth_code);
+                            Integer.valueOf(df.format(real_pay * 100)), auth_code);
                     break;
                 case PayWayView.WAY_MEMBER://会员钱包
                     mPresenter.memberWalletPay(Configs.order_no,auth_code);
@@ -445,6 +454,18 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             }
 
         }
+    }
+
+    /**
+     * 顾客应该支付的钱
+     * @return
+     */
+    private float getPayMoney() {
+        float money = mTotalMoney - mCoupon - mCouponMoney;
+        if(money <= 0) {
+            return 0;
+        }
+        return money;
     }
 
     @Override
@@ -788,7 +809,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             case PayWayView.WAY_CASH:
 
                 DecimalFormat df = new DecimalFormat("#");
-                float pay = mTotalMoney * 100 - mCoupon * 100;
+                float pay = mTotalMoney * 100 - mCoupon * 100 ;
                 if(pay < 0) {
                     pay = 0;
                 }
@@ -810,9 +831,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public void createOrderFailed(Map<String, Object> map) {
-        if (HttpExceptionEngine.isBussinessError(map)) {
+//        if (HttpExceptionEngine.isBussinessError(map)) {
             showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
-        }
+//        }
     }
 
     @Override
@@ -895,6 +916,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             }
         } else {
             showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
+            dismissScanDialog();
         }
     }
 
@@ -1004,7 +1026,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public void memberWalletSuccess(String result) {
-        showToast("支付成功");
+        showToast("会员钱包支付成功");
 
         onPaySuccessAfter();
     }

@@ -2,6 +2,7 @@ package com.easygo.cashier.widget;
 
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -9,15 +10,18 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.easygo.cashier.R;
+import com.easygo.cashier.SoftKeyboardUtil;
 import com.niubility.library.base.BaseDialog;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.utils.SharedPreferencesUtils;
+import com.niubility.library.utils.ToastUtils;
 
 /**
  * 配置 appkey、secret弹窗
  */
 public class ConfigDialog extends BaseDialog {
 
+    private EditText etPassword;
     private EditText etId;
     private EditText etSecret;
     private Button btnConfirm;
@@ -26,41 +30,87 @@ public class ConfigDialog extends BaseDialog {
     private String appkey;
     private String secret;
 
+    private boolean isPassed = false;
+
     @Override
     protected void initView(View rootView) {
+        etPassword = rootView.findViewById(R.id.et_password);
         etId = rootView.findViewById(R.id.et_id);
         etSecret = rootView.findViewById(R.id.et_secret);
         btnConfirm = rootView.findViewById(R.id.btn);
 
         sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getContext());
+        readAndSetConfig();
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isPassed) {//还没有验证通过
+                    if("ezgo123".equals(etPassword.getText().toString().trim())) {
+                        isPassed = true;
+                        showUI(isPassed);
+                        etPassword.setText("");
+                    } else {
+                        ToastUtils.showToast(getContext(), "密码不正确！");
+                    }
+                } else {//已经验证通过
+                    SharedPreferences.Editor edit = sp.edit();
+                    String id = etId.getText().toString().trim();
+                    String secret = etSecret.getText().toString().trim();
+                    if(TextUtils.isEmpty(id) || TextUtils.isEmpty(secret)) {
+                        return;
+                    }
+
+                    edit.putString(Constans.KEY_APPKEY, id)
+                            .putString(Constans.KEY_SECRET, secret)
+                            .apply();
+                    if (getActivity() != null) {
+                        SoftKeyboardUtil.hideSoftKeyboard(getActivity());
+                    }
+
+                    dismiss();
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 读取本地配置并显示
+     */
+    private void readAndSetConfig() {
         appkey = sp.getString(Constans.KEY_APPKEY, "");
         secret = sp.getString(Constans.KEY_SECRET, "");
 
         etId.setText(appkey);
         etSecret.setText(secret);
+    }
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor edit = sp.edit();
-
-                edit.putString(Constans.KEY_APPKEY, etId.getText().toString().trim())
-                    .putString(Constans.KEY_SECRET, etSecret.getText().toString().trim())
-                    .apply();
-
-                dismiss();
-            }
-        });
-
+    /**
+     * 对应显示相应UI
+     * @param isPassed 是否验证通过
+     */
+    public void showUI(boolean isPassed) {
+        etPassword.setVisibility(isPassed? View.GONE: View.VISIBLE);
+        etId.setVisibility(isPassed? View.VISIBLE: View.GONE);
+        etSecret.setVisibility(isPassed? View.VISIBLE: View.GONE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
+        isPassed = false;
+        showUI(isPassed);
+        readAndSetConfig();
+
         Window window = getDialog().getWindow();
         if (window != null) {
-            window.setLayout(-2, -2);
+
+            int width = getResources().getDimensionPixelSize(R.dimen.login_btn_width);
+            int padding = getResources().getDimensionPixelSize(R.dimen.x100);
+            int final_width = width + 2 * padding;
+            window.setLayout(final_width, -2);
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 

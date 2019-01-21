@@ -100,6 +100,8 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     private int total_price = 0;
     private int refund_status = 0;
     private int have_refund = 0;
+    private float total_discount = 0;
+    private float real_pay = 0;
     private int pay_way = PayWayView.WAY_CASH;
 
     private List<OrderHistorysInfo.ActivitiesBean> activities;
@@ -142,6 +144,8 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
             total_price = getArguments().getInt("total_price");
             refund_status = getArguments().getInt("refund_status");
             have_refund = getArguments().getInt("have_refund");
+            total_discount = getArguments().getFloat("total_discount");
+            real_pay = getArguments().getFloat("real_pay");
         }
         tvPayType.setText(getResources().getString(R.string.text_pay_type) + pay_type + getResources().getString(R.string.text_pay));
         tvOrderNumber.setText(getResources().getString(R.string.text_order_number) + order_no_number);
@@ -182,6 +186,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 info.setType(bean.getType());
                 info.setIdentity(bean.getIdentity());
                 info.setRefund(bean.getRefund());
+                info.setG_u_symbol(bean.getG_u_symbol());
                 adapter.addData(info);
                 infoList.add(info);
             }
@@ -347,7 +352,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         } else {
             edit_price = Float.parseFloat(editRefundcashPrice.getText().toString()) * 100;
         }
-        if (edit_price > total_price) {
+        if (edit_price > real_pay * 100) {
             ToastUtils.showToast(getActivity(), "输入金额不能大于商品总额");
             return;
         }
@@ -427,13 +432,16 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
             sb.append(i+1).append(".")
                     .append(goodsRefundInfo.getProduct_name()).append("   ").append(PrintHelper.BR)
                     .append("    ")
-                    .append(goodsRefundInfo.getProduct_price()).append("   ").append(PrintHelper.BR)
-                    .append("1.00    ")
-                    .append(goodsRefundInfo.getRefund_num()).append("   ")
+                    .append(goodsRefundInfo.getProduct_price()).append("   ")
+                    .append(goodsRefundInfo.getProduct_preferential()).append("    ")
+                    .append(goodsRefundInfo.getRefund_num()).append(goodsRefundInfo.getG_u_symbol()).append("   ")
                     .append(goodsRefundInfo.getRefund_subtotal()).append("   ").append(PrintHelper.BR);
         }
         sb.append("--------------------------------").append(PrintHelper.BR)
                 .append("总数量：").append(adapter.getTotalNum()).append(PrintHelper.BR)
+                .append("原价：").append(df.format(total_price / 100f)).append(PrintHelper.BR)
+                .append("优惠：").append(df.format(total_discount)).append(PrintHelper.BR)
+                .append("总金额：").append(df.format(real_pay)).append(PrintHelper.BR)
                 .append("退款方式：").append(pay_type).append(PrintHelper.BR)
                 .append("退款金额：").append(Float.parseFloat(editRefundcashPrice.getText().toString())).append(PrintHelper.BR);
 

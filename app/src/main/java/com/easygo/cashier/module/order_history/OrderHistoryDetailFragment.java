@@ -84,6 +84,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     private String order_no_number = "";
 
     private int total_price = 0;
+    private float real_pay = 0;
     private DecimalFormat df = new DecimalFormat("0.00");
 
     /**
@@ -141,15 +142,33 @@ public class OrderHistoryDetailFragment extends BaseFragment {
 
                 if (getActivity() != null) {
                     Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList("data", (ArrayList<OrderHistorysInfo.ListBean>) orderHistoryGoodsAdapter.getData());
+                    ArrayList<OrderHistorysInfo.ListBean> data = (ArrayList<OrderHistorysInfo.ListBean>) orderHistoryGoodsAdapter.getData();
+                    bundle.putParcelableArrayList("data", data);
                     bundle.putParcelableArrayList("activities", (ArrayList<OrderHistorysInfo.ActivitiesBean>) mOrderHistorysInfo.getActivities());
                     bundle.putString("pay_type", payType);
                     bundle.putInt("total_price", total_price);
+                    bundle.putFloat("real_pay", real_pay);
                     bundle.putString("order_number", order_number);
                     bundle.putString("real_name", order_real_name);
                     bundle.putString("order_no_number",order_no_number);
                     bundle.putInt("refund_status", mOrderHistorysInfo.getRefund_status());
                     bundle.putInt("have_refund", mOrderHistorysInfo.getHave_refund());
+
+                    float total_discount = 0f;
+                    int size = (data).size();
+                    for (int i = 0; i < size; i++) {
+                        OrderHistorysInfo.ListBean listBean = (data).get(i);
+
+                        total_discount += Float.valueOf(listBean.getDiscount());
+                    }
+
+                    if(total_discount == 0) {//商品促销金额或者会员相关促销为0 检查店铺促销金额
+                        List<OrderHistorysInfo.ActivitiesBean> activities = mOrderHistorysInfo.getActivities();
+                        if (activities != null && activities.size() != 0) {
+                            total_discount = Float.valueOf(activities.get(0).getDiscount_money());
+                        }
+                    }
+                    bundle.putFloat("total_discount", total_discount);
                     ((OrderHistoryActivity) getActivity()).toOrderHistoryRefundFragment(bundle);
                 }
                 break;
@@ -215,7 +234,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 .append("总数量：").append(count).append(PrintHelper.BR)
                 .append("原价：").append(mOrderHistorysInfo.getTotal_money()).append("元").append(PrintHelper.BR)
                 .append("优惠：").append(df.format(total_discount)).append("元").append(PrintHelper.BR)
-                .append("总金额：").append(mOrderHistorysInfo.getTotal_money()).append("元").append(PrintHelper.BR)
+                .append("总金额：").append(mOrderHistorysInfo.getReal_pay()).append("元").append(PrintHelper.BR)
                 .append("支付方式：").append(payType).append(PrintHelper.BR)
                 .append("实收：").append(mOrderHistorysInfo.getBuyer_pay()).append("元").append(PrintHelper.BR)
                 .append("找零：").append(mOrderHistorysInfo.getChange_money()).append("元").append(PrintHelper.BR)
@@ -258,6 +277,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         order_number = orderHistoryInfo.getTrade_num();
         order_no_number = orderHistoryInfo.getTrade_no();
         total_price = Integer.parseInt(orderHistoryInfo.getTotal_money().replace(".", ""));
+        real_pay = Float.valueOf(orderHistoryInfo.getReal_pay());
 
         switch (orderHistoryInfo.getPay_type()) {
             case 1:

@@ -448,9 +448,6 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 //符合店铺促销条件
                 showCurrentActivities(ActivitiesUtils.getInstance().getCurrentPromotionNames());
 
-                //刷新界面显示促销
-                mGoodsMultiItemAdapter.notifyDataSetChanged();
-
                 with_coupon = ActivitiesUtils.getInstance().isWith_coupon();
 
             }
@@ -465,15 +462,11 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                 //清除正在参与活动
                 showCurrentActivities(MemberUtils.currentNames);
-                //刷新界面显示促销
-                mGoodsMultiItemAdapter.notifyDataSetChanged();
             }
             //没有任何促销优惠
             else {
                 //清除正在参与活动
                 showCurrentActivities(null);
-                //刷新界面显示促销
-                mGoodsMultiItemAdapter.notifyDataSetChanged();
             }
         }
         //判断是否有优惠券可用
@@ -493,6 +486,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         }
         //刷新价格
         refreshPrice(price, count, coupon);
+        //刷新界面显示促销
+        mGoodsMultiItemAdapter.notifyDataSetChanged();
     }
 
 
@@ -844,10 +839,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 });
                 break;
             case R.id.iv_cancel_member:
-                MemberUtils.isMember = false;
-                setHide(clMember);
                 updateMebmerInfo(null);
-                setMemberVisiable(false);
+//                setMemberVisiable(false);
                 break;
             case R.id.iv_cancel_coupon:
                 cancelCoupon();
@@ -873,23 +866,49 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     }
 
     private void setHide(ConstraintLayout constraintLayout) {
-        if (constraintLayout == clMember) {
-            if (clCoupon.getVisibility() == View.VISIBLE) {
-                clMember.setVisibility(View.GONE);
-                return;
-            }
-        } else if (constraintLayout == clCoupon) {
-            if (clMember.getVisibility() == View.VISIBLE) {
-                clCoupon.setVisibility(View.GONE);
-                return;
-            }
+//        if (constraintLayout == clMember) {
+//            if (clCoupon.getVisibility() == View.VISIBLE) {
+//                clMember.setVisibility(View.GONE);
+//                return;
+//            }
+//        } else if (constraintLayout == clCoupon) {
+//            if (clMember.getVisibility() == View.VISIBLE) {
+//                clCoupon.setVisibility(View.GONE);
+//                return;
+//            }
+//        }
+//        clExtraInfo.setVisibility(View.GONE);
+        if(constraintLayout == clExtraInfo) {
+            clExtraInfo.setVisibility(View.GONE);
+            clMember.setVisibility(View.GONE);
+            clCoupon.setVisibility(View.GONE);
+            return;
         }
-        clExtraInfo.setVisibility(View.GONE);
+
+        constraintLayout.setVisibility(View.GONE);
+
+        boolean needHide = false;
+        if (constraintLayout == clMember) {
+            needHide = clCoupon.getVisibility() == View.GONE;
+        } else if(constraintLayout == clCoupon) {
+            needHide = clMember.getVisibility() == View.GONE;
+        }
+
+        if(needHide) {
+            clExtraInfo.setVisibility(View.GONE);
+        }
+
     }
 
     public void setShow(ConstraintLayout constraintLayout) {
         constraintLayout.setVisibility(View.VISIBLE);
         clExtraInfo.setVisibility(View.VISIBLE);
+        if(MemberUtils.isMember) {
+            clMember.setVisibility(View.VISIBLE);
+        }
+        if(CouponUtils.getInstance().getCouponInfo() != null) {
+            clCoupon.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -1026,8 +1045,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     @Override
     public void popTillFailed(Map<String, Object> map) {
-        showToast("弹出钱箱失败");
-
+        showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
     }
 
     @Override
@@ -1042,7 +1060,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     @Override
     public void goodsActivityFailed(Map<String, Object> map) {
         Log.i(TAG, "goodsActivityFailed: 商品促销失败");
-
+        showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
     }
 
     @Override
@@ -1057,34 +1075,33 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     @Override
     public void shopActivityFailed(Map<String, Object> map) {
         Log.i(TAG, "shopActivityFailed: 店铺促销失败");
-
+        showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
     }
 
     @Override
     public void getMemberSuccess(MemberInfo memberInfo, String barcode, String phone) {
         MemberUtils.isMember = true;
-        if (!TextUtils.isEmpty(barcode)) {
+        if (membersDialog != null && membersDialog.isShow()) {
+            List<MemberInfo> infos = new ArrayList<>();
+            infos.add(memberInfo);
+            membersDialog.setNewData(infos);
+        } else {
             MemberUtils.memberInfo = memberInfo;
             updateMebmerInfo(memberInfo);
-        } else if (!TextUtils.isEmpty(phone)) {
-            if (membersDialog != null && membersDialog.isShow()) {
-                List<MemberInfo> infos = new ArrayList<>();
-                infos.add(memberInfo);
-                membersDialog.setNewData(infos);
-            }
         }
+
     }
 
     @Override
     public void getMemberFailed(Map<String, Object> map, String barcode, String phone) {
         if (!TextUtils.isEmpty(barcode)) {
-            MemberUtils.isMember = false;
             showScanCodeDialog();
         } else if (!TextUtils.isEmpty(phone)) {
             if (membersDialog != null && membersDialog.isShow()) {
                 membersDialog.setNewData(new ArrayList<MemberInfo>());
             }
         }
+        showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
     }
 
     @Override
@@ -1181,9 +1198,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         //隐藏 清空会员及 优惠券
         setHide(clExtraInfo);
         CouponUtils.getInstance().setCouponInfo(null);
-        MemberUtils.isMember = false;
         updateMebmerInfo(null);
-        setMemberVisiable(false);
     }
 
     public void showScanCodeDialog() {
@@ -1199,27 +1214,26 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     }
 
     public void updateMebmerInfo(MemberInfo info) {
-        if (MemberUtils.isMember) {
+
+        if (info == null) {//重置清空会员
+            MemberUtils.isMember = false;
+            MemberUtils.reset();
+            setHide(clMember);
+            setMemberVisiable(false);
+        } else {
+            MemberUtils.isMember = true;
+
             setShow(clMember);
             tvMember.setText(info.getNick_name());
             tvBalance.setText("￥" + info.getWallet());
             tvIntegral.setText(info.getIntegral() + "");
+
+            setMemberVisiable(true);
         }
+        mGoodsMultiItemAdapter.setMemberData();
 
         computePrice(mTotalMoney, mGoodsCount, 0);
 
-        if (info == null) {
-            MemberUtils.reset();
-        }
-//            mCoupon = 0;
-//            tvCoupon.setText("￥" + df.format(mCoupon));
-//            if (mUserGoodsScreen != null) {
-//                mUserGoodsScreen.notifyAdapter();
-//                mUserGoodsScreen.setCoupon(df.format(mCoupon));
-//            }
-//        }
-        setMemberVisiable(true);
-        mGoodsMultiItemAdapter.setMemberData();
     }
 
     /**
@@ -1254,5 +1268,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 mUserGoodsScreen.toPosition();
             }
         }
+
+        computePrice(mTotalMoney, mGoodsCount, 0);
     }
 }
