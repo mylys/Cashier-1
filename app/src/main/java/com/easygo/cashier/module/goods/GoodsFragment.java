@@ -784,8 +784,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                         if(BarcodeUtils.isMember(content)) {
                             mPresenter.getMember(null, content);
-                        } else {
+                        } else if(content.length() == 11 && TextUtils.isDigitsOnly(content)){
                             mPresenter.getMember(content, null);
+                        } else {
+                            showToast("请输入正确的手机号");
                         }
 
                     }
@@ -1225,7 +1227,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
             setShow(clMember);
             tvMember.setText(info.getNick_name());
-            tvBalance.setText("￥" + info.getWallet());
+            tvBalance.setText("￥" + df.format(info.getWallet()));
             tvIntegral.setText(info.getIntegral() + "");
 
             setMemberVisiable(true);

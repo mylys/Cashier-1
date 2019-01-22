@@ -425,4 +425,12 @@ public class ActivitiesUtils {
     public boolean isWith_coupon() {
         return with_coupon;
     }
+
+
+    public void reset() {
+        currentShopPromotion = null;
+        currentGoodsPromotions = null;
+        currentPromotionNames = null;
+        with_coupon = false;
+    }
 }

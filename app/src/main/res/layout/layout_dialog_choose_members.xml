@@ -64,7 +64,10 @@
             android:id="@+id/include_choose_members"
             layout="@layout/include_choose_members"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="@dimen/y80"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"

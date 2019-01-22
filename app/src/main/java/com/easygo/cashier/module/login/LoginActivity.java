@@ -18,12 +18,15 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.easygo.cashier.ActivitiesUtils;
 import com.easygo.cashier.Configs;
+import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.AccountInfo;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
+import com.easygo.cashier.module.CouponUtils;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.AccountWindow;
@@ -141,6 +144,11 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
                 return true;
             }
         });
+
+        //清除会员、优惠券、促销等信息
+        MemberUtils.reset();
+        CouponUtils.getInstance().reset();
+        ActivitiesUtils.getInstance().reset();
 
 
     }

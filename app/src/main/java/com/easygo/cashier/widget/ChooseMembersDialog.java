@@ -100,6 +100,9 @@ public class ChooseMembersDialog extends BaseDialog {
         setListener();
     }
 
+
+
+
     private void setListener() {
         ivCancel.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -201,10 +201,20 @@ public class PayWayView extends ConstraintLayout {
         for (View view : mButtons) {
             view.setVisibility(GONE);
         }
-        if (position.length <= mButtons.size()) {
+        if (position.length < mButtons.size()) {
             for (int i : position) {
                 mButtons.get(i).setVisibility(VISIBLE);
             }
+        }
+    }
+
+    /**
+     * 设置选中
+     * @param position
+     */
+    public void performSelect(int position) {
+        if (position < mButtons.size()) {
+            mButtons.get(position).performClick();
         }
     }
 }

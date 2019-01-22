@@ -88,4 +88,10 @@ public class CouponUtils {
     public float getCoupon_discount() {
         return coupon_discount;
     }
+
+
+    public void reset() {
+        setCouponInfo(null);
+        coupon_discount = 0;
+    }
 }
