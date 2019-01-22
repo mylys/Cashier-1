@@ -9,10 +9,14 @@ import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.niubility.library.utils.TimeUtils;
 
+import java.text.DecimalFormat;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 
 public class EntryOrdersAdapter extends BaseQuickAdapter<EntryOrders, BaseViewHolder> {
+
+    private DecimalFormat df = new DecimalFormat("0.00");
 
     public EntryOrdersAdapter() {
         super(R.layout.item_entry_orders_list);
@@ -32,7 +36,7 @@ public class EntryOrdersAdapter extends BaseQuickAdapter<EntryOrders, BaseViewHo
         helper.setTextColor(R.id.tv_entry_orders_time, item.isSelect() ? white : text_color);
 
         helper.setText(R.id.tv_entry_orders_total_number, mContext.getResources().getString(R.string.text_product_name) + item.getEntry_orders_total_number())
-                .setText(R.id.tv_money, item.getEntry_orders_total_price())
+                .setText(R.id.tv_money, df.format(Float.valueOf(item.getEntry_orders_total_price())))
                 .setText(R.id.tv_entry_orders_time, item.getEntry_orders_time());
 
         root.setOnClickListener(new View.OnClickListener() {

@@ -17,6 +17,8 @@ import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.widget.GeneraDialog;
 import com.niubility.library.base.BaseFragment;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -42,6 +44,8 @@ public class EntryOrdersDetailFragment extends BaseFragment {
 
     private int position = -1;
     private EntryOrdersGoodsAdapter adapter = new EntryOrdersGoodsAdapter();
+
+    private DecimalFormat df = new DecimalFormat("0.00");
 
     @Nullable
     @Override
@@ -95,7 +99,7 @@ public class EntryOrdersDetailFragment extends BaseFragment {
         tvNote.setText(getActivity().getResources().getString(R.string.text_note) + orders.getEntry_orders_note());
         tvEntryOrdersTime.setText(orders.getEntry_orders_time());
         tvGoodsCount.setText("共" + orders.getEntry_orders_total_number() + "件");
-        tvTotalPrice.setText("总额：" + orders.getEntry_orders_total_price());
+        tvTotalPrice.setText("总额：" + df.format(Float.valueOf(orders.getEntry_orders_total_price())));
 
         if (adapter != null) {
             adapter.setNewData(orders.getGoodsEntityList());

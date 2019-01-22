@@ -50,15 +50,26 @@ public class FunctionListDialog extends DialogFragment {
             R.string.text_function_device,
     };
 
+//    private int[] res = new int[]{
+//            R.drawable.ic_order_history,
+//            R.drawable.ic_refund,
+//            R.drawable.ic_shift,
+//            R.drawable.ic_entry_orders,
+//            R.drawable.ic_lauage,
+//            R.drawable.ic_device_status,
+//            R.drawable.ic_system_setting,
+//            R.drawable.ic_enter_system,
+//    };
+
     private int[] res = new int[]{
             R.drawable.ic_order_history,
-            R.drawable.ic_refund,
+//            R.drawable.ic_refund,
             R.drawable.ic_shift,
             R.drawable.ic_entry_orders,
-            R.drawable.ic_lauage,
+//            R.drawable.ic_lauage,
             R.drawable.ic_device_status,
-            R.drawable.ic_system_setting,
-            R.drawable.ic_enter_system,
+//            R.drawable.ic_system_setting,
+//            R.drawable.ic_enter_system,
     };
 
     @Override
@@ -108,10 +119,12 @@ public class FunctionListDialog extends DialogFragment {
         ArrayList<Integer> integers = new ArrayList<>();
 
         if (Configs.getRole(Configs.menus[10]) == 0) {
-            integers.add(5);
+//            integers.add(5);
+            integers.add(3);
         }
         if (Configs.getRole(Configs.menus[7]) == 0) {
-            integers.add(2);
+//            integers.add(2);
+            integers.add(1);
         }
         if (Configs.getRole(Configs.menus[4]) == 0) {
             integers.add(0);
