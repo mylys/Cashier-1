@@ -162,7 +162,7 @@ public class UserGoodsScreen extends Presentation {
     }
 
     public void showCurrentActivities(List<String> data) {
-        activitiesView.setVisibility(data != null? View.VISIBLE: View.GONE);
+        activitiesView.setVisibility(data != null && data.size() > 0 ? View.VISIBLE: View.GONE);
         activitiesView.setData(data);
     }
 }

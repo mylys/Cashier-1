@@ -3,6 +3,7 @@ package com.easygo.cashier.widget;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -70,6 +71,17 @@ public class ConfigDialog extends BaseDialog {
 
                     dismiss();
                 }
+            }
+        });
+
+        etSecret.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+                    etSecret.getText().delete(etSecret.length()-1, etSecret.length());
+                }
+                return false;
             }
         });
 

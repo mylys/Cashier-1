@@ -493,7 +493,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
 
     private void showCurrentActivities(List<String> data) {
-        activitiesView.setVisibility(data != null? View.VISIBLE: View.GONE);
+        activitiesView.setVisibility(data != null && data.size() > 0 ? View.VISIBLE: View.GONE);
         activitiesView.setData(data);
 
         if(mUserGoodsScreen != null) {
@@ -681,7 +681,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 switch (mType) {
                     case TYPE_GOODS:
 
-                        if (mTotalMoney < 0) {
+                        if (mTotalMoney <= 0 && mData.size() == 0) {
                             showToast("订单金额不能小于0！");
                             return;
                         }
