@@ -101,6 +101,8 @@ public class ChooseCouponsDialog extends BaseDialog {
                 helper.setText(R.id.tv_full_reduction, item.getName())
                         .setText(R.id.tv_full_use, "满" + condition_value + "元可用")
                         .setText(R.id.tv_coupon_validity, "有效期：" + effected_at + "至" + expired_at);
+
+                helper.setText(R.id.tv_coupon_state, item.getOffer_type_str());
             }
         });
 

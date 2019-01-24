@@ -1,14 +1,12 @@
 package com.easygo.cashier.module.settlement;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -35,8 +33,6 @@ import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.request.CreateOrderRequestBody;
 import com.easygo.cashier.bean.request.PrintRequestBody;
 import com.easygo.cashier.module.CouponUtils;
-import com.easygo.cashier.module.promotion.base.PromotionGoods;
-import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.promotion.shop.BaseShopPromotion;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.ChooseCouponsDialog;
@@ -50,7 +46,6 @@ import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.EventUtils;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ScreenUtils;
-import com.niubility.library.utils.ToastUtils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -912,6 +907,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             }
         } else {
             showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
+            dismissScanDialog();
         }
 
     }
@@ -1061,5 +1057,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     @Override
     public void memberWalletFailed(Map<String, Object> map) {
         showToast("会员钱包支付失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
+        dismissScanDialog();
     }
 }
