@@ -100,7 +100,7 @@ public class MemberUtils {
         return false;
     }
 
-    public static Float getCoupon(float totalPrice, float price, int count) {
+    public static Float getCoupon(float totalPrice, float price, float count) {
         float coupon = 0;
         if (full_type == 1) { //满折扣
             coupon = (float) (((price * count) / totalPrice) * (totalPrice - (totalPrice * full_discount)));
@@ -127,7 +127,7 @@ public class MemberUtils {
                 return;
             } else {
                 GoodsResponse good = goodsEntity.getData();
-                int good_count = goodsEntity.getCount();
+                float good_count = goodsEntity.getCount();
                 float price = 0;
 
                 if(goodsEntity.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
@@ -166,7 +166,7 @@ public class MemberUtils {
      * @param membership_price
      * @return
      */
-    public static float getCoupon(GoodsResponse good, int good_count, float fullTotalPrice, float price, float membership_price) {
+    public static float getCoupon(GoodsResponse good, float good_count, float fullTotalPrice, float price, float membership_price) {
 
         float coupon = 0f;
         if(good.isMemberPrice()) {//有会员价

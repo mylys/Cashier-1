@@ -31,10 +31,12 @@ import java.util.List;
  */
 public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity<GoodsResponse>, BaseViewHolder> {
     DecimalFormat df;
+    DecimalFormat df_int;
 
     public GoodsMultiItemAdapter() {
         super(null);
         df = new DecimalFormat("0.00");
+        df_int = new DecimalFormat("#");
         addItemType(GoodsEntity.TYPE_GOODS, R.layout.item_goods);
         addItemType(GoodsEntity.TYPE_WEIGHT, R.layout.item_goods_weight);
         addItemType(GoodsEntity.TYPE_ONLY_PROCESSING, R.layout.item_goods);
@@ -61,7 +63,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     public void addItem(GoodsResponse t) {
         addItem(t, 1);
     }
-    public void addItem(GoodsResponse t, int count) {
+    public void addItem(GoodsResponse t, float count) {
         String code = t.getBarcode();
         ensureNotNull();
         if (!data.containsKey(code)) {
@@ -80,7 +82,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     }
 
     //重量商品
-    public void addWeightItem(GoodsResponse t, int weight) {
+    public void addWeightItem(GoodsResponse t, float weight) {
         String code = t.getBarcode();
         ensureNotNull();
         if (!data.containsKey(code)) {
@@ -112,7 +114,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     }
 
     //可选择的加工商品
-    public void addPrcessingItem(List<GoodsResponse> list, int weight) {
+    public void addPrcessingItem(List<GoodsResponse> list, float weight) {
         ensureNotNull();
         GoodsEntity<GoodsResponse> goodsNum = new GoodsEntity<>(GoodsEntity.TYPE_PROCESSING);
         goodsNum.setCount(weight);
@@ -142,7 +144,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     /**
      * 添加商品
      */
-    public boolean addItem(List<GoodsResponse> t, int weight) {
+    public boolean addItem(List<GoodsResponse> t, float weight) {
         int size = t.size();
         for (int i = 0; i < size; i++) {
             GoodsResponse goodsResponse = t.get(i);
@@ -181,7 +183,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 if (goodsResponse.getIs_weigh() == 1) {
                     //重量商品
                     goodsResponse.setType(GoodsResponse.type_weight);
-                    addWeightItem(goodsResponse, weight);
+                    addWeightItem(goodsResponse, weight / 1000f);
                 } else {
                     //普通商品
                     goodsResponse.setType(GoodsResponse.type_normal);
@@ -204,7 +206,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                     goodsResponse.setType(GoodsResponse.type_processing);
                 }
             }
-            addPrcessingItem(t, weight);
+            addPrcessingItem(t, weight / 1000f);
         }
         return true;
     }
@@ -308,7 +310,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     protected void convert(final BaseViewHolder helper, final GoodsEntity<GoodsResponse> item) {
         final int position = helper.getAdapterPosition();
 
-        final int good_count = item.getCount();
+        final float good_count = item.getCount();
         final GoodsResponse good = item.getData();
 
         final String barcode = good.getBarcode();
@@ -335,7 +337,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             case GoodsEntity.TYPE_GOODS://普通商品
             case GoodsEntity.TYPE_NO_CODE://无码商品
                 final CountTextView countTextView = ((CountTextView) helper.getView(R.id.count_view));
-                countTextView.setCount(String.valueOf(good_count));
+                countTextView.setCount(df_int.format(good_count));
                 countTextView.setOnCountListener(new CountTextView.OnCountListener() {
                     @Override
                     public void onCountChanged(int count) {

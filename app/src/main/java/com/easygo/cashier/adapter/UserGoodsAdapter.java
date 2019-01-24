@@ -23,6 +23,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
  */
 public class UserGoodsAdapter extends GoodsMultiItemAdapter {
 
+    private DecimalFormat df = new DecimalFormat("0.00");
+    private DecimalFormat df_int = new DecimalFormat("#");
+
 
     public UserGoodsAdapter() {
 
@@ -36,7 +39,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
 
     @Override
     protected void convert(final BaseViewHolder helper, final GoodsEntity<GoodsResponse> item) {
-        final int good_count = item.getCount();
+        final float good_count = item.getCount();
         final GoodsResponse good = item.getData();
 
         final String barcode = good.getBarcode();
@@ -59,7 +62,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
             case GoodsEntity.TYPE_GOODS://普通商品
             case GoodsEntity.TYPE_NO_CODE://无码商品
                 CountTextView count = ((CountTextView) helper.getView(R.id.count_view));
-                count.setCount(String.valueOf(good_count));
+                count.setCount(df_int.format(good_count));
                 count.setCountChangeEnable(false);
                 break;
             case GoodsEntity.TYPE_WEIGHT://称重商品

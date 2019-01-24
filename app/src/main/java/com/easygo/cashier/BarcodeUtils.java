@@ -20,7 +20,7 @@ public class BarcodeUtils {
 
     public static int getProductWeight(String code) {
 //        String weight = code.subSequence(7, 12).toString();
-        String weight = code.subSequence(12, 16).toString();
+        String weight = code.subSequence(12, 17).toString();
         return Integer.valueOf(weight);
     }
 }

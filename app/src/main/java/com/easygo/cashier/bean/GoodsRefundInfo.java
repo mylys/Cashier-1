@@ -11,6 +11,7 @@ public class GoodsRefundInfo {
     private String refund_num;
     private String refund_subtotal;
     private int product_num;
+    private int quantity;
     private int s_sku_id;
     private boolean isSelect;
     private int is_weigh;
@@ -68,6 +69,14 @@ public class GoodsRefundInfo {
 
     public void setProduct_num(int product_num) {
         this.product_num = product_num;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public String getProduct_name() {

@@ -86,7 +86,7 @@ public class QuickChooseActivity extends BaseMvpActivity<QuickChooseContract.Vie
     private void initRvGoodsList() {
         goodsAdapter = new QuickGoodsAdapter();
 
-        rvGoodsList.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
+        rvGoodsList.setLayoutManager(new GridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false));
         rvGoodsList.setAdapter(goodsAdapter);
 
         rvGoodsList.setVisibility(View.INVISIBLE);

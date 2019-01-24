@@ -27,17 +27,17 @@ public class GoodsEntity<T> implements MultiItemEntity, Serializable {
         return itemType;
     }
 
-    private int count;
+    private float count;
     private T data;
     private List<T> processing_list;
     private T processing;
 
 
-    public int getCount() {
+    public float getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(float count) {
         this.count = count;
     }
 

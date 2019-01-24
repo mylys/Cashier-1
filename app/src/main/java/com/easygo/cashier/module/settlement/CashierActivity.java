@@ -200,6 +200,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 //                    showToast("实收金额小于应收金额， 请确认！");
 //                    return;
 //                }
+                if(mChange < 0) {
+                    showToast("找零金额小于0");
+                    return;
+                }
+
                 if (!TextUtils.isEmpty(Configs.order_no) && mPayWay != PayWayView.WAY_CASH) {
                     showScanCodeDialog();
                     return;
@@ -280,6 +285,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     }
                     mChange = mRealPay - pay;
 
+                    if(mChange < 0) {
+                        showToast("找零金额小于0");
+                    }
+
                     //刷新价格
                     if (settlementView != null)
                         settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange, mBalance);
@@ -339,6 +348,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             String device_sn = printersBean.getDevice_sn();
             int print_times = printersBean.getPrint_times();
 
+            if(!printersBean.canUse(InitResponse.PrintersBean.type_settlement)) {
+                return;
+            }
+
             PrintRequestBody requestBody = new PrintRequestBody();
 
             requestBody.setGoods_count(mGoodsCount);
@@ -358,14 +371,15 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             for (int i = 0; i < total_count; i++) {
                 goodsListBean = new PrintRequestBody.GoodsListBean();
                 GoodsEntity<GoodsResponse> good = mGoodsData.get(i);
-                int count = good.getCount();
+                float count = good.getCount();
                 GoodsResponse data;
                 Integer price_int;
 
                 data = good.getData();
                 price = Float.valueOf(data.getPrice());
                 price_int = Integer.valueOf(df.format(price * 100));
-                goodsListBean.setCount_price(count * price_int);
+//                goodsListBean.setCount_price(count * price_int);
+                goodsListBean.setCount_price(Integer.valueOf(df.format(count * price * 100)));
 
                 goodsListBean.setDiscount(1);
                 goodsListBean.setGoods_name(data.getG_sku_name());

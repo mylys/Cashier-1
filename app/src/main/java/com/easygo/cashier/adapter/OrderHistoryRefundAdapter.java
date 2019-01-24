@@ -27,10 +27,12 @@ import java.util.List;
 public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo, BaseViewHolder> {
     private OnItemClickListener listener;
     private DecimalFormat df;
+    private DecimalFormat df_int;
 
     public OrderHistoryRefundAdapter() {
         super(R.layout.item_order_history_refund_list);
         df = new DecimalFormat("0.00");
+        df_int = new DecimalFormat("#");
     }
 
     @Override
@@ -58,7 +60,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         helper.setImageResource(R.id.image_select, item.isSelect() ? R.drawable.icon_select : R.drawable.icon_no_select);
 
         //设置数据
-        String tv_total_num = type == 1 ? item.getProduct_num() + "g" : item.getProduct_num() + "";
+        String tv_total_num = type == 1 ? item.getProduct_num() + item.getG_u_symbol() : df_int.format(item.getProduct_num());
         String tv_subtotal = df.format(Double.parseDouble(item.getProduct_subtotal()));
         helper.setText(R.id.tv_product_name, item.getProduct_name())
                 .setText(R.id.tv_product_preferential, item.getProduct_preferential())
@@ -66,7 +68,8 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 .setText(R.id.tv_product_subtotal, tv_subtotal)
                 .setText(R.id.tv_product_total_num, tv_total_num)
                 .setText(R.id.tv_refund_subtotal, type == 1 || type == 3 ? tv_subtotal : item.getRefund_subtotal())
-                .setText(R.id.tv_refund_num_no, type == 1 || type == 3 ? tv_total_num : item.getRefund_num());
+//                .setText(R.id.tv_refund_num_no, type == 1 || type == 3 ? tv_total_num : item.getRefund_num());
+                .setText(R.id.tv_refund_num_no, df_int.format(item.getProduct_num()));
 
         if (type == 1) {
             helper.setText(R.id.tv_refund, "全退");

@@ -212,12 +212,14 @@ public class ActivitiesUtils {
 //                    if(promotionGoods == null) {
 //                        promotionGoods = new PromotionGoods();
 //                    }
+                    boolean weight = goodsEntity.getItemType() == GoodsEntity.TYPE_WEIGHT
+                            || goodsEntity.getItemType() == GoodsEntity.TYPE_PROCESSING;
 
                     //设置数量、小计、位置等信息
                     PromotionGoods.GoodsBean good = new PromotionGoods.GoodsBean();
                     good.setIndex(i);//设置在data数据源中的位置
                     good.setBarcode(barcode);
-                    good.setCount(goodsEntity.getItemType() == GoodsEntity.TYPE_PROCESSING? 1: goodsEntity.getCount());
+                    good.setCount(weight? 1: (int) goodsEntity.getCount());
                     good.setPrice(Float.valueOf(goodsEntity.getData().getPrice()));
                     good.setSubtotal(goodsEntity.getCount() * Float.valueOf(goodsEntity.getData().getPrice()));
                     promotionGoods.getGoodsBeans().add(good);

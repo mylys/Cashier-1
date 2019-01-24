@@ -17,15 +17,15 @@ public class HandoverSaleListAdapter extends BaseQuickAdapter<HandoverSaleRespon
         String count;
         switch (item.getType()) {
             case GoodsResponse.type_normal:
-            case GoodsResponse.type_processing:
             case GoodsResponse.type_no_code:
-                count = String.valueOf(item.getCount());
+                count = String.valueOf(item.getQuantity());
                 break;
             case GoodsResponse.type_weight:
+            case GoodsResponse.type_processing:
                 count = String.valueOf(item.getCount() + item.getG_u_symbol());
                 break;
             default:
-                count = String.valueOf(item.getCount());
+                count = String.valueOf(item.getQuantity());
                 break;
         }
 

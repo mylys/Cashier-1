@@ -25,7 +25,7 @@ public class HandoverSaleResponse {
     private int quantity;
     private String sell_price;
     private int refund;
-    private int count;
+    private float count;
     private double money;
     private String g_u_symbol;
 
@@ -85,11 +85,11 @@ public class HandoverSaleResponse {
         this.refund = refund;
     }
 
-    public int getCount() {
+    public float getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(float count) {
         this.count = count;
     }
 

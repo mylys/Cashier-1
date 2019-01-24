@@ -3,6 +3,7 @@ package com.easygo.cashier.bean;
 import java.util.List;
 
 /**
+ * 退款请求json
  * @Describe：
  * @author：hgeson
  * @date：2018-12-21
@@ -64,7 +65,7 @@ public class RequsetBody {
 
     public static class GoodsList {
         private int s_sku_id;
-        private int count;
+        private float count;
         private int is_weigh;
         private String identity;
 
@@ -84,11 +85,11 @@ public class RequsetBody {
             this.s_sku_id = s_sku_id;
         }
 
-        public int getCount() {
+        public float getCount() {
             return count;
         }
 
-        public void setCount(int count) {
+        public void setCount(float count) {
             this.count = count;
         }
 

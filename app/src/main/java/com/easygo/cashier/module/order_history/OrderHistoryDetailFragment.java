@@ -208,7 +208,8 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         for (int i = 0; i < size; i++) {
             OrderHistorysInfo.ListBean listBean = data.get(i);
 
-            count += listBean.getCount();
+            int type = listBean.getType();
+            count += listBean.getQuantity();
 //            isWeight = listBean.getCount().equals(listBean.getQuantity());
             discount = Float.valueOf(listBean.getDiscount());
             total_discount += discount;
@@ -218,7 +219,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                     .append("     ")
                     .append(listBean.getSell_price()).append("   ")
                     .append(listBean.getDiscount()).append("   ")
-                    .append(listBean.getType() == 1 ? listBean.getQuantity() + listBean.getG_u_symbol() : listBean.getCount()).append("   ")
+                    .append(type == 1 ? listBean.getCount() + listBean.getG_u_symbol() : listBean.getCount()).append("   ")
                     .append(listBean.getMoney()).append(PrintHelper.BR);
         }
 

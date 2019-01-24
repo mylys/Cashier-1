@@ -270,7 +270,7 @@ public class RefundCashFragment extends BaseMvpFragment<RefundCashContract.IView
         int size = mData.size();
 
         int index = 1;
-        int count;
+        float count;
         float price;
         float sub_total;
         GoodsResponse data;

@@ -178,7 +178,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 info.setProduct_price(bean.getSell_price());
                 info.setProduct_subtotal(df.format(bean.getMoney()));
                 info.setProduct_preferential(bean.getDiscount());
-                info.setProduct_num(bean.getCount());
+                info.setProduct_num(bean.getQuantity());
                 info.setS_sku_id(bean.getS_sku_id());
                 info.setRefund_num("1");
                 info.setRefund_subtotal(bean.getSell_price());

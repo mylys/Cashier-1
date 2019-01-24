@@ -213,7 +213,7 @@
         android:id="@+id/cl_remove"
         android:layout_width="@dimen/x67"
         android:layout_height="@dimen/y56"
-        android:layout_marginEnd="@dimen/x69"
+        android:layout_marginEnd="@dimen/x60"
         android:foreground="?android:listChoiceBackgroundIndicator"
         android:background="@drawable/bg_btn_remove"
         app:layout_constraintEnd_toEndOf="parent"

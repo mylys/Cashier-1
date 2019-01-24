@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.easygo.cashier.Configs;
 import com.easygo.cashier.Events;
 import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.R;
@@ -21,7 +20,6 @@ import com.easygo.cashier.bean.MemberInfo;
 import com.niubility.library.base.BaseDialog;
 import com.niubility.library.utils.EventUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

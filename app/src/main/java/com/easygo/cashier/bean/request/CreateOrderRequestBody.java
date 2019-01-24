@@ -129,7 +129,7 @@ public class CreateOrderRequestBody {
          */
 
         private int g_sku_id;
-        private int count;
+        private float count;
         private int price;
         /**
          * 0: 非重量  1：重量  2：无码商品 3: 加工商品
@@ -150,11 +150,11 @@ public class CreateOrderRequestBody {
             this.g_sku_id = g_sku_id;
         }
 
-        public int getCount() {
+        public float getCount() {
             return count;
         }
 
-        public void setCount(int count) {
+        public void setCount(float count) {
             this.count = count;
         }
 

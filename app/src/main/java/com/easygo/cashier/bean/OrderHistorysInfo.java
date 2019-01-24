@@ -247,7 +247,7 @@ public class OrderHistorysInfo {
         private String discount;
         private String identity;
         private int refund;
-        private int count;
+        private float count;
         private double money;
 
         protected ListBean(Parcel in) {
@@ -347,7 +347,7 @@ public class OrderHistorysInfo {
             this.refund = refund;
         }
 
-        public int getCount() {
+        public float getCount() {
             return count;
         }
 
@@ -373,12 +373,12 @@ public class OrderHistorysInfo {
             dest.writeString(g_sku_name);
             dest.writeInt(s_sku_id);
             dest.writeInt(type);
-            dest.writeInt(quantity);
+            dest.writeFloat(quantity);
             dest.writeString(sell_price);
             dest.writeString(discount);
             dest.writeString(identity);
             dest.writeInt(refund);
-            dest.writeInt(count);
+            dest.writeFloat(count);
             dest.writeDouble(money);
         }
     }
