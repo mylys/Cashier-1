@@ -443,7 +443,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             with_coupon = ActivitiesUtils.getInstance().isWith_coupon();
         } else {
             //判断是否有店铺促销
-            coupon = ActivitiesUtils.getInstance().promotion(price);
+            coupon = ActivitiesUtils.getInstance().promotion(mGoodsMultiItemAdapter.getSubtotal());
             if(coupon > 0) {
                 //符合店铺促销条件
                 showCurrentActivities(ActivitiesUtils.getInstance().getCurrentPromotionNames());

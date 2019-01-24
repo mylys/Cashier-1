@@ -678,6 +678,33 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         return df.format(coupon);
     }
 
+    /**
+     * 获取除加工方式商品外的所有商品小计
+     * @return
+     */
+    public float getSubtotal() {
+        float temp;
+        float count;
+        float price;
+        float coupon;
+        float result = 0;
+        for (GoodsEntity<GoodsResponse> entity : mData) {
+            GoodsResponse good = entity.getData();
+
+            price = Float.valueOf(good.getPrice());
+            count = entity.getCount();
+            coupon = Float.valueOf(good.getDiscount_price());
+            temp = price * count - coupon;
+            if(temp < 0) {
+                temp = 0;
+            }
+            result += temp;
+        }
+        return result;
+
+    }
+
+
     public String getTotalPrice() {
         float total_price = 0;
         for (GoodsEntity<GoodsResponse> entity : mData) {
