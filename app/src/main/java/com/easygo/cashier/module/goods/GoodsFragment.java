@@ -477,7 +477,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         //判断是否有优惠券可用
         if(with_coupon) {
             if (CouponUtils.getInstance().getCouponInfo() != null) {
-                float couponMoney = CouponUtils.getInstance().getCouponMoney(price);
+                float couponMoney = CouponUtils.getInstance().getCouponMoney(price - coupon);
 
                 Log.i(TAG, " 优惠券 优惠价格 --> " + couponMoney);
                 mCouponMoney = couponMoney;
