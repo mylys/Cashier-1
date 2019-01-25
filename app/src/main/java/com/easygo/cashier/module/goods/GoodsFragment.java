@@ -249,7 +249,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     }
 
+    /**是否是自编码*/
+    private boolean mIsSelfEncode;
     private int mGoodWeight;
+    private int mGoodMoney;
 
     /**
      * 扫描到的条码 回调
@@ -270,7 +273,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 //            showToast("barcode = null");
         } else if (BarcodeUtils.isWeightCode(barcode)) {//自编码
 
+            mIsSelfEncode = true;
             String weight_barcode = BarcodeUtils.getProductCode(barcode);
+            mGoodMoney = BarcodeUtils.getProductTotalMoney(barcode);
             mGoodWeight = BarcodeUtils.getProductWeight(barcode);
 
             //获取称重商品信息
@@ -920,7 +925,25 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             return;
         }
 
-        boolean add_success = mGoodsMultiItemAdapter.addItem(result, mGoodWeight != 0 ? mGoodWeight : 1);
+        float price;
+        float count = 1f;
+        int size = result.size();
+
+        if(mIsSelfEncode) {//自编码
+            if(mGoodWeight == 0) {//以个为单位的商品
+                for (int i = 0; i < size; i++) {
+
+                    GoodsResponse goodsResponse = result.get(i);
+                    price = Float.valueOf(goodsResponse.getPrice());
+
+                    count = (mGoodMoney / 100f) / price;
+                }
+            } else {
+                count = mGoodWeight;
+            }
+        }
+
+        boolean add_success = mGoodsMultiItemAdapter.addItem(result, count);
         if(!add_success) {
             showToast("商品库存不足");
             return;
@@ -933,10 +956,12 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 mUserGoodsScreen.show();
 
             //刷新用户商品列表页面数据
-            mUserGoodsScreen.addItem(result, mGoodWeight != 0 ? mGoodWeight : 1);
+            mUserGoodsScreen.addItem(result, count);
             mUserGoodsScreen.toPosition();
         }
 
+        mIsSelfEncode = false;
+        mGoodMoney = 0;
         mGoodWeight = 0;
 
 //        ActivitiesUtils.getInstance().promotion(mData);
@@ -957,6 +982,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 //                showToast(err_msg);
 //            }
 //        }
+        mIsSelfEncode = false;
+        mGoodMoney = 0;
         mGoodWeight = 0;
     }
 

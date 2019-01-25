@@ -18,7 +18,21 @@ public class BarcodeUtils {
         return code.subSequence(2, 7).toString();
     }
 
+    /**
+     * 金额码
+     * @param code
+     * @return
+     */
+    public static int getProductTotalMoney(String code) {
+        String weight = code.subSequence(7, 12).toString();
+        return Integer.valueOf(weight);
+    }
+
     public static int getProductWeight(String code) {
+        if(code.length() != 18) {
+            return 0;
+        }
+
 //        String weight = code.subSequence(7, 12).toString();
         String weight = code.subSequence(12, 17).toString();
         return Integer.valueOf(weight);

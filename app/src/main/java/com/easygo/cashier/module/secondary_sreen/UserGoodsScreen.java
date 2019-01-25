@@ -82,7 +82,7 @@ public class UserGoodsScreen extends Presentation {
 
     }
 
-    public void addItem(List<GoodsResponse> result, int weight) {
+    public void addItem(List<GoodsResponse> result, float weight) {
         if(mUserGoodsAdapter != null)
             this.mUserGoodsAdapter.addItem(result, weight);
     }
