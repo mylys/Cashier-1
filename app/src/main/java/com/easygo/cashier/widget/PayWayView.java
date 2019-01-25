@@ -20,20 +20,20 @@ public class PayWayView extends ConstraintLayout {
 
     private View mView;
     private CheckBox mCombineCheckBox;
-    private Button mCash;
     private Button mAlipay;
     private Button mWechat;
-    private Button mBankCard;
     private Button mMember;
+    private Button mBankCard;
+    private Button mCash;
     private Button mOther;
 //    private Button mCoupon;
     public List<View> mButtons;
 
-    public static final int WAY_CASH = 0x0000;
-    public static final int WAY_ALIPAY = 0x0001;
-    public static final int WAY_WECHAT = 0x0002;
-    public static final int WAY_MEMBER = 0x0003;
-    public static final int WAY_BANK_CARD = 0x0004;
+    public static final int WAY_ALIPAY = 0x0000;
+    public static final int WAY_WECHAT = 0x0001;
+    public static final int WAY_MEMBER = 0x0002;
+    public static final int WAY_BANK_CARD = 0x0003;
+    public static final int WAY_CASH = 0x0004;
     public static final int WAY_OTHER = 0x0005;
     public static final int WAY_COUPON = 0x0006;
 
@@ -110,15 +110,16 @@ public class PayWayView extends ConstraintLayout {
 //        mCoupon.setVisibility(GONE);
 
         mButtons = new ArrayList<>();
-        mButtons.add(mCash);
         mButtons.add(mAlipay);
         mButtons.add(mWechat);
         mButtons.add(mMember);
         mButtons.add(mBankCard);
+        mButtons.add(mCash);
         mButtons.add(mOther);
 //        mButtons.add(mCoupon);
 
-        mSelected = mCash;
+        mSelected = mAlipay;
+//        mSelected = mCash;
         mSelected.setSelected(true);
         mSelected.setTextColor(getResources().getColor(R.color.color_text_white));
 
@@ -183,7 +184,8 @@ public class PayWayView extends ConstraintLayout {
             case R.id.btn_coupon:
                 return WAY_COUPON;
             default:
-                return WAY_CASH;
+//                return WAY_CASH;
+                return WAY_ALIPAY;
         }
     }
 

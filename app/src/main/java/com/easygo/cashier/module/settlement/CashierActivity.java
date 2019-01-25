@@ -149,15 +149,18 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             payWayView.setPayWayShow(new int[]{PayWayView.WAY_CASH});
         } else {
             payWayView.setPayWayShow(MemberUtils.isMember ?
-                    new int[]{
-                            PayWayView.WAY_CASH,
+                    new int[] {
                             PayWayView.WAY_ALIPAY,
-                            PayWayView.WAY_WECHAT, PayWayView.WAY_MEMBER}
-                    : new int[]{
+                            PayWayView.WAY_WECHAT,
+                            PayWayView.WAY_MEMBER,
                             PayWayView.WAY_CASH,
+                    }
+                    : new int[] {
                             PayWayView.WAY_ALIPAY,
-                            PayWayView.WAY_WECHAT}
-                    );
+                            PayWayView.WAY_WECHAT,
+                            PayWayView.WAY_CASH,
+                    }
+            );
         }
         settlementView = SettlementView.create(this);
         ((FrameLayout) findViewById(R.id.framelayout)).addView(settlementView);
@@ -320,9 +323,17 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             }
         });
 
-        //登录会员并且支付金额大于0时，默认选择会员钱包支付
-        if(MemberUtils.isMember && getPayMoney() > 0) {
-            payWayView.performSelect(PayWayView.WAY_MEMBER);
+        //支付金额大于0时
+        if(getPayMoney() > 0) {
+            //登录会员时 默认选择会员钱包支付
+            if(MemberUtils.isMember) {
+                payWayView.performSelect(PayWayView.WAY_MEMBER);
+            } else {
+                payWayView.performSelect(PayWayView.WAY_ALIPAY);
+            }
+        } else {
+            //支付金额小于等于0时 默认现金支付
+            payWayView.performSelect(PayWayView.WAY_CASH);
         }
     }
 
