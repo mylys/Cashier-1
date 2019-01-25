@@ -248,6 +248,20 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
             public void onListener() {
                 tvRefundcashNum.setText(getResources().getString(R.string.text_total_refund_product) + adapter.getTotalNum() + getResources().getString(R.string.text_total_refund_price));
                 editRefundcashPrice.setText(adapter.getTotalPrice());
+
+                float totalCoupon = adapter.getTotalCoupon();
+                if (totalCoupon != 0) {
+                    editRefundcashPrice.setText(df.format(Float.valueOf(adapter.getTotalPrice()) - totalCoupon));
+                } else {
+                    float discount = 0f;
+                    if (activities != null) {
+                        int size = activities.size();
+                        for (int i = 0; i < size; i++) {
+                            discount += Float.valueOf(activities.get(i).getDiscount_money());
+                        }
+                    }
+                    editRefundcashPrice.setText(df.format(Float.valueOf(adapter.getTotalPrice()) - discount));
+                }
                 editRefundcashPrice.setSelection(editRefundcashPrice.getText().toString().length());
             }
         });
@@ -344,15 +358,9 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
             ToastUtils.showToast(getActivity(), "退款金额不能为0");
             return;
         }
-        float edit_price;
-        if (editRefundcashPrice.getText().toString().contains(".")) {
-            DecimalFormat df = new DecimalFormat("0.00");
-            double db = Double.parseDouble(editRefundcashPrice.getText().toString());
-            edit_price = Float.parseFloat(df.format(db).replace(".", ""));
-        } else {
-            edit_price = Float.parseFloat(editRefundcashPrice.getText().toString()) * 100;
-        }
-        if (edit_price > real_pay * 100) {
+        float edit_price = Float.valueOf(editRefundcashPrice.getText().toString().trim());
+
+        if (edit_price > real_pay) {
             ToastUtils.showToast(getActivity(), "输入金额不能大于商品总额");
             return;
         }

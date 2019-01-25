@@ -87,6 +87,8 @@ public class ActivitiesUtils {
         int size = activities.size();
         if(size == 0) {
             Log.i(TAG, "parseGoods: 没有促销活动");
+            barcode2IdMap = null;
+            id2PromotionMap.clear();
             return;
         }
         List<GoodsActivityResponse.MapBean> map = response.getMap();
