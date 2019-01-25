@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import com.easygo.cashier.Configs;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.FunctionListAdapter;
 import com.easygo.cashier.bean.FunctionListBean;
+import com.niubility.library.base.BaseDialog;
 
 import java.util.ArrayList;
 
@@ -25,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class FunctionListDialog extends DialogFragment {
+public class FunctionListDialog extends BaseDialog {
 
     private Unbinder unbinder;
 
@@ -72,24 +75,6 @@ public class FunctionListDialog extends DialogFragment {
 //            R.drawable.ic_enter_system,
     };
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setStyle(STYLE_NO_FRAME, R.style.CustomDialogStyle);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.layout_function_dialog, container, false);
-
-        unbinder = ButterKnife.bind(this, view);
-
-        init();
-
-        return view;
-    }
 
     @Override
     public void onResume() {
@@ -108,6 +93,9 @@ public class FunctionListDialog extends DialogFragment {
                     | View.SYSTEM_UI_FLAG_IMMERSIVE
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_FULLSCREEN;
+
+            window.setGravity(Gravity.CENTER);
+
             window.getDecorView().setSystemUiVisibility(uiOptions);
         }
         getDialog().setCanceledOnTouchOutside(false);
@@ -273,6 +261,42 @@ public class FunctionListDialog extends DialogFragment {
         super.onDestroyView();
         if (unbinder != null)
             unbinder.unbind();
+    }
+
+    @Override
+    protected void initView(View rootView) {
+        unbinder = ButterKnife.bind(this, rootView);
+
+        init();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.layout_function_dialog;
+    }
+
+    @Override
+    protected int getAnimation() {
+        return R.style.CustomDialogStyle;
+    }
+
+    @Override
+    protected boolean shouldHideBackground() {
+        return false;
+    }
+
+    @Override
+    protected boolean canCanceledOnTouchOutside() {
+        return false;
+    }
+
+    @Override
+    protected boolean isWindowWidthMatchParent() {
+        return false;
+    }
+
+    public void showCenter(FragmentActivity activity) {
+        showCenter(activity, "DIALOG_FUNCTION_LIST");
     }
 
     @OnClick(R.id.iv_cancel)

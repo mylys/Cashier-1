@@ -143,6 +143,22 @@ public interface HttpService {
     Observable<HttpResult<String>> payVip();
 
     /**
+     * pos银联支付
+     */
+    @FormUrlEncoded
+    @POST("api/v1/cashier/weixin/minapp/eq_s/pay/pay_vip")
+    Observable<HttpResult<String>> unionPay(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
+
+    /**
+     * 检测银联支付状态
+     * method  = pay  支付 , method = query  查询 , method=cancel  撤销
+     */
+    @FormUrlEncoded
+    @POST("api/v1/cashier/pay/wechat")
+    Observable<HttpResult<String>> checkUnionPayStatus(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
+
+
+    /**
      * 打印
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})

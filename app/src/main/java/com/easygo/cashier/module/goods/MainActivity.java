@@ -169,7 +169,8 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
 //                }
                 FunctionListDialog functionListDialog = new FunctionListDialog();
                 functionListDialog.setOnFunctionListItemListener(mFunctionListItemListener);
-                functionListDialog.show(getSupportFragmentManager(), TAG_FUNCTION_LIST);
+//                functionListDialog.show(getSupportFragmentManager(), TAG_FUNCTION_LIST);
+                functionListDialog.showCenter(this);
                 break;
             case R.id.cl_back://返回
                 break;

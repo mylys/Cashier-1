@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -69,6 +70,17 @@ public class DialogSearchView extends ConstraintLayout {
             }
         });
 
+        editText.setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+                    onScanCode(editText.getText().toString().trim());
+                    editText.setText("");
+                }
+                return false;
+            }
+        });
+
         ivSearch.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +96,12 @@ public class DialogSearchView extends ConstraintLayout {
 //                editText.setText("");
 //            }
 //        });
+    }
+
+    private void onScanCode(String content) {
+        if (listener != null) {
+            listener.onSearchClick(content);
+        }
     }
 
     public EditText getEditText() {

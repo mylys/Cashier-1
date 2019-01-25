@@ -548,6 +548,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     private void showProcessingDialog(final int position, final GoodsResponse current, List<GoodsResponse> processing_list) {
         if (mProcessingChoiceDialog == null) {
             mProcessingChoiceDialog = new ProcessingChoiceDialog(getContext());
+            mProcessingChoiceDialog.getWindow().setGravity(Gravity.CENTER);
             mProcessingChoiceDialog.setCanceledOnTouchOutside(true);
 
             mProcessingChoiceDialog.create();
@@ -792,7 +793,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                         } else if(content.length() == 11 && TextUtils.isDigitsOnly(content)){
                             mPresenter.getMember(content, null);
                         } else {
-                            showToast("请输入正确的手机号");
+                            showToast("请输入正确的手机号/会员卡号");
                         }
 
                     }

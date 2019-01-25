@@ -1059,4 +1059,24 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         showToast("会员钱包支付失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
         dismissScanDialog();
     }
+
+    @Override
+    public void unionPaySuccess(String result) {
+
+    }
+
+    @Override
+    public void unionPayFailed(Map<String, Object> map) {
+
+    }
+
+    @Override
+    public void checkUnionPaySuccess(String result) {
+
+    }
+
+    @Override
+    public void checkUnionPayFailed(Map<String, Object> map) {
+
+    }
 }

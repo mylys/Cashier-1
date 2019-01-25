@@ -1,24 +1,22 @@
 package com.easygo.cashier.module.settlement;
 
-import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.http.HttpAPI;
 import com.easygo.cashier.printer.PrintHelper;
-import com.niubility.library.base.BaseApplication;
-import com.niubility.library.constants.Constans;
 import com.niubility.library.http.base.HttpClient;
+import com.niubility.library.http.base.HttpResult;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
-import com.niubility.library.utils.GetSign;
-import com.niubility.library.utils.SharedPreferencesUtils;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.reactivex.functions.Function;
 import okhttp3.RequestBody;
 
 public class SettlementPresenter extends BasePresenter<SettlementContract.IView> implements SettlementContract.IPresenter{
@@ -247,17 +245,7 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
 
     @Override
     public void get_coupon(final String coupon_sn) {
-        Map<String, String> header = new HashMap<>();
-        header.put("LC-Appkey", "25");
-
-        SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication);
-        long time = new Date().getTime() / 1000;
-        String session_id = sp.getString(Constans.KEY_SESSION_ID, "");
-
-        header.put("LC-Sign", GetSign.sign(time));
-        header.put("LC-Session", session_id);
-        header.put("LC-Timestamp", String.valueOf(time));
-
+        Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(HttpAPI.getInstance().httpService().get_coupon(header, coupon_sn),
                 new BaseResultObserver<CouponResponse>() {
                     @Override
@@ -290,5 +278,46 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
                     }
                 }
         );
+    }
+
+    @Override
+    public void unionPay(String order_sn) {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+
+        Map<String, Object> requestMap = new HashMap<>();
+//        requestMap.put("shop_sn", shop_sn);
+        requestMap.put("order_sn", order_sn);
+
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().unionPay(header, requestMap),
+                new BaseResultObserver<String>() {
+                    @Override
+                    protected void onSuccess(String result) {
+                        mView.unionPaySuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.unionPayFailed(map);
+                    }
+                }
+        );
+
+//        HttpAPI.getInstance().httpService().unionPay(header, requestMap)
+//                .map(new Function<HttpResult<String>, String>() {
+//                    @Override
+//                    public String apply(HttpResult<String> stringHttpResult) throws Exception {
+//                        return stringHttpResult.getResult();
+//                    }
+//                })
+//                .map(new Function<String, Bitmap>() {
+//                    @Override
+//                    public Bitmap apply(String s) throws Exception {
+//                        return CodeUtils.createImage(s, );
+//                    }
+//                })
+
+
+
     }
 }

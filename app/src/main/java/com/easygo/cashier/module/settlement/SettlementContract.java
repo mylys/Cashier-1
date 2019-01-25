@@ -13,19 +13,24 @@ public class SettlementContract {
         void createOrder(String json);
 
         void wechatPay(String shop_sn, String order_sn, int total_fee, String auth_code);
+
         void checkWechatPayStatus(String shop_sn, String order_no);
 
         void aliPay(String shop_sn, String order_sn, int total_fee, String auth_code);
+
         void checkAliPayStatus(String shop_sn, String order_no);
 
         void cash(String shop_sn, String order_no, int buyer_pay, int change_money);
 
         void print(String json);
+
         void print_info(String shop_sn, String printer_sn, String info);
 
         void get_coupon(String coupon_sn);
 
         void memberWalletPay(String order_sn, String auth_code);
+
+        void unionPay(String order_sn);
     }
 
     public interface IView extends BaseView {
@@ -54,5 +59,11 @@ public class SettlementContract {
 
         void memberWalletSuccess(String result);
         void memberWalletFailed(Map<String, Object> map);
+
+        void unionPaySuccess(String result);
+        void unionPayFailed(Map<String, Object> map);
+
+        void checkUnionPaySuccess(String result);
+        void checkUnionPayFailed(Map<String, Object> map);
     }
 }

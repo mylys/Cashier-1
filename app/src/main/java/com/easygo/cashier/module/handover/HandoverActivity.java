@@ -2,6 +2,7 @@ package com.easygo.cashier.module.handover;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -157,14 +158,22 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
 
     @Override
     public void loginoutSuccess(String result) {
-        showToast(result);
-        during_handover = false;
 
-//        clearLoginInfo();
+        //弹出钱箱
+        mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, PrintHelper.pop_till);
 
-        Intent intent = new Intent(HandoverActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                clearLoginInfo();
+                showToast("交接成功");
+                during_handover = false;
+                Intent intent = new Intent(HandoverActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        }, 500);
+
 
     }
 
@@ -243,10 +252,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
                 }
                 during_handover = true;
                 mPresenter.loginout(handover_id);
-                //弹出钱箱
-                mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, PrintHelper.pop_till);
 
-                clearLoginInfo();
 
                 break;
             case R.id.btn_sales_list:

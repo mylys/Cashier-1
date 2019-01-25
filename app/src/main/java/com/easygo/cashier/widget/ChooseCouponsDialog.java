@@ -122,6 +122,15 @@ public class ChooseCouponsDialog extends BaseDialog {
         setListener();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(searchView != null)
+            searchView.setContent("");
+    }
+
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -147,22 +156,6 @@ public class ChooseCouponsDialog extends BaseDialog {
                 }
             }
         });
-        searchView.getEditText().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
-                    onScanCode(searchView.getEditText().getText().toString().trim());
-                }
-                return false;
-            }
-        });
-    }
-
-    private void onScanCode(String code) {
-        if(mListener != null) {
-            Log.i("扫描优惠券", "onScanCode: " + code );
-            mListener.onSearch(code);
-        }
     }
 
     private void dialogDismiss() {

@@ -52,7 +52,7 @@
     <string name="text_telphone">手机号</string>
     <string name="text_process">操作</string>
     <string name="text_input_member_tel_or_card">请输入会员手机号/会员卡号</string>
-    <string name="text_no_telphone">搜不到该手机号</string>
+    <string name="text_no_telphone">搜不到该手机号/会员卡号</string>
     <string name="text_no_member">暂无此会员</string>
     <string name="text_member_card_wallet">会员卡</string>
 
