@@ -37,6 +37,10 @@ public class Configs {
     public static String admin_name = "";
     public static int cashier_id;
 
+    /* 钱箱，退款是否开启权限 */
+    public static int refund_auth;
+    public static int till_auth;
+
     /* 登录获取权限列表 --- 全局控制 */
     public static List<LoginResponse.MenuBean> menuBeanList;
 

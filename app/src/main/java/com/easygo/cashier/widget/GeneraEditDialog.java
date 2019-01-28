@@ -16,6 +16,8 @@ import com.easygo.cashier.TestUtils;
 import com.niubility.library.base.BaseDialog;
 import com.niubility.library.utils.ToastUtils;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 /**
  * @Describe：通用输入框弹窗
  * @date：2019-01-03
@@ -27,13 +29,22 @@ public class GeneraEditDialog extends BaseDialog {
     private ImageView iv_cancel;
     private EditText editInput;
 
-    private TestUtils testUtils = new TestUtils();
+    private ConstraintLayout constraintLayout;
+    private TextView tvAccount;
+    private EditText editAccount;
+    private TextView tvPassword;
+    private EditText editPassword;
 
     private OnDialogClickListener listener;
     private String title = "";
 
+    public static final int ENTRY_ORDER = 0x00;
+    public static final int USER_ACCOUNT = 0x01;
+    public static final int USER_ACCREDIT = 0x02;
+    private int type = ENTRY_ORDER;
+
     public interface OnDialogClickListener {
-        void onContent(String content);
+        void onContent(int type,String account,String password);
     }
 
     public void setOnDialogClickListener(OnDialogClickListener listener) {
@@ -58,9 +69,16 @@ public class GeneraEditDialog extends BaseDialog {
         dialog_submit = rootView.findViewById(R.id.dialog_submit);
         iv_cancel = rootView.findViewById(R.id.iv_cancel);
 
+        constraintLayout = rootView.findViewById(R.id.constraint_center);
+        tvAccount = rootView.findViewById(R.id.user_account);
+        tvPassword = rootView.findViewById(R.id.user_password);
+        editAccount = rootView.findViewById(R.id.edit_account);
+        editPassword = rootView.findViewById(R.id.edit_password);
+
         if (!TextUtils.isEmpty(title)) {
             dialog_title.setText(title);
         }
+        setStyle(type);
 
         iv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,10 +95,47 @@ public class GeneraEditDialog extends BaseDialog {
         dialog_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onContent(editInput.getText().toString().trim());
+                switch (type){
+                    case ENTRY_ORDER:
+                        listener.onContent(type,editInput.getText().toString().trim(),"");
+                        break;
+                    case USER_ACCOUNT:
+                        listener.onContent(type,editAccount.getText().toString().trim(),editPassword.getText().toString().trim());
+                        break;
+                    case USER_ACCREDIT:
+                        listener.onContent(type,editAccount.getText().toString().trim(),"");
+                        break;
+                }
+                setTvEmpty();
                 dialogDismiss();
             }
         });
+    }
+
+    private void setTvEmpty() {
+        editPassword.setText("");
+        editAccount.setText("");
+        editInput.setText("");
+    }
+
+    private void setStyle(int type) {
+        switch (type){
+            case ENTRY_ORDER:
+                editInput.setVisibility(View.VISIBLE);
+                constraintLayout.setVisibility(View.INVISIBLE);
+                break;
+            case USER_ACCOUNT:
+                editInput.setVisibility(View.INVISIBLE);
+                constraintLayout.setVisibility(View.VISIBLE);
+                break;
+            case USER_ACCREDIT:
+                editInput.setVisibility(View.INVISIBLE);
+                constraintLayout.setVisibility(View.VISIBLE);
+                editPassword.setVisibility(View.GONE);
+                tvPassword.setVisibility(View.GONE);
+                tvAccount.setText("授权密码：");
+                break;
+        }
     }
 
     private void dialogDismiss() {
@@ -88,12 +143,12 @@ public class GeneraEditDialog extends BaseDialog {
         dismiss();
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setType(int type){
+        this.type = type;
     }
 
-    public void clearInfo() {
-        editInput.setText("");
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override

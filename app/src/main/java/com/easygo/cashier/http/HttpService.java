@@ -285,5 +285,7 @@ public interface HttpService {
     @GET("api/v1/cashier/cash_register/heartbeat")
     Observable<HttpResult<String>> heartbeat(@HeaderMap Map<String, String> header);
 
-
+    @FormUrlEncoded
+    @POST("api/v1/cashier/pay/till_auth")
+    Observable<HttpResult<String>> tillAuth(@HeaderMap Map<String, String> header, @Field("till_password") String till_password, @Field("admin_name") String admin_name, @Field("password") String password);
 }

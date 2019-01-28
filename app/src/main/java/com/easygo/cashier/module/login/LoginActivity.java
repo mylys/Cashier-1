@@ -450,6 +450,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
         Configs.shop_name = shop_name;
         Configs.shop_sn = shop_sn;
+        Configs.refund_auth = result.getShop().getRefund_auth();
+        Configs.till_auth = result.getShop().getTill_auth();
 
         List<InitResponse.PrintersBean> printers = result.getPrinters();
         PrintHelper.printers_count = printers.size();

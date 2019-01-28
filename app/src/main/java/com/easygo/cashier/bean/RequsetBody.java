@@ -13,6 +13,9 @@ public class RequsetBody {
     private String shop_sn;
     private int refund_amount;
     private String pay_type;
+    private String refund_password;
+    private String admin_name;
+    private String password;
     private List<GoodsList> goods_list;
 
     public RequsetBody(String order_no, String shop_sn, int refund_amount, String pay_type, List<GoodsList> goodsList) {
@@ -23,12 +26,47 @@ public class RequsetBody {
         this.goods_list = goodsList;
     }
 
-    public List<GoodsList> getGoodsList() {
+    public RequsetBody(String order_no, String shop_sn, int refund_amount, String pay_type, String refund_password, String admin_name, String password, List<GoodsList> goods_list) {
+        this.order_no = order_no;
+        this.shop_sn = shop_sn;
+        this.refund_amount = refund_amount;
+        this.pay_type = pay_type;
+        this.refund_password = refund_password;
+        this.admin_name = admin_name;
+        this.password = password;
+        this.goods_list = goods_list;
+    }
+
+    public String getRefund_password() {
+        return refund_password;
+    }
+
+    public void setRefund_password(String refund_password) {
+        this.refund_password = refund_password;
+    }
+
+    public String getAdmin_name() {
+        return admin_name;
+    }
+
+    public void setAdmin_name(String admin_name) {
+        this.admin_name = admin_name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<GoodsList> getGoods_list() {
         return goods_list;
     }
 
-    public void setGoodsList(List<GoodsList> goodsList) {
-        this.goods_list = goodsList;
+    public void setGoods_list(List<GoodsList> goods_list) {
+        this.goods_list = goods_list;
     }
 
     public String getOrder_no() {

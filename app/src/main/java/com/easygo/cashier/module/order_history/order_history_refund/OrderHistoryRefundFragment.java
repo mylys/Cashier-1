@@ -40,6 +40,7 @@ import com.easygo.cashier.module.order_history.OrderHistoryActivity;
 import com.easygo.cashier.module.order_history.OrderHistoryFragment;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.ConfirmDialog;
+import com.easygo.cashier.widget.GeneraEditDialog;
 import com.easygo.cashier.widget.GeneraListDialog;
 import com.easygo.cashier.widget.MySearchView;
 import com.easygo.cashier.widget.PayWayView;
@@ -105,8 +106,9 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     private int pay_way = PayWayView.WAY_CASH;
 
     private List<OrderHistorysInfo.ActivitiesBean> activities;
+    private GeneraEditDialog dialog;
 
-    private  DecimalFormat df = new DecimalFormat("#0.00");
+    private DecimalFormat df = new DecimalFormat("#0.00");
 
     public static OrderHistoryRefundFragment getInstance(Bundle bundle) {
         OrderHistoryRefundFragment fragment = new OrderHistoryRefundFragment();
@@ -217,7 +219,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 adapter.setClick(checked);
                 tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件，退款金额：￥");
 
-                if(!checked) {
+                if (!checked) {
                     editRefundcashPrice.setText("0.00");
                 } else {
                     float totalCoupon = adapter.getTotalCoupon();
@@ -269,7 +271,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         searchView.setOnSearchListenerClick(new MySearchView.OnSearhListenerClick() {
             @Override
             public void onSearch(String content) {
-                if (content.length() == 0){
+                if (content.length() == 0) {
                     adapter.setNewData(infoList);
                     return;
                 }
@@ -344,7 +346,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
     @OnClick(R.id.btn_refund)
     public void onViewClicked() {
-        if(refund_status == 1 && have_refund == 0) {//订单有退过款，商品没有退过款
+        if (refund_status == 1 && have_refund == 0) {//订单有退过款，商品没有退过款
             //无退货 退过款
             showToast("此订单已退过款");
             return;
@@ -380,11 +382,38 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         DecimalFormat df = new DecimalFormat("0.00");
         float price = Float.parseFloat(editRefundcashPrice.getText().toString());
         String format = df.format(price);
-        int prices = Integer.parseInt(format.replace(".",""));
-        RequsetBody body = new RequsetBody(order_number, Configs.shop_sn,prices , refund_pay_type, adapter.getList());
-        String json = GsonUtils.getInstance().getGson().toJson(body);
-        mPresenter.post(json);
-        btnRefund.setEnabled(false);
+        final int prices = Integer.parseInt(format.replace(".", ""));
+        if (Configs.refund_auth == 0) {
+            RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, prices, refund_pay_type, adapter.getList());
+            String json = GsonUtils.getInstance().getGson().toJson(body);
+            mPresenter.post(json);
+            btnRefund.setEnabled(false);
+            return;
+        }
+        if (dialog == null) {
+            dialog = new GeneraEditDialog();
+        }
+        dialog.showCenter(getActivity());
+        dialog.setTitle(getResources().getString(R.string.text_refund_accedit));
+        dialog.setType(Configs.refund_auth == 1 ? GeneraEditDialog.USER_ACCREDIT : GeneraEditDialog.USER_ACCOUNT);
+        dialog.setOnDialogClickListener(new GeneraEditDialog.OnDialogClickListener() {
+            @Override
+            public void onContent(int type, String account, String password) {
+                String json = "";
+                if (type == GeneraEditDialog.USER_ACCREDIT) {
+                    RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, prices, account,
+                            null, null, refund_pay_type, adapter.getList());
+                    json = GsonUtils.getInstance().getGson().toJson(body);
+
+                } else if (type == GeneraEditDialog.USER_ACCOUNT) {
+                    RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, prices, null,
+                            account, password, refund_pay_type, adapter.getList());
+                    json = GsonUtils.getInstance().getGson().toJson(body);
+                }
+                mPresenter.post(json);
+                btnRefund.setEnabled(false);
+            }
+        });
     }
 
     @Override
@@ -433,11 +462,11 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
             GoodsRefundInfo goodsRefundInfo = infoList.get(i);
 
             boolean select = goodsRefundInfo.isSelect();
-            if(!select) {
+            if (!select) {
                 continue;
             }
 
-            sb.append(i+1).append(".")
+            sb.append(i + 1).append(".")
                     .append(goodsRefundInfo.getProduct_name()).append("   ").append(PrintHelper.BR)
                     .append("    ")
                     .append(goodsRefundInfo.getProduct_price()).append("   ")
@@ -466,8 +495,8 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     public void getHistorfRefundFailed(Map<String, Object> map) {
         btnRefund.setEnabled(true);
 //        if (HttpExceptionEngine.isBussinessError(map)) {
-            String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
-            showToast("错误信息:" + err_msg);
+        String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
+        showToast("错误信息:" + err_msg);
 //        }
     }
 
