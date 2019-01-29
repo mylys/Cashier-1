@@ -84,7 +84,7 @@ public class MemberDayInfo {
 
         private int day;
         private int discount_type;
-        private int discount_amount;
+        private float discount_amount;
         private int promo_id;
         private int least_cost;
         private int rc_id;
@@ -105,11 +105,11 @@ public class MemberDayInfo {
             this.discount_type = discount_type;
         }
 
-        public int getDiscount_amount() {
+        public float getDiscount_amount() {
             return discount_amount;
         }
 
-        public void setDiscount_amount(int discount_amount) {
+        public void setDiscount_amount(float discount_amount) {
             this.discount_amount = discount_amount;
         }
 

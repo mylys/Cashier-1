@@ -909,7 +909,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         if (HttpExceptionEngine.isBussinessError(map)) {
             int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
 
-            if (20000 == err_code) {
+            if (11306 == err_code) {
                 showToast("支付宝： 开始查询订单支付状态");
                 mPresenter.checkAliPayStatus(Test.shop_sn, Configs.order_no);
             } else {
@@ -935,7 +935,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         if (HttpExceptionEngine.isBussinessError(map)) {
             int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
 
-            if (20000 == err_code) {
+            if (11306 == err_code) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -967,7 +967,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         if (HttpExceptionEngine.isBussinessError(map)) {
             int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
 
-            if (20000 == err_code) {
+            if (11306 == err_code) {
                 showToast("微信： 开始查询订单支付状态");
                 mPresenter.checkWechatPayStatus(Test.shop_sn, Configs.order_no);
             } else {
@@ -1001,7 +1001,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         if (HttpExceptionEngine.isBussinessError(map)) {
             int err_code = (int) map.get(HttpExceptionEngine.ErrorCode);
 
-            if (20000 == err_code) {
+            if (11306 == err_code) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

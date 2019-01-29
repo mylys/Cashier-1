@@ -18,7 +18,7 @@ public class MemberDiscountInfo {
     private int rc_id;
     private String shop_name;
     private int discount_type;
-    private int discount_amount;
+    private float discount_amount;
     private int shop_id;
     private int is_enabled;
 
@@ -46,11 +46,11 @@ public class MemberDiscountInfo {
         this.discount_type = discount_type;
     }
 
-    public int getDiscount_amount() {
+    public float getDiscount_amount() {
         return discount_amount;
     }
 
-    public void setDiscount_amount(int discount_amount) {
+    public void setDiscount_amount(float discount_amount) {
         this.discount_amount = discount_amount;
     }
 

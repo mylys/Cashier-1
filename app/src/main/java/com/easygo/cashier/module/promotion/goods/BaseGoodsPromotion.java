@@ -88,7 +88,8 @@ public class BaseGoodsPromotion extends BasePromotion {
 
             for (int i = 0; i < size; i++) {
                 PromotionGoods.GoodsBean goodsBean = goodsBeans.get(i);
-                total_count += goodsBean.getCount();
+//                total_count += goodsBean.getCount();
+                total_count += goodsBean.getQuanlity();
                 total_subtotal += goodsBean.getSubtotal();
             }
             promotionGoods.setTotal_count(total_count);

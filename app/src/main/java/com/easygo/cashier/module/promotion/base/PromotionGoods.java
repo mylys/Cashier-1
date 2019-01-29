@@ -27,7 +27,8 @@ public class PromotionGoods implements Serializable {
          */
         private int index = -1;
         private String barcode;
-        private int count;
+        private int quanlity;//件数
+        private float count;//数量/重量
         private float price;
         private float subtotal;
         /**
@@ -51,11 +52,19 @@ public class PromotionGoods implements Serializable {
             this.barcode = barcode;
         }
 
-        public int getCount() {
+        public int getQuanlity() {
+            return quanlity;
+        }
+
+        public void setQuanlity(int quanlity) {
+            this.quanlity = quanlity;
+        }
+
+        public float getCount() {
             return count;
         }
 
-        public void setCount(int count) {
+        public void setCount(float count) {
             this.count = count;
         }
 

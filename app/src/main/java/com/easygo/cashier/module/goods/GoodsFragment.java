@@ -367,21 +367,21 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             }
 
         });
-        //条目点击事件监听
-        mGoodsMultiItemAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                List data = adapter.getData();
-                GoodsEntity goodsEntity = (GoodsEntity) data.get(position);
-                switch (goodsEntity.getItemType()) {
-                    case GoodsEntity.TYPE_WEIGHT:
-                    case GoodsEntity.TYPE_ONLY_PROCESSING:
-                    case GoodsEntity.TYPE_PROCESSING:
-//                        mGoodsMultiItemAdapter.remove(position);
-                        break;
-                }
-            }
-        });
+//        //条目点击事件监听
+//        mGoodsMultiItemAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//                List data = adapter.getData();
+//                GoodsEntity goodsEntity = (GoodsEntity) data.get(position);
+//                switch (goodsEntity.getItemType()) {
+//                    case GoodsEntity.TYPE_WEIGHT:
+//                    case GoodsEntity.TYPE_ONLY_PROCESSING:
+//                    case GoodsEntity.TYPE_PROCESSING:
+////                        mGoodsMultiItemAdapter.remove(position);
+//                        break;
+//                }
+//            }
+//        });
 
 
         //分割线
@@ -491,8 +491,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         }
         //刷新价格
         refreshPrice(price, count, coupon);
-        //刷新界面显示促销
-        mGoodsMultiItemAdapter.notifyDataSetChanged();
+        if(!rvGoods.isComputingLayout()) {
+            //刷新界面显示促销
+            mGoodsMultiItemAdapter.notifyDataSetChanged();
+        }
     }
 
 
@@ -1247,7 +1249,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
         if (info == null) {//重置清空会员
             MemberUtils.isMember = false;
-            MemberUtils.reset();
+//            MemberUtils.reset();
             setHide(clMember);
             setMemberVisiable(false);
         } else {

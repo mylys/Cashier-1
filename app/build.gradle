@@ -6,8 +6,8 @@ android {
         applicationId "com.easygo.cashier"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
-        versionName "v0.3"
+        versionCode 4
+        versionName "0.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
@@ -28,6 +28,19 @@ android {
 //            buildConfigField("String", "API_URL", "\"http://api.dev.pos.esgao.cn/\"")//开发
         }
     }
+
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                //这里修改apk文件名
+                outputFileName = rootProject.getName() + "-v" + defaultConfig.versionName + "-" + defaultConfig.versionCode + "-" + releaseTime() + "-${variant.name}.apk"
+            }
+    }
+
+}
+
+def releaseTime() {
+    return new Date().format("MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
 dependencies {

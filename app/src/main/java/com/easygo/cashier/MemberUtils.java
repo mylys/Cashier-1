@@ -124,14 +124,15 @@ public class MemberUtils {
         for (int i = 0; i < size; i++) {
             GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
             if (goodsEntity.getPromotion() != null) {//此商品已有商品促销
-                return;
+                continue;
             } else {
                 GoodsResponse good = goodsEntity.getData();
                 float good_count = goodsEntity.getCount();
                 float price = 0;
 
                 if(goodsEntity.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
-                    price = Float.valueOf(good.getProcess_price());
+//                    price = Float.valueOf(good.getProcess_price());
+                    continue;
                 } else {
                     price = Float.valueOf(good.getPrice());
                 }
@@ -142,17 +143,17 @@ public class MemberUtils {
                 float coupon = getCoupon(good, good_count, fullTotalPrice, price, membership_price);
                 good.setDiscount_price(df.format(coupon));
 
-                if(goodsEntity.getItemType() == GoodsEntity.TYPE_PROCESSING) {
-                    GoodsResponse processing = goodsEntity.getProcessing();
-
-                    if(processing != null) {
-                        price = Float.valueOf(processing.getProcess_price());
-
-                        membership_price = Float.valueOf(processing.getMembership_price());
-                        coupon = getCoupon(processing, good_count, fullTotalPrice, price, membership_price);
-                        processing.setDiscount_price(df.format(coupon));
-                    }
-                }
+//                if(goodsEntity.getItemType() == GoodsEntity.TYPE_PROCESSING) {
+//                    GoodsResponse processing = goodsEntity.getProcessing();
+//
+//                    if(processing != null) {
+//                        price = Float.valueOf(processing.getProcess_price());
+//
+//                        membership_price = Float.valueOf(processing.getMembership_price());
+//                        coupon = getCoupon(processing, good_count, fullTotalPrice, price, membership_price);
+//                        processing.setDiscount_price(df.format(coupon));
+//                    }
+//                }
             }
         }
     }
@@ -210,10 +211,10 @@ public class MemberUtils {
                 } else if(entity.getItemType() == GoodsEntity.TYPE_PROCESSING){
                     total_price += Float.parseFloat(good.getPrice()) * entity.getCount();
 
-                    GoodsResponse processing = entity.getProcessing();
-                    if (processing != null) {//此时 选择了加工
-                        total_price += Double.valueOf(processing.getProcess_price());
-                    }
+//                    GoodsResponse processing = entity.getProcessing();
+//                    if (processing != null) {//此时 选择了加工
+//                        total_price += Double.valueOf(processing.getProcess_price());
+//                    }
                 } else {
                     total_price += Float.parseFloat(good.getPrice()) * entity.getCount();
                 }

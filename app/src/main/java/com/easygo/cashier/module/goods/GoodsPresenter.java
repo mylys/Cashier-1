@@ -194,7 +194,9 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
     @Override
     public void getMemberDay() {
         Map<String, String> header = HttpClient.getInstance().getHeader();
-        subscribeAsyncToResult(HttpAPI.getInstance().httpService().getMembersDay(header, null, Configs.shop_sn),
+        subscribeAsyncToResult(HttpAPI.getInstance().httpService()
+                        .getMembersDay(header, null, Configs.shop_sn)
+                        .retry(2),
                 new BaseResultObserver<List<MemberDayInfo>>() {
                     @Override
                     protected void onSuccess(List<MemberDayInfo> result) {
@@ -211,7 +213,9 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
     @Override
     public void getMemberDiscount() {
         Map<String, String> header = HttpClient.getInstance().getHeader();
-        subscribeAsyncToResult(HttpAPI.getInstance().httpService().getMemberDiscount(header, null, Configs.shop_sn),
+        subscribeAsyncToResult(HttpAPI.getInstance().httpService()
+                        .getMemberDiscount(header, null, Configs.shop_sn)
+                        .retry(2),
                 new BaseResultObserver<List<MemberDiscountInfo>>() {
                     @Override
                     protected void onSuccess(List<MemberDiscountInfo> result) {

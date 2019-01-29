@@ -39,7 +39,7 @@
         android:layout_height="@dimen/y56"
         android:text="+"
         android:textSize="@dimen/text_size_29"
-        android:textColor="@color/color_505050"
+        android:textColor="@color/color_e84525"
         android:background="@drawable/bg_btn_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

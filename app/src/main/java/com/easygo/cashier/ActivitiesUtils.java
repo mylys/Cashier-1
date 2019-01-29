@@ -97,13 +97,6 @@ public class ActivitiesUtils {
 
         for (int i = 0; i < size; i++) {
             GoodsActivityResponse.ActivitiesBean activitiesBean = activities.get(i);
-//            BaseGoodsPromotion promotion = new BaseGoodsPromotion();
-//            promotion.setId(activitiesBean.getId());
-//            promotion.setName(activitiesBean.getName());
-//            promotion.setType(activitiesBean.getType());
-//            promotion.setGoods_effected_at(activitiesBean.getEffected_at());
-//            promotion.setGoods_expired_at(activitiesBean.getExpired_at());
-//            promotion.setGoodsBeans(activitiesBean.getGoods());
 
             GoodsActivityResponse.ActivitiesBean.ConfigBean config = activitiesBean.getConfig();
             int type = activitiesBean.getType();
@@ -191,7 +184,6 @@ public class ActivitiesUtils {
             goodsEntity.getData().setDiscount_price("0.00");
             barcode = goodsEntity.getData().getBarcode();
 
-//            actvitity_id = -1;
             //  2、根据barcode 去map中找此商品是否有促销信息
             Integer integer = barcode2IdMap.get(barcode);
             actvitity_id = integer == null ? -1: integer;
@@ -215,10 +207,7 @@ public class ActivitiesUtils {
                 GoodsActivityResponse.ActivitiesBean.GoodsBean goodsBean = goodsBeans.get(j);
                 //判断 比对成功
                 if(barcode.equals(goodsBean.getBarcode())) {
-//                    promotionGoods = promotion.getPromotionGoods();
-//                    if(promotionGoods == null) {
-//                        promotionGoods = new PromotionGoods();
-//                    }
+
                     boolean weight = goodsEntity.getItemType() == GoodsEntity.TYPE_WEIGHT
                             || goodsEntity.getItemType() == GoodsEntity.TYPE_PROCESSING;
 
@@ -226,7 +215,8 @@ public class ActivitiesUtils {
                     PromotionGoods.GoodsBean good = new PromotionGoods.GoodsBean();
                     good.setIndex(i);//设置在data数据源中的位置
                     good.setBarcode(barcode);
-                    good.setCount(weight? 1: (int) goodsEntity.getCount());
+                    good.setQuanlity(weight? 1: (int) goodsEntity.getCount());
+                    good.setCount(goodsEntity.getCount());
                     good.setPrice(Float.valueOf(goodsEntity.getData().getPrice()));
                     good.setSubtotal(goodsEntity.getCount() * Float.valueOf(goodsEntity.getData().getPrice()));
                     promotionGoods.getGoodsBeans().add(good);

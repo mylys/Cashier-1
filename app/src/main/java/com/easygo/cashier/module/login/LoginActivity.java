@@ -491,7 +491,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
                 + ", errorMsg: " + errorMsg);
         showToast(errorMsg);
 
-        mHandler.sendEmptyMessageDelayed(MSG_GET_SHOP, 2000);
+//        mHandler.sendEmptyMessageDelayed(MSG_GET_SHOP, 2000);
 
     }
 

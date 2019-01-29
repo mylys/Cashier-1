@@ -249,7 +249,8 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
         for (int i = 0; i < size; i++) {
             PromotionGoods.GoodsBean goodsBean = goodsBeans.get(i);
 
-            int good_count = goodsBean.getCount();
+//            int good_count = goodsBean.getCount();
+            int good_count = goodsBean.getQuanlity();
             if(good_count == 0) {
                 //此商品已经添加到T.list中，跳过
                 continue;
@@ -266,7 +267,8 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
                 needCount = needCount - good_count;
 
                 //更新数量、小计
-                goodsBean.setCount(0);
+                goodsBean.setQuanlity(0);
+//                goodsBean.setCount(0);
                 goodsBean.setSubtotal(0f);
 
             } else {//指定数量小于此商品数量，将指定数量添加到Rule.list
@@ -277,7 +279,8 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
 
                 int remain = good_count - needCount;
                 //更新数量、小计
-                goodsBean.setCount(remain);
+                goodsBean.setQuanlity(remain);
+//                goodsBean.setCount(remain);
                 goodsBean.setSubtotal(remain * goodsBean.getPrice());
                 //已经完整添加到Rule.list
                 break;

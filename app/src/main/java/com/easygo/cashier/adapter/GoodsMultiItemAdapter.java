@@ -405,6 +405,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 final CheckBox cb_processing = (CheckBox) helper.getView(R.id.cb_processing);
 
                 GoodsResponse processing = item.getProcessing();
+                cb_processing.setOnCheckedChangeListener(null);
                 if (processing != null) {//选择了加工方式
                     cb_processing.setChecked(true);
 
