@@ -32,7 +32,8 @@ public interface IPromotion {
     int TYPE_MEET = 3;
     /**活动类型 捆绑*/
     int TYPE_BUNDLE = 4;
-
+    /**活动类型 固定*/
+    int TYPE_FIXED = 5;
 
 
 

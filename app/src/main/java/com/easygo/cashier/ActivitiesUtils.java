@@ -7,11 +7,11 @@ import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
-import com.easygo.cashier.module.promotion.base.BasePromotion;
 import com.easygo.cashier.module.promotion.base.IGoodsPromotion;
 import com.easygo.cashier.module.promotion.base.IPromotion;
 import com.easygo.cashier.module.promotion.base.PromotionGoods;
 import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
+import com.easygo.cashier.module.promotion.goods.GoodsFixedPromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsFulfilMoneyPromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsBundlePromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsNormalPromotion;
@@ -22,7 +22,6 @@ import com.easygo.cashier.module.promotion.shop.ShopTimePromotion;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -136,6 +135,12 @@ public class ActivitiesUtils {
                     fillData(bundlePromotion, activitiesBean);
                     bundlePromotion.setListBeans(activitiesBean.getConfig().getList());
                     id2PromotionMap.put(activitiesBean.getId(), bundlePromotion);
+                    break;
+                case IGoodsPromotion.TYPE_FIXED:
+                    GoodsFixedPromotion fixedPromotion = new GoodsFixedPromotion();
+                    fillData(fixedPromotion, activitiesBean);
+                    fixedPromotion.setListBeans(activitiesBean.getConfig().getList());
+                    id2PromotionMap.put(activitiesBean.getId(), fixedPromotion);
                     break;
             }
         }
