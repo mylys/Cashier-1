@@ -174,7 +174,6 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     private UserGoodsScreen mUserGoodsScreen;
 
-    private boolean start = true;
 
 
     /**轮询间隔*/
@@ -182,8 +181,14 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     private long interval = 30000;
     public static final int MSG_PROMOTION = 0;
 
+    /**商品促销接口请求成功*/
     private boolean goods_promotion_success;
+    /**店铺促销接口请求成功*/
     private boolean shop_promotion_success;
+    /**
+     * 是否前台显示
+     */
+    private boolean isForeground;
     /**
      * 是否正在刷新促销价格
      */
@@ -628,20 +633,22 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public void onResume() {
         super.onResume();
 
-        if (start) {
+        isForeground = true;
+        mHandler.removeMessages(MSG_PROMOTION);
+        getPromotion();
+    }
 
-            mHandler.removeMessages(MSG_PROMOTION);
-            getPromotion();
-        }
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        isForeground = false;
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-//        if (mGoodsMultiItemAdapter != null)
-//            mGoodsMultiItemAdapter.clear();
-//        if (mUserGoodsScreen != null)
-//            mUserGoodsScreen.clear();
     }
 
     /**
@@ -799,6 +806,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                         if (mUserGoodsScreen != null) {
                             mUserGoodsScreen.clear();
                         }
+                        //请求一次促销
                         mHandler.sendEmptyMessage(MSG_PROMOTION);
 
                     }
@@ -1208,9 +1216,13 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public void goodsActivitySuccess(GoodsActivityResponse result) {
         Log.i(TAG, "goodsActivitySuccess: 商品促销成功");
 
+        if(!isForeground) {
+            Log.i(TAG, "goodsActivitySuccess: 取消解析商品促销");
+            return;
+        }
+
         goods_promotion_success = true;
-        if (start)
-            ActivitiesUtils.getInstance().parseGoods(result);
+        ActivitiesUtils.getInstance().parseGoods(result);
 
         scheduleGetPromotion();
 
@@ -1235,10 +1247,13 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public void shopActivitySuccess(ShopActivityResponse result) {
         Log.i(TAG, "shopActivitySuccess: 店铺促销成功");
 
-        shop_promotion_success = true;
+        if(!isForeground) {
+            Log.i(TAG, "shopActivitySuccess: 取消解析店铺促销");
+            return;
+        }
 
-        if (start)
-            ActivitiesUtils.getInstance().parseShop(result);
+        shop_promotion_success = true;
+        ActivitiesUtils.getInstance().parseShop(result);
 
         scheduleGetPromotion();
 
