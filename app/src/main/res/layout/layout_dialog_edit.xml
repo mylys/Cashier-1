@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_dialog">
@@ -59,10 +60,83 @@
         android:textColor="@color/color_505050"
         android:textColorHint="@color/color_text_ababab"
         android:textSize="@dimen/text_size_29"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/constraint_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_center"
+        android:layout_width="@dimen/x632"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y64"
+        android:layout_marginBottom="@dimen/y64"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/constraint_bottom"
+        app:layout_constraintTop_toBottomOf="@+id/title">
+
+        <TextView
+            android:id="@+id/user_account"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y84"
+            android:layout_marginStart="@dimen/x30"
+            android:gravity="center"
+            android:text="员工账号："
+            android:textColor="@color/color_505050"
+            android:textSize="@dimen/x33"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_account"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y84"
+            android:layout_marginEnd="@dimen/x30"
+            android:background="@drawable/bg_input"
+            android:hint="@string/hint_user_account"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x30"
+            android:singleLine="true"
+            android:textColor="@color/color_505050"
+            android:textColorHint="@color/color_text_ababab"
+            android:textSize="@dimen/text_size_29"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/user_account" />
+
+        <TextView
+            android:id="@+id/user_password"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_marginStart="@dimen/x30"
+            android:layout_marginTop="@dimen/x30"
+            android:gravity="center"
+            android:text="员工密码："
+            android:textColor="@color/color_505050"
+            android:textSize="@dimen/x33"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_account" />
+
+        <EditText
+            android:id="@+id/edit_password"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y84"
+            android:layout_marginTop="@dimen/x30"
+            android:layout_marginEnd="@dimen/x30"
+            android:background="@drawable/bg_input"
+            android:hint="@string/hint_user_password"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x30"
+            android:singleLine="true"
+            android:textColor="@color/color_505050"
+            android:textColorHint="@color/color_text_ababab"
+            android:textSize="@dimen/text_size_29"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/user_account"
+            app:layout_constraintTop_toBottomOf="@+id/user_account" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_bottom"
@@ -70,7 +144,8 @@
         android:layout_height="@dimen/y100"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraint_center">
 
         <View
             android:id="@+id/view1"

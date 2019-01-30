@@ -249,7 +249,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     }
 
-    /**是否是自编码*/
+    /**
+     * 是否是自编码
+     */
     private boolean mIsSelfEncode;
     private int mGoodWeight;
     private int mGoodMoney;
@@ -411,12 +413,13 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     /**
      * 商品价格变动时  计算促销、会员、优惠券
+     *
      * @param price
      * @param count
      * @param coupon
      */
     private void computePrice(float price, int count, float coupon) {
-        if(price == 0 && count == 0 && coupon == 0) {
+        if (price == 0 && count == 0 && coupon == 0) {
             //清空数据时
             refreshPrice(price, count, coupon);
             showCurrentActivities(null);
@@ -429,13 +432,13 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         ActivitiesUtils.getInstance().promotion(mData);
         ActivitiesUtils.getInstance().getCurrentGoodsPromotions(mData);
         //判断是否有商品促销
-        if(ActivitiesUtils.getInstance().hasGoodsPromotion()) {
+        if (ActivitiesUtils.getInstance().hasGoodsPromotion()) {
 
             //刷新正在参加的活动
             showCurrentActivities(ActivitiesUtils.getInstance().getCurrentPromotionNames());
 
 
-            if(!MemberUtils.isMember) {//不是会员时
+            if (!MemberUtils.isMember) {//不是会员时
                 coupon = ActivitiesUtils.getInstance().getGoodsPromotionMoney();
             } else {
 
@@ -449,7 +452,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         } else {
             //判断是否有店铺促销
             coupon = ActivitiesUtils.getInstance().promotion(mGoodsMultiItemAdapter.getSubtotal());
-            if(coupon > 0) {
+            if (coupon > 0) {
                 //符合店铺促销条件
                 showCurrentActivities(ActivitiesUtils.getInstance().getCurrentPromotionNames());
 
@@ -457,7 +460,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
             }
             //判断是否有会员
-            else if(MemberUtils.isMember) {
+            else if (MemberUtils.isMember) {
                 //计算会员价、日、折扣
                 MemberUtils.computeMember(mData);
 
@@ -475,7 +478,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             }
         }
         //判断是否有优惠券可用
-        if(with_coupon) {
+        if (with_coupon) {
             if (CouponUtils.getInstance().getCouponInfo() != null) {
                 float couponMoney = CouponUtils.getInstance().getCouponMoney(price - coupon);
 
@@ -498,12 +501,11 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     }
 
 
-
     private void showCurrentActivities(List<String> data) {
-        activitiesView.setVisibility(data != null && data.size() > 0 ? View.VISIBLE: View.GONE);
+        activitiesView.setVisibility(data != null && data.size() > 0 ? View.VISIBLE : View.GONE);
         activitiesView.setData(data);
 
-        if(mUserGoodsScreen != null) {
+        if (mUserGoodsScreen != null) {
             mUserGoodsScreen.showCurrentActivities(data);
         }
     }
@@ -529,7 +531,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public void onResume() {
         super.onResume();
 
-        if(start) {
+        if (start) {
             mPresenter.goods_activity(Configs.shop_sn);
             mPresenter.shop_activity(Configs.shop_sn);
         }
@@ -600,7 +602,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         mCoupon = coupon;
         float real_pay = price - coupon;
 
-        if(real_pay < 0) {
+        if (real_pay < 0) {
             real_pay = 0;
         }
 
@@ -663,8 +665,26 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                 break;
             case R.id.btn_pop_money_box://弹出钱箱
-
-                mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
+                if (Configs.till_auth == 0) {
+                    mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
+                    return;
+                }
+                if (editDialog == null) {
+                    editDialog = new GeneraEditDialog();
+                }
+                editDialog.showCenter(getActivity());
+                editDialog.setTitle(getResources().getString(R.string.text_cashbox_accredit));
+                editDialog.setType(Configs.till_auth == 1 ? GeneraEditDialog.USER_ACCREDIT : GeneraEditDialog.USER_ACCOUNT);
+                editDialog.setOnDialogClickListener(new GeneraEditDialog.OnDialogClickListener() {
+                    @Override
+                    public void onContent(int type, String account, String password) {
+                        if (type == GeneraEditDialog.USER_ACCREDIT) {
+                            mPresenter.tillAuth(account, null, null);
+                        } else if (type == GeneraEditDialog.USER_ACCOUNT) {
+                            mPresenter.tillAuth(null, account, password);
+                        }
+                    }
+                });
 
                 break;
             case R.id.btn_clear://清空
@@ -702,8 +722,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                         ARouter.getInstance().build(ModulePath.settlement)
                                 .withString("admin_name", admin_name)
                                 .withInt("goods_count", mGoodsCount)
-                                .withFloat("coupon", mCoupon-mCouponMoney)
-                                .withFloat("coupon_money",  mCouponMoney)
+                                .withFloat("coupon", mCoupon - mCouponMoney)
+                                .withFloat("coupon_money", mCouponMoney)
                                 .withFloat("total_money", mTotalMoney)
                                 .withString("member_balance", balance)
                                 .withSerializable("goods_data", (Serializable) mData)
@@ -739,7 +759,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 editDialog.setTitle(getResources().getString(R.string.text_entry_orders));
                 editDialog.setOnDialogClickListener(new GeneraEditDialog.OnDialogClickListener() {
                     @Override
-                    public void onContent(String content) {
+                    public void onContent(int type, String account, String password) {
                         SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication).edit();
                         SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication);
                         String json = sp.getString(Constans.KEY_ENTRY_ORDERS_LIST, "");
@@ -757,7 +777,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                         Date date = new Date();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-                        orders.setEntry_orders_note(content);
+                        orders.setEntry_orders_note(account);
                         orders.setEntry_orders_time(sdf.format(date));
 //                        orders.setEntry_orders_total_price(tvTotalMoney.getText().toString());
 //                        orders.setEntry_orders_total_number(tvGoodsCount.getText().toString());
@@ -776,7 +796,6 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                         if (mUserGoodsScreen != null) {
                             mUserGoodsScreen.clear();
                         }
-                        editDialog.clearInfo();
                     }
                 });
                 break;
@@ -790,9 +809,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                     @Override
                     public void onSearch(String content) {
 
-                        if(BarcodeUtils.isMember(content)) {
+                        if (BarcodeUtils.isMember(content)) {
                             mPresenter.getMember(null, content);
-                        } else if(content.length() == 11 && TextUtils.isDigitsOnly(content)){
+                        } else if (content.length() == 11 && TextUtils.isDigitsOnly(content)) {
                             mPresenter.getMember(content, null);
                         } else {
                             showToast("请输入正确的手机号/会员卡号");
@@ -803,9 +822,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 break;
             case R.id.btn_choose_coupon:
                 //判断是否有促销
-                if(ActivitiesUtils.getInstance().hasGoodsPromotion() || ActivitiesUtils.getInstance().hasShopPromotion()) {
+                if (ActivitiesUtils.getInstance().hasGoodsPromotion() || ActivitiesUtils.getInstance().hasShopPromotion()) {
 
-                    if(!ActivitiesUtils.getInstance().isWith_coupon()) {
+                    if (!ActivitiesUtils.getInstance().isWith_coupon()) {
                         showToast("参与的促销活动不可与优惠券共用");
                         return;
                     }
@@ -819,7 +838,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 couponsDialog.setOnSearchListener(new ChooseCouponsDialog.OnSearchListener() {
                     @Override
                     public void onSearch(String content) {
-                        if(content.length() < 32) {
+                        if (content.length() < 32) {
                             showToast("优惠券编号至少32位");
                             return;
                         }
@@ -830,7 +849,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                     public void onItemClick(CouponResponse result) {
                         //设置优惠券信息
                         setShow(clCoupon);
-                        if(!MemberUtils.isMember) {
+                        if (!MemberUtils.isMember) {
                             clMember.setVisibility(View.GONE);
                         }
                         tvCouponNo.setText(result.getName());
@@ -888,7 +907,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 //            }
 //        }
 //        clExtraInfo.setVisibility(View.GONE);
-        if(constraintLayout == clExtraInfo) {
+        if (constraintLayout == clExtraInfo) {
             clExtraInfo.setVisibility(View.GONE);
             clMember.setVisibility(View.GONE);
             clCoupon.setVisibility(View.GONE);
@@ -900,11 +919,11 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         boolean needHide = false;
         if (constraintLayout == clMember) {
             needHide = clCoupon.getVisibility() == View.GONE;
-        } else if(constraintLayout == clCoupon) {
+        } else if (constraintLayout == clCoupon) {
             needHide = clMember.getVisibility() == View.GONE;
         }
 
-        if(needHide) {
+        if (needHide) {
             clExtraInfo.setVisibility(View.GONE);
         }
 
@@ -913,17 +932,17 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public void setShow(ConstraintLayout constraintLayout) {
         constraintLayout.setVisibility(View.VISIBLE);
         clExtraInfo.setVisibility(View.VISIBLE);
-        if(MemberUtils.isMember) {
+        if (MemberUtils.isMember) {
             clMember.setVisibility(View.VISIBLE);
         }
-        if(CouponUtils.getInstance().getCouponInfo() != null) {
+        if (CouponUtils.getInstance().getCouponInfo() != null) {
             clCoupon.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void getGoodsSuccess(List<GoodsResponse> result) {
-        if(result == null || result.size() == 0) {
+        if (result == null || result.size() == 0) {
             showToast("商品不存在");
             return;
         }
@@ -932,8 +951,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         float count = 1f;
         int size = result.size();
 
-        if(mIsSelfEncode) {//自编码
-            if(mGoodWeight == 0) {//以个为单位的商品
+        if (mIsSelfEncode) {//自编码
+            if (mGoodWeight == 0) {//以个为单位的商品
                 for (int i = 0; i < size; i++) {
 
                     GoodsResponse goodsResponse = result.get(i);
@@ -947,7 +966,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         }
 
         boolean add_success = mGoodsMultiItemAdapter.addItem(result, count);
-        if(!add_success) {
+        if (!add_success) {
             showToast("商品库存不足");
             return;
         }
@@ -1025,7 +1044,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 public void onSearchResultClicked(List<GoodsResponse> list) {
                     //添加
                     boolean add_success = mGoodsMultiItemAdapter.addItem(list, 1);
-                    if(!add_success) {
+                    if (!add_success) {
                         showToast("商品库存不足");
                         clSearch.clearText();
                         mSearchResultWindow.dismiss();
@@ -1084,7 +1103,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public void goodsActivitySuccess(GoodsActivityResponse result) {
         Log.i(TAG, "goodsActivitySuccess: 商品促销成功");
 
-        if(start)
+        if (start)
             ActivitiesUtils.getInstance().parseGoods(result);
 
     }
@@ -1099,7 +1118,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public void shopActivitySuccess(ShopActivityResponse result) {
         Log.i(TAG, "shopActivitySuccess: 店铺促销成功");
 
-        if(start)
+        if (start)
             ActivitiesUtils.getInstance().parseShop(result);
 
     }
@@ -1191,6 +1210,18 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     }
 
     @Override
+    public void getTillAuthSuccess(String result) {
+        Log.i(TAG, "getTillAuthSuccess :校验钱箱权限成功");
+        mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
+    }
+
+    @Override
+    public void getTillAythFailed(Map<String, Object> map) {
+        Log.i(TAG, "getTillAuthSuccess :校验钱箱权限失败");
+        showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
 
@@ -1270,6 +1301,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     /**
      * 设置会员价一列是否显示
+     *
      * @param visiable
      */
     public void setMemberVisiable(boolean visiable) {
@@ -1284,7 +1316,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             List<GoodsResponse> infos = new ArrayList<>();
             infos.add(info);
             boolean add_success = mGoodsMultiItemAdapter.addItem(infos, 1);
-            if(!add_success) {
+            if (!add_success) {
                 showToast("商品库存不足");
                 return;
             }

@@ -90,6 +90,24 @@ public class InitResponse {
         private String shop_name;
         private String shop_sn;
         private int is_reserve;
+        private int refund_auth;
+        private int till_auth;
+
+        public int getRefund_auth() {
+            return refund_auth;
+        }
+
+        public void setRefund_auth(int refund_auth) {
+            this.refund_auth = refund_auth;
+        }
+
+        public int getTill_auth() {
+            return till_auth;
+        }
+
+        public void setTill_auth(int till_auth) {
+            this.till_auth = till_auth;
+        }
 
         public int getShop_id() {
             return shop_id;

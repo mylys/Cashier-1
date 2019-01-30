@@ -211,4 +211,9 @@
     <string name="text_genera_width_88">88mm</string>
     <string name="text_product_name">商品数量：</string>
 
+    <string name="hint_user_account">请输入员工账号</string>
+    <string name="hint_user_password">请输入员工密码</string>
+    <string name="text_cashbox_accredit">弹出钱箱授权</string>
+    <string name="text_refund_accedit">退款授权</string>
+
 </resources>

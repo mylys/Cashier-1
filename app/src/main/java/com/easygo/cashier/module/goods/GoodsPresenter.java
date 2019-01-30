@@ -109,7 +109,7 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
             InitResponse.PrintersBean printersBean = PrintHelper.printersBeans.get(i);
             String device_sn = printersBean.getDevice_sn();
 
-            if(!printersBean.canUse(InitResponse.PrintersBean.type_settlement)) {
+            if (!printersBean.canUse(InitResponse.PrintersBean.type_settlement)) {
                 return;
             }
             Map<String, Object> requestMap = new HashMap<>();
@@ -284,5 +284,23 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
         };
         retry.subscribe(observer);
         mCompositeDisposable.add(observer);
+    }
+
+    @Override
+    public void tillAuth(String till_password, String account, String password) {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().tillAuth(header, till_password, account, password),
+                new BaseResultObserver<String>() {
+                    @Override
+                    protected void onSuccess(String result) {
+                        mView.getTillAuthSuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.getTillAythFailed(map);
+                    }
+                });
     }
 }

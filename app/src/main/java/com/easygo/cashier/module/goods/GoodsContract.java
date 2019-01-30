@@ -37,6 +37,8 @@ public class GoodsContract {
         void get_coupon(String coupon);
         /**心跳*/
         void heartbeat();
+
+        void tillAuth(String till_password,String account,String password);
     }
 
     public interface IView extends BaseView {
@@ -69,5 +71,8 @@ public class GoodsContract {
 
         void couponSuccess(CouponResponse result);
         void couponFailed(Map<String,Object> map);
+
+        void getTillAuthSuccess(String result);
+        void getTillAythFailed(Map<String, Object> map);
     }
 }

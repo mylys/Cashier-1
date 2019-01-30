@@ -96,6 +96,7 @@ public class ConfigDialog extends BaseDialog {
 
         etId.setText(appkey);
         etSecret.setText(secret);
+        etSecret.setText("d908936a0d53a459c117227b8f1d8608");
     }
 
     /**
