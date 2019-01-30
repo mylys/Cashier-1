@@ -178,8 +178,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
 
     /**轮询间隔*/
-    private long interval = 10000;
-//    private long interval = 30000;
+//    private long interval = 10000;
+    private long interval = 30000;
     public static final int MSG_PROMOTION = 0;
 
     private boolean goods_promotion_success;
