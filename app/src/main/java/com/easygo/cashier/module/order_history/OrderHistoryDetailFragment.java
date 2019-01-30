@@ -266,10 +266,19 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         tvReceipts.setText("实付：￥" + orderHistoryInfo.getBuyer_pay());
 
         tvReceivable.setText("应收：￥" + orderHistoryInfo.getReal_pay());
+
+        float coupon = 0f;
+        List<OrderHistorysInfo.ListBean> list = mOrderHistorysInfo.getList();
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+            coupon += Float.valueOf(list.get(i).getDiscount());
+        }
+
         if(have_shop_promotion) {
             OrderHistorysInfo.ActivitiesBean activitiesBean = activities.get(0);
+            coupon += Float.valueOf(activitiesBean.getDiscount_money());
             tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money()
-                    + " - 优惠：￥" + activitiesBean.getDiscount_money() + " = ");
+                    + " - 优惠：￥" + coupon + " = ");
         } else {
             tvReceivableText.setText("");
         }

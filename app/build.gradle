@@ -6,8 +6,8 @@ android {
         applicationId "com.easygo.cashier"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 4
-        versionName "0.4"
+        versionCode 5
+        versionName "0.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
@@ -24,8 +24,8 @@ android {
         }
         dev.initWith(buildTypes.debug)
         dev {
-//            buildConfigField("String", "API_URL", "\"https://api.pos.esgao.cn/\"")//正式
-            buildConfigField("String", "API_URL", "\"http://api.dev.pos.esgao.cn/\"")//开发
+            buildConfigField("String", "API_URL", "\"https://api.pos.esgao.cn/\"")//正式
+//            buildConfigField("String", "API_URL", "\"http://api.dev.pos.esgao.cn/\"")//开发
         }
     }
 

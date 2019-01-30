@@ -155,6 +155,13 @@ public class ActivitiesUtils {
      * 应用商品促销
      */
     public void promotion(List<GoodsEntity<GoodsResponse>> data) {
+        int size = data.size();
+        //重置
+        for (int i = 0; i < size; i++) {
+            GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
+            goodsEntity.getData().setDiscount_price("0.00");
+            goodsEntity.setPromotion(null);
+        }
 
         if(barcode2IdMap == null) {
             return;
@@ -163,15 +170,10 @@ public class ActivitiesUtils {
         }
         needComputeMap.clear();
 
-        int size = data.size();
         String barcode;
         int actvitity_id;
 
 
-        //重置
-        for (int i = 0; i < size; i++) {
-            data.get(i).setPromotion(null);
-        }
         for (Map.Entry<Integer, BaseGoodsPromotion> entry : id2PromotionMap.entrySet()) {
             BaseGoodsPromotion promotion = entry.getValue();
             promotion.setPromotionGoods(null);
@@ -180,8 +182,8 @@ public class ActivitiesUtils {
         //  1、遍历顾客所购商品
         for (int i = 0; i < size; i++) {
             GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
-            //置零
-            goodsEntity.getData().setDiscount_price("0.00");
+//            //置零
+//            goodsEntity.getData().setDiscount_price("0.00");
             barcode = goodsEntity.getData().getBarcode();
 
             //  2、根据barcode 去map中找此商品是否有促销信息
@@ -273,6 +275,7 @@ public class ActivitiesUtils {
     public void parseShop(ShopActivityResponse response) {
         //重置
         shopList.clear();
+        currentShopPromotion = null;
 
         List<ShopActivityResponse.ListBean> list = response.getList();
         int size = list.size();

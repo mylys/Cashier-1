@@ -705,6 +705,41 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
     }
 
+    /**
+     * 获取除加工方式商品外,没有参与商品促销和会员的所有商品小计
+     * @return
+     */
+    public float getShopTotal() {
+        float temp;
+        float count;
+        float price;
+        float coupon;
+        float result = 0;
+        GoodsResponse good;
+        for (GoodsEntity<GoodsResponse> entity : mData) {
+            good = entity.getData();
+            if(entity.getPromotion() != null) {
+                continue;
+            }
+
+            coupon = Float.valueOf(good.getDiscount_price());
+            if (coupon > 0) {
+                continue;
+            }
+
+            price = Float.valueOf(good.getPrice());
+            count = entity.getCount();
+            temp = price * count;
+            if(temp < 0) {
+                temp = 0;
+            }
+            result += temp;
+        }
+        return result;
+
+    }
+
+
 
     public String getTotalPrice() {
         float total_price = 0;

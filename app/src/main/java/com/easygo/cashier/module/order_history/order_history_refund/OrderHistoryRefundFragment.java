@@ -223,9 +223,9 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                     editRefundcashPrice.setText("0.00");
                 } else {
                     float totalCoupon = adapter.getTotalCoupon();
-                    if (totalCoupon != 0) {
-                        editRefundcashPrice.setText(df.format(Float.valueOf(adapter.getTotalPrice()) - totalCoupon));
-                    } else {
+//                    if (totalCoupon != 0) {
+//                        editRefundcashPrice.setText(df.format(Float.valueOf(adapter.getTotalPrice()) - totalCoupon));
+//                    } else {
                         float discount = 0f;
                         if (activities != null) {
                             int size = activities.size();
@@ -233,8 +233,13 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                                 discount += Float.valueOf(activities.get(i).getDiscount_money());
                             }
                         }
-                        editRefundcashPrice.setText(df.format(Float.valueOf(adapter.getTotalPrice()) - discount));
+
+                    float refund = Float.valueOf(adapter.getTotalPrice()) - totalCoupon - discount;
+                    if(refund < 0) {
+                        refund = 0;
                     }
+                    editRefundcashPrice.setText(df.format(refund));
+//                    }
                 }
                 editRefundcashPrice.setSelection(editRefundcashPrice.getText().toString().length());
             }
@@ -252,9 +257,9 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 editRefundcashPrice.setText(adapter.getTotalPrice());
 
                 float totalCoupon = adapter.getTotalCoupon();
-                if (totalCoupon != 0) {
-                    editRefundcashPrice.setText(df.format(Float.valueOf(adapter.getTotalPrice()) - totalCoupon));
-                } else {
+//                if (totalCoupon != 0) {
+//                    editRefundcashPrice.setText(df.format(Float.valueOf(adapter.getTotalPrice()) - totalCoupon));
+//                } else {
                     float discount = 0f;
                     if (activities != null) {
                         int size = activities.size();
@@ -262,8 +267,13 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                             discount += Float.valueOf(activities.get(i).getDiscount_money());
                         }
                     }
-                    editRefundcashPrice.setText(df.format(Float.valueOf(adapter.getTotalPrice()) - discount));
-                }
+
+                    float refund = Float.valueOf(adapter.getTotalPrice()) - totalCoupon - discount;
+                    if(refund < 0) {
+                        refund = 0;
+                    }
+                    editRefundcashPrice.setText(df.format(refund));
+//                }
                 editRefundcashPrice.setSelection(editRefundcashPrice.getText().toString().length());
             }
         });
@@ -401,13 +411,13 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
             public void onContent(int type, String account, String password) {
                 String json = "";
                 if (type == GeneraEditDialog.USER_ACCREDIT) {
-                    RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, prices, account,
-                            null, null, refund_pay_type, adapter.getList());
+                    RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, prices, refund_pay_type,
+                            account, null, null, adapter.getList());
                     json = GsonUtils.getInstance().getGson().toJson(body);
 
                 } else if (type == GeneraEditDialog.USER_ACCOUNT) {
-                    RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, prices, null,
-                            account, password, refund_pay_type, adapter.getList());
+                    RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, prices, refund_pay_type,
+                            null, account, password, adapter.getList());
                     json = GsonUtils.getInstance().getGson().toJson(body);
                 }
                 mPresenter.post(json);

@@ -131,6 +131,7 @@ public class GeneraEditDialog extends BaseDialog {
             case USER_ACCREDIT:
                 editInput.setVisibility(View.INVISIBLE);
                 constraintLayout.setVisibility(View.VISIBLE);
+                editAccount.setHint("请输入授权密码");
                 editPassword.setVisibility(View.GONE);
                 tvPassword.setVisibility(View.GONE);
                 tvAccount.setText("授权密码：");
