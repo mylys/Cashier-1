@@ -55,7 +55,8 @@ public class ActivitiesUtils {
 
     private float mShopPromotionMoney;
     private float mGoodsPromotionMoney;
-    private boolean with_coupon;
+    private boolean goods_with_coupon = true;
+    private boolean shop_with_coupon = true;
 
     private List<String> currentPromotionNames;
 
@@ -320,6 +321,8 @@ public class ActivitiesUtils {
 
         currentShopPromotion = null;
 
+        shop_with_coupon = true;
+
         for (int i = 0; i < size; i++) {
 
             BaseShopPromotion baseShopPromotion = shopList.get(i);
@@ -331,7 +334,7 @@ public class ActivitiesUtils {
                 //记录店铺促销金额
                 mShopPromotionMoney = promotionMoney;
 
-                with_coupon = currentShopPromotion.getWith_coupon() == 1;
+                shop_with_coupon = currentShopPromotion.getWith_coupon() == 1;
 
                 return promotionMoney;
             }
@@ -349,7 +352,7 @@ public class ActivitiesUtils {
         } else {
             currentGoodsPromotions.clear();
         }
-        with_coupon = true;
+        goods_with_coupon = true;
         for (int i = 0; i < size; i++) {
 
             promotion = data.get(i).getPromotion();
@@ -359,7 +362,7 @@ public class ActivitiesUtils {
                 //累加商品促销金额
                 mGoodsPromotionMoney += Float.valueOf(data.get(i).getData().getDiscount_price());
                 if(promotion.getWith_coupon() == 0) {
-                    with_coupon = false;
+                    goods_with_coupon = false;
                 }
             }
         }
@@ -421,7 +424,25 @@ public class ActivitiesUtils {
     }
 
     public boolean isWith_coupon() {
-        return with_coupon;
+        boolean has_goods = hasGoodsPromotion();
+        boolean has_shop = hasShopPromotion();
+
+        if(has_goods) {
+            //有商品促销
+            if(has_shop) {//有店铺促销
+                return goods_with_coupon && shop_with_coupon;
+            } else {//没有店铺促销
+                return goods_with_coupon;
+            }
+        }
+        //只有店铺促销
+        else if(has_shop) {
+            return shop_with_coupon;
+        }
+        //没有任何促销
+        else {
+            return true;
+        }
     }
 
 
@@ -429,6 +450,7 @@ public class ActivitiesUtils {
         currentShopPromotion = null;
         currentGoodsPromotions = null;
         currentPromotionNames = null;
-        with_coupon = false;
+        goods_with_coupon = true;
+        shop_with_coupon = true;
     }
 }

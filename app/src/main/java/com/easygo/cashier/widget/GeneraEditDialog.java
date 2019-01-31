@@ -30,6 +30,7 @@ public class GeneraEditDialog extends BaseDialog {
     private EditText editInput;
 
     private ConstraintLayout constraintLayout;
+
     private TextView tvAccount;
     private EditText editAccount;
     private TextView tvPassword;
@@ -49,7 +50,7 @@ public class GeneraEditDialog extends BaseDialog {
     }
 
     public interface OnDialogClickListener {
-        void onContent(int type,String account,String password);
+        void onContent(int type, String account, String password);
     }
 
     public void setOnDialogClickListener(OnDialogClickListener listener) {
@@ -83,7 +84,8 @@ public class GeneraEditDialog extends BaseDialog {
         if (!TextUtils.isEmpty(title)) {
             dialog_title.setText(title);
         }
-        if (!visiable){
+        if (!visiable) {
+            iv_cancel.setVisibility(View.GONE);
             dialog_cancel.setVisibility(View.GONE);
         }
         setStyle(type);
@@ -103,15 +105,15 @@ public class GeneraEditDialog extends BaseDialog {
         dialog_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (type){
+                switch (type) {
                     case ENTRY_ORDER:
-                        listener.onContent(type,editInput.getText().toString().trim(),"");
+                        listener.onContent(type, editInput.getText().toString().trim(), "");
                         break;
                     case USER_ACCOUNT:
-                        listener.onContent(type,editAccount.getText().toString().trim(),editPassword.getText().toString().trim());
+                        listener.onContent(type, editAccount.getText().toString().trim(), editPassword.getText().toString().trim());
                         break;
                     case USER_ACCREDIT:
-                        listener.onContent(type,editAccount.getText().toString().trim(),"");
+                        listener.onContent(type, editAccount.getText().toString().trim(), "");
                         break;
                 }
                 setTvEmpty();
@@ -127,7 +129,7 @@ public class GeneraEditDialog extends BaseDialog {
     }
 
     private void setStyle(int type) {
-        switch (type){
+        switch (type) {
             case ENTRY_ORDER:
                 editInput.setVisibility(View.VISIBLE);
                 constraintLayout.setVisibility(View.INVISIBLE);
@@ -148,11 +150,11 @@ public class GeneraEditDialog extends BaseDialog {
     }
 
     private void dialogDismiss() {
-        SoftKeyboardUtil.hideSoftKeyboard(getActivity(),editInput);
+        SoftKeyboardUtil.hideSoftKeyboard(getActivity(), editInput);
         dismiss();
     }
 
-    public void setType(int type){
+    public void setType(int type) {
         this.type = type;
     }
 
