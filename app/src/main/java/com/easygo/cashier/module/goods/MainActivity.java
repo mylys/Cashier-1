@@ -40,6 +40,7 @@ import com.easygo.cashier.module.status.StatusPresenter;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.EquipmentstateDialog;
 import com.easygo.cashier.widget.FunctionListDialog;
+import com.easygo.cashier.widget.GeneraEditDialog;
 import com.google.gson.reflect.TypeToken;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseEvent;
@@ -323,6 +324,11 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
         @Override
         public void onItemClickAfter() {
 
+        }
+
+        @Override
+        public void lockCashier() {
+            goodsFragment.lockCashier();
         }
     };
 

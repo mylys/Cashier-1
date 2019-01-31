@@ -178,6 +178,7 @@
     <string name="text_function_device">设备状态</string>
     <string name="text_function_setting">系统设置</string>
     <string name="text_function_system">进入系统</string>
+    <string name="text_function_lock">锁定收银机</string>
 
     <!-- 通用dialog -->
     <string name="text_dialog_title_clear">确认情况商品？</string>
@@ -215,5 +216,7 @@
     <string name="hint_user_password">请输入员工密码</string>
     <string name="text_cashbox_accredit">弹出钱箱授权</string>
     <string name="text_refund_accedit">退款授权</string>
+    <string name="text_lock">输入授权密码解锁</string>
+    <string name="text_lock_user">输入账号密码解锁</string>
 
 </resources>

@@ -92,6 +92,15 @@ public class InitResponse {
         private int is_reserve;
         private int refund_auth;
         private int till_auth;
+        private int lock_auth;
+
+        public int getLock_auth() {
+            return lock_auth;
+        }
+
+        public void setLock_auth(int lock_auth) {
+            this.lock_auth = lock_auth;
+        }
 
         public int getRefund_auth() {
             return refund_auth;
@@ -216,12 +225,13 @@ public class InitResponse {
 
         /**
          * 判断打印机是否可用
+         *
          * @param type
          * @return
          */
         public boolean canUse(int type) {
             for (Integer content_type : content_types) {
-                if(type == content_type) {
+                if (type == content_type) {
                     return true;
                 }
             }

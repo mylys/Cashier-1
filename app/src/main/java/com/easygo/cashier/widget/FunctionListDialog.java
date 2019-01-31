@@ -51,6 +51,7 @@ public class FunctionListDialog extends BaseDialog {
             R.string.text_function_handover,
             R.string.text_function_entry,
             R.string.text_function_device,
+            R.string.text_function_lock,
     };
 
 //    private int[] res = new int[]{
@@ -71,6 +72,7 @@ public class FunctionListDialog extends BaseDialog {
             R.drawable.ic_entry_orders,
 //            R.drawable.ic_lauage,
             R.drawable.ic_device_status,
+            R.drawable.ic_lock,
 //            R.drawable.ic_system_setting,
 //            R.drawable.ic_enter_system,
     };
@@ -82,8 +84,8 @@ public class FunctionListDialog extends BaseDialog {
         Window window = getDialog().getWindow();
         if (window != null) {
             window.setLayout(getResources().getDimensionPixelSize(R.dimen.function_list_width),
-//                    getResources().getDimensionPixelSize(R.dimen.function_list_height));
-                    getResources().getDimensionPixelSize(R.dimen.y359));
+                    getResources().getDimensionPixelSize(Configs.lock_auth == 0 ? R.dimen.y359 : R.dimen.function_list_height));
+//                    getResources().getDimensionPixelSize(R.dimen.y359));
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -116,6 +118,10 @@ public class FunctionListDialog extends BaseDialog {
         }
         if (Configs.getRole(Configs.menus[4]) == 0) {
             integers.add(0);
+        }
+
+        if (Configs.lock_auth == 0){
+            integers.add(4);
         }
 
         //分割线
@@ -165,17 +171,26 @@ public class FunctionListDialog extends BaseDialog {
                     case R.string.text_function_entry:
                         entryOrders();
                         break;
+                    case R.string.text_function_lock:
+                        lockCashier();
+                        break;
                 }
                 onItemClickAfter();
             }
         });
     }
-
+    
     private void onItemClickAfter() {
         dismiss();
 
         if (mListener != null) {
             mListener.onItemClickAfter();
+        }
+    }
+
+    private void lockCashier() {
+        if (mListener != null){
+            mListener.lockCashier();
         }
     }
 
@@ -254,6 +269,7 @@ public class FunctionListDialog extends BaseDialog {
 
         void onItemClickAfter();
 
+        void lockCashier();
     }
 
     @Override

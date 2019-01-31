@@ -38,7 +38,7 @@ public class GoodsContract {
         /**心跳*/
         void heartbeat();
 
-        void tillAuth(String till_password,String account,String password);
+        void tillAuth(String type,String till_password,String lock_password,String refund_password,String account,String password);
     }
 
     public interface IView extends BaseView {

@@ -1,6 +1,7 @@
 package com.easygo.cashier.module.quick_choose;
 
 import com.easygo.cashier.bean.QuickClassifyInfo;
+import com.easygo.cashier.bean.QuickInfo;
 import com.niubility.library.mvp.BaseContract;
 import com.niubility.library.mvp.BaseView;
 
@@ -17,7 +18,7 @@ public class QuickChooseContract {
     }
 
     public interface View extends BaseView {
-        void showGoodsListSuccess(List<QuickClassifyInfo> goodsResponses);
+        void showGoodsListSuccess(QuickInfo goodsResponses);
         void showGoodsListFailed(Map<String, Object> map);
     }
 }

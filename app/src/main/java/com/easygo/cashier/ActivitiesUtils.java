@@ -320,8 +320,6 @@ public class ActivitiesUtils {
 
         currentShopPromotion = null;
 
-        with_coupon = false;
-
         for (int i = 0; i < size; i++) {
 
             BaseShopPromotion baseShopPromotion = shopList.get(i);
@@ -333,9 +331,7 @@ public class ActivitiesUtils {
                 //记录店铺促销金额
                 mShopPromotionMoney = promotionMoney;
 
-                if(currentShopPromotion.getWith_coupon() == 1) {
-                    with_coupon = true;
-                }
+                with_coupon = currentShopPromotion.getWith_coupon() == 1;
 
                 return promotionMoney;
             }

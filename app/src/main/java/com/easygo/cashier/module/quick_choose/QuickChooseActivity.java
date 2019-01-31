@@ -20,6 +20,7 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.QuickGoodsAdapter;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.QuickClassifyInfo;
+import com.easygo.cashier.bean.QuickInfo;
 import com.easygo.cashier.widget.MyTitleBar;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.http.exception.HttpExceptionEngine;
@@ -158,12 +159,14 @@ public class QuickChooseActivity extends BaseMvpActivity<QuickChooseContract.Vie
     }
 
     @Override
-    public void showGoodsListSuccess(List<QuickClassifyInfo> goodsResponses) {
-        if (goodsResponses != null && goodsResponses.size() > 0) {
-            info = goodsResponses;
-            goodsResponses.get(0).setSelect(true);
-            classifyAdapter.setNewData(goodsResponses);
-            goodsAdapter.setNewData(goodsResponses.get(0).getGoods());
+    public void showGoodsListSuccess(QuickInfo quickInfo) {
+        if (quickInfo != null) {
+            if (quickInfo.getList() != null && quickInfo.getList().size() > 0) {
+                info = quickInfo.list;
+                quickInfo.list.get(0).setSelect(true);
+                classifyAdapter.setNewData(quickInfo.list);
+                goodsAdapter.setNewData(quickInfo.list.get(0).getGoods());
+            }
         }
         rvGoodsList.setVisibility(View.VISIBLE);
     }

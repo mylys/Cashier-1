@@ -40,6 +40,7 @@ public class Configs {
     /* 钱箱，退款是否开启权限 */
     public static int refund_auth;
     public static int till_auth;
+    public static int lock_auth;
 
     /* 登录获取权限列表 --- 全局控制 */
     public static List<LoginResponse.MenuBean> menuBeanList;

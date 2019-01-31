@@ -269,10 +269,10 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
     }
 
     @Override
-    public void tillAuth(String till_password, String account, String password) {
+    public void tillAuth(String type, String till_password, String lock_password, String refund_password, String account, String password) {
         Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().tillAuth(header, till_password, account, password),
+                HttpAPI.getInstance().httpService().verifyAuth(header, type, till_password, lock_password, refund_password, account, password),
                 new BaseResultObserver<String>() {
                     @Override
                     protected void onSuccess(String result) {

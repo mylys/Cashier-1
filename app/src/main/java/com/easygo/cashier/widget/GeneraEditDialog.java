@@ -37,11 +37,16 @@ public class GeneraEditDialog extends BaseDialog {
 
     private OnDialogClickListener listener;
     private String title = "";
+    private boolean visiable = true;
 
     public static final int ENTRY_ORDER = 0x00;
     public static final int USER_ACCOUNT = 0x01;
     public static final int USER_ACCREDIT = 0x02;
     private int type = ENTRY_ORDER;
+
+    public void setVisiable(boolean b) {
+        visiable = b;
+    }
 
     public interface OnDialogClickListener {
         void onContent(int type,String account,String password);
@@ -77,6 +82,9 @@ public class GeneraEditDialog extends BaseDialog {
 
         if (!TextUtils.isEmpty(title)) {
             dialog_title.setText(title);
+        }
+        if (!visiable){
+            dialog_cancel.setVisibility(View.GONE);
         }
         setStyle(type);
 

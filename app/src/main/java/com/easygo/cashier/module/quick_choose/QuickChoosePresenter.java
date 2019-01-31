@@ -2,6 +2,7 @@ package com.easygo.cashier.module.quick_choose;
 
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.QuickClassifyInfo;
+import com.easygo.cashier.bean.QuickInfo;
 import com.easygo.cashier.http.HttpAPI;
 import com.niubility.library.http.base.HttpClient;
 import com.niubility.library.http.rx.BaseResultObserver;
@@ -20,9 +21,9 @@ public class QuickChoosePresenter extends BasePresenter<QuickChooseContract.View
     public void getGoodsList() {
         Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(HttpAPI.getInstance().httpService().showLists(header),
-                new BaseResultObserver<List<QuickClassifyInfo>>() {
+                new BaseResultObserver<QuickInfo>() {
             @Override
-            protected void onSuccess(List<QuickClassifyInfo> result) {
+            protected void onSuccess(QuickInfo result) {
                 mView.showGoodsListSuccess(result);
             }
 

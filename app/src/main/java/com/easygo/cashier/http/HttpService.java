@@ -14,6 +14,7 @@ import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.PrinterStatusResponse;
 import com.easygo.cashier.bean.QuickClassifyInfo;
+import com.easygo.cashier.bean.QuickInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
 import com.niubility.library.http.base.HttpResult;
@@ -277,7 +278,7 @@ public interface HttpService {
     Observable<HttpResult<String>> member_wallet(@HeaderMap Map<String, String> header, @Field("order_no") String order_no, @Field("auth_code") String auth_code);
 
     @POST("api/v1/cashier/pay/quick_select")
-    Observable<HttpResult<List<QuickClassifyInfo>>> showLists(@HeaderMap Map<String, String> header);
+    Observable<HttpResult<QuickInfo>> showLists(@HeaderMap Map<String, String> header);
 
     @GET("api/v1/cashier/coupon/search")
     Observable<HttpResult<CouponResponse>> get_coupon(@HeaderMap Map<String, String> header, @Query("coupon_sn") String coupon_sn);
@@ -286,6 +287,12 @@ public interface HttpService {
     Observable<HttpResult<String>> heartbeat(@HeaderMap Map<String, String> header);
 
     @FormUrlEncoded
-    @POST("api/v1/cashier/pay/till_auth")
-    Observable<HttpResult<String>> tillAuth(@HeaderMap Map<String, String> header, @Field("till_password") String till_password, @Field("admin_name") String admin_name, @Field("password") String password);
+    @POST("api/v1/cashier/pay/verify_auth")
+    Observable<HttpResult<String>> verifyAuth(@HeaderMap Map<String, String> header,
+                                              @Field("type") String type,
+                                              @Field("till_password") String till_password,
+                                              @Field("lock_password") String lock_password,
+                                              @Field("refund_password") String refund_password,
+                                              @Field("admin_name") String admin_name,
+                                              @Field("password") String password);
 }
