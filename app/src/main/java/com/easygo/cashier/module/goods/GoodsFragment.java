@@ -914,6 +914,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                         if (mUserGoodsScreen != null) {
                             mUserGoodsScreen.clear();
                         }
+                        editDialog.dismiss();
                     }
                 });
                 break;
@@ -1361,12 +1362,27 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     @Override
     public void getTillAuthSuccess(String result) {
         Log.i(TAG, "getTillAuthSuccess :校验钱箱权限成功");
+        if (editDialog != null && editDialog.isShow()){
+            editDialog.dismiss();
+        }
         mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
     }
 
     @Override
     public void getTillAythFailed(Map<String, Object> map) {
         Log.i(TAG, "getTillAuthSuccess :校验钱箱权限失败");
+        showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
+    }
+
+    @Override
+    public void getLockSuccess(String result) {
+        if (editDialog != null && editDialog.isShow()){
+            editDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void getLockFailed(Map<String, Object> map) {
         showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
     }
 
@@ -1506,12 +1522,11 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             @Override
             public void onContent(int type, String account, String password) {
                 if (type == GeneraEditDialog.USER_ACCREDIT) {
-                    mPresenter.tillAuth("lock", account, null, null, null, null);
+                    mPresenter.tillAuth("lock", null, account, null, null, null);
                 } else if (type == GeneraEditDialog.USER_ACCOUNT) {
                     mPresenter.tillAuth("lock", null, null, null, account, password);
                 }
             }
         });
-        SoftKeyboardUtil.hideSoftKeyboard(getActivity());
     }
 }

@@ -226,16 +226,16 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 //                    if (totalCoupon != 0) {
 //                        editRefundcashPrice.setText(df.format(Float.valueOf(adapter.getTotalPrice()) - totalCoupon));
 //                    } else {
-                        float discount = 0f;
-                        if (activities != null) {
-                            int size = activities.size();
-                            for (int i = 0; i < size; i++) {
-                                discount += Float.valueOf(activities.get(i).getDiscount_money());
-                            }
+                    float discount = 0f;
+                    if (activities != null) {
+                        int size = activities.size();
+                        for (int i = 0; i < size; i++) {
+                            discount += Float.valueOf(activities.get(i).getDiscount_money());
                         }
+                    }
 
                     float refund = Float.valueOf(adapter.getTotalPrice()) - totalCoupon - discount;
-                    if(refund < 0) {
+                    if (refund < 0) {
                         refund = 0;
                     }
                     editRefundcashPrice.setText(df.format(refund));
@@ -260,19 +260,19 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 //                if (totalCoupon != 0) {
 //                    editRefundcashPrice.setText(df.format(Float.valueOf(adapter.getTotalPrice()) - totalCoupon));
 //                } else {
-                    float discount = 0f;
-                    if (activities != null) {
-                        int size = activities.size();
-                        for (int i = 0; i < size; i++) {
-                            discount += Float.valueOf(activities.get(i).getDiscount_money());
-                        }
+                float discount = 0f;
+                if (activities != null) {
+                    int size = activities.size();
+                    for (int i = 0; i < size; i++) {
+                        discount += Float.valueOf(activities.get(i).getDiscount_money());
                     }
+                }
 
-                    float refund = Float.valueOf(adapter.getTotalPrice()) - totalCoupon - discount;
-                    if(refund < 0) {
-                        refund = 0;
-                    }
-                    editRefundcashPrice.setText(df.format(refund));
+                float refund = Float.valueOf(adapter.getTotalPrice()) - totalCoupon - discount;
+                if (refund < 0) {
+                    refund = 0;
+                }
+                editRefundcashPrice.setText(df.format(refund));
 //                }
                 editRefundcashPrice.setSelection(editRefundcashPrice.getText().toString().length());
             }
@@ -428,6 +428,9 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
     @Override
     public void getHistoryRefundSuccess(String message) {
+        if (dialog != null && dialog.isShow()) {
+            dialog.dismiss();
+        }
         btnRefund.setEnabled(true);
         printRefundInfo();
 

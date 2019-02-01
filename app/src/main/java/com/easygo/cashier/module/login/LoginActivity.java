@@ -23,6 +23,7 @@ import com.easygo.cashier.Configs;
 import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
+import com.easygo.cashier.TestUtils;
 import com.easygo.cashier.bean.AccountInfo;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -56,6 +58,10 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
     private static final String TAG = "LoginActivity";
 
+    @BindView(R.id.constraint_parent)
+    ConstraintLayout parent;
+    @BindView(R.id.cl_frame)
+    ConstraintLayout child;
     @BindView(R.id.et_account)
     EditText etAccount;
     @BindView(R.id.et_password)
@@ -73,6 +79,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     private AccountWindow mAccountWindow;
 
     private ConfigDialog mConfigDialog;
+    private TestUtils textUtils = new TestUtils();
 
 
     private static final int MSG_GET_SHOP = 0;
@@ -112,6 +119,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
     @Override
     protected void init() {
+        textUtils.addSoftKeyBoardListener(parent, child);
+
         sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getApplicationContext());
         String session_id = sp.getString(Constans.KEY_SESSION_ID, "");
         String admin_name = sp.getString(Constans.KEY_ADMIN_NAME, "");
@@ -354,7 +363,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        textUtils.removeSoftKeyBoardListener(parent);
         mHandler.removeCallbacksAndMessages(null);
 
         if (mUserGoodsScreen != null && mUserGoodsScreen.isShowing()) {

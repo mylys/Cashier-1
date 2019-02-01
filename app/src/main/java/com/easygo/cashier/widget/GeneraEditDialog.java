@@ -94,12 +94,14 @@ public class GeneraEditDialog extends BaseDialog {
             @Override
             public void onClick(View v) {
                 dialogDismiss();
+                dismiss();
             }
         });
         dialog_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogDismiss();
+                dismiss();
             }
         });
         dialog_submit.setOnClickListener(new View.OnClickListener() {
@@ -110,19 +112,26 @@ public class GeneraEditDialog extends BaseDialog {
                         listener.onContent(type, editInput.getText().toString().trim(), "");
                         break;
                     case USER_ACCOUNT:
+                        if (TextUtils.isEmpty(editAccount.getText().toString().trim()) || TextUtils.isEmpty(editPassword.getText().toString().trim())){
+                            ToastUtils.showToast(getActivity(),"账号密码不能为空");
+                            return;
+                        }
                         listener.onContent(type, editAccount.getText().toString().trim(), editPassword.getText().toString().trim());
                         break;
                     case USER_ACCREDIT:
+                        if (TextUtils.isEmpty(editAccount.getText().toString().trim())){
+                            ToastUtils.showToast(getActivity(),"请输入授权密码");
+                            return;
+                        }
                         listener.onContent(type, editAccount.getText().toString().trim(), "");
                         break;
                 }
-                setTvEmpty();
                 dialogDismiss();
             }
         });
     }
 
-    private void setTvEmpty() {
+    public void setTvEmpty() {
         editPassword.setText("");
         editAccount.setText("");
         editInput.setText("");
@@ -149,9 +158,8 @@ public class GeneraEditDialog extends BaseDialog {
         }
     }
 
-    private void dialogDismiss() {
+    public void dialogDismiss() {
         SoftKeyboardUtil.hideSoftKeyboard(getActivity(), editInput);
-        dismiss();
     }
 
     public void setType(int type) {
@@ -179,5 +187,15 @@ public class GeneraEditDialog extends BaseDialog {
 
     public void showCenter(FragmentActivity activity) {
         showCenter(activity, "DIALOG_GENERA_EDIT");
+    }
+
+    public boolean isShow(){
+        return isShowing();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        setTvEmpty();
     }
 }

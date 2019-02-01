@@ -84,8 +84,8 @@ public class FunctionListDialog extends BaseDialog {
         Window window = getDialog().getWindow();
         if (window != null) {
             window.setLayout(getResources().getDimensionPixelSize(R.dimen.function_list_width),
-//                    getResources().getDimensionPixelSize(R.dimen.function_list_height));
-                    getResources().getDimensionPixelSize(R.dimen.y359));
+                    getResources().getDimensionPixelSize(Configs.lock_auth == 0 ? R.dimen.y359 : R.dimen.function_list_height));
+//                    getResources().getDimensionPixelSize(R.dimen.y359));
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -120,7 +120,7 @@ public class FunctionListDialog extends BaseDialog {
             integers.add(0);
         }
 
-        if (Configs.lock_auth == 0){
+        if (Configs.lock_auth == 0) {
             integers.add(4);
         }
 
@@ -179,7 +179,7 @@ public class FunctionListDialog extends BaseDialog {
             }
         });
     }
-    
+
     private void onItemClickAfter() {
         dismiss();
 
@@ -189,7 +189,7 @@ public class FunctionListDialog extends BaseDialog {
     }
 
     private void lockCashier() {
-        if (mListener != null){
+        if (mListener != null) {
             mListener.lockCashier();
         }
     }

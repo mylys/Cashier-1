@@ -74,5 +74,8 @@ public class GoodsContract {
 
         void getTillAuthSuccess(String result);
         void getTillAythFailed(Map<String, Object> map);
+
+        void getLockSuccess(String result);
+        void getLockFailed(Map<String, Object> map);
     }
 }

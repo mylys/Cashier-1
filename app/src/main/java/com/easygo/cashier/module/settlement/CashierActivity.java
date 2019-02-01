@@ -213,17 +213,18 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                         return;
                     }
                 }
-                //弹出确认弹窗
-                Bundle bundle = ConfirmDialog.getDataBundle(mTotalMoney, mRealPay, mChange, mPayWay);
-                confirmDialog = new ConfirmDialog();
-                confirmDialog.setArguments(bundle);
-                confirmDialog.setOnConfirmListener(new ConfirmDialog.OnConfirmListenr() {
-                    @Override
-                    public void onConfirm() {
-                        onCommitOrder();
-                    }
-                });
-                confirmDialog.show(getSupportFragmentManager(), "tag_tip_dialog");
+                onCommitOrder();
+//                //弹出确认弹窗
+//                Bundle bundle = ConfirmDialog.getDataBundle(mTotalMoney, mRealPay, mChange, mPayWay);
+//                confirmDialog = new ConfirmDialog();
+//                confirmDialog.setArguments(bundle);
+//                confirmDialog.setOnConfirmListener(new ConfirmDialog.OnConfirmListenr() {
+//                    @Override
+//                    public void onConfirm() {
+//                        onCommitOrder();
+//                    }
+//                });
+//                confirmDialog.show(getSupportFragmentManager(), "tag_tip_dialog");
             }
 
             @Override
@@ -284,7 +285,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     mChange = mRealPay - pay;
 
                     if(mChange < 0) {
-                        showToast("找零金额小于0");
+//                        showToast("找零金额小于0");
                     }
 
                     //刷新价格

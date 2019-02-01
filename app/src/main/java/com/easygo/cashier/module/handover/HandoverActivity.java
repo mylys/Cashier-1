@@ -242,7 +242,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
 
     }
 
-    @OnClick({R.id.btn_handover, R.id.btn_sales_list, R.id.iv_back, R.id.btn_print})
+    @OnClick({R.id.btn_handover, R.id.btn_sales_list, R.id.cl_back, R.id.btn_print})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_handover:
@@ -273,7 +273,7 @@ public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, Ha
             case R.id.btn_print://打印销售列表
                 printHandoverSaleList();
                 break;
-            case R.id.iv_back:
+            case R.id.cl_back:
                 onBack();
                 break;
         }

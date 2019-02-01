@@ -50,7 +50,7 @@
     <View
         android:id="@+id/line2"
         android:layout_width="0dp"
-        android:layout_height="@dimen/y21"
+        android:layout_height="@dimen/y20"
         android:background="@color/color_f0f3f7"
         app:layout_constraintEnd_toStartOf="@id/line1"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,20 +1,28 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'com.easygo'
+            keyPassword 'ezgo123'
+            storeFile file('D:/easygo.jks')
+            storePassword 'ezgo123'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.easygo.cashier"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 6
-        versionName "0.6"
+        versionName "0.6.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [AROUTER_MODULE_NAME: project.getName()]
             }
         }
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
@@ -31,8 +39,10 @@ android {
         T {
             buildConfigField("String", "API_URL", "\"http://api.staging.pos.esgao.cn/\"")//预发布
         }
+        debug {
+            signingConfig signingConfigs.config
+        }
     }
-
     android.applicationVariants.all {
         variant ->
             variant.outputs.all {
@@ -40,7 +50,8 @@ android {
                 outputFileName = rootProject.getName() + "-v" + defaultConfig.versionName + "-" + defaultConfig.versionCode + "-" + releaseTime() + "-${variant.name}.apk"
             }
     }
-
+    productFlavors {
+    }
 }
 
 def releaseTime() {
@@ -62,7 +73,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //BaseRecyclerViewAdapterHelper
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
-
     //OkHttp interceptor
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
@@ -82,5 +92,4 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     //zxing精简库
     implementation 'cn.yipianfengye.android:zxing-library:2.2'
-
 }

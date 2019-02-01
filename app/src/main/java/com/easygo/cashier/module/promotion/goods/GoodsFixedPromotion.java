@@ -49,6 +49,9 @@ public class GoodsFixedPromotion extends BaseGoodsPromotion implements IGoodsPro
 
                         //计算差价
                         subtract = goodsBean.getPrice() - offer_value;
+                        if (subtract < 0){
+                            subtract = goodsBean.getPrice();
+                        }
                         promotion = subtract * goodsBean.getCount();
                         Log.i(TAG, "computePromotionMoney: 固定促销, "
                                 + goodsBean.getBarcode() + " 优惠: " + promotion);
