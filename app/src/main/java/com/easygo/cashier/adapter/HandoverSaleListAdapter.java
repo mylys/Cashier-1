@@ -6,7 +6,11 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
 
+import java.text.DecimalFormat;
+
 public class HandoverSaleListAdapter extends BaseQuickAdapter<HandoverSaleResponse, BaseViewHolder> {
+
+    private DecimalFormat df = new DecimalFormat("0.00");
 
     public HandoverSaleListAdapter() {
         super(R.layout.item_handover_sale_list);
@@ -29,10 +33,11 @@ public class HandoverSaleListAdapter extends BaseQuickAdapter<HandoverSaleRespon
                 break;
         }
 
+        float discount = Float.parseFloat(item.getDiscount());
         helper.setText(R.id.tv_goods_name, item.getG_sku_name())
                 .setText(R.id.tv_goods_classification, item.getG_c_name())
                 .setText(R.id.tv_price, item.getSell_price())
                 .setText(R.id.tv_goods_count, count)
-                .setText(R.id.tv_subtotal, String.valueOf(item.getMoney()));
+                .setText(R.id.tv_subtotal, df.format(item.getMoney() - discount));
     }
 }
