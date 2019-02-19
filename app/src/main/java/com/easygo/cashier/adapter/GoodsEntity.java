@@ -66,6 +66,7 @@ public class GoodsEntity<T> implements MultiItemEntity, Serializable {
     }
 
     private BaseGoodsPromotion promotion;
+    private boolean isSelected;
 
     public BaseGoodsPromotion getPromotion() {
         return promotion;
@@ -73,5 +74,13 @@ public class GoodsEntity<T> implements MultiItemEntity, Serializable {
 
     public void setPromotion(BaseGoodsPromotion promotion) {
         this.promotion = promotion;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

@@ -7,16 +7,43 @@
 
     <!--Row-->
     <TextView
-        android:id="@+id/tv_1"
+        android:id="@+id/tv_50"
         style="@style/KeyboardTextStyle"
-        android:text="1"
+        android:text="50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tv_100"
+        style="@style/KeyboardTextStyle"
+        android:layout_marginStart="@dimen/keyboard_key_margin"
+        android:text="100"
+        app:layout_constraintBottom_toBottomOf="@id/tv_50"
+        app:layout_constraintStart_toEndOf="@id/tv_50"
+        app:layout_constraintTop_toTopOf="@id/tv_50" />
+
+    <TextView
+        android:id="@+id/tv_200"
+        style="@style/KeyboardTextStyle"
+        android:layout_marginStart="@dimen/keyboard_key_margin"
+        android:text="200"
+        app:layout_constraintBottom_toBottomOf="@id/tv_50"
+        app:layout_constraintStart_toEndOf="@id/tv_100"
+        app:layout_constraintTop_toTopOf="@id/tv_50" />
+
+    <!--Row-->
+    <TextView
+        android:id="@+id/tv_1"
+        style="@style/KeyboardTextStyle"
+        android:text="1"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
+        app:layout_constraintStart_toStartOf="@id/tv_50"
+        app:layout_constraintTop_toBottomOf="@id/tv_50"/>
+
+    <TextView
         android:id="@+id/tv_2"
         style="@style/KeyboardTextStyle"
-        android:layout_marginStart="@dimen/x39"
+        android:layout_marginStart="@dimen/keyboard_key_margin"
         android:text="2"
         app:layout_constraintBottom_toBottomOf="@id/tv_1"
         app:layout_constraintStart_toEndOf="@id/tv_1"
@@ -25,7 +52,7 @@
     <TextView
         android:id="@+id/tv_3"
         style="@style/KeyboardTextStyle"
-        android:layout_marginStart="@dimen/x39"
+        android:layout_marginStart="@dimen/keyboard_key_margin"
         android:text="3"
         app:layout_constraintBottom_toBottomOf="@id/tv_1"
         app:layout_constraintStart_toEndOf="@id/tv_2"
@@ -35,7 +62,7 @@
     <TextView
         android:id="@+id/tv_4"
         style="@style/KeyboardTextStyle"
-        android:layout_marginTop="@dimen/y39"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
         android:text="4"
         app:layout_constraintStart_toStartOf="@id/tv_1"
         app:layout_constraintTop_toBottomOf="@id/tv_1" />
@@ -60,7 +87,7 @@
     <TextView
         android:id="@+id/tv_7"
         style="@style/KeyboardTextStyle"
-        android:layout_marginTop="@dimen/y39"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
         android:text="7"
         app:layout_constraintStart_toStartOf="@id/tv_1"
         app:layout_constraintTop_toBottomOf="@id/tv_4" />
@@ -85,7 +112,7 @@
     <TextView
         android:id="@+id/tv_point"
         style="@style/KeyboardTextStyle"
-        android:layout_marginTop="@dimen/y39"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
         android:text="."
         app:layout_constraintStart_toStartOf="@id/tv_1"
         app:layout_constraintTop_toBottomOf="@id/tv_7" />

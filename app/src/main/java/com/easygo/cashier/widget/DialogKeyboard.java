@@ -108,6 +108,10 @@ public class DialogKeyboard extends ConstraintLayout {
                         return;
                     }
                     editable.delete(editable.length() - 1, editable.length());
+
+                    if(onKeyboardClickListener != null) {
+                        onKeyboardClickListener.onDeleteClickAfter(editable);
+                    }
                 }
             }
         });
@@ -117,6 +121,11 @@ public class DialogKeyboard extends ConstraintLayout {
             tv.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    if(onKeyboardClickListener != null) {
+                        onKeyboardClickListener.onClickBefore();
+                    }
+
                     TextView textView = (TextView) v;
 
                     if (mEditText != null && mEditText.isEnabled()) {
@@ -137,6 +146,10 @@ public class DialogKeyboard extends ConstraintLayout {
                             }
                         }
                         editable.append(textView.getText());
+                        if(onKeyboardClickListener != null) {
+                            onKeyboardClickListener.onTextChangedAfter(editable);
+                        }
+
                     }
                 }
             });
@@ -178,5 +191,20 @@ public class DialogKeyboard extends ConstraintLayout {
 
     public void setOnSureClickListener(OnSureClickListener listener) {
         this.listener = listener;
+    }
+
+    private OnKeyboardClickListener onKeyboardClickListener;
+    public interface OnKeyboardClickListener {
+        void onClickBefore();
+        void onDeleteClickAfter(Editable editable);
+        void onTextChangedAfter(Editable editable);
+    }
+    public void setOnKeyboardClickListener(OnKeyboardClickListener listener) {
+        this.onKeyboardClickListener = listener;
+    }
+
+
+    public View getSureButton() {
+        return mTvSure;
     }
 }

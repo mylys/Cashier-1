@@ -2,6 +2,7 @@ package com.easygo.cashier.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class OrderHistorysInfo {
     private int status;
     private String admin_name;
     private String real_name;
+    private String cashier_discount;
     private List<ListBean> list;
     private List<ActivitiesBean> activities;
     private boolean isSelect;
@@ -221,6 +223,14 @@ public class OrderHistorysInfo {
         this.real_name = real_name;
     }
 
+    public String getCashier_discount() {
+        return cashier_discount;
+    }
+
+    public void setCashier_discount(String cashier_discount) {
+        this.cashier_discount = cashier_discount;
+    }
+
     public static class ListBean implements Parcelable {
 
 
@@ -232,6 +242,7 @@ public class OrderHistorysInfo {
          * quantity : 1
          * sell_price : 0.01
          * discount : 0.01
+         * cashier_discount : 0.01
          * identity : 1547787879989
          * refund : 0
          * count : 1
@@ -245,6 +256,7 @@ public class OrderHistorysInfo {
         private int quantity;
         private String sell_price;
         private String discount;
+        private String cashier_discount;
         private String identity;
         private int refund;
         private float count;
@@ -257,6 +269,7 @@ public class OrderHistorysInfo {
             quantity = in.readInt();
             sell_price = in.readString();
             discount = in.readString();
+            cashier_discount = in.readString();
             identity = in.readString();
             refund = in.readInt();
             count = in.readInt();
@@ -324,11 +337,19 @@ public class OrderHistorysInfo {
         }
 
         public String getDiscount() {
-            return discount;
+            return !TextUtils.isEmpty(cashier_discount) && !"0".equals(cashier_discount)? cashier_discount: discount;
         }
 
         public void setDiscount(String discount) {
             this.discount = discount;
+        }
+
+        public String getCashier_discount() {
+            return cashier_discount;
+        }
+
+        public void setCashier_discount(String cashier_discount) {
+            this.cashier_discount = cashier_discount;
         }
 
         public String getIdentity() {
@@ -376,6 +397,7 @@ public class OrderHistorysInfo {
             dest.writeFloat(quantity);
             dest.writeString(sell_price);
             dest.writeString(discount);
+            dest.writeString(cashier_discount);
             dest.writeString(identity);
             dest.writeInt(refund);
             dest.writeFloat(count);

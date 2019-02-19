@@ -23,6 +23,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.easygo.cashier.ActivitiesUtils;
 import com.easygo.cashier.BarcodeUtils;
 import com.easygo.cashier.Configs;
@@ -42,6 +43,7 @@ import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
 import com.easygo.cashier.module.CouponUtils;
+import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.refund.RefundActivity;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.widget.ActivitiesView;
@@ -54,6 +56,7 @@ import com.easygo.cashier.widget.PettyCashDialog;
 import com.easygo.cashier.widget.ProcessingChoiceDialog;
 import com.easygo.cashier.widget.ScanCodeDialog;
 import com.easygo.cashier.widget.SearchResultWindow;
+import com.easygo.cashier.widget.TempPromotionDialog;
 import com.google.gson.reflect.TypeToken;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseMvpFragment;
@@ -341,7 +344,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         rvGoods.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         mGoodsMultiItemAdapter = new GoodsMultiItemAdapter();
-        rvGoods.setAdapter(mGoodsMultiItemAdapter);
+        mGoodsMultiItemAdapter.bindToRecyclerView(rvGoods);
+//        rvGoods.setAdapter(mGoodsMultiItemAdapter);
         mData = mGoodsMultiItemAdapter.getData();
 
         mGoodsMultiItemAdapter.setOnItemListener(new GoodsMultiItemAdapter.OnItemListener() {
@@ -400,21 +404,33 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             }
 
         });
-//        //条目点击事件监听
-//        mGoodsMultiItemAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                List data = adapter.getData();
-//                GoodsEntity goodsEntity = (GoodsEntity) data.get(position);
-//                switch (goodsEntity.getItemType()) {
-//                    case GoodsEntity.TYPE_WEIGHT:
-//                    case GoodsEntity.TYPE_ONLY_PROCESSING:
-//                    case GoodsEntity.TYPE_PROCESSING:
-////                        mGoodsMultiItemAdapter.remove(position);
-//                        break;
-//                }
-//            }
-//        });
+        //条目点击事件监听
+        mGoodsMultiItemAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                List data = adapter.getData();
+                GoodsEntity goodsEntity = (GoodsEntity) data.get(position);
+                goodsEntity.setSelected(!goodsEntity.isSelected());
+
+                view.setSelected(!view.isSelected());
+
+                //判断选中的条目是否有临时促销， 更新取消按钮UI
+                boolean enable = false;
+                int size = data.size();
+                for (int i = 0; i < size; i++) {
+                    goodsEntity = (GoodsEntity) data.get(i);
+                    if (!goodsEntity.isSelected()) {
+                        continue;
+                    }
+                    BaseGoodsPromotion promotion = goodsEntity.getPromotion();
+                    if(promotion != null && promotion.isTempGoodsPromotion()) {
+                        enable = true;
+                        break;
+                    }
+                }
+                activitiesView.enableCancelTempPromotionButton(enable);
+            }
+        });
 
 
         //分割线
@@ -465,6 +481,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
         //-----------------------------------------------------
 
+        coupon = 0f;
         float goods_coupon = 0f;
         float member_coupon = 0f;
         float shop_coupon = 0f;
@@ -607,6 +624,13 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         if (mUserGoodsScreen != null) {
             mUserGoodsScreen.showCurrentActivities(data);
         }
+
+        if(ActivitiesUtils.getInstance().hasTempGoodsPromotion()) {
+            activitiesView.showCancelTempPromotionButton(true);
+        } else {
+            activitiesView.showCancelTempPromotionButton(false);
+        }
+
     }
 
     public void initUserGoodsScreen() {
@@ -739,6 +763,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             R.id.btn_clear,
             R.id.btn_settlement,
             R.id.btn_orders,
+            R.id.btn_temp_promotion,
+            R.id.btn_cancel_temp_promotion,
             R.id.btn_choose_member,
             R.id.btn_choose_coupon,
             R.id.iv_cancel_member,
@@ -811,6 +837,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                         if (mUserGoodsScreen != null) {
                             mUserGoodsScreen.clear();
                         }
+                        //清除临时促销
+                        ActivitiesUtils.getInstance().clearTempPromotion();
                         //请求一次促销
                         mHandler.sendEmptyMessage(MSG_PROMOTION);
 
@@ -914,9 +942,64 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                         if (mUserGoodsScreen != null) {
                             mUserGoodsScreen.clear();
                         }
+                        //清除临时促销
+                        ActivitiesUtils.getInstance().clearTempPromotion();
+
                         editDialog.dismiss();
                     }
                 });
+                break;
+            case R.id.btn_temp_promotion:
+                List<GoodsEntity<GoodsResponse>> selected = mGoodsMultiItemAdapter.getSelected();
+                if(selected == null) {
+                    showToast("请选择商品");
+                    return;
+                }
+
+                final TempPromotionDialog tempPromotionDialog = new TempPromotionDialog();
+                tempPromotionDialog.setSelected(selected);
+                tempPromotionDialog.setOnDialogClickListener(new TempPromotionDialog.OnDialogClickListener() {
+                    @Override
+                    public void onClick(List<GoodsEntity<GoodsResponse>> selectGoods, int mode, boolean isFreeOrder, float value) {
+                        tempPromotionDialog.dismiss();
+
+                        ActivitiesUtils.getInstance().createTempGoodsPromotion(selectGoods, mode, isFreeOrder, value);
+
+                        mGoodsMultiItemAdapter.cancelAllSelected();
+
+                        computePrice(mTotalMoney, mGoodsCount, 0);
+
+                    }
+                });
+                tempPromotionDialog.showCenter(getActivity());
+                break;
+            case R.id.btn_cancel_temp_promotion:
+                List<GoodsEntity<GoodsResponse>> cancelSelected = mGoodsMultiItemAdapter.getSelected();
+                if(cancelSelected == null) {
+                    showToast("请选择商品");
+                    return;
+                }
+
+                int size = cancelSelected.size();
+                for (int i = 0; i < size; i++) {
+                    GoodsEntity<GoodsResponse> goodsEntity = cancelSelected.get(i);
+                    BaseGoodsPromotion promotion = goodsEntity.getPromotion();
+
+                    if(promotion == null || !promotion.isTempGoodsPromotion()) {
+                        continue;
+                    }
+
+                    //取消临时促销
+                    ActivitiesUtils.getInstance().cancelTempGoodsPromotion(
+                            goodsEntity.getData().getBarcode() + "_" + goodsEntity.getData().getPrice());
+
+                }
+
+                mGoodsMultiItemAdapter.cancelAllSelected();
+                view.setEnabled(false);
+                computePrice(mTotalMoney, mGoodsCount, 0);
+
+
                 break;
             case R.id.btn_choose_member:
                 if (membersDialog == null) {
@@ -1075,6 +1158,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 for (int i = 0; i < size; i++) {
 
                     GoodsResponse goodsResponse = result.get(i);
+                    goodsResponse.setCount_disable(true);
                     price = Float.valueOf(goodsResponse.getPrice());
 
                     count = (mGoodMoney / 100f) / price;
@@ -1427,6 +1511,8 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             mGoodsMultiItemAdapter.clear();
         if (mUserGoodsScreen != null)
             mUserGoodsScreen.clear();
+        //清除临时促销
+        ActivitiesUtils.getInstance().clearTempPromotion();
         //隐藏 清空会员及 优惠券
         setHide(clExtraInfo);
         CouponUtils.getInstance().setCouponInfo(null);

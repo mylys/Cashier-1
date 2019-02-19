@@ -26,6 +26,7 @@ public class CreateOrderRequestBody {
     private int real_pay;
     private String coupon_sn;
     private int coupon_discount;
+    private int cashier_discount;
     private List<GoodsListBean> goods_list;
     private List<ActivitiesBean> activities;
 
@@ -101,6 +102,14 @@ public class CreateOrderRequestBody {
         this.coupon_discount = coupon_discount;
     }
 
+    public int getCashier_discount() {
+        return cashier_discount;
+    }
+
+    public void setCashier_discount(int cashier_discount) {
+        this.cashier_discount = cashier_discount;
+    }
+
     public List<GoodsListBean> getGoods_list() {
         return goods_list;
     }
@@ -126,6 +135,7 @@ public class CreateOrderRequestBody {
          * identity : "0"
          * barcode : 096619756803
          * discount :
+         * cashier_discount :
          */
 
         private int g_sku_id;
@@ -141,6 +151,7 @@ public class CreateOrderRequestBody {
         private String identity;
         private String barcode;
         private int discount;
+        private int cashier_discount;
 
         public int getG_sku_id() {
             return g_sku_id;
@@ -196,6 +207,14 @@ public class CreateOrderRequestBody {
 
         public void setDiscount(int discount) {
             this.discount = discount;
+        }
+
+        public int getCashier_discount() {
+            return cashier_discount;
+        }
+
+        public void setCashier_discount(int cashier_discount) {
+            this.cashier_discount = cashier_discount;
         }
     }
 

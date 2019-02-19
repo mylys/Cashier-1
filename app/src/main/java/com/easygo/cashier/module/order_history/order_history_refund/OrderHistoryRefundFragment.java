@@ -102,6 +102,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
     private int refund_status = 0;
     private int have_refund = 0;
     private float total_discount = 0;
+    private float cashier_discount = 0;
     private float real_pay = 0;
     private int pay_way = PayWayView.WAY_CASH;
 
@@ -147,6 +148,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
             refund_status = getArguments().getInt("refund_status");
             have_refund = getArguments().getInt("have_refund");
             total_discount = getArguments().getFloat("total_discount");
+            cashier_discount = getArguments().getFloat("cashier_discount");
             real_pay = getArguments().getFloat("real_pay");
         }
         tvPayType.setText(getResources().getString(R.string.text_pay_type) + pay_type + getResources().getString(R.string.text_pay));
@@ -178,12 +180,18 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 GoodsRefundInfo info = new GoodsRefundInfo();
                 info.setProduct_name(bean.getG_sku_name());
                 info.setProduct_price(bean.getSell_price());
-                info.setProduct_subtotal(df.format(bean.getMoney()));
+                double money = bean.getMoney();
+                info.setProduct_subtotal(df.format(money));
                 info.setProduct_preferential(bean.getDiscount());
                 info.setProduct_num(bean.getQuantity());
                 info.setS_sku_id(bean.getS_sku_id());
                 info.setRefund_num("1");
-                info.setRefund_subtotal(bean.getSell_price());
+
+                double refund_subtotal = Double.parseDouble(bean.getSell_price());
+                if(refund_subtotal > money) {
+                    refund_subtotal = money;
+                }
+                info.setRefund_subtotal(df.format(refund_subtotal));
                 info.setSelect(false);
                 info.setType(bean.getType());
                 info.setIdentity(bean.getIdentity());
@@ -223,9 +231,6 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                     editRefundcashPrice.setText("0.00");
                 } else {
                     float totalCoupon = adapter.getTotalCoupon();
-//                    if (totalCoupon != 0) {
-//                        editRefundcashPrice.setText(df.format(Float.valueOf(adapter.getTotalPrice()) - totalCoupon));
-//                    } else {
                     float discount = 0f;
                     if (activities != null) {
                         int size = activities.size();
@@ -234,12 +239,13 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                         }
                     }
 
-                    float refund = Float.valueOf(adapter.getTotalPrice()) - totalCoupon - discount;
+                    discount += cashier_discount;
+
+                    float refund = Float.valueOf(adapter.getTotalPrice()) - discount;
                     if (refund < 0) {
                         refund = 0;
                     }
                     editRefundcashPrice.setText(df.format(refund));
-//                    }
                 }
                 editRefundcashPrice.setSelection(editRefundcashPrice.getText().toString().length());
             }
@@ -261,16 +267,23 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 //                    editRefundcashPrice.setText(df.format(Float.valueOf(adapter.getTotalPrice()) - totalCoupon));
 //                } else {
                 float discount = 0f;
-                if (activities != null) {
-                    int size = activities.size();
-                    for (int i = 0; i < size; i++) {
-                        discount += Float.valueOf(activities.get(i).getDiscount_money());
-                    }
-                }
+//                if (activities != null) {
+//                    int size = activities.size();
+//                    for (int i = 0; i < size; i++) {
+//                        discount += Float.valueOf(activities.get(i).getDiscount_money());
+//                    }
+//                }
+//
+//                discount += cashier_discount;
 
-                float refund = Float.valueOf(adapter.getTotalPrice()) - totalCoupon - discount;
+                float refund = Float.valueOf(adapter.getTotalPrice()) - discount;
+
                 if (refund < 0) {
                     refund = 0;
+                }
+
+                if(refund > real_pay) {
+                    refund = real_pay;
                 }
                 editRefundcashPrice.setText(df.format(refund));
 //                }
@@ -466,7 +479,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 .append("收银员：").append(real_name).append(PrintHelper.BR)
                 .append("时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
                 .append("--------------------------------").append(PrintHelper.BR)
-                .append("品名  ").append("单价  ").append("折扣  ").append("数量/重量  ").append("小计  ")
+                .append("品名  ").append("单价  ").append("优惠  ").append("数量/重量  ").append("小计  ")
                 .append(PrintHelper.BR);
 
 

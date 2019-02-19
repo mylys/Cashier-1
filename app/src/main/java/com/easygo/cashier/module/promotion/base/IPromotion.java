@@ -34,6 +34,8 @@ public interface IPromotion {
     int TYPE_BUNDLE = 4;
     /**活动类型 固定*/
     int TYPE_FIXED = 5;
+    /**活动类型 临时*/
+    int TYPE_TEMP = 6;
 
 
 

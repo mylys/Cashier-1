@@ -31,20 +31,6 @@
 
     </com.easygo.cashier.widget.PayWayView>
 
-    <!--优惠券-->
-    <Button
-        android:id="@+id/btn_coupon"
-        style="@style/PayButtonStyle"
-        android:layout_width="@dimen/pay_btn_width"
-        android:layout_height="@dimen/pay_btn_height"
-        android:layout_marginEnd="@dimen/x60"
-        android:textColor="@color/color_4cbbac"
-        android:background="@drawable/bg_pay_way_button"
-        android:text="@string/text_coupon_coupon"
-        app:layout_constraintBottom_toBottomOf="@id/pay_way_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/pay_way_view" />
-
 
     <View
         android:id="@+id/line1"
@@ -68,24 +54,31 @@
 
     <Button
         android:id="@+id/btn_delete"
-        android:layout_width="@dimen/x154"
-        android:layout_height="@dimen/y98"
-        android:layout_marginTop="@dimen/y84"
-        android:layout_marginEnd="@dimen/x110"
-        android:background="@drawable/bg_btn_clear"
-        android:text="@string/text_delete"
-        android:textColor="@color/color_text_white"
-        android:textSize="@dimen/text_size_29"
+        android:layout_width="@dimen/x170"
+        android:layout_height="@dimen/y110"
+        android:layout_marginTop="@dimen/y50"
+        android:layout_marginEnd="@dimen/x50"
+        android:background="@drawable/bg_btn_frame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line1" />
 
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="@dimen/x45"
+        android:layout_height="@dimen/y45"
+        android:src="@drawable/icon_cancel"
+        app:layout_constraintStart_toStartOf="@id/btn_delete"
+        app:layout_constraintEnd_toEndOf="@id/btn_delete"
+        app:layout_constraintTop_toTopOf="@id/btn_delete"
+        app:layout_constraintBottom_toBottomOf="@id/btn_delete" />
+
     <EditText
         android:id="@+id/et_money"
-        android:layout_width="@dimen/x348"
-        android:layout_height="@dimen/y98"
-        android:layout_marginEnd="@dimen/x39"
+        android:layout_width="@dimen/x533"
+        android:layout_height="@dimen/y110"
+        android:layout_marginEnd="@dimen/keyboard_key_margin"
         android:background="@drawable/bg_input"
-        android:hint="输入收款金额"
+        android:hint="请输入实付金额"
         android:paddingStart="@dimen/x31"
         android:textColorHint="@color/color_d4d3d3"
         android:textSize="@dimen/text_size_29"
@@ -97,14 +90,127 @@
         android:id="@+id/kb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/y39"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
         android:background="@null"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        app:layout_constraintEnd_toEndOf="@id/btn_delete"
+        app:layout_constraintStart_toStartOf="@id/et_money"
         app:layout_constraintTop_toBottomOf="@id/btn_delete">
 
     </com.easygo.cashier.widget.Keyboard>
+
+    <Button
+        android:id="@+id/btn_cancel_coupon"
+        android:layout_width="@dimen/x170"
+        android:layout_height="@dimen/y110"
+        android:text="取消优惠券"
+        style="@style/DetailTextStyle"
+        android:background="@drawable/bg_btn_frame"
+        app:layout_constraintStart_toStartOf="@id/btn_delete"
+        app:layout_constraintTop_toTopOf="@id/kb"/>
+
+    <Button
+        android:id="@+id/btn_cancel_temp_promotion"
+        android:layout_width="@dimen/x170"
+        android:layout_height="@dimen/y110"
+        android:text="取消折扣"
+        style="@style/DetailTextStyle"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
+        android:background="@drawable/bg_btn_frame"
+        app:layout_constraintStart_toStartOf="@id/btn_delete"
+        app:layout_constraintTop_toBottomOf="@id/btn_cancel_coupon"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_confirm_commit"
+        android:layout_width="@dimen/x170"
+        android:layout_height="@dimen/y354"
+        android:background="@drawable/bg_btn_commit"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
+        app:layout_constraintStart_toStartOf="@id/btn_delete"
+        app:layout_constraintTop_toBottomOf="@id/btn_cancel_temp_promotion">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="1"
+            android:text="确定提交"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_33"
+            android:textColor="@color/color_text_white"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--优惠券-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btn_coupon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y70"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line1">
+
+        <ImageView
+            android:layout_width="@dimen/x96"
+            android:layout_height="@dimen/y120"
+            android:src="@drawable/bg_promotion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_coupon_coupon"
+            android:ems="1"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_26"
+            android:textColor="@color/color_text_white"
+            android:layout_marginStart="@dimen/x28"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--临时折扣-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btn_temp_promotion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_coupon">
+
+        <ImageView
+            android:layout_width="@dimen/x96"
+            android:layout_height="@dimen/y120"
+            android:src="@drawable/bg_promotion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_discount"
+            android:ems="1"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_26"
+            android:textColor="@color/color_text_white"
+            android:layout_marginStart="@dimen/x28"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

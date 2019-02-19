@@ -31,6 +31,9 @@
     <color name="color_e5e5e5">#e5e5e5</color>
     <color name="color_b1b1b1">#B1B1B1</color>
     <color name="color_555555">#555555</color>
+    <color name="color_e9ecf1">#e9ecf1</color>
+    <color name="color_dddddd">#dddddd</color>
+    <color name="color_203356">#203356</color>
 
     <color name="color_goods_title">@color/color_333333</color>
 

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.ActivitiesAdapter;
@@ -19,6 +20,7 @@ public class ActivitiesView extends ConstraintLayout {
     private View mView;
     private RecyclerView mRv;
     private ActivitiesAdapter mAdapter;
+    private Button mCancelTempPromotion;
 
 
     public ActivitiesView(Context context) {
@@ -54,6 +56,7 @@ public class ActivitiesView extends ConstraintLayout {
     private void initView(Context context) {
         mView = LayoutInflater.from(context).inflate(R.layout.layout_activities_view, this, true);
         mRv = (RecyclerView) mView.findViewById(R.id.rv);
+        mCancelTempPromotion = (Button) mView.findViewById(R.id.btn_cancel_temp_promotion);
     }
 
     private void initAttr(Context context, AttributeSet attrs) {
@@ -72,6 +75,14 @@ public class ActivitiesView extends ConstraintLayout {
         if (mAdapter != null) {
             mAdapter.setNewData(data);
         }
+    }
+
+    public void showCancelTempPromotionButton(boolean isVisiable) {
+        mCancelTempPromotion.setVisibility(isVisiable? VISIBLE: GONE);
+    }
+
+    public void enableCancelTempPromotionButton(boolean isEnable) {
+        mCancelTempPromotion.setEnabled(isEnable);
     }
 
 

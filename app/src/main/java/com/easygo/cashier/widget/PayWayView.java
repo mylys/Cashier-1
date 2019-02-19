@@ -35,7 +35,6 @@ public class PayWayView extends ConstraintLayout {
     public static final int WAY_BANK_CARD = 0x0003;
     public static final int WAY_CASH = 0x0004;
     public static final int WAY_OTHER = 0x0005;
-    public static final int WAY_COUPON = 0x0006;
 
     private Button mSelected;
 
@@ -181,8 +180,6 @@ public class PayWayView extends ConstraintLayout {
                 return WAY_BANK_CARD;
             case R.id.btn_other:
                 return WAY_OTHER;
-            case R.id.btn_coupon:
-                return WAY_COUPON;
             default:
 //                return WAY_CASH;
                 return WAY_ALIPAY;

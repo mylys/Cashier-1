@@ -12,7 +12,7 @@ import java.text.DecimalFormat;
 
 public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo.ListBean, BaseViewHolder> {
 
-    private boolean have_shop_promotion = false;
+    private boolean have_promotion = false;
 
 
     public OrderHistoryGoodsAdapter() {
@@ -34,7 +34,7 @@ public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo
                 .setText(R.id.tv_text_goods_count, item.getType() == 1 ? count + item.getG_u_symbol() : df_int.format(count))
                 .setText(R.id.tv_text_subtotal, df.format(item.getMoney()));
 
-        helper.setVisible(R.id.image_discount, Float.valueOf(discount) > 0 || have_shop_promotion);
+        helper.setVisible(R.id.image_discount, Float.valueOf(discount) > 0 || have_promotion);
 
         if (item.getType() == 1) {
             helper.setText(R.id.tv_refund, "全退");
@@ -54,7 +54,7 @@ public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo
         return num;
     }
 
-    public void setHaveShopPromotion(boolean have_shop_promotion) {
-        this.have_shop_promotion = have_shop_promotion;
+    public void setHavePromotion(boolean have_promotion) {
+        this.have_promotion = have_promotion;
     }
 }

@@ -337,6 +337,9 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             case GoodsEntity.TYPE_GOODS://普通商品
             case GoodsEntity.TYPE_NO_CODE://无码商品
                 final CountTextView countTextView = ((CountTextView) helper.getView(R.id.count_view));
+                if(good.isCount_disable()) {//自编码按数量计的商品 不可加减
+                    countTextView.setCountChangeEnable(false);
+                }
                 countTextView.setCount(df_int.format(good_count));
                 countTextView.setOnCountListener(new CountTextView.OnCountListener() {
                     @Override
@@ -498,6 +501,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             }
         });
 
+        helper.itemView.setSelected(item.isSelected());
     }
 
     /**
@@ -775,5 +779,49 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             count += entity.getCount();
         }
         return count;
+    }
+
+    /**
+     * 获取被选中的数据集合
+     * @return
+     */
+    public List<GoodsEntity<GoodsResponse>> getSelected(){
+        List<GoodsEntity<GoodsResponse>> result = null;
+
+        int itemCount = getItemCount();
+        for (int i = 0; i < itemCount; i++) {
+            GoodsEntity<GoodsResponse> goodsEntity = mData.get(i);
+
+            if(!goodsEntity.isSelected()) {
+                continue;
+            }
+
+            if (result == null) {
+                result = new ArrayList<>();
+            }
+            result.add(goodsEntity);
+        }
+
+        return result;
+    }
+
+    /**
+     * 取消所有选中条目
+     */
+    public void cancelAllSelected() {
+
+        int itemCount = getItemCount();
+        for (int i = 0; i < itemCount; i++) {
+            GoodsEntity<GoodsResponse> goodsEntity = mData.get(i);
+
+            if(goodsEntity.isSelected()) {
+                goodsEntity.setSelected(false);
+
+                View root = getViewByPosition(i, R.id.root);
+                if(root != null) {
+                    root.setSelected(false);
+                }
+            }
+        }
     }
 }

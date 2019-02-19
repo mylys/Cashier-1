@@ -2,6 +2,10 @@ package com.easygo.cashier.module.settlement;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -43,16 +47,28 @@ public class SettlementView extends FrameLayout {
     View view1;
     @BindView(R.id.tv_receivable)
     TextView tvReceivable;
+    @BindView(R.id.tv_real_receivable)
+    TextView tvRealReceivable;
+    @BindView(R.id.tv_cancel_temp_promotion)
+    TextView tvCancelTempPromotion;
     @BindView(R.id.tv_coupon)
     TextView tvCoupon;
     @BindView(R.id.tv_text_receipts_way)
     TextView tvReceiptsWay;
     @BindView(R.id.tv_receipts)
     TextView tvReceipts;
-    @BindView(R.id.line5)
-    View line5;
+    @BindView(R.id.root)
+    ConstraintLayout root;
+    @BindView(R.id.line1)
+    View line1;
+    @BindView(R.id.line2)
+    View line2;
     @BindView(R.id.line3)
     View line3;
+    @BindView(R.id.line4)
+    View line4;
+    @BindView(R.id.line5)
+    View line5;
     @BindView(R.id.tv_text_change)
     TextView tvTextChange;
     @BindView(R.id.tv_change)
@@ -127,6 +143,14 @@ public class SettlementView extends FrameLayout {
             public void onClick(View v) {
                 isCoupon = false;
                 setCouponVisiable(isCoupon);
+            }
+        });
+        tvCancelTempPromotion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mListener != null) {
+                    mListener.onCancelTempPromotion();
+                }
             }
         });
     }
@@ -224,13 +248,7 @@ public class SettlementView extends FrameLayout {
 
                     break;
             }
-//        if (payType == PayWayView.WAY_COUPON) {
-//            if (dialog == null) {
-//                dialog = new ChooseCouponsDialog();
-//            }
-//            dialog.showCenter((CashierActivity) getContext());
-//            dialog.setTitle(getResources().getString(R.string.text_coupon_coupon));
-//        }
+        updateLineMargin(payType);
     }
 
     public void setCouponVisiable(boolean isCoupon) {
@@ -275,6 +293,11 @@ public class SettlementView extends FrameLayout {
 
 
     public void setData(float receivable, float coupon, float receipts, float change,String balance) {
+        setData(receivable, coupon, 0, 0, receipts, change, balance);
+    }
+
+    public void setData(float receivable, float coupon, float couponMoney, float tempOrderPromotionMoney,
+                        float receipts, float change,String balance) {
         mReceivable = receivable;
         mCoupon = coupon;
         mReceipts = receipts;
@@ -284,11 +307,75 @@ public class SettlementView extends FrameLayout {
         DecimalFormat df = new DecimalFormat("#0.00");
 
         String sign = "￥";
-        tvReceivable.setText(sign + df.format(mReceivable));
-        tvCoupon.setText(sign + df.format(mCoupon));
+
+        String after = sign + df.format(receivable-coupon-couponMoney-tempOrderPromotionMoney);
+        String before = sign + df.format(receivable);
+
+        if(coupon == 0 && couponMoney == 0 && tempOrderPromotionMoney == 0) {
+            tvRealReceivable.setVisibility(GONE);
+            tvReceivable.setText(sign + df.format(mReceivable));
+        } else {
+            tvRealReceivable.setVisibility(VISIBLE);
+
+            SpannableString spannableAfter = new SpannableString(after);
+            ForegroundColorSpan colorSpan1 = new ForegroundColorSpan(getResources().getColor(R.color.color_d64444));
+            spannableAfter.setSpan(colorSpan1, 0, spannableAfter.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            tvRealReceivable.setText(spannableAfter);
+
+            SpannableString spannableBefore = new SpannableString(before);
+            ForegroundColorSpan colorSpan2 = new ForegroundColorSpan(getResources().getColor(R.color.color_text_ababab));
+            StrikethroughSpan strikethroughSpan = new StrikethroughSpan();
+            spannableBefore.setSpan(colorSpan2, 0, spannableBefore.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            spannableBefore.setSpan(strikethroughSpan, 0, spannableBefore.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            tvReceivable.setText(spannableBefore);
+        }
+
+        tvCoupon.setText(sign + df.format(mCoupon + tempOrderPromotionMoney));
         tvReceipts.setText(sign + df.format(mReceipts));
         tvChange.setText(sign + df.format(mChange));
         tvTextBalancePrice.setText(mBalance);
+    }
+
+    /**
+     * 更新 线之间的间距
+     * @param payType 支付方式
+     */
+    public void updateLineMargin(int payType) {
+        int root_dimen = getResources().getDimensionPixelSize(R.dimen.y49);
+        int line1_dimen = getResources().getDimensionPixelSize(R.dimen.y33);
+        int dimen = getResources().getDimensionPixelSize(R.dimen.y99);
+        switch (payType) {
+            case PayWayView.WAY_CASH:
+                line1_dimen = getResources().getDimensionPixelSize(R.dimen.y42);
+                root_dimen = getResources().getDimensionPixelSize(R.dimen.y100);
+                dimen = getResources().getDimensionPixelSize(R.dimen.y120);
+                break;
+            default:
+
+                break;
+        }
+
+        FrameLayout.LayoutParams flp = (FrameLayout.LayoutParams) root.getLayoutParams();
+        flp.topMargin = root_dimen;
+        root.setLayoutParams(flp);
+        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) line1.getLayoutParams();
+        lp.topMargin = line1_dimen;
+        line1.setLayoutParams(lp);
+        lp = (ConstraintLayout.LayoutParams) line2.getLayoutParams();
+        lp.topMargin = dimen;
+        line2.setLayoutParams(lp);
+        lp = (ConstraintLayout.LayoutParams) line3.getLayoutParams();
+        lp.topMargin = dimen;
+        line3.setLayoutParams(lp);
+        lp = (ConstraintLayout.LayoutParams) line4.getLayoutParams();
+        lp.topMargin = dimen;
+        line4.setLayoutParams(lp);
+        lp = (ConstraintLayout.LayoutParams) line5.getLayoutParams();
+        lp.topMargin = dimen;
+        line5.setLayoutParams(lp);
+        lp = (ConstraintLayout.LayoutParams) view1.getLayoutParams();
+        lp.topMargin = dimen;
+        view1.setLayoutParams(lp);
     }
 
     /**
@@ -313,6 +400,16 @@ public class SettlementView extends FrameLayout {
         return cbPrint.isChecked();
     }
 
+    public void setBottomButtonVisibility(boolean needShowKeyboard) {
+
+        cbPrint.setVisibility(needShowKeyboard? GONE: VISIBLE);
+        btnCommit.setVisibility(needShowKeyboard? GONE: VISIBLE);
+    }
+
+    public void setCancleTempPromotionVisibility(boolean visibility) {
+        tvCancelTempPromotion.setVisibility(visibility? VISIBLE: GONE);
+    }
+
     public interface OnClickListener {
         void onScanClicked();
 
@@ -321,6 +418,7 @@ public class SettlementView extends FrameLayout {
         void onCommitOrderClicked();
 
         void onCancelCoupon();
+        void onCancelTempPromotion();
     }
 
 

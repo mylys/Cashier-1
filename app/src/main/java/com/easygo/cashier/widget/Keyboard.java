@@ -19,6 +19,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 public class Keyboard extends ConstraintLayout {
 
     private View mView;
+    private TextView mTv50;
+    private TextView mTv100;
+    private TextView mTv200;
     private TextView mTv1;
     private TextView mTv2;
     private TextView mTv3;
@@ -50,6 +53,9 @@ public class Keyboard extends ConstraintLayout {
 
     private void initView(Context context) {
         mView = LayoutInflater.from(context).inflate(R.layout.layout_keyboard_view, this, true);
+        mTv50 = (TextView) mView.findViewById(R.id.tv_50);
+        mTv100 = (TextView) mView.findViewById(R.id.tv_100);
+        mTv200 = (TextView) mView.findViewById(R.id.tv_200);
         mTv1 = (TextView) mView.findViewById(R.id.tv_1);
         mTv2 = (TextView) mView.findViewById(R.id.tv_2);
         mTv3 = (TextView) mView.findViewById(R.id.tv_3);
@@ -63,19 +69,22 @@ public class Keyboard extends ConstraintLayout {
         mTv0 = (TextView) mView.findViewById(R.id.tv_0);
         mTv00 = (TextView) mView.findViewById(R.id.tv_00);
 
-        mTvs = new TextView[12];
-        mTvs[0] = mTv1;
-        mTvs[1] = mTv2;
-        mTvs[2] = mTv3;
-        mTvs[3] = mTv4;
-        mTvs[4] = mTv5;
-        mTvs[5] = mTv6;
-        mTvs[6] = mTv7;
-        mTvs[7] = mTv8;
-        mTvs[8] = mTv9;
-        mTvs[9] = mTvPoint;
-        mTvs[10] = mTv0;
-        mTvs[11] = mTv00;
+        mTvs = new TextView[15];
+        mTvs[0] = mTv50;
+        mTvs[1] = mTv100;
+        mTvs[2] = mTv200;
+        mTvs[3] = mTv1;
+        mTvs[4] = mTv2;
+        mTvs[5] = mTv3;
+        mTvs[6] = mTv4;
+        mTvs[7] = mTv5;
+        mTvs[8] = mTv6;
+        mTvs[9] = mTv7;
+        mTvs[10] = mTv8;
+        mTvs[11] = mTv9;
+        mTvs[12] = mTvPoint;
+        mTvs[13] = mTv0;
+        mTvs[14] = mTv00;
 
 
         for (TextView tv : mTvs) {

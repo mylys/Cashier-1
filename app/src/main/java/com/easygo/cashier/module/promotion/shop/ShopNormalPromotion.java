@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class ShopNormalPromotion extends BaseShopPromotion implements IShopPromotion {
 
-    private static final String TAG = ShopTimePromotion.class.getSimpleName();
+    private static final String TAG = ShopNormalPromotion.class.getSimpleName();
 
     @Override
     public float getPromotionMoney(float money) {
@@ -33,7 +33,7 @@ public class ShopNormalPromotion extends BaseShopPromotion implements IShopPromo
 
         float offer_value = Float.valueOf(configBean.getOffer_value());
         int offer_type = configBean.getOffer_type();
-        Log.i(TAG, "getPromotionMoney: offer_type - > " + offer_value);
+        Log.i(TAG, "getPromotionMoney: offer_value - > " + offer_value);
 
         switch (offer_type) {
             case OFFER_TYPE_MONEY:

@@ -1,7 +1,6 @@
 package com.easygo.cashier.module.order_history;
 
 import android.os.Bundle;
-import android.support.annotation.AnyThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,14 +8,11 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.R;
@@ -24,7 +20,6 @@ import com.easygo.cashier.adapter.OrderHistoryGoodsAdapter;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.printer.PrintHelper;
 import com.niubility.library.base.BaseFragment;
-import com.niubility.library.utils.ToastUtils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -162,13 +157,18 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                         total_discount += Float.valueOf(listBean.getDiscount());
                     }
 
-                    if(total_discount == 0) {//商品促销金额或者会员相关促销为0 检查店铺促销金额
+//                    if(total_discount == 0) {//商品促销金额或者会员相关促销为0 检查店铺促销金额
                         List<OrderHistorysInfo.ActivitiesBean> activities = mOrderHistorysInfo.getActivities();
                         if (activities != null && activities.size() != 0) {
                             total_discount = Float.valueOf(activities.get(0).getDiscount_money());
                         }
-                    }
+//                    }
+
+                    float cashier_discount = Float.valueOf(mOrderHistorysInfo.getCashier_discount());
+                    total_discount += cashier_discount;
+
                     bundle.putFloat("total_discount", total_discount);
+                    bundle.putFloat("cashier_discount", cashier_discount);
                     ((OrderHistoryActivity) getActivity()).toOrderHistoryRefundFragment(bundle);
                 }
                 break;
@@ -223,12 +223,14 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                     .append(listBean.getMoney()).append(PrintHelper.BR);
         }
 
-        if(total_discount == 0) {//商品促销金额为0 检查店铺促销金额
+//        if(total_discount == 0) {//商品促销金额为0 检查店铺促销金额
             List<OrderHistorysInfo.ActivitiesBean> activities = mOrderHistorysInfo.getActivities();
             if(activities != null && activities.size() != 0) {
-                total_discount = Float.valueOf(activities.get(0).getDiscount_money());
+                total_discount += Float.valueOf(activities.get(0).getDiscount_money());
             }
-        }
+//        }
+        total_discount += Float.valueOf(mOrderHistorysInfo.getCashier_discount());
+
         DecimalFormat df = new DecimalFormat("0.00");
 
         sb.append("--------------------------------").append(PrintHelper.BR)
@@ -258,7 +260,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
 
         boolean have_shop_promotion = activities != null && activities.size() > 0;
 
-        orderHistoryGoodsAdapter.setHaveShopPromotion(have_shop_promotion);
+        orderHistoryGoodsAdapter.setHavePromotion(have_shop_promotion);
         orderHistoryGoodsAdapter.setNewData(orderHistoryInfo.getList());
         tvOrderNo.setText(orderHistoryInfo.getTrade_no());
         tvCashierAcount.setText(orderHistoryInfo.getReal_name() == null ? "" : orderHistoryInfo.getReal_name());
@@ -277,8 +279,19 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         if(have_shop_promotion) {
             OrderHistorysInfo.ActivitiesBean activitiesBean = activities.get(0);
             coupon += Float.valueOf(activitiesBean.getDiscount_money());
+
+        }
+        //临时整单促销
+        String cashier_discount = mOrderHistorysInfo.getCashier_discount();
+        boolean has_temp_order_promotion = !TextUtils.isEmpty(cashier_discount);
+        if(has_temp_order_promotion) {
+            coupon += Float.valueOf(cashier_discount);
+            orderHistoryGoodsAdapter.setHavePromotion(true);
+        }
+
+        if(have_shop_promotion || has_temp_order_promotion) {
             tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money()
-                    + " - 优惠：￥" + coupon + " = ");
+                    + " - 优惠：￥" + df.format(coupon) + " = ");
         } else {
             tvReceivableText.setText("");
         }

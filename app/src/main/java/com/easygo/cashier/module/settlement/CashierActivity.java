@@ -1,7 +1,6 @@
 package com.easygo.cashier.module.settlement;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -14,6 +13,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -33,7 +34,10 @@ import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.request.CreateOrderRequestBody;
 import com.easygo.cashier.bean.request.PrintRequestBody;
 import com.easygo.cashier.module.CouponUtils;
+import com.easygo.cashier.module.promotion.base.IPromotion;
+import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.promotion.shop.BaseShopPromotion;
+import com.easygo.cashier.module.promotion.temp.TempOrderPromotion;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.ChooseCouponsDialog;
 import com.easygo.cashier.widget.ConfirmDialog;
@@ -41,6 +45,7 @@ import com.easygo.cashier.widget.Keyboard;
 import com.easygo.cashier.widget.MyTitleBar;
 import com.easygo.cashier.widget.PayWayView;
 import com.easygo.cashier.widget.ScanCodeDialog;
+import com.easygo.cashier.widget.TempPromotionDialog;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.EventUtils;
@@ -70,10 +75,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     Keyboard kb;
     @BindView(R.id.btn_delete)
     Button btnDelete;
+    @BindView(R.id.iv_delete)
+    ImageView ivDelete;
     @BindView(R.id.et_money)
     EditText etMoney;
-    @BindView(R.id.btn_coupon)
-    Button btnCoupon;
 
     @Autowired(name = "admin_name")
     String admin_name;
@@ -92,6 +97,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     float mTotalMoney;
     @Autowired(name = "goods_data")
     Serializable mGoodsDataSerializable;
+
+    float mTempOrderPromotionMoney;
 
     /**
      * 商品数据
@@ -142,9 +149,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     protected void init() {
         ARouter.getInstance().inject(this);
 
-//        btnCoupon.setVisibility(View.GONE);
-
-//        payWayView.setPayWayShow(MemberUtils.isMember ? new int[]{0, 1, 2, 3, 6} : new int[]{0, 1, 2, 6});
         if(getPayMoney() <= 0) {//支付金额为 小于等于0时 只能现金支付
             payWayView.setPayWayShow(new int[]{PayWayView.WAY_CASH});
         } else {
@@ -168,7 +172,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         clTitle.setCashierAccount(admin_name);
 
         refreshRealPay();
-        settlementView.setData(mTotalMoney, mCoupon, mRealPay, 0, mBalance);
+        refreshSettlementView();
 
         if(mCouponMoney != 0) {
             showCouponInfo(CouponUtils.getInstance().getCouponInfo().getName(), mCouponMoney);
@@ -198,22 +202,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 //                    showToast("实收金额小于应收金额， 请确认！");
 //                    return;
 //                }
-                if(mChange < 0) {
-                    showToast("找零金额小于0");
-                    return;
-                }
-
-                if (!TextUtils.isEmpty(Configs.order_no) && mPayWay != PayWayView.WAY_CASH) {
-                    showScanCodeDialog();
-                    return;
-                }
-                if (MemberUtils.isMember && mPayWay == PayWayView.WAY_MEMBER) {
-                    if (getPayMoney() > Float.parseFloat(mBalance.substring(1,mBalance.length()))) {
-                        showToast("会员钱包余额不足，不能进行支付");
-                        return;
-                    }
-                }
-                onCommitOrder();
+                onConfirmCommit();
 //                //弹出确认弹窗
 //                Bundle bundle = ConfirmDialog.getDataBundle(mTotalMoney, mRealPay, mChange, mPayWay);
 //                confirmDialog = new ConfirmDialog();
@@ -230,14 +219,21 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             @Override
             public void onCancelCoupon() {
                 float coupon_discount = CouponUtils.getInstance().getCoupon_discount();
-                mCoupon -= coupon_discount;
+//                mCoupon -= coupon_discount;
 
-                settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange, mBalance);
+                mCouponMoney = 0f;
+                refreshSettlementView();
 
                 //置空
                 CouponUtils.getInstance().setCouponInfo(null);
 
             }
+
+            @Override
+            public void onCancelTempPromotion() {
+                cancelTempPromotion();
+            }
+
         });
 
         //关联EditText
@@ -261,8 +257,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     mChange = 0;
                     refreshRealPay();
                     //刷新价格
-                    if (settlementView != null)
-                        settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange, mBalance);
+                    refreshSettlementView();
                     return;
                 }
 
@@ -278,19 +273,13 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     s.delete(s.length() - 1, s.length());
                 } else {
                     mRealPay = data;
-                    float pay = getPayMoney();
-                    if(pay < 0) {
-                        pay = 0;
-                    }
-                    mChange = mRealPay - pay;
 
                     if(mChange < 0) {
 //                        showToast("找零金额小于0");
                     }
 
                     //刷新价格
-                    if (settlementView != null)
-                        settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange, mBalance);
+                    refreshSettlementView();
 
                 }
 
@@ -305,15 +294,16 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 //支付方式选择回调
                 if (settlementView != null) {
                     settlementView.setPayType(isCombinePay, pay_way);
-                    if (pay_way == PayWayView.WAY_COUPON) {
-                        return;
-                    }
 
                     boolean needShowKeyboard = isCombinePay || pay_way == PayWayView.WAY_CASH;
                     //需要输入现金时 显示键盘
                     etMoney.setVisibility(needShowKeyboard ? View.VISIBLE : View.GONE);
                     btnDelete.setVisibility(needShowKeyboard ? View.VISIBLE : View.GONE);
+                    ivDelete.setVisibility(needShowKeyboard ? View.VISIBLE : View.GONE);
                     kb.setVisibility(needShowKeyboard ? View.VISIBLE : View.GONE);
+
+                    settlementView.setBottomButtonVisibility(needShowKeyboard);
+
 
                     //清空 刷新价格
                     etMoney.setText("");
@@ -339,13 +329,58 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     }
 
     /**
-     * 刷新实收       订单总额-优惠-优惠券优惠 = 实收 - 找零
+     * 点击了确定提交
+     */
+    private void onConfirmCommit() {
+        if(mChange < 0) {
+            showToast("找零金额小于0");
+            return;
+        }
+
+        if (!TextUtils.isEmpty(Configs.order_no) && mPayWay != PayWayView.WAY_CASH) {
+            showScanCodeDialog();
+            return;
+        }
+        if (MemberUtils.isMember && mPayWay == PayWayView.WAY_MEMBER) {
+            if (getPayMoney() > Float.parseFloat(mBalance.substring(1,mBalance.length()))) {
+                showToast("会员钱包余额不足，不能进行支付");
+                return;
+            }
+        }
+        onCommitOrder();
+    }
+
+    /**
+     * 刷新金额显示
+     */
+    private void refreshSettlementView() {
+        //刷新找零
+        refreshChangeMoney();
+        settlementView.setData(mTotalMoney, mCoupon,
+                mCouponMoney, mTempOrderPromotionMoney,
+                mRealPay, mChange, mBalance);
+    }
+
+
+    /**
+     * 刷新实收       订单总额-优惠-优惠券优惠 - 临时整单折扣 = 实收 - 找零
      */
     private void refreshRealPay() {
-        mRealPay = getPayMoney() + mChange;
+        mRealPay = getPayMoney() - mTempOrderPromotionMoney + mChange;
         if(mRealPay < 0) {
             mRealPay = 0;
         }
+    }
+
+    /**
+     * 刷新找零      找零 = 实收 - （订单总额-优惠-优惠券优惠 - 临时整单折扣）
+     */
+    private void refreshChangeMoney() {
+        float pay = getPayMoney() - mTempOrderPromotionMoney;
+        if(pay < 0) {
+            pay = 0;
+        }
+        mChange = mRealPay - pay;
     }
 
     public void print() {
@@ -389,7 +424,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 goodsListBean.setCount_price(Integer.valueOf(df.format(count * price * 100)));
 
                 goodsListBean.setDiscount(1);
-                goodsListBean.setGoods_name(data.getG_sku_name());
+                goodsListBean.setGoods_name(data.getPrintName());
                 goodsListBean.setPrice(price_int);
 
                 switch (good.getItemType()) {
@@ -491,7 +526,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     }
 
     /**
-     * 顾客应该支付的钱
+     * 顾客应该支付的钱     （订单总额-优惠-优惠券优惠） =  应收 + 临时整单折扣
      * @return
      */
     private float getPayMoney() {
@@ -555,7 +590,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         return false;
     }
 
-    @OnClick({R.id.cl_back, R.id.btn_delete, R.id.btn_coupon})
+    @OnClick({R.id.cl_back, R.id.btn_delete, R.id.btn_coupon, R.id.btn_cancel_coupon,
+            R.id.btn_temp_promotion, R.id.btn_cancel_temp_promotion, R.id.cl_confirm_commit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cl_back://返回
@@ -581,7 +617,67 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     }
                 }
                 break;
+            case R.id.btn_cancel_coupon:
+                if(CouponUtils.getInstance().getCouponInfo() == null) {
+                    return;
+                }
+                float coupon_discount = CouponUtils.getInstance().getCoupon_discount();
+//                mCoupon -= coupon_discount;
+                mCouponMoney = 0f;
+
+                refreshSettlementView();
+
+                //置空
+                CouponUtils.getInstance().setCouponInfo(null);
+                break;
+            case R.id.btn_temp_promotion:
+                if(ActivitiesUtils.getInstance().getCurrentTempOrderPromotion() != null) {
+                    showToast("已设置折扣");
+                    return;
+                }
+
+                final TempPromotionDialog tempPromotionDialog = new TempPromotionDialog();
+                tempPromotionDialog.setSelected(null);
+                tempPromotionDialog.setOnDialogClickListener(new TempPromotionDialog.OnDialogClickListener() {
+                    @Override
+                    public void onClick(List<GoodsEntity<GoodsResponse>> selectGoods, int mode, boolean isFreeOrder, float value) {
+                        tempPromotionDialog.dismiss();
+                        ActivitiesUtils.getInstance().createTempOrderPromotion(mode, isFreeOrder, value);
+
+                        mTempOrderPromotionMoney = ActivitiesUtils.getInstance().getTempOrderPromotionMoney(getPayMoney());
+                        settlementView.setCancleTempPromotionVisibility(true);
+
+                        //清空键盘输入  回调afterTextChanged()
+                        etMoney.setText("");
+                    }
+                });
+                tempPromotionDialog.showCenter(this);
+                break;
+            case R.id.btn_cancel_temp_promotion:
+                cancelTempPromotion();
+
+                break;
+            case R.id.cl_confirm_commit:
+                onConfirmCommit();
+
+                break;
         }
+    }
+
+    /**
+     * 取消临时整单促销
+     */
+    private void cancelTempPromotion() {
+        if(ActivitiesUtils.getInstance().getCurrentTempOrderPromotion() == null) {
+            return;
+        }
+
+        ActivitiesUtils.getInstance().clearTempOrderPromotion();
+        mTempOrderPromotionMoney = 0f;
+        settlementView.setCancleTempPromotionVisibility(false);
+
+        //清空键盘输入  回调afterTextChanged()
+        etMoney.setText("");
     }
 
     /**
@@ -635,7 +731,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             settlementView.setCouponInfo(name, couponMoney);
 
             refreshRealPay();
-            settlementView.setData(mTotalMoney, mCoupon, mRealPay, mChange, mBalance);
+            refreshSettlementView();
 
         }
     }
@@ -674,13 +770,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         dismissScanDialog();
         //离开页面 清除订单
         Configs.order_no = null;
+        //清除临时整单促销
+        ActivitiesUtils.getInstance().clearTempOrderPromotion();
     }
 
     public void createOrder() {
         DecimalFormat df = new DecimalFormat("#");
         String total_money = df.format(mTotalMoney * 100);
-        String real_pay = df.format(mTotalMoney * 100 - mCoupon * 100 - mCouponMoney * 100);
-//        String real_pay = df.format(mRealPay*100);
+        String real_pay = df.format(mTotalMoney * 100 - mCoupon * 100 - mCouponMoney * 100 - mTempOrderPromotionMoney * 100);
 
         CreateOrderRequestBody requestBody1 = new CreateOrderRequestBody();
         requestBody1.setCashier_id(Configs.cashier_id);
@@ -769,6 +866,13 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     df.format(CouponUtils.getInstance().getCoupon_discount() * 100)));
         }
 
+        //临时整单促销
+        TempOrderPromotion tempOrderPromotion = ActivitiesUtils.getInstance().getCurrentTempOrderPromotion();
+        if (tempOrderPromotion != null) {
+            requestBody1.setCashier_discount(Integer.valueOf(df.format(mTempOrderPromotionMoney * 100)));
+        }
+
+
         int size = mGoodsData.size();
 
         List<CreateOrderRequestBody.GoodsListBean> list = new ArrayList<>();
@@ -787,7 +891,15 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             //设置类型
             goodsBean.setType(data.getType());
             float discount = Float.valueOf(data.getDiscount_price());
+
             goodsBean.setDiscount(Integer.valueOf(df.format(discount * 100)));
+            BaseGoodsPromotion promotion = good.getPromotion();
+            if(promotion != null) {
+                if (promotion.getType() == IPromotion.TYPE_TEMP) {
+                    goodsBean.setCashier_discount(Integer.valueOf(df.format(discount * 100)));
+                    goodsBean.setDiscount(0);
+                }
+            }
 
             goodsBean.setCount(good.getCount());
             if (good.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
@@ -843,7 +955,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             case PayWayView.WAY_CASH:
 
                 DecimalFormat df = new DecimalFormat("#");
-                float pay = mTotalMoney * 100 - mCoupon * 100 ;
+                float pay = mTotalMoney * 100 - mCoupon * 100 - mCouponMoney * 100 - mTempOrderPromotionMoney * 100;
                 if(pay < 0) {
                     pay = 0;
                 }

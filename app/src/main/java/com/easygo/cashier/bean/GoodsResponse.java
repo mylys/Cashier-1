@@ -12,6 +12,7 @@ public class GoodsResponse implements Serializable {
      * g_sku_id : 29986
      * company_id : 0
      * g_sku_name : 发舒服撒发-就是个福
+     * short_name : 发舒服撒发-就是个福
      * first_c_id : 722
      * second_c_id : 727
      * three_c_id : 728
@@ -39,6 +40,7 @@ public class GoodsResponse implements Serializable {
     private int g_sku_id;
     private int company_id;
     private String g_sku_name;
+    private String short_name;
     private int first_c_id;
     private int second_c_id;
     private int three_c_id;
@@ -66,6 +68,8 @@ public class GoodsResponse implements Serializable {
     private boolean select;
     private boolean isMember;
     private int count;
+    /**不可加减数量*/
+    private boolean count_disable;
     /**
      * 唯一识别码， 扫到商品时的时间戳（毫秒）
      */
@@ -95,6 +99,14 @@ public class GoodsResponse implements Serializable {
 
     public void setMemberPrice(boolean member) {
         isMember = member;
+    }
+
+    public boolean isCount_disable() {
+        return count_disable;
+    }
+
+    public void setCount_disable(boolean count_disable) {
+        this.count_disable = count_disable;
     }
 
     public int getCount() {
@@ -143,6 +155,22 @@ public class GoodsResponse implements Serializable {
 
     public void setG_sku_name(String g_sku_name) {
         this.g_sku_name = g_sku_name;
+    }
+
+    public String getShort_name() {
+        return short_name;
+    }
+
+    /**
+     * 获取打印时的商品名称   有商品简称时使用简称，否则使用商品名称
+     * @return
+     */
+    public String getPrintName() {
+        return !TextUtils.isEmpty(short_name)? short_name: g_sku_name;
+    }
+
+    public void setShort_name(String short_name) {
+        this.short_name = short_name;
     }
 
     public int getFirst_c_id() {

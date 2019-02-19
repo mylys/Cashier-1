@@ -97,4 +97,7 @@
     <dimen name="keyboard_width">@dimen/x545</dimen>
     <dimen name="keyboard_height">@dimen/y545</dimen>
 
+    <!--现金结算 键盘key间距-->
+    <dimen name="keyboard_key_margin">@dimen/x12</dimen>
+
 </resources>

@@ -36,6 +36,15 @@
     <!--促销-->
     <string name="text_current_promotion">正在参与活动：</string>
 
+    <string name="text_promotion_settiong">折扣设置</string>
+    <string name="text_discount">折扣</string>
+    <string name="text_change_price">改价</string>
+    <string name="hint_discount">请输入折扣百分比</string>
+    <string name="hint_change_price">请输入更改价格</string>
+    <string name="text_free_order">免单</string>
+    <string name="text_cancel_temp_promotion">取消临时折扣</string>
+
+
     <!--会员-->
     <string name="text_current_member">当前会员：</string>
     <string name="text_choose_member">选择会员</string>

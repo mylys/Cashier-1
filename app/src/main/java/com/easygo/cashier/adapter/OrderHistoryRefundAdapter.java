@@ -61,13 +61,21 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
 
         //设置数据
         String tv_total_num = type == 1 ? item.getProduct_num() + item.getG_u_symbol() : df_int.format(item.getProduct_num());
-        String tv_subtotal = df.format(Double.parseDouble(item.getProduct_subtotal()));
+
+        double product_subtotal = Double.parseDouble(item.getProduct_subtotal());//小计
+        double refund_subtotal = Double.parseDouble(item.getRefund_subtotal());//退货小计
+        String tv_subtotal = df.format(product_subtotal);
+        String tv_refund_subtotal = df.format(refund_subtotal);
+        if(refund_subtotal > product_subtotal) {//退货小计不能大于小计
+            tv_refund_subtotal = df.format(product_subtotal);
+        }
+
         helper.setText(R.id.tv_product_name, item.getProduct_name())
                 .setText(R.id.tv_product_preferential, item.getProduct_preferential())
                 .setText(R.id.tv_product_price, item.getProduct_price())
                 .setText(R.id.tv_product_subtotal, tv_subtotal)
                 .setText(R.id.tv_product_total_num, tv_total_num)
-                .setText(R.id.tv_refund_subtotal, type == 1 || type == 3 ? tv_subtotal : item.getRefund_subtotal())
+                .setText(R.id.tv_refund_subtotal, type == 1 || type == 3 ? tv_subtotal : tv_refund_subtotal)
 //                .setText(R.id.tv_refund_num_no, type == 1 || type == 3 ? tv_total_num : item.getRefund_num());
                 .setText(R.id.tv_refund_num_no, df_int.format(item.getProduct_num()));
 
@@ -94,6 +102,10 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 }
                 item.setRefund_num(count + "");
                 double subtotal = (count * Double.parseDouble(item.getProduct_price()));
+                double money = Double.parseDouble(item.getProduct_subtotal());//小计
+                if(subtotal > money) {
+                    subtotal = money;
+                }
                 item.setRefund_subtotal(df.format(subtotal));
                 listener.onListener();
                 notifyDataSetChanged();

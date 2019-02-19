@@ -101,4 +101,8 @@ public class BaseGoodsPromotion extends BasePromotion {
     public void computePromotionMoney(List<GoodsEntity<GoodsResponse>> data) {
 
     }
+
+    public boolean isTempGoodsPromotion() {
+        return getType() == IPromotion.TYPE_TEMP;
+    }
 }

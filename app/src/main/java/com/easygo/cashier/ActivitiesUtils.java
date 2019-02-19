@@ -19,6 +19,8 @@ import com.easygo.cashier.module.promotion.goods.GoodsTimePromotion;
 import com.easygo.cashier.module.promotion.shop.BaseShopPromotion;
 import com.easygo.cashier.module.promotion.shop.ShopNormalPromotion;
 import com.easygo.cashier.module.promotion.shop.ShopTimePromotion;
+import com.easygo.cashier.module.promotion.temp.TempOrderPromotion;
+import com.easygo.cashier.module.promotion.temp.TempGoodsPromotion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,10 +57,12 @@ public class ActivitiesUtils {
 
     private float mShopPromotionMoney;
     private float mGoodsPromotionMoney;
+    private float mTempOrderPromotionMoney;
     private boolean goods_with_coupon = true;
     private boolean shop_with_coupon = true;
 
     private List<String> currentPromotionNames;
+    private boolean hasTempGoodsPromotion;
 
 
     private ActivitiesUtils() {}
@@ -70,6 +74,139 @@ public class ActivitiesUtils {
     private static class Holder {
         private static final ActivitiesUtils sInstance = new ActivitiesUtils();
     }
+
+
+    private List<BaseGoodsPromotion> tempGoodsPromotions = new ArrayList<>();
+    private TempOrderPromotion currentTempOrderPromotion;
+    /**
+     * 临时商品促销Map    key为    条码_单价
+     */
+    private ArrayMap<String, BaseGoodsPromotion> barcode2TempMap = new ArrayMap<>();
+
+    /**
+     * 创建临时商品促销
+     * @param selecteds
+     * @param mode
+     * @param isFreeOrder
+     * @param value
+     */
+    public void createTempGoodsPromotion(List<GoodsEntity<GoodsResponse>> selecteds, int mode, boolean isFreeOrder, float value) {
+
+        int size = selecteds.size();
+        if(size == 0) {
+            return;
+        }
+
+        for (int i = 0; i < size; i++) {
+            GoodsEntity<GoodsResponse> goodsEntity = selecteds.get(i);
+            GoodsResponse data = goodsEntity.getData();
+            String barcode = data.getBarcode();
+
+            TempGoodsPromotion promotion = new TempGoodsPromotion();
+            promotion.setId(-promotion.hashCode());
+            promotion.setName("临时商品促销");
+            promotion.setType(IPromotion.TYPE_TEMP);
+            promotion.setWith_coupon(1);
+            promotion.setOffer_type(mode);
+            if(mode == IPromotion.OFFER_TYPE_RATIO) {
+                if (isFreeOrder) {
+                    promotion.setOffer_value(0);
+                } else {
+                    promotion.setOffer_value(value);
+                }
+            } else if(mode == IPromotion.OFFER_TYPE_MONEY) {
+                if (isFreeOrder) {
+                    promotion.setOffer_value(0);
+                } else {
+                    promotion.setOffer_value(value);
+                }
+            }
+
+            //封装进集合中
+            List<GoodsActivityResponse.ActivitiesBean.GoodsBean> goods = new ArrayList<>();
+            GoodsActivityResponse.ActivitiesBean.GoodsBean goodsBean = new GoodsActivityResponse.ActivitiesBean.GoodsBean();
+            goodsBean.setBarcode(barcode);
+            goodsBean.setG_sku_id(data.getG_sku_id());
+            goodsBean.setSku_name(data.getG_sku_name());
+            goods.add(goodsBean);
+
+            promotion.setGoodsBeans(goods);
+
+            barcode2TempMap.put(barcode + "_" + data.getPrice(), promotion);
+        }
+
+
+    }
+    /**取消指定商品临时促销*/
+    public void cancelTempGoodsPromotion(String key) {
+        barcode2TempMap.remove(key);
+    }
+    /**取消所有商品临时促销*/
+    public void clearTempPromotion() {
+        tempGoodsPromotions.clear();
+        barcode2TempMap.clear();
+        hasTempGoodsPromotion = false;
+    }
+
+    /**
+     * 创建临时整单临时促销
+     * @param mode
+     * @param isFreeOrder
+     * @param value
+     */
+    public void createTempOrderPromotion(int mode, boolean isFreeOrder, float value) {
+        TempOrderPromotion promotion = new TempOrderPromotion();
+        promotion.setId(-promotion.hashCode());
+        promotion.setName("临时整单促销");
+        promotion.setType(IPromotion.TYPE_TEMP);
+        promotion.setWith_coupon(1);
+        promotion.setOffer_type(mode);
+        if(mode == IPromotion.OFFER_TYPE_RATIO) {
+            if (isFreeOrder) {
+                promotion.setOffer_value(0);
+            } else {
+                promotion.setOffer_value(value);
+            }
+        } else if(mode == IPromotion.OFFER_TYPE_MONEY) {
+            if (isFreeOrder) {
+                promotion.setOffer_value(0);
+            } else {
+                promotion.setOffer_value(value);
+            }
+        }
+
+        currentTempOrderPromotion = promotion;
+    }
+
+    public void clearTempOrderPromotion() {
+        currentTempOrderPromotion = null;
+        mTempOrderPromotionMoney = 0f;
+    }
+
+    /**
+     * 获取临时整单促销的促销金额
+     * @param money
+     * @return
+     */
+    public float getTempOrderPromotionMoney(float money) {
+        if(currentTempOrderPromotion == null) {
+            return 0f;
+        }
+
+        float promotionMoney = currentTempOrderPromotion.getPromotionMoney(money);
+
+        if(promotionMoney > 0) {
+            Log.i(TAG, "promotion: " + currentTempOrderPromotion.getName() + ", 促销金额： " + promotionMoney);
+            //记录临时整单促销金额
+            mTempOrderPromotionMoney = promotionMoney;
+
+            return promotionMoney;
+        }
+        return 0f;
+    }
+
+
+
 
     /**
      * 根据商品促销返回体，解析出促销对象并保存
@@ -145,7 +282,6 @@ public class ActivitiesUtils {
         promotion.setName(activitiesBean.getName());
         promotion.setType(activitiesBean.getType());
         promotion.setWith_coupon(activitiesBean.getWith_coupon());
-        promotion.setType(activitiesBean.getType());
         promotion.setGoods_effected_at(activitiesBean.getEffected_at());
         promotion.setGoods_expired_at(activitiesBean.getExpired_at());
         promotion.setGoodsBeans(activitiesBean.getGoods());
@@ -164,17 +300,24 @@ public class ActivitiesUtils {
             goodsEntity.setPromotion(null);
         }
 
-        if(barcode2IdMap == null) {
-            return;
-        } else if(id2PromotionMap == null) {
-            return;
+        if(barcode2TempMap.isEmpty()) {
+
+            if (barcode2IdMap == null) {
+                return;
+            } else if (id2PromotionMap == null) {
+                return;
+            }
         }
         needComputeMap.clear();
 
         String barcode;
-        int actvitity_id;
+        int actvitity_id = -1;
 
 
+        for (Map.Entry<String, BaseGoodsPromotion> entry : barcode2TempMap.entrySet()) {
+            BaseGoodsPromotion promotion = entry.getValue();
+            promotion.setPromotionGoods(null);
+        }
         for (Map.Entry<Integer, BaseGoodsPromotion> entry : id2PromotionMap.entrySet()) {
             BaseGoodsPromotion promotion = entry.getValue();
             promotion.setPromotionGoods(null);
@@ -183,21 +326,32 @@ public class ActivitiesUtils {
         //  1、遍历顾客所购商品
         for (int i = 0; i < size; i++) {
             GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
-//            //置零
-//            goodsEntity.getData().setDiscount_price("0.00");
             barcode = goodsEntity.getData().getBarcode();
 
-            //  2、根据barcode 去map中找此商品是否有促销信息
-            Integer integer = barcode2IdMap.get(barcode);
-            actvitity_id = integer == null ? -1: integer;
+            // 2、先根据barcode去map中找临时商品促销活动对象，找不到则根据活动id去map中找商品促销活动对象
+            BaseGoodsPromotion promotion = null;
+            if (!barcode2TempMap.isEmpty()) {//有临时促销
+                promotion = barcode2TempMap.get(barcode + "_" + goodsEntity.getData().getPrice());
+                actvitity_id = promotion == null? -1: promotion.getId();
 
-            if(actvitity_id == -1) {
-                //说明此商品没有促销信息
+            }
+            if(promotion == null && barcode2IdMap == null) {//没有临时商品促销 也没有商品促销时
                 continue;
             }
-            //此商品有促销信息
-            //  3、根据活动id 去map中找此活动对象
-            BaseGoodsPromotion promotion = id2PromotionMap.get(actvitity_id);
+
+            if (promotion == null && barcode2IdMap != null) {//临时促销中找不到
+
+                //  3、根据barcode 去map中找此商品是否有促销信息
+                Integer integer = barcode2IdMap.get(barcode);
+                actvitity_id = integer == null ? -1 : integer;
+
+                if (actvitity_id == -1) {
+                    //说明此商品没有促销信息
+                    continue;
+                }
+                promotion = id2PromotionMap.get(actvitity_id);
+            }
+
 
             List<GoodsActivityResponse.ActivitiesBean.GoodsBean> goodsBeans = promotion.getGoodsBeans();
             int goods_size = goodsBeans.size();
@@ -353,6 +507,7 @@ public class ActivitiesUtils {
             currentGoodsPromotions.clear();
         }
         goods_with_coupon = true;
+        hasTempGoodsPromotion = false;
         for (int i = 0; i < size; i++) {
 
             promotion = data.get(i).getPromotion();
@@ -363,6 +518,9 @@ public class ActivitiesUtils {
                 mGoodsPromotionMoney += Float.valueOf(data.get(i).getData().getDiscount_price());
                 if(promotion.getWith_coupon() == 0) {
                     goods_with_coupon = false;
+                }
+                if(promotion.isTempGoodsPromotion()) {
+                    hasTempGoodsPromotion = true;
                 }
             }
         }
@@ -380,6 +538,17 @@ public class ActivitiesUtils {
     public boolean hasShopPromotion() {
         return currentShopPromotion != null;
     }
+    public boolean hasTempGoodsPromotion() {
+        return hasTempGoodsPromotion;
+    }
+    public boolean hasTempOrderPromotion() {
+        return currentTempOrderPromotion != null;
+    }
+
+    public TempOrderPromotion getCurrentTempOrderPromotion() {
+        return currentTempOrderPromotion;
+    }
+
 
     public BaseShopPromotion getCurrentShopPromotion() {
         return currentShopPromotion;
@@ -452,5 +621,11 @@ public class ActivitiesUtils {
         currentPromotionNames = null;
         goods_with_coupon = true;
         shop_with_coupon = true;
+        hasTempGoodsPromotion = false;
+
+        //清除临时商品促销
+       clearTempPromotion();
+        //清除临时整单促销
+       clearTempOrderPromotion();
     }
 }
