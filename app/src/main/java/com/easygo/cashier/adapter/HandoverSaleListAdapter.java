@@ -33,11 +33,11 @@ public class HandoverSaleListAdapter extends BaseQuickAdapter<HandoverSaleRespon
                 break;
         }
 
-        float discount = Float.parseFloat(item.getDiscount());
+//        float discount = Float.parseFloat(item.getDiscount());
         helper.setText(R.id.tv_goods_name, item.getG_sku_name())
                 .setText(R.id.tv_goods_classification, item.getG_c_name())
                 .setText(R.id.tv_price, item.getSell_price())
                 .setText(R.id.tv_goods_count, count)
-                .setText(R.id.tv_subtotal, df.format(item.getMoney() - discount));
+                .setText(R.id.tv_subtotal, String.valueOf(item.getMoney()));
     }
 }
