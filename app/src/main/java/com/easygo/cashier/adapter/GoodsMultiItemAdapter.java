@@ -393,6 +393,13 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                         refreshPrice();
 
                     }
+
+                    @Override
+                    public void onCountClick() {
+                        if(mListener != null) {
+                            mListener.onCountClick(countTextView, position, countTextView.getCount());
+                        }
+                    }
                 });
                 break;
             case GoodsEntity.TYPE_WEIGHT://称重商品
@@ -630,6 +637,8 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
         void onSaleCountNotEnough();
 
+        void onCountClick(CountTextView countTextView, int position, int count);
+
         /**
          * 按压促销图标时
          * @param v
@@ -824,4 +833,35 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             }
         }
     }
+
+    public void setGoodsCount(int position, int count) {
+        CountTextView countTextView = (CountTextView) getViewByPosition(position, R.id.count_view);
+
+        GoodsEntity<GoodsResponse> goodsEntity = mData.get(position);
+        GoodsResponse good = goodsEntity.getData();
+        String barcode = good.getBarcode();
+        int on_sale_count = good.getOn_sale_count();
+
+        if (good.getIs_inventory_limit() == 1 && good.getType() == GoodsResponse.type_normal
+                && count > on_sale_count) {
+
+            if (mListener != null) {
+                mListener.onSaleCountNotEnough();
+            }
+        }
+        if (count == on_sale_count) {
+            limit.add(barcode);
+        }
+
+        goodsEntity.setCount(count);
+        countTextView.setCount(count + "");
+        notifyItemChanged(position);
+        if (mListener != null) {
+            mListener.onCountChanged(position, count);
+        }
+        //刷新价格
+        refreshPrice();
+    }
+
+
 }

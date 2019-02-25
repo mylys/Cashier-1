@@ -19,6 +19,7 @@ import com.niubility.library.utils.ToastUtils;
 import java.util.List;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Constraints;
 
 /**
  * 临时折扣、改价对话框
@@ -315,6 +316,7 @@ public class TempPromotionDialog extends BaseDialog {
     public void setMode(int mode) {
         this.mode = mode;
         reset();
+        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) key_board.getLayoutParams();
         switch (mode) {
             case MODE_DISCOUNT:
                 chooseDiscount.setVisibility(View.VISIBLE);
@@ -324,6 +326,7 @@ public class TempPromotionDialog extends BaseDialog {
                 clInputChangePrice.setVisibility(View.GONE);
                 clChooseDiscount.setVisibility(View.VISIBLE);
                 key_board.attachEditText(etDiscount);
+                lp.topMargin = getResources().getDimensionPixelSize(R.dimen.y14);
                 etDiscount.setText("");
 
                 break;
@@ -333,12 +336,14 @@ public class TempPromotionDialog extends BaseDialog {
 
                 clInputDiscount.setVisibility(View.GONE);
                 clInputChangePrice.setVisibility(View.VISIBLE);
-                clChooseDiscount.setVisibility(View.INVISIBLE);
+                clChooseDiscount.setVisibility(View.GONE);
                 key_board.attachEditText(etChangePrice);
+                lp.topMargin = getResources().getDimensionPixelSize(R.dimen.y40);
                 etChangePrice.setText("");
 
                 break;
         }
+        key_board.setLayoutParams(lp);
     }
 
     public void setSelected(List<GoodsEntity<GoodsResponse>> selected) {

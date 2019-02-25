@@ -18,13 +18,15 @@
     <dimen name="text_size_30">@dimen/x30</dimen>
     <dimen name="text_size_33">@dimen/x33</dimen>
     <dimen name="text_size_34">@dimen/x34</dimen>
+    <dimen name="text_size_35">@dimen/x35</dimen>
     <dimen name="text_size_37">@dimen/x37</dimen>
     <dimen name="text_size_38">@dimen/x38</dimen>
     <dimen name="text_size_40">@dimen/x40</dimen>
     <dimen name="text_size_42">@dimen/x42</dimen>
     <dimen name="text_size_84">@dimen/x84</dimen>
-    <dimen name="item_goods_height">@dimen/x84</dimen>
-    <dimen name="item_processing_goods_height">@dimen/x170</dimen>
+    <dimen name="item_goods_height">@dimen/x100</dimen>
+    <dimen name="item_user_goods_height">@dimen/x84</dimen>
+    <dimen name="item_processing_goods_height">@dimen/x200</dimen>
 
     <dimen name="coupon_icon_size">@dimen/x67</dimen>
 

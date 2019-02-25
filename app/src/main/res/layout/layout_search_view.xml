@@ -3,20 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_btn_frame">
+    android:background="@drawable/bg_btn_frame_green">
+
+    <ImageView
+        android:id="@+id/iv_search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="@dimen/x21"
+        android:layout_width="@dimen/x42"
+        android:layout_height="@dimen/y42"
+        android:src="@drawable/ic_main_search" />
 
 
     <EditText
         android:id="@+id/et_search"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_search"
         app:layout_constraintEnd_toStartOf="@id/cl_clear"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/x16"
         android:layout_marginEnd="@dimen/x23"
-        android:paddingStart="@dimen/x35"
+        android:paddingStart="@dimen/x21"
         android:background="@null"
         android:hint="输入条形码、商品名或编码"
         android:textColorHint="@color/color_text_ababab"
@@ -29,7 +38,7 @@
         android:layout_height="match_parent"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_search"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -52,6 +61,7 @@
         android:textSize="@dimen/x38"
         android:textColor="@color/color_text_white"
         android:background="@drawable/bg_btn_search"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

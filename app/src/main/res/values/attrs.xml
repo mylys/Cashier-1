@@ -18,4 +18,13 @@
         <attr name="search_btn_height" format="dimension"/>
 
     </declare-styleable>
+
+    <declare-styleable name="GeneraButton">
+        <attr name="image" format="integer"/>
+        <attr name="text" format="string"/>
+        <attr name="margin_top" format="integer"/>
+        <attr name="image_size" format="dimension"/>
+        <attr name="text_size" format="dimension"/>
+    </declare-styleable>
+
 </resources>

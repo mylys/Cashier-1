@@ -2,6 +2,7 @@ package com.easygo.cashier.module.goods;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.display.DisplayManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,7 +31,6 @@ import com.easygo.cashier.Configs;
 import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
-import com.easygo.cashier.SoftKeyboardUtil;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.adapter.GoodsMultiItemAdapter;
 import com.easygo.cashier.bean.CouponResponse;
@@ -49,6 +49,8 @@ import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.widget.ActivitiesView;
 import com.easygo.cashier.widget.ChooseCouponsDialog;
 import com.easygo.cashier.widget.ChooseMembersDialog;
+import com.easygo.cashier.widget.CountTextView;
+import com.easygo.cashier.widget.GeneraButton;
 import com.easygo.cashier.widget.GeneraDialog;
 import com.easygo.cashier.widget.GeneraEditDialog;
 import com.easygo.cashier.widget.MySearchView;
@@ -56,6 +58,7 @@ import com.easygo.cashier.widget.PettyCashDialog;
 import com.easygo.cashier.widget.ProcessingChoiceDialog;
 import com.easygo.cashier.widget.ScanCodeDialog;
 import com.easygo.cashier.widget.SearchResultWindow;
+import com.easygo.cashier.widget.SetCountPopupWindow;
 import com.easygo.cashier.widget.TempPromotionDialog;
 import com.google.gson.reflect.TypeToken;
 import com.niubility.library.base.BaseApplication;
@@ -100,10 +103,6 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     TextView tvCouponPrice;
     @BindView(R.id.activities_view)
     ActivitiesView activitiesView;
-    @BindView(R.id.btn_choose_member)
-    Button btnChooseMember;
-    @BindView(R.id.btn_choose_coupon)
-    Button btnChooseCoupon;
 
     @BindView(R.id.cl_member)
     ConstraintLayout clMember;
@@ -124,7 +123,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     @BindView(R.id.cl_search)
     MySearchView clSearch;
     @BindView(R.id.btn_no_barcode)
-    Button clNoBarcode;
+    GeneraButton clNoBarcode;
     @BindView(R.id.et_barcode)
     EditText etBarcode;//监听扫码机
 
@@ -175,6 +174,10 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
      * 加工方式选择弹窗
      */
     private ProcessingChoiceDialog mProcessingChoiceDialog;
+    /**
+     * 设置商品数量弹窗
+     */
+    private SetCountPopupWindow mSetCountPopupWindow;
 
     private UserGoodsScreen mUserGoodsScreen;
 
@@ -267,13 +270,6 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         initBarcode();
 
         initUserGoodsScreen();
-
-//        btnChooseCoupon.setVisibility(View.GONE);
-//        btnChooseMember.setVisibility(View.GONE);
-
-//        mPresenter.goods_activity(Configs.shop_sn);
-//        mPresenter.shop_activity(Configs.shop_sn);
-
 
         //发送心跳
         mPresenter.heartbeat();
@@ -370,6 +366,11 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             }
 
             @Override
+            public void onCountClick(CountTextView countTextView, int position, int count) {
+                showSetCountDialog(countTextView, position, count);
+            }
+
+            @Override
             public boolean onPromotionTouch(View v, MotionEvent event, String name) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
@@ -442,9 +443,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         if (Configs.getRole(Configs.menus[21]) == 0) {
             clNoBarcode.setVisibility(View.GONE);
         }
-        if (Configs.getRole(Configs.menus[13]) == 0) {
-            clPopMoneyBox.setVisibility(View.GONE);
-        }
+//        if (Configs.getRole(Configs.menus[13]) == 0) {
+//            clPopMoneyBox.setVisibility(View.GONE);
+//        }
 
         clSearch.setOnSearchListenerClick(new MySearchView.OnSearhListenerClick() {
             @Override
@@ -456,6 +457,28 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         });
 
 
+    }
+
+    /**
+     * 显示设置数字弹框
+     */
+    private void showSetCountDialog(final CountTextView countTextView, final int position, int count) {
+        mSetCountPopupWindow = new SetCountPopupWindow(getContext(), countTextView, count);
+        mSetCountPopupWindow.setOutsideTouchable(true);
+        mSetCountPopupWindow.setFocusable(true);
+        mSetCountPopupWindow.setWidth(-2);
+        mSetCountPopupWindow.setHeight(-2);
+        mSetCountPopupWindow.setBackgroundDrawable(new ColorDrawable());
+        mSetCountPopupWindow.setOnCountClickListener(new SetCountPopupWindow.OnClickListener() {
+            @Override
+            public void onCount(String content) {
+                mGoodsMultiItemAdapter.setGoodsCount(position, Integer.parseInt(content));
+            }
+        });
+        int[] location = new int[2];
+        countTextView.getLocationOnScreen(location);
+//        mSetCountPopupWindow.showAsDropDown(countTextView);
+        mSetCountPopupWindow.showCenter();
     }
 
     /**
@@ -631,6 +654,16 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             activitiesView.showCancelTempPromotionButton(false);
         }
 
+        //设置数量的弹窗如果弹出时 更新位置
+        if(mSetCountPopupWindow != null && mSetCountPopupWindow.isShowing()) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mSetCountPopupWindow.showCenter();
+                }
+            }, 500);
+        }
+
     }
 
     public void initUserGoodsScreen() {
@@ -714,12 +747,12 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         }
         switch (mType) {
             case TYPE_GOODS:
-                clPopMoneyBox.setVisibility(View.VISIBLE);
+//                clPopMoneyBox.setVisibility(View.VISIBLE);
                 clNoBarcode.setVisibility(View.VISIBLE);
                 btnSettlement.setText(" 收银：  ￥0.00 ");
                 break;
             case TYPE_REFUND:
-                clPopMoneyBox.setVisibility(View.GONE);
+//                clPopMoneyBox.setVisibility(View.GONE);
                 clNoBarcode.setVisibility(View.VISIBLE);
                 btnSettlement.setText(" 退款：  ￥0.00 ");
                 break;
@@ -801,26 +834,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
                 break;
             case R.id.btn_pop_money_box://弹出钱箱
-                if (Configs.till_auth == 0) {
-                    mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
-                    return;
-                }
-                if (editDialog == null) {
-                    editDialog = new GeneraEditDialog();
-                }
-                editDialog.showCenter(getActivity());
-                editDialog.setTitle(getResources().getString(R.string.text_cashbox_accredit));
-                editDialog.setType(Configs.till_auth == 1 ? GeneraEditDialog.USER_ACCREDIT : GeneraEditDialog.USER_ACCOUNT);
-                editDialog.setOnDialogClickListener(new GeneraEditDialog.OnDialogClickListener() {
-                    @Override
-                    public void onContent(int type, String account, String password) {
-                        if (type == GeneraEditDialog.USER_ACCREDIT) {
-                            mPresenter.tillAuth("till", account, null, null, null, null);
-                        } else if (type == GeneraEditDialog.USER_ACCOUNT) {
-                            mPresenter.tillAuth("till", null, null, null, account, password);
-                        }
-                    }
-                });
+                clickPopTill();
 
                 break;
             case R.id.btn_clear://清空
@@ -1080,6 +1094,32 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
                 ARouter.getInstance().build(ModulePath.quick).navigation();
                 break;
         }
+    }
+
+    /**
+     * 点击了弹出钱箱
+     */
+    public void clickPopTill() {
+        if (Configs.till_auth == 0) {
+            mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
+            return;
+        }
+        if (editDialog == null) {
+            editDialog = new GeneraEditDialog();
+        }
+        editDialog.showCenter(getActivity());
+        editDialog.setTitle(getResources().getString(R.string.text_cashbox_accredit));
+        editDialog.setType(Configs.till_auth == 1 ? GeneraEditDialog.USER_ACCREDIT : GeneraEditDialog.USER_ACCOUNT);
+        editDialog.setOnDialogClickListener(new GeneraEditDialog.OnDialogClickListener() {
+            @Override
+            public void onContent(int type, String account, String password) {
+                if (type == GeneraEditDialog.USER_ACCREDIT) {
+                    mPresenter.tillAuth("till", account, null, null, null, null);
+                } else if (type == GeneraEditDialog.USER_ACCOUNT) {
+                    mPresenter.tillAuth("till", null, null, null, account, password);
+                }
+            }
+        });
     }
 
     /**
@@ -1483,6 +1523,9 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         if (mProcessingChoiceDialog != null && mProcessingChoiceDialog.isShowing()) {
             mProcessingChoiceDialog.dismiss();
         }
+        if (mSetCountPopupWindow != null && mSetCountPopupWindow.isShowing()) {
+            mSetCountPopupWindow.dismiss();
+        }
 
         mHandler.removeCallbacksAndMessages(null);
     }
@@ -1592,6 +1635,20 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     }
 
     public void lockCashier() {
+        GeneraDialog generaDialog = GeneraDialog.getInstance("确认锁定收银机？", "取消", "确定");
+        generaDialog.showCenter(getActivity());
+        generaDialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
+            @Override
+            public void onSubmit() {
+                realLockCashier();
+            }
+        });
+    }
+
+    /**
+     * 锁定收银机
+     */
+    private void realLockCashier() {
         if (editDialog == null) {
             editDialog = new GeneraEditDialog();
         }
@@ -1602,7 +1659,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         } else if (Configs.lock_auth == 2) {
             editDialog.setTitle(getResources().getString(R.string.text_lock_user));
         }
-        editDialog.setVisiable(false);
+        editDialog.setVisiable(true);
         editDialog.setType(Configs.lock_auth == 1 ? GeneraEditDialog.USER_ACCREDIT : GeneraEditDialog.USER_ACCOUNT);
         editDialog.setOnDialogClickListener(new GeneraEditDialog.OnDialogClickListener() {
             @Override

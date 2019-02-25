@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
@@ -41,8 +40,8 @@ public class SettlementView extends FrameLayout {
     TextView tvTextCouponColon;
     @BindView(R.id.tv_coupon_colon_price)
     TextView tvCouponColonPrice;
-    @BindView(R.id.image_clear)
-    ImageView imageClear;
+    @BindView(R.id.btn_cancel_coupon)
+    Button btnCancelCoupon;
     @BindView(R.id.view1)
     View view1;
     @BindView(R.id.tv_receivable)
@@ -51,6 +50,8 @@ public class SettlementView extends FrameLayout {
     TextView tvRealReceivable;
     @BindView(R.id.tv_cancel_temp_promotion)
     TextView tvCancelTempPromotion;
+    @BindView(R.id.btn_cancel_temp_promotion)
+    Button btnCancelTempPromotion;
     @BindView(R.id.tv_coupon)
     TextView tvCoupon;
     @BindView(R.id.tv_text_receipts_way)
@@ -138,14 +139,14 @@ public class SettlementView extends FrameLayout {
                 }
             }
         });
-        imageClear.setOnClickListener(new View.OnClickListener() {
+        btnCancelCoupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isCoupon = false;
                 setCouponVisiable(isCoupon);
             }
         });
-        tvCancelTempPromotion.setOnClickListener(new View.OnClickListener() {
+        btnCancelTempPromotion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mListener != null) {
@@ -200,6 +201,8 @@ public class SettlementView extends FrameLayout {
                     setChangeVisibilty(true);
                     setMemberVisiable(false);
                     setCouponVisiable(isCoupon);
+                    setCancleCouponVisibility(false);
+                    setCancleTempPromotionVisibility(false);
 
                     break;
                 case PayWayView.WAY_WECHAT://微信
@@ -209,6 +212,8 @@ public class SettlementView extends FrameLayout {
                     setChangeVisibilty(false);
                     setMemberVisiable(false);
                     setCouponVisiable(isCoupon);
+                    setCancleCouponVisibility(true);
+                    setCancleTempPromotionVisibility(true);
 
                     break;
                 case PayWayView.WAY_ALIPAY://支付宝
@@ -218,6 +223,8 @@ public class SettlementView extends FrameLayout {
                     setChangeVisibilty(false);
                     setMemberVisiable(false);
                     setCouponVisiable(isCoupon);
+                    setCancleCouponVisibility(true);
+                    setCancleTempPromotionVisibility(true);
 
                     break;
                 case PayWayView.WAY_MEMBER://会员钱包
@@ -227,6 +234,8 @@ public class SettlementView extends FrameLayout {
                     setChangeVisibilty(false);
                     setMemberVisiable(true);
                     setCouponVisiable(isCoupon);
+                    setCancleCouponVisibility(true);
+                    setCancleTempPromotionVisibility(true);
 
                     break;
                 case PayWayView.WAY_BANK_CARD://银行卡
@@ -236,6 +245,8 @@ public class SettlementView extends FrameLayout {
                     setChangeVisibilty(false);
                     setMemberVisiable(false);
                     setCouponVisiable(isCoupon);
+                    setCancleCouponVisibility(true);
+                    setCancleTempPromotionVisibility(true);
 
                     break;
                 case PayWayView.WAY_OTHER://其他
@@ -245,6 +256,8 @@ public class SettlementView extends FrameLayout {
                     setChangeVisibilty(false);
                     setMemberVisiable(false);
                     setCouponVisiable(isCoupon);
+                    setCancleCouponVisibility(true);
+                    setCancleTempPromotionVisibility(true);
 
                     break;
             }
@@ -253,7 +266,7 @@ public class SettlementView extends FrameLayout {
 
     public void setCouponVisiable(boolean isCoupon) {
         this.isCoupon = isCoupon;
-        imageClear.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
+//        btnCancelCoupon.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
         tvTextCouponColon.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
         tvCouponColonPrice.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
         line3.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
@@ -341,14 +354,14 @@ public class SettlementView extends FrameLayout {
      * @param payType 支付方式
      */
     public void updateLineMargin(int payType) {
-        int root_dimen = getResources().getDimensionPixelSize(R.dimen.y49);
-        int line1_dimen = getResources().getDimensionPixelSize(R.dimen.y33);
-        int dimen = getResources().getDimensionPixelSize(R.dimen.y99);
+        int root_dimen = getResources().getDimensionPixelSize(R.dimen.y43);
+//        int line1_dimen = getResources().getDimensionPixelSize(R.dimen.y33);
+//        int dimen = getResources().getDimensionPixelSize(R.dimen.y99);
         switch (payType) {
             case PayWayView.WAY_CASH:
-                line1_dimen = getResources().getDimensionPixelSize(R.dimen.y42);
+//                line1_dimen = getResources().getDimensionPixelSize(R.dimen.y42);
                 root_dimen = getResources().getDimensionPixelSize(R.dimen.y100);
-                dimen = getResources().getDimensionPixelSize(R.dimen.y120);
+//                dimen = getResources().getDimensionPixelSize(R.dimen.y120);
                 break;
             default:
 
@@ -358,24 +371,24 @@ public class SettlementView extends FrameLayout {
         FrameLayout.LayoutParams flp = (FrameLayout.LayoutParams) root.getLayoutParams();
         flp.topMargin = root_dimen;
         root.setLayoutParams(flp);
-        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) line1.getLayoutParams();
-        lp.topMargin = line1_dimen;
-        line1.setLayoutParams(lp);
-        lp = (ConstraintLayout.LayoutParams) line2.getLayoutParams();
-        lp.topMargin = dimen;
-        line2.setLayoutParams(lp);
-        lp = (ConstraintLayout.LayoutParams) line3.getLayoutParams();
-        lp.topMargin = dimen;
-        line3.setLayoutParams(lp);
-        lp = (ConstraintLayout.LayoutParams) line4.getLayoutParams();
-        lp.topMargin = dimen;
-        line4.setLayoutParams(lp);
-        lp = (ConstraintLayout.LayoutParams) line5.getLayoutParams();
-        lp.topMargin = dimen;
-        line5.setLayoutParams(lp);
-        lp = (ConstraintLayout.LayoutParams) view1.getLayoutParams();
-        lp.topMargin = dimen;
-        view1.setLayoutParams(lp);
+//        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) line1.getLayoutParams();
+//        lp.topMargin = line1_dimen;
+//        line1.setLayoutParams(lp);
+//        lp = (ConstraintLayout.LayoutParams) line2.getLayoutParams();
+//        lp.topMargin = dimen;
+//        line2.setLayoutParams(lp);
+//        lp = (ConstraintLayout.LayoutParams) line3.getLayoutParams();
+//        lp.topMargin = dimen;
+//        line3.setLayoutParams(lp);
+//        lp = (ConstraintLayout.LayoutParams) line4.getLayoutParams();
+//        lp.topMargin = dimen;
+//        line4.setLayoutParams(lp);
+//        lp = (ConstraintLayout.LayoutParams) line5.getLayoutParams();
+//        lp.topMargin = dimen;
+//        line5.setLayoutParams(lp);
+//        lp = (ConstraintLayout.LayoutParams) view1.getLayoutParams();
+//        lp.topMargin = dimen;
+//        view1.setLayoutParams(lp);
     }
 
     /**
@@ -402,12 +415,16 @@ public class SettlementView extends FrameLayout {
 
     public void setBottomButtonVisibility(boolean needShowKeyboard) {
 
-        cbPrint.setVisibility(needShowKeyboard? GONE: VISIBLE);
+//        cbPrint.setVisibility(needShowKeyboard? GONE: VISIBLE);
         btnCommit.setVisibility(needShowKeyboard? GONE: VISIBLE);
     }
 
+    public void setCancleCouponVisibility(boolean visibility) {
+        btnCancelCoupon.setVisibility(visibility? VISIBLE: GONE);
+    }
+
     public void setCancleTempPromotionVisibility(boolean visibility) {
-        tvCancelTempPromotion.setVisibility(visibility? VISIBLE: GONE);
+        btnCancelTempPromotion.setVisibility(visibility? VISIBLE: GONE);
     }
 
     public interface OnClickListener {

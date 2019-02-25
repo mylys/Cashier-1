@@ -18,8 +18,8 @@ public class CountTextView extends ConstraintLayout {
     private View mView;
     private ConstraintLayout mRoot;
     private TextView mCountTextView;
-    private Button mSubtractBtn;
-    private Button mAddBtn;
+    private ConstraintLayout mSubtractBtn;
+    private ConstraintLayout mAddBtn;
 
     /**
      * 数量
@@ -75,6 +75,14 @@ public class CountTextView extends ConstraintLayout {
                 }
             }
         });
+        mCountTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mListener != null) {
+                    mListener.onCountClick();
+                }
+            }
+        });
 
 
     }
@@ -82,8 +90,8 @@ public class CountTextView extends ConstraintLayout {
     private void initView(Context context) {
         mView = LayoutInflater.from(context).inflate(R.layout.layout_widget_count, this, true);
         mCountTextView = (TextView) mView.findViewById(R.id.tv_goods_count);
-        mSubtractBtn = (Button) mView.findViewById(R.id.btn_subtract);
-        mAddBtn = (Button) mView.findViewById(R.id.btn_add);
+        mSubtractBtn = mView.findViewById(R.id.btn_subtract);
+        mAddBtn = mView.findViewById(R.id.btn_add);
         mRoot = (ConstraintLayout) mView.findViewById(R.id.root);
     }
 
@@ -114,8 +122,13 @@ public class CountTextView extends ConstraintLayout {
         }
     }
 
+    public TextView gerTextView() {
+        return mCountTextView;
+    }
+
     public void setCount(String count) {
         mCountTextView.setText(count);
+        mCount = Integer.parseInt(count);
     }
     public int getCount() {
         return mCount;
@@ -129,6 +142,7 @@ public class CountTextView extends ConstraintLayout {
 
     public interface OnCountListener {
         void onCountChanged(int count);
+        void onCountClick();
     }
 
 }

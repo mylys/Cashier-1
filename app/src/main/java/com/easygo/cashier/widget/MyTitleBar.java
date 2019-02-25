@@ -19,6 +19,7 @@ public class MyTitleBar extends ConstraintLayout {
     private ImageView mLogo;
     private View mLine;
     private TextView mCashierAccount;
+    private ImageView mPopTill;
     private ImageView mSetting;
     private ImageView mNetwork;
     private ImageView mMenu;
@@ -38,6 +39,12 @@ public class MyTitleBar extends ConstraintLayout {
     private boolean mShowAccount;
     private boolean mShowRightIcon;
     private boolean mShowRightAccount;
+
+    /**
+     * 是否在线
+     */
+    private boolean mIsOnline;
+
 
     public MyTitleBar(Context context) {
         super(context);
@@ -68,6 +75,8 @@ public class MyTitleBar extends ConstraintLayout {
         mLine.setVisibility(mShowAccount ? VISIBLE: GONE);
         setVisibility(mRightIconView, mShowRightIcon);
         mCashierAccountRight.setVisibility(mShowRightAccount ? VISIBLE: GONE);
+
+        mNetwork.setImageResource(mIsOnline? R.drawable.ic_main_online: R.drawable.ic_main_offline);
     }
 
     private void setVisibility(View[] views, boolean visible) {
@@ -83,6 +92,7 @@ public class MyTitleBar extends ConstraintLayout {
         mLine = mView.findViewById(R.id.line);
         mCashierAccount = (TextView) mView.findViewById(R.id.tv_cashier_account);
 
+        mPopTill = (ImageView) mView.findViewById(R.id.pop_till);
         mSetting = (ImageView) mView.findViewById(R.id.setting);
         mNetwork = (ImageView) mView.findViewById(R.id.network);
         mMenu = (ImageView) mView.findViewById(R.id.menu);
@@ -93,7 +103,8 @@ public class MyTitleBar extends ConstraintLayout {
 
         mRightIconView = new View[]{
 //                mSetting,
-//                mNetwork,
+                mPopTill,
+                mNetwork,
                 mMenu,
         };
         mTitleView = new View[] {
@@ -140,6 +151,15 @@ public class MyTitleBar extends ConstraintLayout {
     public void showRightAccount(boolean isShow) {
         mShowRightAccount = isShow;
         mCashierAccountRight.setVisibility(mShowRightAccount? VISIBLE: GONE);
+    }
+
+    public void setOnline(boolean isOnline) {
+        mIsOnline = isOnline;
+        mNetwork.setImageResource(mIsOnline? R.drawable.ic_main_online: R.drawable.ic_main_offline);
+    }
+
+    public void setPopTillVisibility(boolean visibility) {
+        mPopTill.setVisibility(visibility? VISIBLE: GONE);
     }
 
 

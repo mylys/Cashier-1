@@ -110,6 +110,11 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 listener.onListener();
                 notifyDataSetChanged();
             }
+
+            @Override
+            public void onCountClick() {
+
+            }
         });
 
         //点击item监听状态变化

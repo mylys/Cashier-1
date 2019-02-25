@@ -136,54 +136,113 @@
         app:layout_constraintStart_toEndOf="@id/cl_coupon"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <!--<Button-->
+        <!--android:id="@+id/btn_temp_promotion"-->
+        <!--android:layout_width="@dimen/x210"-->
+        <!--android:layout_height="@dimen/y90"-->
+        <!--android:layout_marginEnd="@dimen/x30"-->
+        <!--android:background="@drawable/bg_btn_clear"-->
+        <!--android:text="@string/text_discount"-->
+        <!--android:textColor="@color/color_text_white"-->
+        <!--android:textSize="@dimen/text_size_38"-->
+        <!--android:textStyle="bold"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/btn_orders"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_orders"-->
+        <!--android:layout_width="@dimen/x210"-->
+        <!--android:layout_height="@dimen/y90"-->
+        <!--android:layout_marginEnd="@dimen/x30"-->
+        <!--android:background="@drawable/bg_btn_clear"-->
+        <!--android:text="@string/text_entry_orders"-->
+        <!--android:textColor="@color/color_text_white"-->
+        <!--android:textSize="@dimen/text_size_38"-->
+        <!--android:textStyle="bold"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/btn_clear"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_clear"-->
+        <!--android:layout_width="@dimen/x210"-->
+        <!--android:layout_height="@dimen/y90"-->
+        <!--android:layout_marginEnd="@dimen/x30"-->
+        <!--android:background="@drawable/bg_btn_clear"-->
+        <!--android:text="清空"-->
+        <!--android:textColor="@color/color_text_white"-->
+        <!--android:textSize="@dimen/text_size_38"-->
+        <!--android:textStyle="bold"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/btn_settlement"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+    <com.easygo.cashier.widget.GeneraButton
         android:id="@+id/btn_temp_promotion"
-        android:layout_width="@dimen/x210"
-        android:layout_height="@dimen/y90"
-        android:layout_marginEnd="@dimen/x30"
-        android:background="@drawable/bg_btn_clear"
-        android:text="@string/text_discount"
-        android:textColor="@color/color_text_white"
-        android:textSize="@dimen/text_size_38"
-        android:textStyle="bold"
+        android:layout_width="@dimen/x180"
+        android:layout_height="match_parent"
+        android:background="@color/color_e9ecf1"
+        app:image="@drawable/ic_main_temp_discount"
+        app:text="@string/text_discount"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_orders"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:id="@+id/line4"
+        android:layout_width="@dimen/x1"
+        android:layout_height="match_parent"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_temp_promotion"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <com.easygo.cashier.widget.GeneraButton
         android:id="@+id/btn_orders"
-        android:layout_width="@dimen/x210"
-        android:layout_height="@dimen/y90"
-        android:layout_marginEnd="@dimen/x30"
-        android:background="@drawable/bg_btn_clear"
-        android:text="@string/text_entry_orders"
-        android:textColor="@color/color_text_white"
-        android:textSize="@dimen/text_size_38"
-        android:textStyle="bold"
+        android:layout_width="@dimen/x180"
+        android:layout_height="match_parent"
+        android:background="@color/color_e9ecf1"
+        app:image="@drawable/ic_main_hold_order"
+        app:text="@string/text_entry_orders"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_clear"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <View
+        android:id="@+id/line5"
+        android:layout_width="@dimen/x1"
+        android:layout_height="match_parent"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_orders"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.easygo.cashier.widget.GeneraButton
         android:id="@+id/btn_clear"
-        android:layout_width="@dimen/x210"
-        android:layout_height="@dimen/y90"
-        android:layout_marginEnd="@dimen/x30"
-        android:background="@drawable/bg_btn_clear"
-        android:text="清空"
-        android:textColor="@color/color_text_white"
-        android:textSize="@dimen/text_size_38"
-        android:textStyle="bold"
+        android:layout_width="@dimen/x180"
+        android:layout_height="match_parent"
+        android:background="@color/color_e9ecf1"
+        app:image="@drawable/ic_main_clear"
+        app:text="@string/text_clear"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_settlement"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/line6"
+        android:layout_width="@dimen/x1"
+        android:layout_height="match_parent"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_clear"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_settlement"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/y90"
-        android:layout_marginEnd="@dimen/x37"
+        android:layout_height="match_parent"
         android:background="@drawable/bg_btn_settlement"
         android:paddingStart="@dimen/x40"
         android:paddingEnd="@dimen/x40"

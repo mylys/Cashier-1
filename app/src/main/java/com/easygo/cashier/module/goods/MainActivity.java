@@ -1,18 +1,20 @@
 package com.easygo.cashier.module.goods;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.hardware.display.DisplayManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -26,7 +28,6 @@ import com.easygo.cashier.Configs;
 import com.easygo.cashier.Events;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
-import com.easygo.cashier.SoftKeyboardUtil;
 import com.easygo.cashier.Test;
 import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.bean.EquipmentState;
@@ -34,26 +35,24 @@ import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.PrinterStatusResponse;
 import com.easygo.cashier.module.login.LoginActivity;
-import com.easygo.cashier.module.secondary_sreen.SecondaryScreen;
 import com.easygo.cashier.module.status.StatusContract;
 import com.easygo.cashier.module.status.StatusPresenter;
-import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.widget.EquipmentstateDialog;
 import com.easygo.cashier.widget.FunctionListDialog;
-import com.easygo.cashier.widget.GeneraEditDialog;
-import com.google.gson.reflect.TypeToken;
+import com.easygo.cashier.widget.MyTitleBar;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseEvent;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
-import com.niubility.library.utils.GsonUtils;
+import com.niubility.library.utils.NetworkUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
-import com.niubility.library.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -68,6 +67,8 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
 
     private final String TAG_MAIN = "tag_main";
     private final String TAG_FUNCTION_LIST = "tag_function_list";
+    @BindView(R.id.cl_title)
+    MyTitleBar myTitleBar;
     @BindView(R.id.tv_cashier_account)
     TextView tvCashierAcount;
     @BindView(R.id.setting)
@@ -83,20 +84,26 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
     private Fragment fragment;
     private GoodsFragment goodsFragment;
     private EquipmentstateDialog dialog;
-    private SecondaryScreen mPresentation = null;
 
     @Autowired(name = "admin_name")
     String admin_name;
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//
-//        ButterKnife.bind(this);
-//
-//        init();
-//    }
+    private ExecutorService cachedThreadPool;
+
+    public static final int MSG_NETWORK = 0;
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            int what = msg.what;
+            removeMessages(what);
+
+            switch (what) {
+                case MSG_NETWORK:
+                    judgeNetworkAvalible();
+                    break;
+            }
+        }
+    };
 
     @Override
     protected StatusPresenter createPresenter() {
@@ -117,10 +124,62 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
     public void init() {
         ARouter.getInstance().inject(this);
 
+        if (Configs.getRole(Configs.menus[13]) == 0) {
+            myTitleBar.setPopTillVisibility(false);
+        }
         tvCashierAcount.setText("收银员: " + admin_name);
 
         Test.detectInputDeviceWithShell();
         mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
+
+
+        initReceiver();
+    }
+
+    private void initReceiver() {
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(connReceiver, intentFilter);
+    }
+
+    private BroadcastReceiver connReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
+                //ping
+                mHandler.sendEmptyMessageDelayed(MSG_NETWORK, 1000);
+            }
+        }
+    };
+
+    /**
+     * 判断网络是否连通
+     */
+    private void judgeNetworkAvalible() {
+        if (cachedThreadPool == null) {
+            cachedThreadPool = Executors.newCachedThreadPool();
+        }
+
+        cachedThreadPool.execute(networkRunnable);
+    }
+
+    private NetworkRunnable networkRunnable = new NetworkRunnable();
+
+    private class NetworkRunnable implements Runnable {
+
+        @Override
+        public void run() {
+            final boolean networkOnline = NetworkUtils.isNetworkOnline();
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    myTitleBar.setOnline(networkOnline);
+                    mHandler.sendEmptyMessageDelayed(MSG_NETWORK, 60 * 1000);
+                }
+            });
+        }
     }
 
     @Override
@@ -147,20 +206,10 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
         transaction.commit();
     }
 
-    @OnClick({R.id.setting, R.id.menu, R.id.cl_back})
+    @OnClick({R.id.setting, R.id.pop_till, R.id.network, R.id.menu, R.id.cl_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.setting://设置
-                //临时代码
-                //屏幕管理类
-                DisplayManager mDisplayManager = (DisplayManager) this.getSystemService(Context.DISPLAY_SERVICE);
-                Display[] displays = mDisplayManager.getDisplays();
-
-                if (mPresentation == null) {
-                    mPresentation = new SecondaryScreen(this, displays[displays.length - 1]);// displays[1]是副屏
-                    mPresentation.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-                }
-                mPresentation.show();
 
                 break;
             case R.id.menu://功能列表
@@ -172,6 +221,13 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
                 functionListDialog.setOnFunctionListItemListener(mFunctionListItemListener);
 //                functionListDialog.show(getSupportFragmentManager(), TAG_FUNCTION_LIST);
                 functionListDialog.showCenter(this);
+                break;
+            case R.id.pop_till://弹出钱箱
+                goodsFragment.clickPopTill();
+                break;
+            case R.id.network://网络在线或离线
+                //显示打印机状态
+                checkPrinterStatus();
                 break;
             case R.id.cl_back://返回
                 break;
@@ -307,8 +363,7 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
 
         @Override
         public void deviceStatus() {
-            mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
-            getPrinterstateShowLoading();
+            checkPrinterStatus();
         }
 
         @Override
@@ -331,6 +386,14 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
             goodsFragment.lockCashier();
         }
     };
+
+    /**
+     * 检查打印机在线状态
+     */
+    private void checkPrinterStatus() {
+        mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
+        getPrinterstateShowLoading();
+    }
 
     private void getPrinterstateShowLoading() {
         Bundle bundle = new Bundle();
@@ -368,6 +431,10 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
 
         if (dialog != null && dialog.isShow()) {
             dialog.dismiss();
+        }
+
+        if(connReceiver != null) {
+            unregisterReceiver(connReceiver);
         }
     }
 

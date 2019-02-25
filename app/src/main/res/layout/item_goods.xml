@@ -90,8 +90,8 @@
 
     <com.easygo.cashier.widget.CountTextView
         android:id="@+id/count_view"
-        android:layout_width="@dimen/x232"
-        android:layout_height="@dimen/y56"
+        android:layout_width="@dimen/x240"
+        android:layout_height="@dimen/y70"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent"

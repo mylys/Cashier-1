@@ -59,19 +59,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/network"
-        android:layout_width="@dimen/x61"
-        android:layout_height="@dimen/y44"
-        android:layout_marginEnd="@dimen/x71"
-        android:background="@null"
-        android:contentDescription="网络状态"
-        android:src="@drawable/ic_wifi"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/setting"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
         android:id="@+id/menu"
         android:layout_width="@dimen/x44"
         android:layout_height="@dimen/y45"
@@ -79,11 +66,35 @@
         android:background="@null"
         android:contentDescription="菜单"
         android:src="@drawable/ic_function_list"
-        android:visibility="gone"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/setting"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/network"
+        android:layout_width="@dimen/x61"
+        android:layout_height="@dimen/y44"
+        android:layout_marginEnd="@dimen/x71"
+        android:background="@null"
+        android:contentDescription="网络状态"
+        android:src="@drawable/ic_main_online"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/menu"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/pop_till"
+        android:layout_width="@dimen/x45"
+        android:layout_height="@dimen/y50"
+        android:layout_marginEnd="@dimen/x69"
+        android:background="@null"
+        android:contentDescription="弹出钱箱"
+        android:src="@drawable/ic_main_pop_till"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/network"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <!--退款页面-->
     <androidx.constraintlayout.widget.ConstraintLayout

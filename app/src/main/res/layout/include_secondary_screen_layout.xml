@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_goods_height"
+        android:layout_height="@dimen/item_user_goods_height"
         android:background="@color/color_f5f7fa">
 
         <TextView

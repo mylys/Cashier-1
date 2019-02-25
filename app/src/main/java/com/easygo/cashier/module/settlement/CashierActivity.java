@@ -645,7 +645,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                         ActivitiesUtils.getInstance().createTempOrderPromotion(mode, isFreeOrder, value);
 
                         mTempOrderPromotionMoney = ActivitiesUtils.getInstance().getTempOrderPromotionMoney(getPayMoney());
-                        settlementView.setCancleTempPromotionVisibility(true);
+//                        settlementView.setCancleTempPromotionVisibility(true);
 
                         //清空键盘输入  回调afterTextChanged()
                         etMoney.setText("");
@@ -674,7 +674,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
         ActivitiesUtils.getInstance().clearTempOrderPromotion();
         mTempOrderPromotionMoney = 0f;
-        settlementView.setCancleTempPromotionVisibility(false);
+//        settlementView.setCancleTempPromotionVisibility(false);
 
         //清空键盘输入  回调afterTextChanged()
         etMoney.setText("");
