@@ -10,6 +10,7 @@
     <!--文本大小-->
     <dimen name="text_size_19">@dimen/x19</dimen>
     <dimen name="text_size_21">@dimen/x21</dimen>
+    <dimen name="text_size_23">@dimen/x23</dimen>
     <dimen name="text_size_25">@dimen/x25</dimen>
     <dimen name="text_size_28">@dimen/x28</dimen>
     <dimen name="text_size_29">@dimen/x29</dimen>

@@ -93,7 +93,7 @@
         android:id="@+id/tv_refund_num"
         style="@style/RefundGoodsList"
         android:layout_width="@dimen/x306"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y60"
         android:layout_gravity="center"
         android:visibility="gone" />
 

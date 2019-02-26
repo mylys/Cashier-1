@@ -79,7 +79,7 @@ public class GeneraButton extends ConstraintLayout {
         }
 
         if(mTextSize != 0) {
-            mTextView.setTextSize(mTextSize, TypedValue.COMPLEX_UNIT_PX);
+            mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
         }
 
 

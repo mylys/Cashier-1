@@ -26,6 +26,7 @@
         android:layout_height="@dimen/y118"
         app:image="@drawable/ic_main_no_code"
         app:text="@string/text_no_barcode_goods"
+        app:text_size="@dimen/text_size_23"
         app:layout_constraintStart_toEndOf="@+id/cl_search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -52,6 +53,7 @@
         android:layout_height="@dimen/y118"
         app:image="@drawable/ic_main_quick_choose"
         app:text="@string/text_quick_choose"
+        app:text_size="@dimen/text_size_23"
         app:layout_constraintStart_toEndOf="@+id/btn_no_barcode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -63,6 +65,7 @@
         android:layout_height="@dimen/y118"
         app:image="@drawable/ic_main_coupon"
         app:text="@string/text_coupon_coupon"
+        app:text_size="@dimen/text_size_23"
         app:layout_constraintEnd_toStartOf="@id/btn_choose_member"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -75,6 +78,7 @@
         android:layout_height="@dimen/y118"
         app:image="@drawable/ic_main_member"
         app:text="@string/text_choose_member"
+        app:text_size="@dimen/text_size_23"
         android:layout_marginEnd="@dimen/x20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
