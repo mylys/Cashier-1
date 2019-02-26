@@ -1659,7 +1659,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
         } else if (Configs.lock_auth == 2) {
             editDialog.setTitle(getResources().getString(R.string.text_lock_user));
         }
-        editDialog.setVisiable(true);
+        editDialog.setVisiable(false);
         editDialog.setType(Configs.lock_auth == 1 ? GeneraEditDialog.USER_ACCREDIT : GeneraEditDialog.USER_ACCOUNT);
         editDialog.setOnDialogClickListener(new GeneraEditDialog.OnDialogClickListener() {
             @Override

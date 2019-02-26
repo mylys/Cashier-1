@@ -105,13 +105,13 @@ public class SetCountPopupWindow extends PopupWindow {
                         CharSequence text = textView.getText();
                         String content = text.toString();
                         int length = editable.length();
-                        if (length == 0) {
+                        if (length == 0 || firstSet) {
                             if ("0".equals(content) || "00".equals(content)) {
                                 return;
                             }
                         }
 
-                        if (length <= 3 && text.length() == 1) {
+                        if (length <= 3 && text.length() == 1 || length <= 2 && text.length() == 2) {
                             if (firstSet) {
                                 editable.clear();
                                 firstSet = false;

@@ -359,6 +359,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                                 data.remove(barcode);
                             }
                             mData.remove(item);
+                            limit.remove(barcode);
                             notifyItemRemoved(position);
                         } else {
                             int on_sale_count = good.getOn_sale_count();
