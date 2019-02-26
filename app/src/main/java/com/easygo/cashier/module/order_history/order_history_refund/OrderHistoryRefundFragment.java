@@ -232,18 +232,17 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 } else {
                     float totalCoupon = adapter.getTotalCoupon();
                     float discount = 0f;
-                    if (activities != null) {
-                        int size = activities.size();
-                        for (int i = 0; i < size; i++) {
-                            discount += Float.valueOf(activities.get(i).getDiscount_money());
-                        }
-                    }
 
                     discount += cashier_discount;
 
-                    float refund = Float.valueOf(adapter.getTotalPrice()) - discount;
+                    float refund = adapter.getRatioRefund(real_pay);
+
                     if (refund < 0) {
                         refund = 0;
+                    }
+
+                    if(refund > real_pay) {
+                        refund = real_pay;
                     }
                     editRefundcashPrice.setText(df.format(refund));
                 }
@@ -263,20 +262,10 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 editRefundcashPrice.setText(adapter.getTotalPrice());
 
                 float totalCoupon = adapter.getTotalCoupon();
-//                if (totalCoupon != 0) {
-//                    editRefundcashPrice.setText(df.format(Float.valueOf(adapter.getTotalPrice()) - totalCoupon));
-//                } else {
                 float discount = 0f;
-//                if (activities != null) {
-//                    int size = activities.size();
-//                    for (int i = 0; i < size; i++) {
-//                        discount += Float.valueOf(activities.get(i).getDiscount_money());
-//                    }
-//                }
-//
-//                discount += cashier_discount;
 
-                float refund = Float.valueOf(adapter.getTotalPrice()) - discount;
+//                float refund = Float.valueOf(adapter.getTotalPrice()) - discount;
+                float refund = adapter.getRatioRefund(real_pay);
 
                 if (refund < 0) {
                     refund = 0;
@@ -380,13 +369,17 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
         }
         float price = Float.parseFloat(editRefundcashPrice.getText().toString());
         if (price == 0) {
-            ToastUtils.showToast(getActivity(), "退款金额不能为0");
+            showToast("退款金额不能为0");
             return;
         }
         float edit_price = Float.valueOf(editRefundcashPrice.getText().toString().trim());
 
         if (edit_price > real_pay) {
-            ToastUtils.showToast(getActivity(), "输入金额不能大于商品总额");
+            showToast("输入金额不能大于订单实收金额");
+            return;
+        }
+        else if(edit_price > Float.valueOf(adapter.getTotalPrice())) {
+            showToast("输入金额不能大于所选商品总额");
             return;
         }
         Bundle bundle = ConfirmDialog.getDataBundle(adapter.getTotalNum() + "", price, pay_way, false, "退货：", "实退：");
@@ -494,7 +487,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
 
             sb.append(i + 1).append(".")
                     .append(goodsRefundInfo.getProduct_name()).append("   ").append(PrintHelper.BR)
-                    .append("    ")
+                    .append("      ")
                     .append(goodsRefundInfo.getProduct_price()).append("   ")
                     .append(goodsRefundInfo.getProduct_preferential()).append("    ")
                     .append(goodsRefundInfo.getRefund_num()).append(goodsRefundInfo.getG_u_symbol()).append("   ")

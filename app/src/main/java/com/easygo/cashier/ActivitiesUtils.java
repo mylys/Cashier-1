@@ -496,6 +496,57 @@ public class ActivitiesUtils {
         return 0f;
     }
 
+    /**
+     * 计算店铺促销, 并分摊优惠金额
+     * @param total_money 订单总额
+     * @return 店铺促销优惠总金额
+     */
+    public float promotion(List<GoodsEntity<GoodsResponse>> data, float total_money) {
+        int size = shopList.size();
+        if(size == 0) {
+            return 0f;
+        }
+        currentShopPromotion = null;
+
+        shop_with_coupon = true;
+
+        for (int i = 0; i < size; i++) {
+
+            BaseShopPromotion baseShopPromotion = shopList.get(i);
+            float promotionMoney = baseShopPromotion.getPromotionMoney(total_money);
+
+            if(promotionMoney > 0) {
+                Log.i(TAG, "promotion: " + baseShopPromotion.getName() + ", 促销金额： " + promotionMoney);
+                currentShopPromotion = baseShopPromotion;
+                //记录店铺促销金额
+                mShopPromotionMoney = promotionMoney;
+
+                shop_with_coupon = currentShopPromotion.getWith_coupon() == 1;
+            }
+        }
+
+        //有店铺促销时
+        if(currentShopPromotion != null && mShopPromotionMoney != 0) {
+            int data_size = data.size();
+            float discount_price;
+            float subtotal;
+            for (int i = 0; i < data_size; i++) {
+                GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
+                GoodsResponse good = goodsEntity.getData();
+                discount_price = Float.parseFloat(good.getDiscount_price());
+                if(discount_price != 0) {
+                    continue;
+                }
+                subtotal = Float.parseFloat(good.getPrice()) * goodsEntity.getCount();
+                discount_price = mShopPromotionMoney * (subtotal / total_money);
+                good.setDiscount_price(String.valueOf(discount_price));
+            }
+            return mShopPromotionMoney;
+        } else {
+            return 0f;
+        }
+    }
+
 
     public void getCurrentGoodsPromotions(List<GoodsEntity<GoodsResponse>> data) {
         mGoodsPromotionMoney = 0f;

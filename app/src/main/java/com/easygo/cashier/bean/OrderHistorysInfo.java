@@ -337,7 +337,7 @@ public class OrderHistorysInfo {
         }
 
         public String getDiscount() {
-            return !TextUtils.isEmpty(cashier_discount) && !"0".equals(cashier_discount)? cashier_discount: discount;
+            return !TextUtils.isEmpty(cashier_discount) && !"0.00".equals(cashier_discount)? cashier_discount: discount;
         }
 
         public void setDiscount(String discount) {

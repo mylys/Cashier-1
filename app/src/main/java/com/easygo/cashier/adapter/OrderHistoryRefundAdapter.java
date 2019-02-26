@@ -96,7 +96,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                     return;
                 }
                 if (count == 0) {
-                    Toast.makeText(mContext, "商品数量不能小于1件", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast(mContext, "商品数量不能小于1件");
                     countTextView.setCount("1");
                     return;
                 }
@@ -161,7 +161,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         return goodsLists;
     }
 
-    /* 设置全选按钮（true ： 全选 ； false : 全否） */
+    /** 设置全选按钮（true ： 全选 ； false : 全否） */
     public void setClick(boolean click) {
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
             if (goodsRefundInfo.getRefund() == 0) {
@@ -175,7 +175,19 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         notifyDataSetChanged();
     }
 
-    /* 获取商品选择总额 */
+    public float getRatioRefund(float real_pay) {
+        float refund_total = 0;
+        float total = 0;
+        for (GoodsRefundInfo goodsRefundInfo : getData()) {
+            if (goodsRefundInfo.isSelect()) {
+                refund_total += Float.parseFloat(goodsRefundInfo.getRefund_subtotal());
+            }
+            total += Float.parseFloat(goodsRefundInfo.getProduct_subtotal());
+        }
+        return real_pay * (refund_total / total);
+    }
+
+    /** 获取商品选择总额 */
     public String getTotalPrice() {
         double totalPrcie = 0;
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
@@ -189,7 +201,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         return df.format(totalPrcie);
     }
 
-    /* 获取商品总优惠 */
+    /** 获取商品总优惠 */
     public float getTotalCoupon() {
         double totalCoupon = 0f;
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
@@ -200,7 +212,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         return (float) totalCoupon;
     }
 
-    /* 获取商品退货总数量 */
+    /** 获取商品退货总数量 */
     public int getTotalNum() {
         int totalPrcie = 0;
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
@@ -211,7 +223,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         return totalPrcie;
     }
 
-    /* 获取商品已退货数量 */
+    /** 获取商品已退货数量 */
     public boolean getTotalRefund() {
         int num = 0;
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
@@ -222,7 +234,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         return num == getData().size();
     }
 
-    /* 退款成功时，模拟退款信息详情 */
+    /** 退款成功时，模拟退款信息详情 */
     public void setRefundInfo() {
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
             if (goodsRefundInfo.isSelect()) {

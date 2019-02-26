@@ -149,25 +149,25 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                     bundle.putInt("refund_status", mOrderHistorysInfo.getRefund_status());
                     bundle.putInt("have_refund", mOrderHistorysInfo.getHave_refund());
 
-                    float total_discount = 0f;
-                    int size = (data).size();
-                    for (int i = 0; i < size; i++) {
-                        OrderHistorysInfo.ListBean listBean = (data).get(i);
-
-                        total_discount += Float.valueOf(listBean.getDiscount());
-                    }
-
-//                    if(total_discount == 0) {//商品促销金额或者会员相关促销为0 检查店铺促销金额
-                        List<OrderHistorysInfo.ActivitiesBean> activities = mOrderHistorysInfo.getActivities();
-                        if (activities != null && activities.size() != 0) {
-                            total_discount = Float.valueOf(activities.get(0).getDiscount_money());
-                        }
+//                    float total_discount = 0f;
+//                    int size = (data).size();
+//                    for (int i = 0; i < size; i++) {
+//                        OrderHistorysInfo.ListBean listBean = (data).get(i);
+//
+//                        total_discount += Float.valueOf(listBean.getDiscount());
 //                    }
+//
+////                    if(total_discount == 0) {//商品促销金额或者会员相关促销为0 检查店铺促销金额
+//                        List<OrderHistorysInfo.ActivitiesBean> activities = mOrderHistorysInfo.getActivities();
+//                        if (activities != null && activities.size() != 0) {
+//                            total_discount = Float.valueOf(activities.get(0).getDiscount_money());
+//                        }
+////                    }
 
                     float cashier_discount = Float.valueOf(mOrderHistorysInfo.getCashier_discount());
-                    total_discount += cashier_discount;
+//                    total_discount += cashier_discount;
 
-                    bundle.putFloat("total_discount", total_discount);
+                    bundle.putFloat("total_discount", getAllDiscount());
                     bundle.putFloat("cashier_discount", cashier_discount);
                     ((OrderHistoryActivity) getActivity()).toOrderHistoryRefundFragment(bundle);
                 }
@@ -269,29 +269,16 @@ public class OrderHistoryDetailFragment extends BaseFragment {
 
         tvReceivable.setText("应收：￥" + orderHistoryInfo.getReal_pay());
 
-        float coupon = 0f;
-        List<OrderHistorysInfo.ListBean> list = mOrderHistorysInfo.getList();
-        int size = list.size();
-        for (int i = 0; i < size; i++) {
-            coupon += Float.valueOf(list.get(i).getDiscount());
-        }
-
-        if(have_shop_promotion) {
-            OrderHistorysInfo.ActivitiesBean activitiesBean = activities.get(0);
-            coupon += Float.valueOf(activitiesBean.getDiscount_money());
-
-        }
         //临时整单促销
         String cashier_discount = mOrderHistorysInfo.getCashier_discount();
         boolean has_temp_order_promotion = !TextUtils.isEmpty(cashier_discount);
         if(has_temp_order_promotion) {
-            coupon += Float.valueOf(cashier_discount);
             orderHistoryGoodsAdapter.setHavePromotion(true);
         }
 
         if(have_shop_promotion || has_temp_order_promotion) {
             tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money()
-                    + " - 优惠：￥" + df.format(coupon) + " = ");
+                    + " - 优惠：￥" + df.format(getAllDiscount()) + " = ");
         } else {
             tvReceivableText.setText("");
         }
@@ -372,5 +359,28 @@ public class OrderHistoryDetailFragment extends BaseFragment {
 //        tvRefundText.setText(payType + getResources().getString(R.string.text_pay) + "：￥" + total_refund_str + " - 找零：￥" + change_price + " = ");
         tvRefund.setText("退款：￥" + orderHistoryInfo.getRefund_fee());
         tvReturnOfGoodsCount.setText("共退款" + orderHistoryGoodsAdapter.getRefundSize() + "件");
+    }
+
+    private float getAllDiscount() {
+        float coupon = 0f;
+        List<OrderHistorysInfo.ListBean> list = mOrderHistorysInfo.getList();
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+            coupon += Float.valueOf(list.get(i).getDiscount());
+        }
+
+//        if(have_shop_promotion) {
+//            OrderHistorysInfo.ActivitiesBean activitiesBean = activities.get(0);
+//            coupon += Float.valueOf(activitiesBean.getDiscount_money());
+//
+//        }
+        //临时整单促销
+        String cashier_discount = mOrderHistorysInfo.getCashier_discount();
+        boolean has_temp_order_promotion = !TextUtils.isEmpty(cashier_discount);
+        if(has_temp_order_promotion) {
+            coupon += Float.valueOf(cashier_discount);
+        }
+
+        return coupon;
     }
 }

@@ -880,12 +880,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         GoodsResponse data;
         CreateOrderRequestBody.GoodsListBean goodsBean;
         float price;
+        float count;
         for (int i = 0; i < size; i++) {
             good = mGoodsData.get(i);
 
             //商品信息
             goodsBean = new CreateOrderRequestBody.GoodsListBean();
             data = good.getData();
+            count = good.getCount();
             goodsBean.setG_sku_id(data.getG_sku_id());
             goodsBean.setIdentity(data.getIdentity());
             //设置类型
@@ -901,7 +903,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 }
             }
 
-            goodsBean.setCount(good.getCount());
+            goodsBean.setCount(count);
             if (good.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
                 price = Float.valueOf(data.getProcess_price());
             } else {

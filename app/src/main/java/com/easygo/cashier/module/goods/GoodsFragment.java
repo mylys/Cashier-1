@@ -531,7 +531,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             }
         }
         //判断是否有店铺促销
-        shop_coupon = ActivitiesUtils.getInstance().promotion(mGoodsMultiItemAdapter.getShopTotal());
+        shop_coupon = ActivitiesUtils.getInstance().promotion(mData, mGoodsMultiItemAdapter.getShopTotal());
         if (shop_coupon > 0) {
             coupon += shop_coupon;
 

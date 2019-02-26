@@ -9,10 +9,14 @@ import com.easygo.cashier.bean.OrderHistorysInfo;
 
 import java.text.DecimalFormat;
 
-
+/**
+ * 历史订单详情页面商品适配器
+ */
 public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo.ListBean, BaseViewHolder> {
 
     private boolean have_promotion = false;
+    private DecimalFormat df = new DecimalFormat("#0.00");
+    private DecimalFormat df_int = new DecimalFormat("#");
 
 
     public OrderHistoryGoodsAdapter() {
@@ -21,8 +25,7 @@ public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo
 
     @Override
     protected void convert(BaseViewHolder helper, OrderHistorysInfo.ListBean item) {
-        DecimalFormat df = new DecimalFormat("#0.00");
-        DecimalFormat df_int = new DecimalFormat("#");
+
         float count = item.getCount();
         String sell_price = item.getSell_price();
         String discount = item.getDiscount();
