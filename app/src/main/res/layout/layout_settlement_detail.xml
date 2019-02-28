@@ -385,7 +385,7 @@
         style="@style/DetailTextStyle"
         android:layout_marginStart="@dimen/y42"
         android:layout_marginBottom="@dimen/y40"
-        android:background="@drawable/bg_btn_frame"
+        android:background="@drawable/bg_ripple_btn_frame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/line1" />
 
@@ -395,7 +395,7 @@
         android:layout_height="@dimen/y92"
         android:text="@string/text_cancle_temp_promotion"
         style="@style/DetailTextStyle"
-        android:background="@drawable/bg_btn_frame"
+        android:background="@drawable/bg_ripple_btn_frame"
         android:layout_marginStart="@dimen/x30"
         app:layout_constraintStart_toEndOf="@id/btn_cancel_coupon"
         app:layout_constraintTop_toTopOf="@id/btn_cancel_coupon"
@@ -405,7 +405,7 @@
         android:id="@+id/btn_commit"
         android:layout_width="@dimen/x280"
         android:layout_height="@dimen/y92"
-        android:background="@drawable/bg_btn_commit"
+        android:background="@drawable/bg_ripple_commit_btn"
         android:text="@string/text_commit_order"
         android:textColor="@color/color_text_white"
         android:textSize="@dimen/text_size_29"

@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.easygo.cashier.module.goods.MainActivity;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.permission.PermissionActivity;
 import com.niubility.library.base.BaseApplication;
@@ -87,6 +88,7 @@ public class MyApplication extends BaseApplication {
          * 只允许在指定Activity上显示更新弹窗，其他activity上不显示弹窗; 不设置会默认所有activity都可以显示弹窗;
          */
         Beta.canShowUpgradeActs.add(LoginActivity.class);
+        Beta.canShowUpgradeActs.add(MainActivity.class);
 
         /***** Bugly高级设置 *****/
         BuglyStrategy strategy = new BuglyStrategy();
