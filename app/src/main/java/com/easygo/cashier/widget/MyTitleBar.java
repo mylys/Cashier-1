@@ -21,6 +21,8 @@ public class MyTitleBar extends ConstraintLayout {
     private TextView mCashierAccount;
     private ImageView mPopTill;
     private ImageView mSetting;
+    private ImageView mUpdate;
+    private ImageView mRedPoint;
     private ImageView mNetwork;
     private ImageView mMenu;
 
@@ -44,6 +46,10 @@ public class MyTitleBar extends ConstraintLayout {
      * 是否在线
      */
     private boolean mIsOnline;
+    /**
+     * 是否能更新
+     */
+    private boolean mCanUpdate;
 
 
     public MyTitleBar(Context context) {
@@ -94,6 +100,8 @@ public class MyTitleBar extends ConstraintLayout {
 
         mPopTill = (ImageView) mView.findViewById(R.id.pop_till);
         mSetting = (ImageView) mView.findViewById(R.id.setting);
+        mUpdate = (ImageView) mView.findViewById(R.id.update);
+        mRedPoint = (ImageView) mView.findViewById(R.id.red_point);
         mNetwork = (ImageView) mView.findViewById(R.id.network);
         mMenu = (ImageView) mView.findViewById(R.id.menu);
 
@@ -106,6 +114,7 @@ public class MyTitleBar extends ConstraintLayout {
                 mPopTill,
                 mNetwork,
                 mMenu,
+                mUpdate,
         };
         mTitleView = new View[] {
                 mBack,
@@ -160,6 +169,11 @@ public class MyTitleBar extends ConstraintLayout {
 
     public void setPopTillVisibility(boolean visibility) {
         mPopTill.setVisibility(visibility? VISIBLE: GONE);
+    }
+
+    public void setRedPointVisibility(boolean visibility) {
+        mCanUpdate = visibility;
+        mRedPoint.setVisibility(mCanUpdate? VISIBLE: GONE);
     }
 
 

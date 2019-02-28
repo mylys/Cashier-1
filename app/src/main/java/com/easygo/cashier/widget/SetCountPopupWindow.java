@@ -1,10 +1,18 @@
 package com.easygo.cashier.widget;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
+import android.graphics.drawable.BitmapDrawable;
 import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -20,6 +28,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 public class SetCountPopupWindow extends PopupWindow {
 
     private View mView;
+    private ConstraintLayout mRoot;
     private TextView mTv50;
     private TextView mTv100;
     private TextView mTv200;
@@ -46,6 +55,8 @@ public class SetCountPopupWindow extends PopupWindow {
      */
     private int mOriginCount;
     private boolean firstSet = true;
+    private Bitmap bg;
+    private Bitmap bg_reverse;
 
     public SetCountPopupWindow(Context context, CountTextView countTextView, int originCount) {
         super(context);
@@ -61,9 +72,24 @@ public class SetCountPopupWindow extends PopupWindow {
         setContentView(mView);
 
         initView(mView);
+
+        initBg();
+    }
+
+    private void initBg() {
+        bg = BitmapFactory.decodeResource(mView.getContext().getResources(), R.drawable.ic_main_set_count);
+
+        bg_reverse = Bitmap.createBitmap(bg.getWidth(), bg.getHeight(), Bitmap.Config.ARGB_8888);
+        Matrix matrix = new Matrix();
+        matrix.setRotate(180, bg.getWidth() / 2f, bg.getHeight() / 2f);
+        Canvas canvas = new Canvas(bg_reverse);
+        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG));
+        canvas.drawBitmap(bg, matrix, null);
+
     }
 
     private void initView(View rootView) {
+        mRoot = mView.findViewById(R.id.root);
         mEditText = new EditText(this.getContentView().getContext());
         mEditText.setText(String.valueOf(mOriginCount));
 
@@ -105,13 +131,13 @@ public class SetCountPopupWindow extends PopupWindow {
                         CharSequence text = textView.getText();
                         String content = text.toString();
                         int length = editable.length();
-                        if (length == 0) {
+                        if (length == 0 || firstSet) {
                             if ("0".equals(content) || "00".equals(content)) {
                                 return;
                             }
                         }
 
-                        if (length <= 3 && text.length() == 1) {
+                        if (length <= 3 && text.length() == 1 || length <= 2 && text.length() == 2) {
                             if (firstSet) {
                                 editable.clear();
                                 firstSet = false;
@@ -191,11 +217,10 @@ public class SetCountPopupWindow extends PopupWindow {
 
                 if (top + countTextViewHeight + height > ScreenUtils.getScreenHeight(mView.getContext())) {
                     offset_y = -(countTextViewHeight + height);
-                    mView.setRotation(180);
-                    for (TextView tv : mTvs){
-                        tv.setRotation(180);
-                    }
-                    mDelete.setRotation(180);
+
+                    mRoot.setBackground(new BitmapDrawable(bg_reverse));
+                } else {
+                    mRoot.setBackground(new BitmapDrawable(bg));
                 }
 
                 if (isShowing()) {

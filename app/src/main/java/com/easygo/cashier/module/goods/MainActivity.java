@@ -47,6 +47,8 @@ import com.niubility.library.constants.Constans;
 import com.niubility.library.utils.NetworkUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +93,7 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
     private ExecutorService cachedThreadPool;
 
     public static final int MSG_NETWORK = 0;
+    public static final int MSG_RED_POINT = 1;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -100,6 +103,9 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
             switch (what) {
                 case MSG_NETWORK:
                     judgeNetworkAvalible();
+                    break;
+                case MSG_RED_POINT:
+                    myTitleBar.setRedPointVisibility(Beta.getUpgradeInfo() != null);
                     break;
             }
         }
@@ -134,6 +140,7 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
 
 
         initReceiver();
+        mHandler.sendEmptyMessageDelayed(MSG_RED_POINT, 1000);
     }
 
     private void initReceiver() {
@@ -206,7 +213,7 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
         transaction.commit();
     }
 
-    @OnClick({R.id.setting, R.id.pop_till, R.id.network, R.id.menu, R.id.cl_back})
+    @OnClick({R.id.setting, R.id.pop_till, R.id.network, R.id.menu, R.id.update, R.id.cl_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.setting://设置
@@ -228,6 +235,9 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
             case R.id.network://网络在线或离线
                 //显示打印机状态
                 checkPrinterStatus();
+                break;
+            case R.id.update://更新
+                checkUpdate();
                 break;
             case R.id.cl_back://返回
                 break;
@@ -394,6 +404,17 @@ public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPr
         mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
         getPrinterstateShowLoading();
     }
+    /**
+     * 检查更新
+     */
+    private void checkUpdate() {
+        Beta.checkUpgrade();
+
+        mHandler.removeMessages(MSG_RED_POINT);
+        mHandler.sendEmptyMessageDelayed(MSG_RED_POINT, 2000);
+    }
+
+
 
     private void getPrinterstateShowLoading() {
         Bundle bundle = new Bundle();

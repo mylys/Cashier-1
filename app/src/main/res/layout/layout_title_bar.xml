@@ -59,16 +59,39 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/update"
+        android:layout_width="@dimen/x53"
+        android:layout_height="@dimen/y45"
+        android:layout_marginEnd="@dimen/x37"
+        android:background="@null"
+        android:contentDescription="更新"
+        android:src="@drawable/ic_main_update"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/setting"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/red_point"
+        android:layout_width="@dimen/x12"
+        android:layout_height="@dimen/y12"
+        android:contentDescription="小红点"
+        android:src="@drawable/red_point"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/update"
+        app:layout_constraintTop_toTopOf="@id/update" />
+
+    <ImageView
         android:id="@+id/menu"
         android:layout_width="@dimen/x44"
         android:layout_height="@dimen/y45"
-        android:layout_marginEnd="@dimen/x70"
+        android:layout_marginEnd="@dimen/x73"
         android:background="@null"
         android:contentDescription="菜单"
         android:src="@drawable/ic_function_list"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/setting"
+        app:layout_constraintEnd_toStartOf="@id/update"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -102,7 +125,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:background="@color/color_203356"
+        android:background="@drawable/bg_ripple_btn_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
