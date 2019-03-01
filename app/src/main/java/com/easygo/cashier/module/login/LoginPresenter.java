@@ -1,6 +1,5 @@
 package com.easygo.cashier.module.login;
 
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.easygo.cashier.Configs;
@@ -8,17 +7,12 @@ import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
 import com.easygo.cashier.http.HttpAPI;
 import com.easygo.cashier.printer.PrintHelper;
-import com.niubility.library.base.BaseApplication;
-import com.niubility.library.constants.Constans;
 import com.niubility.library.http.base.HttpClient;
 import com.niubility.library.http.base.HttpResult;
 import com.niubility.library.http.rx.BaseErrorObserver;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
-import com.niubility.library.utils.GetSign;
-import com.niubility.library.utils.SharedPreferencesUtils;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -41,11 +35,13 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
                 new BaseResultObserver<LoginResponse>() {
             @Override
             protected void onSuccess(LoginResponse result) {
+                mView.hideLoading();
                 mView.loginSuccess(result);
             }
 
             @Override
             protected void onFailure(Map<String, Object> map) {
+                mView.hideLoading();
                 mView.loginFailed(map);
             }
         });
@@ -53,6 +49,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
 
     @Override
     public void init(String mac_adr) {
+        mView.showLoading();
         Map<String, String> header = HttpClient.getInstance().getLoginSignHeader();
         subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().init(header, mac_adr),
@@ -65,6 +62,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
 
                     @Override
                     protected void onFailure(Map<String, Object> map) {
+                        mView.hideLoading();
                         mView.initFailed(map);
                     }
                 });
@@ -72,6 +70,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
 
     @Override
     public void resever_money(String session_id, String shop_sn, int handover_id, int resever_money) {
+        mView.showLoading();
         Map<String, String> header = HttpClient.getInstance().getHeader();
 
         subscribeAsyncToResult(
@@ -79,12 +78,14 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
                 new BaseResultObserver<String>() {
                     @Override
                     protected void onSuccess(String string) {
+                        mView.hideLoading();
                         mView.reseverMoneySuccess();
                     }
 
 
                     @Override
                     protected void onFailure(Map<String, Object> map) {
+                        mView.hideLoading();
                         mView.reseverMoneyFailed(map);
                     }
                 });

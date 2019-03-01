@@ -33,6 +33,7 @@ import com.easygo.cashier.Configs;
 import com.easygo.cashier.R;
 import com.easygo.cashier.TestUtils;
 import com.easygo.cashier.adapter.OrderHistoryRefundAdapter;
+import com.easygo.cashier.base.BaseAppMvpFragment;
 import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.RequsetBody;
@@ -61,7 +62,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefundContract.IView, OrderHistoryRefundPresenter> implements OrderHistoryRefundContract.IView {
+public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryRefundContract.IView, OrderHistoryRefundPresenter> implements OrderHistoryRefundContract.IView {
 
     @BindView(R.id.search_view)
     MySearchView searchView;
@@ -287,6 +288,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                     adapter.setNewData(infoList);
                     return;
                 }
+                searchView.startLoading();
                 ArrayList<GoodsRefundInfo> infos = new ArrayList<>();
                 for (GoodsRefundInfo info : adapter.getData()) {
                     if (info.getProduct_name().contains(content)) {
@@ -299,6 +301,7 @@ public class OrderHistoryRefundFragment extends BaseMvpFragment<OrderHistoryRefu
                 } else {
                     adapter.setNewData(infos);
                 }
+                searchView.stopLoading();
             }
         });
 

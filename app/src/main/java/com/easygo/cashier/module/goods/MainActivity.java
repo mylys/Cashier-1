@@ -29,6 +29,7 @@ import com.easygo.cashier.Events;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.Test;
+import com.easygo.cashier.base.BaseAppMvpActivity;
 import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.bean.EquipmentState;
 import com.easygo.cashier.bean.GoodsResponse;
@@ -63,7 +64,7 @@ import butterknife.OnClick;
  * 首页
  */
 @Route(path = ModulePath.goods)
-public class MainActivity extends BaseMvpActivity<StatusContract.IView, StatusPresenter> implements StatusContract.IView {
+public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, StatusPresenter> implements StatusContract.IView {
 
     public static final String TAG = "MainActivity";
 

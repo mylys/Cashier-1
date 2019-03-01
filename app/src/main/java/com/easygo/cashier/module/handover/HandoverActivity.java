@@ -18,6 +18,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
+import com.easygo.cashier.base.BaseAppMvpActivity;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.HandoverResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
@@ -44,7 +45,7 @@ import butterknife.OnClick;
  * 交接班页面
  */
 @Route(path = ModulePath.handover)
-public class HandoverActivity extends BaseMvpActivity<HandoverContract.IView, HandoverPresenter> implements HandoverContract.IView {
+public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView, HandoverPresenter> implements HandoverContract.IView {
 
     private static final String TAG = "HandoverActivity";
     @BindView(R.id.cl_title)

@@ -80,7 +80,7 @@
             android:textSize="@dimen/x36"
             android:textColor="@color/color_text_white"
             android:layout_marginEnd="@dimen/x42"
-            android:background="@drawable/bg_btn_commit"
+            android:background="@drawable/bg_ripple_commit_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

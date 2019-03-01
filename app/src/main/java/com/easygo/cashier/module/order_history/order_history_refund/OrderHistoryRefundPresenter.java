@@ -23,17 +23,20 @@ public class OrderHistoryRefundPresenter extends BasePresenter<OrderHistoryRefun
 
     @Override
     public void post(String json) {
+        mView.showLoading();
         RequestBody requestBody = HttpClient.getInstance().createRequestBody(json);
         Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(HttpAPI.getInstance().httpService().refund(header,requestBody),
                 new BaseResultObserver<String>() {
                     @Override
                     protected void onSuccess(String result) {
+                        mView.hideLoading();
                         mView.getHistoryRefundSuccess("退款成功");
                     }
 
                     @Override
                     protected void onFailure(Map<String, Object> map) {
+                        mView.hideLoading();
                         mView.getHistorfRefundFailed(map);
                     }
                 });
@@ -41,6 +44,7 @@ public class OrderHistoryRefundPresenter extends BasePresenter<OrderHistoryRefun
 
     @Override
     public void popTill(String shop_sn, String printer_sn) {
+        mView.showLoading();
         Map<String, String> header = HttpClient.getInstance().getHeader();
 
         for (int i = 0; i < PrintHelper.printers_count; i++) {
@@ -62,11 +66,13 @@ public class OrderHistoryRefundPresenter extends BasePresenter<OrderHistoryRefun
 
                         @Override
                         protected void onSuccess(String result) {
+                            mView.hideLoading();
                             mView.popTillSuccess();
                         }
 
                         @Override
                         protected void onFailure(Map<String, Object> map) {
+                            mView.hideLoading();
                             mView.popTillFailed(map);
                         }
                     });
@@ -75,6 +81,7 @@ public class OrderHistoryRefundPresenter extends BasePresenter<OrderHistoryRefun
 
     @Override
     public void print_info(String shop_sn, String info) {
+        mView.showLoading();
         Map<String, String> header = HttpClient.getInstance().getHeader();
 
         for (int i = 0; i < PrintHelper.printers_count; i++) {
@@ -97,10 +104,12 @@ public class OrderHistoryRefundPresenter extends BasePresenter<OrderHistoryRefun
 
                         @Override
                         protected void onSuccess(String result) {
+                            mView.hideLoading();
                         }
 
                         @Override
                         protected void onFailure(Map<String, Object> map) {
+                            mView.hideLoading();
                         }
                     });
         }

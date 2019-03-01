@@ -7,14 +7,14 @@ import android.view.Window;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.widget.LoadingDialog;
-import com.niubility.library.base.BaseMvpActivity;
+import com.niubility.library.base.BaseMvpFragment;
 import com.niubility.library.mvp.BasePresenter;
 import com.niubility.library.mvp.BaseView;
 
-public abstract class BaseAppMvpActivity<V extends BaseView, P extends BasePresenter<V>> extends BaseMvpActivity<V,P> {
+public abstract class BaseAppMvpFragment<V extends BaseView, P extends BasePresenter<V>> extends BaseMvpFragment<V,P> {
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         initLoadingDialog();
         super.onCreate(savedInstanceState);
 
@@ -23,7 +23,7 @@ public abstract class BaseAppMvpActivity<V extends BaseView, P extends BasePrese
     }
 
     private void initLoadingDialog() {
-        mLoadingDialog = new LoadingDialog(BaseAppMvpActivity.this);
+        mLoadingDialog = new LoadingDialog(getContext());
         mLoadingDialog.setCanceledOnTouchOutside(true);
         Window window = mLoadingDialog.getWindow();
         if(window != null) {
@@ -32,7 +32,7 @@ public abstract class BaseAppMvpActivity<V extends BaseView, P extends BasePrese
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
 
         if (mLoadingDialog.isShowing()) {

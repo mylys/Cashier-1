@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.OrderHistoryAdapter;
+import com.easygo.cashier.base.BaseAppMvpFragment;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.widget.MySearchView;
 import com.niubility.library.base.BaseMvpFragment;
@@ -26,7 +27,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 
-public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.IView, OrderHistoryPresenter> implements OrderHistoryContract.IView {
+public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContract.IView, OrderHistoryPresenter> implements OrderHistoryContract.IView {
 
     @BindView(R.id.rv_order_history)
     RecyclerView rvOrderHistory;
@@ -73,7 +74,6 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
         }
 
         handover_id = sp.getInt(Constans.KEY_HANDOVER_ID, -1);
-        mPresenter.post(handover_id, null, page, pageCount);
 
         rvOrderHistory.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvOrderHistory.setAdapter(adapter);
@@ -85,6 +85,7 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
         rvOrderHistory.setVisibility(View.INVISIBLE);
         setEmpty();
         setListener();
+        toRefresh();
     }
 
     private void setListener() {
@@ -116,12 +117,16 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
             public void onSearch(String content) {
                 page = 1;
                 isSearch = content.length() != 0;
+                if(isSearch) {
+                    clSearch.startLoading();
+                }
                 mPresenter.post(handover_id, content.length() == 0 ? null : content, page, pageCount);
             }
         });
     }
 
     public void toRefresh() {
+        layout.setRefreshing(true);
         page = 1;
         mPresenter.post(handover_id, null, page, pageCount);
     }
@@ -158,6 +163,7 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
                 }
                 if (isSearch){
                     adapter.loadMoreEnd();
+                    clSearch.stopLoading();
                 }
                 layout.setRefreshing(false);
             } else {
@@ -178,6 +184,7 @@ public class OrderHistoryFragment extends BaseMvpFragment<OrderHistoryContract.I
             String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
             showToast("错误信息:" + err_msg);
         }
+        layout.setRefreshing(false);
     }
 
     @Override

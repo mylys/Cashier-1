@@ -142,46 +142,56 @@ public class FunctionListDialog extends BaseDialog {
 
         functionListAdapter.setOnItemClickListener(new FunctionListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
+            public void onItemClick(final int position) {
                 if (mListener != null) {
                     mListener.onItemClickBefore();
                 }
-                switch (position) {
-                    case R.string.text_function_history:
-                        orderHistory();
-                        break;
-                    case R.string.text_function_refund:
-                        refund();
-                        break;
-                    case R.string.text_function_handover:
-                        handover();
-                        break;
-                    case R.string.text_function_system:
-                        enterSystem();
-                        break;
-                    case R.string.text_function_language:
-                        languageSetting();
-                        break;
-                    case R.string.text_function_device:
-                        deviceStatus();
-                        break;
-                    case R.string.text_function_setting:
-                        systemSetting();
-                        break;
-                    case R.string.text_function_entry:
-                        entryOrders();
-                        break;
-                    case R.string.text_function_lock:
-                        lockCashier();
-                        break;
-                }
+                rvFunction.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        switch (position) {
+                            case R.string.text_function_history:
+                                orderHistory();
+                                break;
+                            case R.string.text_function_refund:
+                                refund();
+                                break;
+                            case R.string.text_function_handover:
+                                handover();
+                                break;
+                            case R.string.text_function_system:
+                                enterSystem();
+                                break;
+                            case R.string.text_function_language:
+                                languageSetting();
+                                break;
+                            case R.string.text_function_device:
+                                deviceStatus();
+                                break;
+                            case R.string.text_function_setting:
+                                systemSetting();
+                                break;
+                            case R.string.text_function_entry:
+                                entryOrders();
+                                break;
+                            case R.string.text_function_lock:
+                                lockCashier();
+                                break;
+                        }
+
+                        dismiss();
+                    }
+                }, 200);
+
+
                 onItemClickAfter();
             }
         });
     }
 
     private void onItemClickAfter() {
-        dismiss();
+//        dismiss();
 
         if (mListener != null) {
             mListener.onItemClickAfter();

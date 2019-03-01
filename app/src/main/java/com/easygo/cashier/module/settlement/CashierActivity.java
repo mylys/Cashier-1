@@ -337,10 +337,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             return;
         }
 
-        if (!TextUtils.isEmpty(Configs.order_no) && mPayWay != PayWayView.WAY_CASH) {
-            showScanCodeDialog();
-            return;
-        }
+//        if (!TextUtils.isEmpty(Configs.order_no) && mPayWay != PayWayView.WAY_CASH) {
+//            showScanCodeDialog();
+//            return;
+//        }
         if (MemberUtils.isMember && mPayWay == PayWayView.WAY_MEMBER) {
             if (getPayMoney() > Float.parseFloat(mBalance.substring(1,mBalance.length()))) {
                 showToast("会员钱包余额不足，不能进行支付");
@@ -381,6 +381,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             pay = 0;
         }
         mChange = mRealPay - pay;
+
+        etMoney.setSelected(mChange < 0);
     }
 
     public void print() {
@@ -474,13 +476,13 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
      */
     public void onCommitOrder() {
 
-        if (TextUtils.isEmpty(Configs.order_no)) {
+//        if (TextUtils.isEmpty(Configs.order_no)) {
 //            showToast("确认提交订单");
             createOrder();
-        } else {
-//            showToast("订单已经创建 --> " + Configs.order_no);
-            onAfterCreateOrder();
-        }
+//        } else {
+////            showToast("订单已经创建 --> " + Configs.order_no);
+//            onAfterCreateOrder();
+//        }
 
     }
 

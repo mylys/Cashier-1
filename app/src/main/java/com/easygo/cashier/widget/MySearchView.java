@@ -33,6 +33,7 @@ public class MySearchView extends ConstraintLayout {
     private EditText mEditText;
     private Button mSearchBtn;
     private ConstraintLayout mClear;
+    private ConstraintLayout mLoading;
     private String keyword = "";
 
     /**时间间隔*/
@@ -90,6 +91,7 @@ public class MySearchView extends ConstraintLayout {
         final Runnable textRunnable = new Runnable() {
             @Override
             public void run() {
+                startLoading();
                 //两次输入间隔大于 指定时间时
                 if(listener != null) {
                     Log.i("test", "run: 开始搜索");
@@ -112,6 +114,7 @@ public class MySearchView extends ConstraintLayout {
             public void afterTextChanged(Editable s) {
                 keyword = s.toString();
                 mClear.setVisibility(s.length() > 0 ? VISIBLE : GONE);
+                mLoading.setVisibility(GONE);
 
                 //指定时间后调用搜索按钮逻辑
                 mEditText.removeCallbacks(textRunnable);
@@ -150,6 +153,7 @@ public class MySearchView extends ConstraintLayout {
         mEditText = (EditText) mView.findViewById(R.id.et_search);
         mSearchBtn = (Button) mView.findViewById(R.id.btn_search);
         mClear = (ConstraintLayout) mView.findViewById(R.id.cl_clear);
+        mLoading = (ConstraintLayout) mView.findViewById(R.id.cl_loading);
     }
 
     private void initAttr(Context context, AttributeSet attrs) {
@@ -200,6 +204,25 @@ public class MySearchView extends ConstraintLayout {
         this.listener = onSearchListenerClick;
     }
 
+
+    /**
+     * 开始加载
+     */
+    public void startLoading() {
+        if(!TextUtils.isEmpty(mEditText.getText().toString())){
+            mClear.setVisibility(GONE);
+            mLoading.setVisibility(VISIBLE);
+        }
+    }
+    /**
+     * 停止加载
+     */
+    public void stopLoading() {
+        if(!TextUtils.isEmpty(mEditText.getText().toString())) {
+            mClear.setVisibility(VISIBLE);
+        }
+        mLoading.setVisibility(GONE);
+    }
 
     public void clearText() {
         this.mEditText.setText("");

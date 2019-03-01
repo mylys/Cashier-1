@@ -34,7 +34,7 @@
         android:id="@+id/cl_search"
         android:layout_width="@dimen/x590"
         android:layout_height="@dimen/y98"
-        android:background="@drawable/bg_btn_frame_green"
+        android:background="@drawable/bg_selector_btn_frame_green"
         app:layout_constraintBottom_toBottomOf="@id/view1"
         app:layout_constraintEnd_toEndOf="@id/line1"
         app:layout_constraintStart_toStartOf="@id/view1"

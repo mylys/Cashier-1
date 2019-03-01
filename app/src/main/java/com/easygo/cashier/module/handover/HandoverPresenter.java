@@ -20,17 +20,20 @@ public class HandoverPresenter extends BasePresenter<HandoverContract.IView> imp
 
     @Override
     public void handover(int handover_id) {
+        mView.showLoading();
 
         Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(HttpAPI.getInstance().httpService().handover(header, handover_id, 2),
                 new BaseResultObserver<HandoverResponse>() {
                     @Override
                     protected void onSuccess(HandoverResponse result) {
+                        mView.hideLoading();
                         mView.handoverSuccess(result);
                     }
 
                     @Override
                     protected void onFailure(Map<String, Object> map) {
+                        mView.hideLoading();
                         mView.handoverFailed(map);
 
                     }
@@ -39,17 +42,20 @@ public class HandoverPresenter extends BasePresenter<HandoverContract.IView> imp
 
     @Override
     public void loginout(int handover_id) {
+        mView.showLoading();
 
         Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(HttpAPI.getInstance().httpService().loginout(header, handover_id, 1),
                 new BaseResultObserver<String>() {
                     @Override
                     protected void onSuccess(String result) {
+                        mView.hideLoading();
                         mView.loginoutSuccess(result);
                     }
 
                     @Override
                     protected void onFailure(Map<String, Object> map) {
+                        mView.hideLoading();
                         mView.loginoutFailed(map);
                     }
                 });
@@ -57,16 +63,19 @@ public class HandoverPresenter extends BasePresenter<HandoverContract.IView> imp
 
     @Override
     public void sale_list(int handover_id) {
+        mView.showLoading();
         Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(HttpAPI.getInstance().httpService().sale_list(header, handover_id),
                 new BaseResultObserver<List<HandoverSaleResponse>>() {
                     @Override
                     protected void onSuccess(List<HandoverSaleResponse> result) {
+                        mView.hideLoading();
                         mView.saleListSuccess(result);
                     }
 
                     @Override
                     protected void onFailure(Map<String, Object> map) {
+                        mView.hideLoading();
                         mView.saleListFailed(map);
                     }
                 });
@@ -74,6 +83,7 @@ public class HandoverPresenter extends BasePresenter<HandoverContract.IView> imp
 
     @Override
     public void print_info(String shop_sn, String printer_sn, String info) {
+        mView.showLoading();
 
         Map<String, String> header = HttpClient.getInstance().getHeader();
 
@@ -101,11 +111,13 @@ public class HandoverPresenter extends BasePresenter<HandoverContract.IView> imp
 
                         @Override
                         protected void onSuccess(String result) {
+                            mView.hideLoading();
                             mView.printSuccess(result);
                         }
 
                         @Override
                         protected void onFailure(Map<String, Object> map) {
+                            mView.hideLoading();
                             mView.printFailed(map);
                         }
                     });

@@ -35,6 +35,7 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
     @Override
     public void getGoods(String shop_sn, String barcode) {
+        mView.showLoading();
 
         Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(
@@ -43,11 +44,13 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
                     @Override
                     protected void onSuccess(List<GoodsResponse> result) {
+                        mView.hideLoading();
                         mView.getGoodsSuccess(result);
                     }
 
                     @Override
                     protected void onFailure(Map<String, Object> map) {
+                        mView.hideLoading();
                         mView.getGoodsFailed(map);
                     }
                 });
@@ -95,6 +98,7 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
     @Override
     public void popTill(String shop_sn, String printer_sn) {
+        mView.showLoading();
 
         Map<String, String> header = HttpClient.getInstance().getHeader();
 
@@ -117,11 +121,13 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
                         @Override
                         protected void onSuccess(String result) {
+                            mView.hideLoading();
                             mView.popTillSuccess();
                         }
 
                         @Override
                         protected void onFailure(Map<String, Object> map) {
+                            mView.hideLoading();
                             mView.popTillFailed(map);
                         }
                     });
@@ -168,16 +174,19 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
     @Override
     public void getMember(final String phone, final String barcode) {
+        mView.showLoading();
         subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().getMembers(HttpClient.getInstance().getHeader(), phone, barcode),
                 new BaseResultObserver<MemberInfo>() {
                     @Override
                     protected void onSuccess(MemberInfo result) {
+                        mView.hideLoading();
                         mView.getMemberSuccess(result, barcode, phone);
                     }
 
                     @Override
                     protected void onFailure(Map<String, Object> map) {
+                        mView.hideLoading();
                         mView.getMemberFailed(map, barcode, phone);
                     }
                 }
@@ -224,17 +233,20 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
     @Override
     public void get_coupon(final String coupon) {
+        mView.showLoading();
         Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(HttpAPI.getInstance().httpService().get_coupon(header, coupon),
                 new BaseResultObserver<CouponResponse>() {
                     @Override
                     protected void onSuccess(CouponResponse result) {
+                        mView.hideLoading();
                         result.setCoupon_sn(coupon);
                         mView.couponSuccess(result);
                     }
 
                     @Override
                     protected void onFailure(Map<String, Object> map) {
+                        mView.hideLoading();
                         mView.couponFailed(map);
                     }
                 });

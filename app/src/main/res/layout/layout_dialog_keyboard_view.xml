@@ -110,7 +110,7 @@
         android:layout_width="@dimen/x98"
         android:layout_height="@dimen/y98"
         android:layout_marginStart="@dimen/x14"
-        android:background="@drawable/bg_btn_frame"
+        android:background="@drawable/bg_keyboard_key"
         android:gravity="center"
         app:layout_constraintStart_toEndOf="@id/tv_00">
 

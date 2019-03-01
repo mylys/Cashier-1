@@ -33,6 +33,7 @@ import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.adapter.GoodsMultiItemAdapter;
+import com.easygo.cashier.base.BaseAppMvpFragment;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.bean.GoodsActivityResponse;
@@ -83,7 +84,7 @@ import butterknife.OnClick;
 /**
  * 扫描商品
  */
-public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPresenter> implements GoodsContract.IView {
+public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, GoodsPresenter> implements GoodsContract.IView {
 
     public static final String TAG = "GoodsFragment";
 
@@ -451,6 +452,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
             @Override
             public void onSearch(String content) {
                 if (!TextUtils.isEmpty(content.trim())) {
+                    clSearch.startLoading();
                     mPresenter.searchGoods(Configs.shop_sn, content.trim());
                 }
             }
@@ -1256,6 +1258,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
     public void searchGoodsSuccess(List<GoodsResponse> result) {
 
         if (getActivity() != null) {
+            clSearch.stopLoading();
             showSearchResultWindow(result);
         }
 
@@ -1317,6 +1320,7 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     @Override
     public void searchGoodsFailed(Map<String, Object> map) {
+        clSearch.stopLoading();
         showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
     }
 
@@ -1405,7 +1409,6 @@ public class GoodsFragment extends BaseMvpFragment<GoodsContract.IView, GoodsPre
 
     @Override
     public void getMemberSuccess(MemberInfo memberInfo, String barcode, String phone) {
-        MemberUtils.isMember = true;
         if (membersDialog != null && membersDialog.isShow()) {
             List<MemberInfo> infos = new ArrayList<>();
             infos.add(memberInfo);

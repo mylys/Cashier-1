@@ -83,7 +83,7 @@ public class MyApplication extends BaseApplication {
         /**
          * 已经确认过的弹窗在APP下次启动自动检查更新时会再次显示;
          */
-        Beta.showInterruptedStrategy = false;
+        Beta.showInterruptedStrategy = true;
         /**
          * 只允许在指定Activity上显示更新弹窗，其他activity上不显示弹窗; 不设置会默认所有activity都可以显示弹窗;
          */

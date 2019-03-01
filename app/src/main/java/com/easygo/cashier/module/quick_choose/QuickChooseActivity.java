@@ -18,6 +18,7 @@ import com.easygo.cashier.Events;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.QuickGoodsAdapter;
+import com.easygo.cashier.base.BaseAppMvpActivity;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.QuickClassifyInfo;
 import com.easygo.cashier.bean.QuickInfo;
@@ -40,7 +41,7 @@ import butterknife.OnClick;
  * @Date：2019-01-15
  */
 @Route(path = ModulePath.quick)
-public class QuickChooseActivity extends BaseMvpActivity<QuickChooseContract.View, QuickChoosePresenter> implements QuickChooseContract.View {
+public class QuickChooseActivity extends BaseAppMvpActivity<QuickChooseContract.View, QuickChoosePresenter> implements QuickChooseContract.View {
 
     @BindView(R.id.rv_classify_list)
     RecyclerView rvClassifyList;

@@ -33,6 +33,7 @@ public class OrderHistoryPresenter extends BasePresenter<OrderHistoryContract.IV
 
     @Override
     public void print_info(String shop_sn, String printer_sn, String info, int type) {
+        mView.showLoading();
         Map<String, String> header = HttpClient.getInstance().getHeader();
 
         for (int i = 0; i < PrintHelper.printers_count; i++) {
@@ -65,11 +66,13 @@ public class OrderHistoryPresenter extends BasePresenter<OrderHistoryContract.IV
 
                         @Override
                         protected void onSuccess(String result) {
+                            mView.hideLoading();
                             mView.printSuccess(result);
                         }
 
                         @Override
                         protected void onFailure(Map<String, Object> map) {
+                            mView.hideLoading();
                             mView.printFailed(map);
                         }
                     });

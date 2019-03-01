@@ -24,6 +24,7 @@ import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.TestUtils;
+import com.easygo.cashier.base.BaseAppMvpActivity;
 import com.easygo.cashier.bean.AccountInfo;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
@@ -54,7 +55,7 @@ import butterknife.OnClick;
  * 登录页面
  */
 @Route(path = ModulePath.login)
-public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPresenter> implements LoginContract.IView {
+public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, LoginPresenter> implements LoginContract.IView {
 
     private static final String TAG = "LoginActivity";
 
@@ -474,6 +475,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
 
         //判断是否禁止登录
         if("yes".equals(result.getIs_disabled())) {
+            hideLoading();
             showToast("设备已停用");
             return;
         }
@@ -482,8 +484,10 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginPre
         String password = etPassword.getText().toString().trim();
 
         if (TextUtils.isEmpty(account)) {
+            hideLoading();
             showToast("账号不能为空！");
         } else if (TextUtils.isEmpty(password)) {
+            hideLoading();
             showToast("密码不能为空！");
         } else {
             //登录

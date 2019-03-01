@@ -10,9 +10,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.GoodsResponse;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * @Describe：
@@ -38,7 +35,7 @@ public class QuickGoodsAdapter extends BaseQuickAdapter<GoodsResponse, BaseViewH
 
     @Override
     protected void convert(final BaseViewHolder helper, final GoodsResponse item) {
-        int choose_background = R.drawable.bg_btn_frame_green;
+        int choose_background = R.drawable.bg_selector_btn_frame_green;
         int nochoose_background = R.drawable.bg_btn_frame;
         Glide.with(mContext).load(item.getPic_big()).apply(options).into((ImageView) helper.getView(R.id.iv_good));
 

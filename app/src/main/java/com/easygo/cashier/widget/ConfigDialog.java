@@ -1,6 +1,9 @@
 package com.easygo.cashier.widget;
 
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -9,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.easygo.cashier.R;
 import com.easygo.cashier.SoftKeyboardUtil;
@@ -26,6 +30,7 @@ public class ConfigDialog extends BaseDialog {
     private EditText etId;
     private EditText etSecret;
     private Button btnConfirm;
+    private TextView tvVersion;
 
     private SharedPreferences sp;
     private String appkey;
@@ -39,6 +44,7 @@ public class ConfigDialog extends BaseDialog {
         etId = rootView.findViewById(R.id.et_id);
         etSecret = rootView.findViewById(R.id.et_secret);
         btnConfirm = rootView.findViewById(R.id.btn);
+        tvVersion = rootView.findViewById(R.id.tv_version);
 
         sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getContext());
         readAndSetConfig();
@@ -84,6 +90,19 @@ public class ConfigDialog extends BaseDialog {
                 return false;
             }
         });
+
+
+        PackageManager pm = getContext().getPackageManager();
+        if(pm != null) {
+            try {
+                PackageInfo packageInfo = pm.getPackageInfo(getContext().getPackageName(), 0);
+                tvVersion.setText("Version: " + packageInfo.versionName + "(" + packageInfo.versionCode + ")");
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+
 
     }
 
@@ -154,7 +173,7 @@ public class ConfigDialog extends BaseDialog {
 
     @Override
     protected boolean canCanceledOnTouchOutside() {
-        return false;
+        return true;
     }
 
     @Override

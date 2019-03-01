@@ -3,6 +3,7 @@
     android:id="@+id/root"
     android:layout_width="@dimen/function_list_item_width"
     android:layout_height="@dimen/function_list_item_height"
+    android:background="@drawable/bg_ripple_function_btn"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
