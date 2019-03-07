@@ -48,13 +48,41 @@
     </com.easygo.cashier.widget.MySearchView>
 
     <View
+        android:id="@+id/line3"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y2"
+        android:background="@color/color_f0f3f7"
+        app:layout_constraintEnd_toStartOf="@id/line1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view1" />
+
+    <CheckBox
+        android:id="@+id/cb_local_order"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="只看本机历史订单"
+        android:textColor="@color/color_505050"
+        android:textSize="@dimen/text_size_29"
+        android:paddingStart="@dimen/x41"
+        android:paddingTop="@dimen/y20"
+        android:paddingBottom="@dimen/y20"
+        android:button="@null"
+        android:background="@color/color_text_white"
+        android:drawableStart="@drawable/check_box"
+        android:drawablePadding="@dimen/x17"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/line1"
+        app:layout_constraintTop_toBottomOf="@id/line3"
+        app:layout_constraintBottom_toTopOf="@id/line2"/>
+
+    <View
         android:id="@+id/line2"
         android:layout_width="0dp"
         android:layout_height="@dimen/y20"
         android:background="@color/color_f0f3f7"
         app:layout_constraintEnd_toStartOf="@id/line1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view1" />
+        app:layout_constraintTop_toBottomOf="@id/cb_local_order" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh"

@@ -223,6 +223,7 @@ public interface HttpService {
      * page 页数
      * count 每页数量
      * keyword 搜索关键词
+     * is_local_order     1： 表示查看本机历史订单
      */
     @FormUrlEncoded
     @POST("api/v1/cashier/cash/order")
@@ -230,15 +231,22 @@ public interface HttpService {
                                                                     @Field("handover_id") int handover_id,
                                                                     @Field("keyword") String keyword,
                                                                     @Field("page") int page,
-                                                                    @Field("count") int count);
+                                                                    @Field("count") int count,
+                                                                    @Field("is_local_order") int is_local_order);
 
+    /**
+     * 退款
+     * @param header
+     * @param json
+     * @return
+     */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("api/v1/cashier/pay/refund")
     Observable<HttpResult<String>> refund(@HeaderMap Map<String, String> header, @Body RequestBody json);
 
 
     /**
-     * 现金退款
+     * 现金退款（无用）
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("api/v1/cashier/pay/cash")
@@ -273,19 +281,41 @@ public interface HttpService {
     Observable<HttpResult<List<MemberDiscountInfo>>> getMemberDiscount(@HeaderMap Map<String, String> header, @Query("shop_id") String shop_id, @Query("shop_sn") String shop_sn);
 
 
+    /**
+     * 会员钱包支付
+     */
     @FormUrlEncoded
     @POST("api/v1/cashier/pay/member_wallet")
     Observable<HttpResult<String>> member_wallet(@HeaderMap Map<String, String> header, @Field("order_no") String order_no, @Field("auth_code") String auth_code);
 
+    /**
+     * 快速选择
+     */
     @POST("api/v1/cashier/pay/quick_select")
     Observable<HttpResult<QuickInfo>> showLists(@HeaderMap Map<String, String> header);
 
+    /**
+     * 搜索优惠券
+     */
     @GET("api/v1/cashier/coupon/search")
     Observable<HttpResult<CouponResponse>> get_coupon(@HeaderMap Map<String, String> header, @Query("coupon_sn") String coupon_sn);
 
+    /**
+     * 解绑优惠券
+     */
+    @FormUrlEncoded
+    @POST("api/v1/cashier/pay/close_order")
+    Observable<HttpResult<String>> close_order(@HeaderMap Map<String, String> header, @Field("order_no") String order_no);
+
+    /**
+     * 心跳
+     */
     @GET("api/v1/cashier/cash_register/heartbeat")
     Observable<HttpResult<String>> heartbeat(@HeaderMap Map<String, String> header);
 
+    /**
+     * 授权
+     */
     @FormUrlEncoded
     @POST("api/v1/cashier/pay/verify_auth")
     Observable<HttpResult<String>> verifyAuth(@HeaderMap Map<String, String> header,

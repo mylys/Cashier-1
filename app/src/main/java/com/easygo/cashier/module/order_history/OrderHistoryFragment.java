@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -35,6 +37,8 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
     MySearchView clSearch;
     @BindView(R.id.refresh)
     SwipeRefreshLayout layout;
+    @BindView(R.id.cb_local_order)
+    CheckBox cbLocalOrder;
 
     private OrderHistoryDetailFragment orderHistoryDetailFragment;
     private OrderHistoryAdapter adapter = new OrderHistoryAdapter();
@@ -44,6 +48,7 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
     private int page = 1;
     private int pageCount = 20;
     private boolean isSearch = false;
+    private int is_local_order = 0;
 
 
     public static OrderHistoryFragment newInstance() {
@@ -89,11 +94,18 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
     }
 
     private void setListener() {
+        cbLocalOrder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                is_local_order = isChecked? 1: 0;
+                toRefresh();
+            }
+        });
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 page++;
-                mPresenter.post(handover_id, null, page, pageCount);
+                mPresenter.post(handover_id, null, page, pageCount, is_local_order);
             }
         });
 
@@ -101,7 +113,7 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
             @Override
             public void onRefresh() {
                 page = 1;
-                mPresenter.post(handover_id, null, page, pageCount);
+                mPresenter.post(handover_id, null, page, pageCount, is_local_order);
             }
         });
 
@@ -120,7 +132,7 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
                 if(isSearch) {
                     clSearch.startLoading();
                 }
-                mPresenter.post(handover_id, content.length() == 0 ? null : content, page, pageCount);
+                mPresenter.post(handover_id, content.length() == 0 ? null : content, page, pageCount, is_local_order);
             }
         });
     }
@@ -128,7 +140,7 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
     public void toRefresh() {
         layout.setRefreshing(true);
         page = 1;
-        mPresenter.post(handover_id, null, page, pageCount);
+        mPresenter.post(handover_id, null, page, pageCount, is_local_order);
     }
 
     /* 设置adapter空数据 */

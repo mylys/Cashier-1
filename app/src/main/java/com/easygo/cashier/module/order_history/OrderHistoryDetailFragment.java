@@ -271,7 +271,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
 
         //临时整单促销
         String cashier_discount = mOrderHistorysInfo.getCashier_discount();
-        boolean has_temp_order_promotion = !TextUtils.isEmpty(cashier_discount);
+        boolean has_temp_order_promotion = !TextUtils.isEmpty(cashier_discount) && Float.parseFloat(cashier_discount) > 0;
         if(has_temp_order_promotion) {
             orderHistoryGoodsAdapter.setHavePromotion(true);
         }
@@ -375,11 +375,11 @@ public class OrderHistoryDetailFragment extends BaseFragment {
 //
 //        }
         //临时整单促销
-        String cashier_discount = mOrderHistorysInfo.getCashier_discount();
-        boolean has_temp_order_promotion = !TextUtils.isEmpty(cashier_discount);
-        if(has_temp_order_promotion) {
-            coupon += Float.valueOf(cashier_discount);
-        }
+//        String cashier_discount = mOrderHistorysInfo.getCashier_discount();
+//        boolean has_temp_order_promotion = !TextUtils.isEmpty(cashier_discount);
+//        if(has_temp_order_promotion) {
+//            coupon += Float.valueOf(cashier_discount);
+//        }
 
         return coupon;
     }

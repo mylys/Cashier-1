@@ -205,6 +205,40 @@ public class ActivitiesUtils {
         return 0f;
     }
 
+    public float getTempOrderPromotionMoney(List<GoodsEntity<GoodsResponse>> data, float money) {
+        if(currentTempOrderPromotion == null) {
+            return 0f;
+        }
+
+        float promotionMoney = currentTempOrderPromotion.getPromotionMoney(money);
+
+        if(promotionMoney > 0) {
+            Log.i(TAG, "promotion: " + currentTempOrderPromotion.getName() + ", 促销金额： " + promotionMoney);
+            //记录临时整单促销金额
+            mTempOrderPromotionMoney = promotionMoney;
+
+        }
+
+        //有临时整单促销时
+        if(currentTempOrderPromotion != null && mTempOrderPromotionMoney != 0) {
+            int data_size = data.size();
+            float temp_order_discount;
+            float subtotal;
+            for (int i = 0; i < data_size; i++) {
+                GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
+                GoodsResponse good = goodsEntity.getData();
+                subtotal = Float.parseFloat(good.getPrice()) * goodsEntity.getCount()
+                        - Float.parseFloat(good.getDiscount_price());
+                temp_order_discount = mTempOrderPromotionMoney * (subtotal / money);
+                //设置临时整单促销分摊优惠金额
+                good.setTemp_order_discount(temp_order_discount);
+            }
+            return mTempOrderPromotionMoney;
+        } else {
+            return 0f;
+        }
+    }
+
 
 
 
@@ -294,9 +328,16 @@ public class ActivitiesUtils {
     public void promotion(List<GoodsEntity<GoodsResponse>> data) {
         int size = data.size();
         //重置
+        GoodsResponse goodsResponse;
         for (int i = 0; i < size; i++) {
             GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
-            goodsEntity.getData().setDiscount_price("0.00");
+            goodsResponse = goodsEntity.getData();
+            goodsResponse.setDiscount_price("0.00");
+            goodsResponse.setGoods_activity_discount(0);
+            goodsResponse.setTemp_goods_discount(0);
+            goodsResponse.setShop_activity_discount(0);
+            goodsResponse.setCoupon_discount(0);
+            goodsResponse.setMember_discount(0);
             goodsEntity.setPromotion(null);
         }
 
@@ -385,6 +426,7 @@ public class ActivitiesUtils {
 
             if(promotionGoods != null) {
                 List<PromotionGoods.GoodsBean> list = promotionGoods.getGoodsBeans();
+                Collections.sort(list);
                 //将商品按照价格 从高到底排序
                 Collections.reverse(list);
                 promotionGoods.setGoodsBeans(list);
@@ -539,7 +581,8 @@ public class ActivitiesUtils {
                 }
                 subtotal = Float.parseFloat(good.getPrice()) * goodsEntity.getCount();
                 discount_price = mShopPromotionMoney * (subtotal / total_money);
-                good.setDiscount_price(String.valueOf(discount_price));
+//                good.setDiscount_price(String.valueOf(discount_price));
+                good.setShop_activity_discount(discount_price);
             }
             return mShopPromotionMoney;
         } else {

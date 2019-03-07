@@ -1,22 +1,17 @@
 package com.easygo.cashier.module.settlement;
 
-import android.graphics.Bitmap;
-
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.http.HttpAPI;
 import com.easygo.cashier.printer.PrintHelper;
 import com.niubility.library.http.base.HttpClient;
-import com.niubility.library.http.base.HttpResult;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
-import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import io.reactivex.functions.Function;
 import okhttp3.RequestBody;
 
 public class SettlementPresenter extends BasePresenter<SettlementContract.IView> implements SettlementContract.IPresenter{
@@ -317,6 +312,26 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
 //                    }
 //                })
 
+
+
+    }
+
+    @Override
+    public void closeOrder(String order_no) {
+        mView.showLoading();
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+        subscribeAsyncToResult(HttpAPI.getInstance().httpService().close_order(header, order_no), new BaseResultObserver<String>() {
+            @Override
+            protected void onSuccess(String result) {
+                mView.hideLoading();
+                mView.unlockCouponSuccess();
+            }
+
+            @Override
+            protected void onFailure(Map<String, Object> map) {
+                mView.unlockCouponFailed(map);
+            }
+        });
 
 
     }

@@ -29,6 +29,7 @@ import com.easygo.cashier.Events;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.Test;
+import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.base.BaseAppMvpActivity;
 import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.bean.EquipmentState;
@@ -464,20 +465,24 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     public void onEvent(BaseEvent event) {
         super.onEvent(event);
         switch (event.getString()) {
-            case Events.ENTRY_ORDERS_VALUE:
+            case Events.ENTRY_ORDERS_VALUE://挂单
                 EntryOrders orders = (EntryOrders) event.getObject();
                 goodsFragment.addData(orders);
                 break;
-            case Events.CLEAR_GOODS_INFO:
+            case Events.CLEAR_GOODS_INFO://清除商品数据
                 goodsFragment.clearInfo();
                 break;
-            case Events.MEMBER_INFO:
+            case Events.MEMBER_INFO://设置会员信息
                 MemberInfo info = (MemberInfo) event.getObject();
                 goodsFragment.updateMebmerInfo(info);
                 break;
-            case Events.QUICK_CHOOSE:
+            case Events.QUICK_CHOOSE://快速选择
                 List<GoodsResponse> goodsResponses = (List<GoodsResponse>) event.getObject();
                 goodsFragment.addChooseInfo(goodsResponses);
+                break;
+            case Events.REFRESH_DATA://刷新首页商品数据
+                List<GoodsEntity<GoodsResponse>> data = (List<GoodsEntity<GoodsResponse>>) event.getObject();
+                goodsFragment.refreshGoodsData(data);
                 break;
         }
     }

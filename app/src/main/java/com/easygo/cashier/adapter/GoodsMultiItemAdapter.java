@@ -269,27 +269,21 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                     p = Double.valueOf(good.getData().getPrice());
 //                }
 
+                coupon += Double.valueOf(good.getData().getDiscount_price());
+                price += p * good.getCount();
                 switch (good.getItemType()) {
                     case GoodsEntity.TYPE_GOODS:
                     case GoodsEntity.TYPE_NO_CODE:
                         count += good.getCount();
-                        coupon += Double.valueOf(good.getData().getDiscount_price());
-                        price += p * good.getCount();
                         break;
                     case GoodsEntity.TYPE_WEIGHT:
                         count += 1;
-                        coupon += Double.valueOf(good.getData().getDiscount_price());
-                        price += p * good.getCount();
                         break;
                     case GoodsEntity.TYPE_ONLY_PROCESSING:
                         count += 1;
-                        coupon += Double.valueOf(good.getData().getDiscount_price());
-                        price += p * good.getCount();
                         break;
                     case GoodsEntity.TYPE_PROCESSING:
                         count += 1;
-                        coupon += Double.valueOf(good.getData().getDiscount_price());
-                        price += p * good.getCount();
                         //选择加工时 更新价格
                         GoodsResponse processing = good.getProcessing();
                         if (processing != null) {//此时 选择了加工
@@ -682,6 +676,22 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         if (data != null) {
             notifyDataSetChanged();
         }
+    }
+
+    public void refreshGoodsData(List<GoodsEntity<GoodsResponse>> list) {
+        ensureNotNull();
+        data.clear();
+        barcodeData.clear();
+        mData.clear();
+        limit.clear();
+
+        for (GoodsEntity<GoodsResponse> entity : list) {
+            data.put(entity.getData().getBarcode(), entity);
+            barcodeData.add(entity.getData().getBarcode());
+        }
+        mData.addAll(list);
+
+        notifyDataSetChanged();
     }
 
     public String getTotalCoupon() {

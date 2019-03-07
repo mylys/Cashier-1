@@ -539,6 +539,22 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
             with_coupon = ActivitiesUtils.getInstance().isWith_coupon();
         }
+
+        //判断是否有优惠券可用
+        if (with_coupon && CouponUtils.getInstance().getCouponInfo() != null) {
+            float couponMoney = CouponUtils.getInstance().getCouponMoney(mData, Configs.shop_sn, price - coupon);
+
+            Log.i(TAG, " 优惠券 优惠价格 --> " + couponMoney);
+            mCouponMoney = couponMoney;
+
+            coupon += mCouponMoney;
+
+        } else {
+            //取消优惠券
+            cancelCoupon();
+        }
+
+        //显示正在参与活动
         if (goods_coupon == 0 && member_coupon == 0 && shop_coupon == 0) {
 
             //没有任何促销、会员优惠
@@ -560,79 +576,6 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         }
 
 
-        //-----------------------------------------------------
-
-//        //判断是否有商品促销
-//        if (ActivitiesUtils.getInstance().hasGoodsPromotion()) {
-//
-////            //刷新正在参加的活动
-////            showCurrentActivities(ActivitiesUtils.getInstance().getCurrentPromotionNames());
-//
-//
-//            if (!MemberUtils.isMember) {//不是会员时
-//                coupon = ActivitiesUtils.getInstance().getGoodsPromotionMoney();
-//            } else {
-//
-//                //计算会员价、日、折扣
-//                MemberUtils.computeMember(mData);
-//
-//                coupon = Float.valueOf(mGoodsMultiItemAdapter.getTotalCoupon());
-//            }
-//
-//            //判断是否有店铺促销
-//            shop_coupon = ActivitiesUtils.getInstance().promotion(mGoodsMultiItemAdapter.getShopTotal());
-//
-//            coupon += shop_coupon;
-//
-//            //刷新正在参加的活动
-//            showCurrentActivities(ActivitiesUtils.getInstance().getCurrentPromotionNames());
-//
-//            with_coupon = ActivitiesUtils.getInstance().isWith_coupon();
-//        } else {
-//            //判断是否有店铺促销
-//            coupon = ActivitiesUtils.getInstance().promotion(mGoodsMultiItemAdapter.getSubtotal());
-//            if (coupon > 0) {
-//                //符合店铺促销条件
-//                showCurrentActivities(ActivitiesUtils.getInstance().getCurrentPromotionNames());
-//
-//                with_coupon = ActivitiesUtils.getInstance().isWith_coupon();
-//
-//            }
-//            //判断是否有会员
-//            else if (MemberUtils.isMember) {
-//                //计算会员价、日、折扣
-//                MemberUtils.computeMember(mData);
-//
-//                coupon = Float.valueOf(mGoodsMultiItemAdapter.getTotalCoupon());
-//
-//                with_coupon = true;
-//
-//                //清除正在参与活动
-//                showCurrentActivities(MemberUtils.currentNames);
-//            }
-//            //没有任何促销优惠
-//            else {
-//                //清除正在参与活动
-//                showCurrentActivities(null);
-//            }
-//        }
-
-        //-----------------------------------------------------------------
-        //判断是否有优惠券可用
-        if (with_coupon) {
-            if (CouponUtils.getInstance().getCouponInfo() != null) {
-                float couponMoney = CouponUtils.getInstance().getCouponMoney(price - coupon);
-
-                Log.i(TAG, " 优惠券 优惠价格 --> " + couponMoney);
-                mCouponMoney = couponMoney;
-
-                coupon += mCouponMoney;
-
-            }
-        } else {
-            //取消优惠券
-            cancelCoupon();
-        }
         //刷新价格
         refreshPrice(price, count, coupon);
         if (!rvGoods.isComputingLayout()) {
@@ -1090,7 +1033,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 //                setMemberVisiable(false);
                 break;
             case R.id.iv_cancel_coupon:
-                cancelCoupon();
+                cancelCouponWithRefresh();
                 break;
             case R.id.btn_quick_choose:
                 ARouter.getInstance().build(ModulePath.quick).navigation();
@@ -1135,7 +1078,16 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
         mCouponMoney = 0f;
 
+//        refreshPrice(mTotalMoney, mGoodsCount, mCoupon);
+    }
+    /**
+     * 取消优惠券并刷新数据源
+     */
+    private void cancelCouponWithRefresh() {
+        cancelCoupon();
+
         refreshPrice(mTotalMoney, mGoodsCount, mCoupon);
+        mGoodsMultiItemAdapter.notifyDataSetChanged();
     }
 
     private void setHide(ConstraintLayout constraintLayout) {
@@ -1535,9 +1487,6 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
     // 选择挂单添加item
     public void addData(EntryOrders entryOrders) {
-//        tvTotalMoney.setText(entryOrders.getEntry_orders_total_price());
-//        tvGoodsCount.setText(entryOrders.getEntry_orders_total_number());
-//        tvCoupon.setText("0.00");
         mData = entryOrders.getGoodsEntityList();
         mGoodsMultiItemAdapter.setOrdersData(mData);
         mData = mGoodsMultiItemAdapter.getData();
@@ -1635,6 +1584,37 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         }
 
         computePrice(mTotalMoney, mGoodsCount, 0);
+    }
+
+    /**
+     * 刷新商品数据
+     */
+    public void refreshGoodsData(List<GoodsEntity<GoodsResponse>> data) {
+        mData = data;
+        mGoodsMultiItemAdapter.refreshGoodsData(data);
+        mData = mGoodsMultiItemAdapter.getData();
+
+        computePrice(mTotalMoney, mGoodsCount, 0);
+
+        //更新优惠券信息
+        CouponResponse couponInfo = CouponUtils.getInstance().getCouponInfo();
+        if(couponInfo != null) {
+            setShow(clCoupon);
+            tvCouponNo.setText(couponInfo.getName());
+            int offer_type = couponInfo.getOffer_type();
+            int offer_value = couponInfo.getOffer_value();
+            if (offer_type == 1) {
+                tvCouponPrice.setText("-" + offer_value);
+            } else if (offer_type == 2) {
+                DecimalFormat df = new DecimalFormat("0.0");
+                tvCouponPrice.setText(df.format((100 - offer_value) / 10f) + "折");
+            }
+        }
+
+
+        if (mUserGoodsScreen != null) {
+            mUserGoodsScreen.refreshGoodsData(mData);
+        }
     }
 
     public void lockCashier() {

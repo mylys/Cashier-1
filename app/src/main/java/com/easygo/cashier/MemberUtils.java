@@ -131,7 +131,6 @@ public class MemberUtils {
                 float price = 0;
 
                 if(goodsEntity.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
-//                    price = Float.valueOf(good.getProcess_price());
                     continue;
                 } else {
                     price = Float.valueOf(good.getPrice());
@@ -141,19 +140,9 @@ public class MemberUtils {
 
                 //获取每种商品的优惠价格
                 float coupon = getCoupon(good, good_count, fullTotalPrice, price, membership_price);
-                good.setDiscount_price(df.format(coupon));
+//                good.setDiscount_price(df.format(coupon));
+                good.setMember_discount(coupon);
 
-//                if(goodsEntity.getItemType() == GoodsEntity.TYPE_PROCESSING) {
-//                    GoodsResponse processing = goodsEntity.getProcessing();
-//
-//                    if(processing != null) {
-//                        price = Float.valueOf(processing.getProcess_price());
-//
-//                        membership_price = Float.valueOf(processing.getMembership_price());
-//                        coupon = getCoupon(processing, good_count, fullTotalPrice, price, membership_price);
-//                        processing.setDiscount_price(df.format(coupon));
-//                    }
-//                }
             }
         }
     }

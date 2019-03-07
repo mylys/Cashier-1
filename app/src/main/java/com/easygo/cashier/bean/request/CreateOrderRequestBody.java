@@ -136,6 +136,10 @@ public class CreateOrderRequestBody {
          * barcode : 096619756803
          * discount :
          * cashier_discount :
+         * shop_activity_discount :
+         * goods_activity_discount :
+         * coupon_discount :
+         * member_discount :
          */
 
         private int g_sku_id;
@@ -152,6 +156,10 @@ public class CreateOrderRequestBody {
         private String barcode;
         private int discount;
         private int cashier_discount;
+        private int shop_activity_discount;
+        private int goods_activity_discount;
+        private int coupon_discount;
+        private int member_discount;
 
         public int getG_sku_id() {
             return g_sku_id;
@@ -215,6 +223,38 @@ public class CreateOrderRequestBody {
 
         public void setCashier_discount(int cashier_discount) {
             this.cashier_discount = cashier_discount;
+        }
+
+        public int getShop_activity_discount() {
+            return shop_activity_discount;
+        }
+
+        public void setShop_activity_discount(int shop_activity_discount) {
+            this.shop_activity_discount = shop_activity_discount;
+        }
+
+        public int getGoods_activity_discount() {
+            return goods_activity_discount;
+        }
+
+        public void setGoods_activity_discount(int goods_activity_discount) {
+            this.goods_activity_discount = goods_activity_discount;
+        }
+
+        public int getCoupon_discount() {
+            return coupon_discount;
+        }
+
+        public void setCoupon_discount(int coupon_discount) {
+            this.coupon_discount = coupon_discount;
+        }
+
+        public int getMember_discount() {
+            return member_discount;
+        }
+
+        public void setMember_discount(int member_discount) {
+            this.member_discount = member_discount;
         }
     }
 

@@ -56,8 +56,11 @@ public class TempGoodsPromotion extends BaseGoodsPromotion implements IGoodsProm
             float promotion = (goodsBean.getSubtotal() / total_money) * promotion_money;
             Log.i(TAG, "computePromotionMoney: 临时商品促销 ， 促销金额 -> " + promotion);
             goodsBean.setPromotion_money(promotion);
-            goodsEntity.setPromotion(this);
-            goodsEntity.getData().setDiscount_price(String.valueOf(promotion));
+            if(promotion > 0) {
+                goodsEntity.setPromotion(this);
+            }
+//            goodsEntity.getData().setDiscount_price(String.valueOf(promotion));
+            goodsEntity.getData().setTemp_goods_discount(promotion);
         }
 
     }

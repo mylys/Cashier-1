@@ -85,6 +85,36 @@ public class GoodsResponse implements Serializable {
     public static final int type_no_code = 2;
     public static final int type_processing = 3;
 
+
+    /**
+     * 商品促销优惠金额
+     */
+    private float goods_activity_discount;
+    /**
+     * 店铺促销优惠金额
+     */
+    private float shop_activity_discount;
+     /**
+     * 会员促销优惠金额
+     */
+    private float member_discount;
+
+    /**
+     * 优惠券促销分摊优惠金额
+     */
+    private float coupon_discount;
+    /**
+     * 临时商品促销分摊优惠金额
+     */
+    private float temp_goods_discount;
+
+    /**
+     * 临时整单促销分摊优惠金额
+     */
+    private float temp_order_discount;
+
+
+
     public boolean isSelect() {
         return select;
     }
@@ -286,11 +316,67 @@ public class GoodsResponse implements Serializable {
     }
 
     public String getDiscount_price() {
-        return discount_price;
+//        return discount_price;
+        return String.valueOf(
+                goods_activity_discount
+                + member_discount
+                + shop_activity_discount
+                + coupon_discount
+                + temp_goods_discount
+                + temp_order_discount
+        );
     }
 
     public void setDiscount_price(String discount_price) {
         this.discount_price = discount_price;
+    }
+
+    public float getGoods_activity_discount() {
+        return goods_activity_discount;
+    }
+
+    public void setGoods_activity_discount(float goods_activity_discount) {
+        this.goods_activity_discount = goods_activity_discount;
+    }
+
+    public float getShop_activity_discount() {
+        return shop_activity_discount;
+    }
+
+    public void setShop_activity_discount(float shop_activity_discount) {
+        this.shop_activity_discount = shop_activity_discount;
+    }
+
+    public float getMember_discount() {
+        return member_discount;
+    }
+
+    public void setMember_discount(float member_discount) {
+        this.member_discount = member_discount;
+    }
+
+    public float getTemp_goods_discount() {
+        return temp_goods_discount;
+    }
+
+    public void setTemp_goods_discount(float temp_goods_discount) {
+        this.temp_goods_discount = temp_goods_discount;
+    }
+
+    public float getCoupon_discount() {
+        return coupon_discount;
+    }
+
+    public void setCoupon_discount(float coupon_discount) {
+        this.coupon_discount = coupon_discount;
+    }
+
+    public float getTemp_order_discount() {
+        return temp_order_discount;
+    }
+
+    public void setTemp_order_discount(float temp_order_discount) {
+        this.temp_order_discount = temp_order_discount;
     }
 
     public String getMembership_price() {

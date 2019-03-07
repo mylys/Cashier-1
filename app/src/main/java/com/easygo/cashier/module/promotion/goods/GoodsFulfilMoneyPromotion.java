@@ -72,8 +72,11 @@ public class GoodsFulfilMoneyPromotion extends BaseGoodsPromotion implements IGo
                 Log.i(TAG, "computePromotionMoney: 商品满额促销 选择第" + index + "个，最大差价 - " + max_promotion);
                 PromotionGoods.GoodsBean goodsBean = goodsBeans.get(index);
                 goodsBean.setPromotion_money(max_promotion);
-                data.get(goodsBean.getIndex()).setPromotion(this);
-                data.get(goodsBean.getIndex()).getData().setDiscount_price(String.valueOf(max_promotion));
+                if(max_promotion > 0) {
+                    data.get(goodsBean.getIndex()).setPromotion(this);
+                }
+//                data.get(goodsBean.getIndex()).getData().setDiscount_price(String.valueOf(max_promotion));
+                data.get(goodsBean.getIndex()).getData().setGoods_activity_discount(max_promotion);
             }
         }
     }

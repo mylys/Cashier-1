@@ -121,10 +121,13 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
 
                     }
                 }
-                goodsEntity.setPromotion(this);
+                if(promotion_money > 0) {
+                    goodsEntity.setPromotion(this);
+                }
                 goodsBean.setPromotion_money(promotion_money);
-                Log.i(TAG, "computePromotionMoney: index -> " + i + ", 促销金额 -> " + promotion_money);
-                goodsEntity.getData().setDiscount_price(String.valueOf(promotion_money));
+                Log.i(TAG, "computePromotionMoney: index -> " + index + ", 促销金额 -> " + promotion_money);
+//                goodsEntity.getData().setDiscount_price(String.valueOf(promotion_money));
+                goodsEntity.getData().setGoods_activity_discount(promotion_money);
             }
         }
     }
@@ -158,6 +161,10 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
      */
     private int find(int count, List<GoodsActivityResponse.ActivitiesBean.ConfigBean.ListBean> list) {
         int index = -1;
+        int size = list.size();
+        if(size == 0) {
+            return index;
+        }
 
 
         int min_quotient = count;
@@ -168,11 +175,15 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
         boolean remain_is_zero = false;
 
 
-        int size = list.size();
         List<Result> resultlist = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             GoodsActivityResponse.ActivitiesBean.ConfigBean.ListBean listBean = list.get(i);
             int condition_value = Integer.valueOf(listBean.getCondition_value());
+
+            //数量不满足 捆绑件数
+            if(count < condition_value) {
+                continue;
+            }
 
             quotient = count / condition_value;
             remain = count % condition_value;
@@ -194,7 +205,13 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
             return index;
         }
 
+        //没有找到匹配的规则
+        if(resultlist.size() == 0) {
+            return index;
+        }
+
         min_quotient = resultlist.get(0).quotient;
+        index = 0;
 
         for (int i = 1; i < size; i++) {
             Result result = resultlist.get(i);
@@ -320,7 +337,7 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
     private static class Rule {
         /**本部分商品总价*/
         private float total_money;
-        /**本部分商品总促销金额*/
+        /**本部分商品促销后总金额*/
         private float total_promotion_money;
         /**本部分商品列表*/
         private List<Good> list = new ArrayList<>();
@@ -355,7 +372,7 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
             for (int i = 0; i < size; i++) {
                 Good good = list.get(i);
 
-                good.promotion_money = (good.subtotal/total_money) * total_promotion_money;
+                good.promotion_money = (good.subtotal/total_money) * (total_money - total_promotion_money);
             }
         }
     }

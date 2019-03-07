@@ -15,9 +15,9 @@ import java.util.Map;
 public class OrderHistoryPresenter extends BasePresenter<OrderHistoryContract.IView> implements OrderHistoryContract.IPresenter {
 
     @Override
-    public void post(int handover_id, String keyword, int page, int count) {
+    public void post(int handover_id, String keyword, int page, int count, int is_local_order) {
         Map<String, String> header = HttpClient.getInstance().getHeader();
-        subscribeAsyncToResult(HttpAPI.getInstance().httpService().getOrderHistory(header, handover_id, keyword, page, count),
+        subscribeAsyncToResult(HttpAPI.getInstance().httpService().getOrderHistory(header, handover_id, keyword, page, count, is_local_order),
                 new BaseResultObserver<List<OrderHistorysInfo>>() {
                     @Override
                     protected void onSuccess(List<OrderHistorysInfo> result) {

@@ -19,6 +19,7 @@ import com.easygo.cashier.widget.ChooseCouponsDialog;
 import com.easygo.cashier.widget.PayWayView;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
@@ -142,8 +143,9 @@ public class SettlementView extends FrameLayout {
         btnCancelCoupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isCoupon = false;
-                setCouponVisiable(isCoupon);
+                if(mListener != null) {
+                    mListener.onCancelCoupon();
+                }
             }
         });
         btnCancelTempPromotion.setOnClickListener(new View.OnClickListener() {

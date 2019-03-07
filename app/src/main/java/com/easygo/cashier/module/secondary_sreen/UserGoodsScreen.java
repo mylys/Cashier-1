@@ -165,4 +165,8 @@ public class UserGoodsScreen extends Presentation {
         activitiesView.setVisibility(data != null && data.size() > 0 ? View.VISIBLE: View.GONE);
         activitiesView.setData(data);
     }
+
+    public void refreshGoodsData(List<GoodsEntity<GoodsResponse>> data) {
+        mUserGoodsAdapter.refreshGoodsData(data);
+    }
 }

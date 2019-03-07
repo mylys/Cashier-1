@@ -101,7 +101,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                     return;
                 }
                 item.setRefund_num(count + "");
-                double subtotal = (count * Double.parseDouble(item.getProduct_price()));
+                double subtotal = (count * (Double.parseDouble(item.getProduct_subtotal()) / item.getProduct_num()));
                 double money = Double.parseDouble(item.getProduct_subtotal());//小计
                 if(subtotal > money) {
                     subtotal = money;
@@ -178,9 +178,11 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
     public float getRatioRefund(float real_pay) {
         float refund_total = 0;
         float total = 0;
+        float product_subtotal;
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
             if (goodsRefundInfo.isSelect()) {
-                refund_total += Float.parseFloat(goodsRefundInfo.getRefund_subtotal());
+                product_subtotal = Float.parseFloat(goodsRefundInfo.getProduct_subtotal());
+                refund_total += (Integer.parseInt(goodsRefundInfo.getRefund_num()) * (product_subtotal / goodsRefundInfo.getProduct_num()));
             }
             total += Float.parseFloat(goodsRefundInfo.getProduct_subtotal());
         }

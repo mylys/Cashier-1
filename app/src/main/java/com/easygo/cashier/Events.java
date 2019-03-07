@@ -9,4 +9,5 @@ public class Events {
     public static final String CLEAR_GOODS_INFO = "CLEAR_GOODS_INFO";
     public static final String MEMBER_INFO = "MEMBER_INFO";
     public static final String QUICK_CHOOSE = "QUICK_CHOOSE";
+    public static final String REFRESH_DATA = "REFRESH_DATA";
 }

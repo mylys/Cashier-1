@@ -1,5 +1,7 @@
 package com.easygo.cashier.bean;
 
+import java.util.List;
+
 public class CouponResponse {
 
 
@@ -11,6 +13,8 @@ public class CouponResponse {
      * offer_value : 18
      * effected_at : 1547395200000
      * expired_at : 1547567999000
+     * shop_list : []
+     * gsku_list : [{"g_sku_id":30451,"barcode":"135636353636","g_sku_name":"海尔商品D"}]
      */
 
     private String name;
@@ -21,6 +25,8 @@ public class CouponResponse {
     private int offer_value;
     private long effected_at;
     private long expired_at;
+    private List<ShopListBean> shop_list;
+    private List<GSkuListBean> gsku_list;
 
     public String getName() {
         return name;
@@ -84,5 +90,112 @@ public class CouponResponse {
 
     public void setExpired_at(long expired_at) {
         this.expired_at = expired_at;
+    }
+
+    public List<ShopListBean> getShop_list() {
+        return shop_list;
+    }
+
+    public void setShop_list(List<ShopListBean> shop_list) {
+        this.shop_list = shop_list;
+    }
+
+    public List<GSkuListBean> getGsku_list() {
+        return gsku_list;
+    }
+
+    public void setGsku_list(List<GSkuListBean> gsku_list) {
+        this.gsku_list = gsku_list;
+    }
+
+    public static final int TYPE_GOODS = 0;
+    public static final int TYPE_SHOP = 1;
+    public static final int TYPE_ALL = 2;
+
+    public boolean isForGood() {
+        return gsku_list != null && gsku_list.size() != 0;
+    }
+    public boolean isForShop() {
+        return shop_list != null && shop_list.size() != 0;
+    }
+    public boolean isForAll() {
+        return gsku_list != null && gsku_list.size() == 0
+                && shop_list != null && shop_list.size() == 0;
+    }
+
+
+
+    public static class ShopListBean {
+
+
+        /**
+         * shop_id : 619
+         * shop_name : 万物市集精品超市
+         * shop_sn : 5465456456
+         */
+
+        private int shop_id;
+        private String shop_name;
+        private String shop_sn;
+
+        public int getShop_id() {
+            return shop_id;
+        }
+
+        public void setShop_id(int shop_id) {
+            this.shop_id = shop_id;
+        }
+
+        public String getShop_name() {
+            return shop_name;
+        }
+
+        public void setShop_name(String shop_name) {
+            this.shop_name = shop_name;
+        }
+
+        public String getShop_sn() {
+            return shop_sn;
+        }
+
+        public void setShop_sn(String shop_sn) {
+            this.shop_sn = shop_sn;
+        }
+    }
+    public static class GSkuListBean {
+
+        /**
+         * g_sku_id : 30451
+         * barcode : 135636353636
+         * g_sku_name : 海尔商品D
+         */
+
+        private int g_sku_id;
+        private String barcode;
+        private String g_sku_name;
+
+        public int getG_sku_id() {
+            return g_sku_id;
+        }
+
+        public void setG_sku_id(int g_sku_id) {
+            this.g_sku_id = g_sku_id;
+        }
+
+        public String getBarcode() {
+            return barcode;
+        }
+
+        public void setBarcode(String barcode) {
+            this.barcode = barcode;
+        }
+
+        public String getG_sku_name() {
+            return g_sku_name;
+        }
+
+        public void setG_sku_name(String g_sku_name) {
+            this.g_sku_name = g_sku_name;
+        }
     }
 }
