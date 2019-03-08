@@ -86,7 +86,7 @@ public class ChooseCouponsDialog extends BaseDialog {
             @Override
             protected void convert(BaseViewHolder helper, CouponResponse item) {
                 String condition_value = item.getCondition_value();
-                int offer_value = item.getOffer_value();
+                float offer_value = item.getOffer_value();
                 String effected_at = sdf.format(item.getEffected_at());
                 String expired_at = sdf.format(item.getExpired_at());
 

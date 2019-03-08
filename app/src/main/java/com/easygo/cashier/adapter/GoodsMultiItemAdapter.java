@@ -325,7 +325,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 .setText(R.id.tv_subtotal, String.valueOf(df.format(subtotal)))
                 .setText(R.id.tv_coupon, df.format(Float.valueOf(good.getDiscount_price())))
                 .setText(R.id.tv_member_price, good.getMembership_price())
-                .setVisible(R.id.iv_coupon, promotion != null || ActivitiesUtils.getInstance().hasShopPromotion());
+                .setVisible(R.id.iv_coupon, Float.valueOf(good.getDiscount_price()) > 0);
 
         switch (helper.getItemViewType()) {
             case GoodsEntity.TYPE_GOODS://普通商品
@@ -762,6 +762,62 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         return result;
 
     }
+
+    /**
+     * 获取计算店铺促销时的金额小计
+     * @return
+     */
+    public float getShopTotal(List<String> excludeBarcodeList) {
+        float temp;
+        float count;
+        float price;
+        float coupon;
+        float result = 0;
+        GoodsResponse good;
+        int exclude_size = excludeBarcodeList.size();
+        boolean is_exclude = false;
+        for (GoodsEntity<GoodsResponse> entity : mData) {
+            good = entity.getData();
+            if(entity.getPromotion() != null) {
+                continue;
+            }
+
+            coupon = Float.valueOf(good.getDiscount_price());
+            if (coupon > 0) {
+                continue;
+            }
+
+            is_exclude = false;
+            //判断是否在排除列表里面
+            if(exclude_size > 0) {
+                for (int i = 0; i < exclude_size; i++) {
+                    if(excludeBarcodeList.contains(good.getBarcode())) {
+//                    if(good.getBarcode().equals(excludeBarcodeList.get(i))) {
+                        //在排除商品列表里面
+                        is_exclude = true;
+                        entity.setExcludeInShopActivity(true);
+                        break;
+                    }
+                }
+            }
+            //排除此商品
+            if(is_exclude) {
+                continue;
+            }
+            entity.setExcludeInShopActivity(false);
+
+            price = Float.valueOf(good.getPrice());
+            count = entity.getCount();
+            temp = price * count;
+            if(temp < 0) {
+                temp = 0;
+            }
+            result += temp;
+        }
+        return result;
+
+    }
+
 
 
 

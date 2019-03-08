@@ -533,7 +533,8 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             }
         }
         //判断是否有店铺促销
-        shop_coupon = ActivitiesUtils.getInstance().promotion(mData, mGoodsMultiItemAdapter.getShopTotal());
+        shop_coupon = ActivitiesUtils.getInstance().promotion(mData,
+                mGoodsMultiItemAdapter.getShopTotal(ActivitiesUtils.getInstance().getShopExcludeBarcodeList()));
         if (shop_coupon > 0) {
             coupon += shop_coupon;
 
@@ -1015,7 +1016,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                         }
                         tvCouponNo.setText(result.getName());
                         int offer_type = result.getOffer_type();
-                        int offer_value = result.getOffer_value();
+                        float offer_value = result.getOffer_value();
                         if (offer_type == 1) {
                             tvCouponPrice.setText("-" + offer_value);
                         } else if (offer_type == 2) {
@@ -1602,7 +1603,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             setShow(clCoupon);
             tvCouponNo.setText(couponInfo.getName());
             int offer_type = couponInfo.getOffer_type();
-            int offer_value = couponInfo.getOffer_value();
+            float offer_value = couponInfo.getOffer_value();
             if (offer_type == 1) {
                 tvCouponPrice.setText("-" + offer_value);
             } else if (offer_type == 2) {

@@ -22,7 +22,7 @@ public class CouponResponse {
     private String condition_value;
     private int offer_type;
     private String offer_type_str;
-    private int offer_value;
+    private String offer_value;
     private long effected_at;
     private long expired_at;
     private List<ShopListBean> shop_list;
@@ -68,11 +68,11 @@ public class CouponResponse {
         this.offer_type_str = offer_type_str;
     }
 
-    public int getOffer_value() {
-        return offer_value;
+    public float getOffer_value() {
+        return Float.parseFloat(offer_value);
     }
 
-    public void setOffer_value(int offer_value) {
+    public void setOffer_value(String offer_value) {
         this.offer_value = offer_value;
     }
 
@@ -168,11 +168,13 @@ public class CouponResponse {
          * g_sku_id : 30451
          * barcode : 135636353636
          * g_sku_name : 海尔商品D
+         * is_mix_sku : 0
          */
 
         private int g_sku_id;
         private String barcode;
         private String g_sku_name;
+        private int is_mix_sku;
 
         public int getG_sku_id() {
             return g_sku_id;
@@ -196,6 +198,14 @@ public class CouponResponse {
 
         public void setG_sku_name(String g_sku_name) {
             this.g_sku_name = g_sku_name;
+        }
+
+        public int getIs_mix_sku() {
+            return is_mix_sku;
+        }
+
+        public void setIs_mix_sku(int is_mix_sku) {
+            this.is_mix_sku = is_mix_sku;
         }
     }
 }

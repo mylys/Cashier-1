@@ -67,6 +67,8 @@ public class GoodsEntity<T> implements MultiItemEntity, Serializable {
 
     private BaseGoodsPromotion promotion;
     private boolean isSelected;
+    /**计算店铺促销时是否排除计算*/
+    private boolean isExcludeInShopActivity;
 
     public BaseGoodsPromotion getPromotion() {
         return promotion;
@@ -82,5 +84,13 @@ public class GoodsEntity<T> implements MultiItemEntity, Serializable {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public boolean isExcludeInShopActivity() {
+        return isExcludeInShopActivity;
+    }
+
+    public void setExcludeInShopActivity(boolean excludeInShopActivity) {
+        isExcludeInShopActivity = excludeInShopActivity;
     }
 }

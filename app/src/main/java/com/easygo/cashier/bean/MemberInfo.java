@@ -184,6 +184,7 @@ public class MemberInfo {
          */
 
         private String name;
+        private String sn;
         private String condition_value;
         private int offer_type;
         private String offer_type_str;
@@ -197,6 +198,14 @@ public class MemberInfo {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public String getSn() {
+            return sn;
+        }
+
+        public void setSn(String sn) {
+            this.sn = sn;
         }
 
         public String getCondition_value() {

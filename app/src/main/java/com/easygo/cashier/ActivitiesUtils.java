@@ -50,6 +50,10 @@ public class ActivitiesUtils {
      * 店铺促销对象集合
      */
     private List<BaseShopPromotion> shopList = new ArrayList<>();
+    /**
+     * 店铺促销排除商品集合
+     */
+    private List<String> excludeBarcodeList = new ArrayList<>();
 
 
     private BaseShopPromotion currentShopPromotion;
@@ -473,8 +477,19 @@ public class ActivitiesUtils {
         //重置
         shopList.clear();
         currentShopPromotion = null;
+        excludeBarcodeList.clear();
 
         List<ShopActivityResponse.ListBean> list = response.getList();
+        //保存店铺促销需要排除的商品条码
+        List<ShopActivityResponse.ListBean.ExcludeListBean> exclude_list = list.get(0).getExclude_list();
+        if(exclude_list != null) {
+            int exclude_list_size = exclude_list.size();
+            for (int i = 0; i < exclude_list_size; i++) {
+                ShopActivityResponse.ListBean.ExcludeListBean excludeListBean = exclude_list.get(i);
+                excludeBarcodeList.add(excludeListBean.getBarcode());
+            }
+        }
+
         int size = list.size();
         for (int i = 0; i < size; i++) {
             ShopActivityResponse.ListBean listBean = list.get(i);
@@ -577,6 +592,9 @@ public class ActivitiesUtils {
                 GoodsResponse good = goodsEntity.getData();
                 discount_price = Float.parseFloat(good.getDiscount_price());
                 if(discount_price != 0) {
+                    continue;
+                }
+                if(goodsEntity.isExcludeInShopActivity()) {
                     continue;
                 }
                 subtotal = Float.parseFloat(good.getPrice()) * goodsEntity.getCount();
@@ -706,6 +724,10 @@ public class ActivitiesUtils {
         else {
             return true;
         }
+    }
+
+    public List<String> getShopExcludeBarcodeList() {
+        return excludeBarcodeList;
     }
 
 
