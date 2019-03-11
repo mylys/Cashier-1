@@ -66,6 +66,8 @@ import butterknife.OnClick;
 @Route(path = ModulePath.settlement)
 public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, SettlementPresenter> implements SettlementContract.IView {
 
+    public static final String TAG = CashierActivity.class.getSimpleName();
+
     @BindView(R.id.cl_title)
     MyTitleBar clTitle;
     @BindView(R.id.pay_way_view)
