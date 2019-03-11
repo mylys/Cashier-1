@@ -28,6 +28,7 @@ import com.easygo.cashier.printer.PrinterHelpter;
 import com.easygo.cashier.printer.PrinterUtils;
 import com.easygo.cashier.printer.ThreadPool;
 import com.easygo.cashier.printer.obj.HandoverInfoPrintObj;
+import com.easygo.cashier.printer.obj.HandoverSaleListPrintObj;
 import com.easygo.cashier.widget.MyTitleBar;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
@@ -278,6 +279,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
                 break;
             case R.id.btn_print://打印销售列表
                 printHandoverSaleList();
+                printHandoverSaleListLocal();
                 break;
             case R.id.cl_back:
                 onBack();
@@ -347,39 +349,26 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
 
     private void printHandoverInfoLocal() {
 
-        if (PrinterUtils.getInstance().isPrinterDisconnected()) {
-            showToast(getString(R.string.str_cann_printer));
-            return;
-        }
-        ThreadPool.getInstantiation().addTask(new Runnable() {
-            @Override
-            public void run() {
-                if (!PrinterUtils.getInstance().isEscPrinterCommand()) {
-                    showToast(getString(R.string.str_choice_printer_command));
-                    return;
-                }
-                HandoverInfoPrintObj handoverInfoPrintObj = new HandoverInfoPrintObj();
-                handoverInfoPrintObj.admin_name = admin_name;
-                handoverInfoPrintObj.login_time = tvLoginTime.getText().toString();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-                handoverInfoPrintObj.loginout_time = sdf.format(new Date());
-                handoverInfoPrintObj.total_order_count = mHandoverView.tvTotalOrderCount.getText().toString();
-                handoverInfoPrintObj.sale_count = mHandoverView.tvSaleCount.getText().toString();
-                handoverInfoPrintObj.refund_count = mHandoverView.tvRefundCount.getText().toString();
-                handoverInfoPrintObj.total_sales = mHandoverView.tvTotalSales.getText().toString();
-                handoverInfoPrintObj.cash = mHandoverView.tvCash.getText().toString();
-                handoverInfoPrintObj.alipay = mHandoverView.tvAlipay.getText().toString();
-                handoverInfoPrintObj.wechat = mHandoverView.tvWechat.getText().toString();
-                handoverInfoPrintObj.all_refund = mHandoverView.tvAllRefund.getText().toString();
-                handoverInfoPrintObj.total_cash = mHandoverView.tvTotalCash.getText().toString();
-                handoverInfoPrintObj.cash_income = mHandoverView.tvCashIncome.getText().toString();
-                handoverInfoPrintObj.receipts = mHandoverView.tvReceipts.getText().toString();
-                handoverInfoPrintObj.change = mHandoverView.tvChange.getText().toString();
-                handoverInfoPrintObj.cash_refund = mHandoverView.tvCashRefund.getText().toString();
+        HandoverInfoPrintObj handoverInfoPrintObj = new HandoverInfoPrintObj();
+        handoverInfoPrintObj.admin_name = admin_name;
+        handoverInfoPrintObj.login_time = tvLoginTime.getText().toString();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        handoverInfoPrintObj.loginout_time = sdf.format(new Date());
+        handoverInfoPrintObj.total_order_count = mHandoverView.tvTotalOrderCount.getText().toString();
+        handoverInfoPrintObj.sale_count = mHandoverView.tvSaleCount.getText().toString();
+        handoverInfoPrintObj.refund_count = mHandoverView.tvRefundCount.getText().toString();
+        handoverInfoPrintObj.total_sales = mHandoverView.tvTotalSales.getText().toString();
+        handoverInfoPrintObj.cash = mHandoverView.tvCash.getText().toString();
+        handoverInfoPrintObj.alipay = mHandoverView.tvAlipay.getText().toString();
+        handoverInfoPrintObj.wechat = mHandoverView.tvWechat.getText().toString();
+        handoverInfoPrintObj.all_refund = mHandoverView.tvAllRefund.getText().toString();
+        handoverInfoPrintObj.total_cash = mHandoverView.tvTotalCash.getText().toString();
+        handoverInfoPrintObj.cash_income = mHandoverView.tvCashIncome.getText().toString();
+        handoverInfoPrintObj.receipts = mHandoverView.tvReceipts.getText().toString();
+        handoverInfoPrintObj.change = mHandoverView.tvChange.getText().toString();
+        handoverInfoPrintObj.cash_refund = mHandoverView.tvCashRefund.getText().toString();
 
-                PrinterUtils.getInstance().print(PrinterHelpter.handoverInfoDatas(handoverInfoPrintObj));
-            }
-        });
+        PrinterUtils.getInstance().print(PrinterHelpter.handoverInfoDatas(handoverInfoPrintObj));
     }
 
 
@@ -432,6 +421,27 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
 
 
     }
+    private void printHandoverSaleListLocal() {
+
+        List<HandoverSaleResponse> data = null;
+        if (mHandoverSaleListView != null) {
+            data = mHandoverSaleListView.getData();
+        }
+        if(data == null) {
+            Log.i(TAG, "printHandoverSaleList: data = null");
+            return;
+        }
+
+        HandoverSaleListPrintObj obj = new HandoverSaleListPrintObj();
+        obj.shop_name = Configs.shop_name;
+        obj.admin_name = admin_name;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        obj.time = sdf.format(new Date());
+        obj.data = data;
+
+        PrinterUtils.getInstance().print(PrinterHelpter.handoverSaleListDatas(obj));
+    }
+
 
 
     @Override

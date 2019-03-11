@@ -178,6 +178,11 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             }
 
             @Override
+            public void onPleaseConnectPrinter() {
+                showToast(getString(R.string.str_cann_printer));
+            }
+
+            @Override
             public void onConnectFailed() {
                 showToast(getString(R.string.str_conn_fail));
             }

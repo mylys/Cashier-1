@@ -97,7 +97,8 @@ public class HandoverPresenter extends BasePresenter<HandoverContract.IView> imp
             }
 
             if(!printersBean.canUse(InitResponse.PrintersBean.type_handover)) {
-                return;
+                mView.hideLoading();
+                continue;
             }
             Map<String, Object> requestMap = new HashMap<>();
             requestMap.put("shop_sn", shop_sn);

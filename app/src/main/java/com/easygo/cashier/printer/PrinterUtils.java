@@ -10,7 +10,6 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.util.Log;
 
-import com.easygo.cashier.R;
 import com.tools.command.EscCommand;
 import com.tools.command.LabelCommand;
 
@@ -147,6 +146,7 @@ public class PrinterUtils {
         void onConnecting();
         void onConnected();
         void onDisconnected();
+        void onPleaseConnectPrinter();
         void onConnectFailed();
         void onCommandError();
     }
@@ -256,7 +256,7 @@ public class PrinterUtils {
         //打印机状态查询
         if(isPrinterDisconnected()) {
             if(mListener != null) {
-                mListener.onDisconnected();
+                mListener.onPleaseConnectPrinter();
             }
             return;
         }
@@ -284,7 +284,7 @@ public class PrinterUtils {
     public void cutPaper() {
         if(isPrinterDisconnected()) {
             if(mListener != null) {
-                mListener.onDisconnected();
+                mListener.onPleaseConnectPrinter();
             }
             return;
         }
@@ -315,14 +315,33 @@ public class PrinterUtils {
     /**
      * 打印
      */
-    public void print(Vector<Byte> datas) {
+    public void print(final Vector<Byte> datas) {
+
+        if (isPrinterDisconnected()) {
+            if(mListener != null) {
+                mListener.onPleaseConnectPrinter();
+            }
+            return;
+        }
+        ThreadPool.getInstantiation().addTask(new Runnable() {
+            @Override
+            public void run() {
+                if (!PrinterUtils.getInstance().isEscPrinterCommand()) {
+                  if (mListener != null) {
+                      mListener.onCommandError();
+                  }
+                  return;
+                }
+                // 发送数据
+                DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].sendDataImmediately(datas);
+            }
+        });
+
 //        if(count > 1) {//连续打印
 //
 //        } else {
 //
 //        }
-        // 发送数据
-        DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].sendDataImmediately(datas);
     }
 
 

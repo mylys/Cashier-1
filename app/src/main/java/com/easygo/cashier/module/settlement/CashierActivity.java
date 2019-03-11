@@ -40,6 +40,9 @@ import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.promotion.shop.BaseShopPromotion;
 import com.easygo.cashier.module.promotion.temp.TempOrderPromotion;
 import com.easygo.cashier.printer.PrintHelper;
+import com.easygo.cashier.printer.PrinterHelpter;
+import com.easygo.cashier.printer.PrinterUtils;
+import com.easygo.cashier.printer.obj.CashierPrintObj;
 import com.easygo.cashier.widget.ChooseCouponsDialog;
 import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.Keyboard;
@@ -55,9 +58,12 @@ import com.niubility.library.utils.ScreenUtils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -471,6 +477,37 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
             mPresenter.print(GsonUtils.getInstance().getGson().toJson(requestBody));
         }
+    }
+
+    public void printLocal() {
+        CashierPrintObj obj = new CashierPrintObj();
+        obj.shop_name = Configs.shop_name;
+        obj.order_no = Configs.order_no;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        obj.time = sdf.format(new Date());
+        obj.admin_name = Configs.admin_name;
+        obj.data = mGoodsData;
+        switch (mPayWay) {
+            case PayWayView.WAY_CASH:
+                obj.pay_type = "现金支付";
+                break;
+            case PayWayView.WAY_ALIPAY:
+                obj.pay_type = "支付宝支付";
+                break;
+            case PayWayView.WAY_WECHAT:
+                obj.pay_type = "微信支付";
+                break;
+            case PayWayView.WAY_MEMBER:
+                obj.pay_type = "会员钱包支付";
+                break;
+        }
+        obj.count = String.valueOf(mGoodsCount);
+        obj.total_money = String.valueOf(mTotalMoney);
+        obj.discount = String.valueOf(mCoupon + mCouponMoney + mTempOrderPromotionMoney);
+        obj.real_pay = String.valueOf(mTotalMoney - mCoupon - mCouponMoney - mTempOrderPromotionMoney);
+        obj.change = String.valueOf(mChange);
+
+        PrinterUtils.getInstance().print(PrinterHelpter.cashier(obj));
     }
 
 
@@ -1104,6 +1141,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
         if (settlementView.needPrint()) {
             print();
+            printLocal();
         }
         if (mPayWay == PayWayView.WAY_CASH) {//现金支付时
             //弹出钱箱

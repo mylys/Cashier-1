@@ -40,6 +40,9 @@ import com.easygo.cashier.bean.RequsetBody;
 import com.easygo.cashier.module.order_history.OrderHistoryActivity;
 import com.easygo.cashier.module.order_history.OrderHistoryFragment;
 import com.easygo.cashier.printer.PrintHelper;
+import com.easygo.cashier.printer.PrinterHelpter;
+import com.easygo.cashier.printer.PrinterUtils;
+import com.easygo.cashier.printer.obj.OrderHistoryRefundPrintObj;
 import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.GeneraEditDialog;
 import com.easygo.cashier.widget.GeneraListDialog;
@@ -442,6 +445,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         }
         btnRefund.setEnabled(true);
         printRefundInfo();
+        printRefundInfoLocal();
 
         if (pay_type.equals(getResources().getString(R.string.pay_cash))) {
 
@@ -511,6 +515,26 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
 
             orderHistoryActivity.printRefundInfo(sb.toString());
         }
+    }
+    /**
+     * 打印退款单
+     */
+    private void printRefundInfoLocal() {
+
+        OrderHistoryRefundPrintObj obj = new OrderHistoryRefundPrintObj();
+        obj.order_no = order_no_number;
+        obj.admin_name = real_name;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        obj.time = sdf.format(new Date());
+        obj.data = infoList;
+        obj.count = String.valueOf(adapter.getTotalNum());
+        obj.total_price = df.format(total_price / 100f);
+        obj.discount = df.format(total_discount);
+        obj.real_pay = df.format(real_pay);
+        obj.pay_type = pay_type;
+        obj.refund = editRefundcashPrice.getText().toString();
+
+        PrinterUtils.getInstance().print(PrinterHelpter.orderHistroyRefund(obj));
     }
 
     @Override

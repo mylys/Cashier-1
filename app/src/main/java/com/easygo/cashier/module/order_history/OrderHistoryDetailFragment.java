@@ -19,6 +19,9 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.OrderHistoryGoodsAdapter;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.printer.PrintHelper;
+import com.easygo.cashier.printer.PrinterHelpter;
+import com.easygo.cashier.printer.PrinterUtils;
+import com.easygo.cashier.printer.obj.OrderHistoryGoodsListPrintObj;
 import com.niubility.library.base.BaseFragment;
 
 import java.text.DecimalFormat;
@@ -175,6 +178,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
             case R.id.btn_print:
 //                Toast.makeText(getContext(), "打印单据", Toast.LENGTH_SHORT).show();
                 printOrderHistoryDetail();
+                printOrderHistoryDetailLocal();
 
                 break;
         }
@@ -251,6 +255,28 @@ public class OrderHistoryDetailFragment extends BaseFragment {
             fragment.print(sb.toString(), 0);
         }
 
+    }
+
+    /**
+     * 打印历史订单详情
+     */
+    private void printOrderHistoryDetailLocal() {
+        List<OrderHistorysInfo.ListBean> data = mOrderHistorysInfo.getList();
+        int size = data.size();
+        if (size <= 0) {
+            return;
+        }
+
+        OrderHistoryGoodsListPrintObj obj = new OrderHistoryGoodsListPrintObj();
+        obj.shop_name = Configs.shop_name;
+        obj.order_no = tvOrderNo.getText().toString();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        obj.time = sdf.format(new Date());
+        obj.admin_name = tvCashierAcount.getText().toString();
+        obj.data = mOrderHistorysInfo;
+        obj.pay_type = payType;
+
+        PrinterUtils.getInstance().print(PrinterHelpter.orderHistroyGoodsList(obj));
     }
 
     public void showOrderHistory(OrderHistorysInfo orderHistoryInfo) {
