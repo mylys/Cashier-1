@@ -39,6 +39,7 @@ import com.easygo.cashier.bean.PrinterStatusResponse;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.status.StatusContract;
 import com.easygo.cashier.module.status.StatusPresenter;
+import com.easygo.cashier.printer.PrinterUtils;
 import com.easygo.cashier.widget.EquipmentstateDialog;
 import com.easygo.cashier.widget.FunctionListDialog;
 import com.easygo.cashier.widget.MyTitleBar;
@@ -143,6 +144,51 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
         initReceiver();
         mHandler.sendEmptyMessageDelayed(MSG_RED_POINT, 1000);
+
+        initPrinter();
+    }
+
+    private void initPrinter() {
+
+        PrinterUtils.getInstance().setOnPrinterListener(new PrinterUtils.OnPrinterListener() {
+            @Override
+            public void onUsbPermissionDeny() {
+                showToast("USB权限 被拒绝！！！");
+            }
+
+            @Override
+            public void onConnecting() {
+                showToast(getString(R.string.str_conn_state_connecting));
+            }
+
+            @Override
+            public void onConnected() {
+                showToast(getString(R.string.str_conn_state_connected) +
+                        "\n" + PrinterUtils.getInstance().getConnDeviceInfo());
+
+//                PrinterUtils.getInstance().popTill();
+//                btnReceiptPrint();
+
+//                btnPrinterState();
+            }
+
+            @Override
+            public void onDisconnected() {
+                showToast(getString(R.string.str_conn_state_disconnect));
+            }
+
+            @Override
+            public void onConnectFailed() {
+                showToast(getString(R.string.str_conn_fail));
+            }
+
+            @Override
+            public void onCommandError() {
+                showToast(getString(R.string.str_choice_printer_command));
+            }
+        });
+
+        PrinterUtils.getInstance().registerReceiver(this);
     }
 
     private void initReceiver() {
@@ -237,6 +283,10 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             case R.id.network://网络在线或离线
                 //显示打印机状态
                 checkPrinterStatus();
+
+                if(PrinterUtils.STATE_DISCONNECTED == PrinterUtils.getInstance().getPrinterState()) {
+                    showToast(getString(R.string.str_cann_printer));
+                };
                 break;
             case R.id.update://更新
                 checkUpdate();
@@ -459,6 +509,8 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         if(connReceiver != null) {
             unregisterReceiver(connReceiver);
         }
+        PrinterUtils.getInstance().unregisterReceiver(this);
+        PrinterUtils.getInstance().release();
     }
 
     @Override

@@ -14,7 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -30,22 +29,26 @@ import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
 import com.easygo.cashier.module.CouponUtils;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
+import com.easygo.cashier.printer.DeviceConnFactoryManager;
 import com.easygo.cashier.printer.PrintHelper;
+import com.easygo.cashier.printer.PrinterUtils;
+import com.easygo.cashier.printer.ThreadPool;
 import com.easygo.cashier.widget.AccountWindow;
 import com.easygo.cashier.widget.ConfigDialog;
 import com.easygo.cashier.widget.PettyCashDialog;
-import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.DeviceUtils;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
-import com.niubility.library.utils.ToastUtils;
+import com.tools.command.EscCommand;
+import com.tools.command.LabelCommand;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
@@ -359,6 +362,48 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
     @Override
     protected void onStart() {
         super.onStart();
+
+        PrinterUtils.getInstance().setOnPrinterListener(new PrinterUtils.OnPrinterListener() {
+            @Override
+            public void onUsbPermissionDeny() {
+                showToast("USB权限 被拒绝！！！");
+            }
+
+            @Override
+            public void onConnecting() {
+                showToast(getString(R.string.str_conn_state_connecting));
+            }
+
+            @Override
+            public void onConnected() {
+                showToast(getString(R.string.str_conn_state_connected) +
+                        "\n" + PrinterUtils.getInstance().getConnDeviceInfo());
+            }
+
+            @Override
+            public void onDisconnected() {
+                showToast(getString(R.string.str_conn_state_disconnect));
+            }
+
+            @Override
+            public void onConnectFailed() {
+                showToast(getString(R.string.str_conn_fail));
+            }
+
+            @Override
+            public void onCommandError() {
+                showToast(getString(R.string.str_choice_printer_command));
+            }
+        });
+        PrinterUtils.getInstance().registerReceiver(this);
+        PrinterUtils.getInstance().closeport();
+        PrinterUtils.getInstance().connectUSB(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        PrinterUtils.getInstance().unregisterReceiver(this);
     }
 
     @Override
@@ -396,6 +441,8 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
             //弹出钱箱
             mPresenter.pop_till(Configs.shop_sn, Configs.printer_sn);
+
+            PrinterUtils.getInstance().popTill();
 
 
             if (dialog == null)

@@ -24,8 +24,11 @@ import com.easygo.cashier.bean.HandoverResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.printer.PrintHelper;
+import com.easygo.cashier.printer.PrinterHelpter;
+import com.easygo.cashier.printer.PrinterUtils;
+import com.easygo.cashier.printer.ThreadPool;
+import com.easygo.cashier.printer.obj.HandoverInfoPrintObj;
 import com.easygo.cashier.widget.MyTitleBar;
-import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.ScreenUtils;
@@ -162,6 +165,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
 
         //弹出钱箱
         mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, PrintHelper.pop_till);
+        PrinterUtils.getInstance().popTill();
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -250,6 +254,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
 
                 if(cbPrint.isChecked()) {
                     printHandoverInfo();
+                    printHandoverInfoLocal();
                 }
                 during_handover = true;
                 mPresenter.loginout(handover_id);
@@ -338,6 +343,43 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
         Log.i(TAG, "printHandoverInfo: sb -> " + sb.toString());
 
         mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, sb.toString());
+    }
+
+    private void printHandoverInfoLocal() {
+
+        if (PrinterUtils.getInstance().isPrinterDisconnected()) {
+            showToast(getString(R.string.str_cann_printer));
+            return;
+        }
+        ThreadPool.getInstantiation().addTask(new Runnable() {
+            @Override
+            public void run() {
+                if (!PrinterUtils.getInstance().isEscPrinterCommand()) {
+                    showToast(getString(R.string.str_choice_printer_command));
+                    return;
+                }
+                HandoverInfoPrintObj handoverInfoPrintObj = new HandoverInfoPrintObj();
+                handoverInfoPrintObj.admin_name = admin_name;
+                handoverInfoPrintObj.login_time = tvLoginTime.getText().toString();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+                handoverInfoPrintObj.loginout_time = sdf.format(new Date());
+                handoverInfoPrintObj.total_order_count = mHandoverView.tvTotalOrderCount.getText().toString();
+                handoverInfoPrintObj.sale_count = mHandoverView.tvSaleCount.getText().toString();
+                handoverInfoPrintObj.refund_count = mHandoverView.tvRefundCount.getText().toString();
+                handoverInfoPrintObj.total_sales = mHandoverView.tvTotalSales.getText().toString();
+                handoverInfoPrintObj.cash = mHandoverView.tvCash.getText().toString();
+                handoverInfoPrintObj.alipay = mHandoverView.tvAlipay.getText().toString();
+                handoverInfoPrintObj.wechat = mHandoverView.tvWechat.getText().toString();
+                handoverInfoPrintObj.all_refund = mHandoverView.tvAllRefund.getText().toString();
+                handoverInfoPrintObj.total_cash = mHandoverView.tvTotalCash.getText().toString();
+                handoverInfoPrintObj.cash_income = mHandoverView.tvCashIncome.getText().toString();
+                handoverInfoPrintObj.receipts = mHandoverView.tvReceipts.getText().toString();
+                handoverInfoPrintObj.change = mHandoverView.tvChange.getText().toString();
+                handoverInfoPrintObj.cash_refund = mHandoverView.tvCashRefund.getText().toString();
+
+                PrinterUtils.getInstance().print(PrinterHelpter.handoverInfoDatas(handoverInfoPrintObj));
+            }
+        });
     }
 
 

@@ -47,6 +47,7 @@ import com.easygo.cashier.module.CouponUtils;
 import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.refund.RefundActivity;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
+import com.easygo.cashier.printer.PrinterUtils;
 import com.easygo.cashier.widget.ActivitiesView;
 import com.easygo.cashier.widget.ChooseCouponsDialog;
 import com.easygo.cashier.widget.ChooseMembersDialog;
@@ -1446,6 +1447,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             editDialog.dismiss();
         }
         mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
+        PrinterUtils.getInstance().popTill();
     }
 
     @Override
