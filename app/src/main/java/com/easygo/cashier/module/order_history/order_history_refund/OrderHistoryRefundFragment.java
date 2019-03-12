@@ -450,6 +450,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         if (pay_type.equals(getResources().getString(R.string.pay_cash))) {
 
             mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
+            PrinterUtils.getInstance().popTill();
         }
         checkbox.setChecked(false);
         adapter.setRefundInfo();

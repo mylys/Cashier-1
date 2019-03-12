@@ -38,8 +38,8 @@ android {
         }
         dev.initWith(buildTypes.debug)
         dev {
-            buildConfigField("String", "API_URL", "\"https://api.pos.esgao.cn/\"")//正式
-//            buildConfigField("String", "API_URL", "\"http://api.dev.pos.esgao.cn/\"")//开发
+//            buildConfigField("String", "API_URL", "\"https://api.pos.esgao.cn/\"")//正式
+            buildConfigField("String", "API_URL", "\"http://api.dev.pos.esgao.cn/\"")//开发
         }
         T.initWith(buildTypes.debug)
         T {

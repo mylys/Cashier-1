@@ -23,9 +23,13 @@ public class Configs {
      */
     public static String shop_name;
     /**
-     * 订单号
+     * 订单号（长单号）
      */
     public static String order_no;
+    /**
+     * 短单号
+     */
+    public static String trade_no;
 
     /**
      * 打印机

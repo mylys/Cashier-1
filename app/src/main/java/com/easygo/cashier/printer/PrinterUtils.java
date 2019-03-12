@@ -266,7 +266,7 @@ public class PrinterUtils {
                 if (PrinterUtils.getInstance().isEscPrinterCommand()) {
                     EscCommand esc = new EscCommand();
                     esc.addInitializePrinter();
-                    esc.addPrintAndFeedLines((byte) 3);
+                    esc.addPrintAndFeedLines((byte) 1);
                     // 开钱箱
                     esc.addGeneratePlus(LabelCommand.FOOT.F5, (byte) 255, (byte) 255);
                     Vector<Byte> datas = esc.getCommand();

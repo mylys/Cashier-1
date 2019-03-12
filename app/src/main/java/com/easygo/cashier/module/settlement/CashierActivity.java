@@ -482,7 +482,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     public void printLocal() {
         CashierPrintObj obj = new CashierPrintObj();
         obj.shop_name = Configs.shop_name;
-        obj.order_no = Configs.order_no;
+        obj.trade_no = Configs.trade_no;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         obj.time = sdf.format(new Date());
         obj.admin_name = Configs.admin_name;
@@ -502,10 +502,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 break;
         }
         obj.count = String.valueOf(mGoodsCount);
-        obj.total_money = String.valueOf(mTotalMoney);
-        obj.discount = String.valueOf(mCoupon + mCouponMoney + mTempOrderPromotionMoney);
-        obj.real_pay = String.valueOf(mTotalMoney - mCoupon - mCouponMoney - mTempOrderPromotionMoney);
-        obj.change = String.valueOf(mChange);
+        obj.total_money = mTotalMoney;
+        obj.discount = mCoupon + mCouponMoney + mTempOrderPromotionMoney;
+        obj.real_pay = mTotalMoney - mCoupon - mCouponMoney - mTempOrderPromotionMoney;
+        obj.change = mChange;
 
         PrinterUtils.getInstance().print(PrinterHelpter.cashier(obj));
     }
@@ -858,6 +858,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         dismissScanDialog();
         //离开页面 清除订单
         Configs.order_no = null;
+        Configs.trade_no = null;
         //清除临时整单促销
         ActivitiesUtils.getInstance().clearTempOrderPromotion();
         //置空临时整单促销分摊优惠金额
@@ -1079,7 +1080,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public void createOrderSuccess(CreateOderResponse result) {
-//        Configs.order_no = result.getTrade_no();
+        Configs.trade_no = result.getTrade_no();
         Configs.order_no = result.getTrade_num();
 
         onAfterCreateOrder();

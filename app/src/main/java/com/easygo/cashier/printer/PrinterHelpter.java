@@ -12,10 +12,8 @@ import com.easygo.cashier.printer.obj.OrderHistoryGoodsListPrintObj;
 import com.easygo.cashier.printer.obj.OrderHistoryRefundPrintObj;
 import com.tools.command.EscCommand;
 
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -49,7 +47,7 @@ public class PrinterHelpter {
 
         // 打印文字
         esc.addText("订单号:");
-        esc.addText(obj.order_no + "\n");
+        esc.addText(obj.trade_no + "\n");
         esc.addText("时间:");
         esc.addText(obj.time + "\n");
         esc.addText("收银员：");
@@ -61,7 +59,7 @@ public class PrinterHelpter {
 
         DecimalFormat df = new DecimalFormat("#0.00");
         int size = goodsData.size();
-        int count = 0;
+        float count = 0;
         float price = 0f;
         String subtotal;
         GoodsEntity<GoodsResponse> good;
@@ -72,7 +70,7 @@ public class PrinterHelpter {
             good = goodsData.get(i);
             data = good.getData();
 
-            count = data.getCount();
+            count = good.getCount();
             price = Float.valueOf(data.getPrice());
             subtotal = df.format(count * price);
 
@@ -105,7 +103,7 @@ public class PrinterHelpter {
                 if (data != null) {
                     index += 1;
 
-                    count = data.getCount();
+                    count = good.getCount();
                     price = Float.valueOf(data.getPrice());
                     subtotal = df.format(count * price);
 
@@ -130,17 +128,45 @@ public class PrinterHelpter {
         esc.addText("总数量：");
         esc.addText(obj.count + "\n");
         esc.addText("原价：");
-        esc.addText(obj.total_money + "元\n");
+        esc.addText(df.format(obj.total_money) + "元\n");
         esc.addText("优惠：");
-        esc.addText(obj.discount + "元\n");
+        esc.addText(df.format(obj.discount) + "元\n");
         esc.addText("总金额：");
-        esc.addText(obj.real_pay + "元\n");
+        esc.addText(df.format(obj.real_pay) + "元\n");
         esc.addText("支付方式：");
         esc.addText(obj.pay_type + "\n");
         esc.addText("实收：");
-        esc.addText(df.format(Float.valueOf(obj.real_pay) + Float.valueOf(obj.change)) + "元\n");
+        esc.addText(df.format(obj.real_pay + obj.change) + "元\n");
         esc.addText("找零：");
-        esc.addText(obj.change + "元\n");
+        esc.addText(df.format(obj.change) + "元\n");
+
+        esc.addPrintAndFeedLines((byte) 2);
+
+        //订单号条码
+        esc.addSelectPrintingPositionForHRICharacters(EscCommand.HRI_POSITION.BELOW);
+        // 设置条码可识别字符位置在条码下方
+        // 设置条码高度为60点
+        esc.addSetBarcodeHeight((byte) 70);
+        // 设置条码单元宽度为1
+        esc.addSetBarcodeWidth((byte) 2);
+        // 打印Code128码
+        esc.addCODE128(esc.genCodeB(obj.trade_no));
+        esc.addPrintAndFeedLines((byte) 2);
+
+        // 设置打印居中
+        esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER);
+        //发票QRcode
+        esc.addText("--扫码开具发票--");
+        esc.addPrintAndLineFeed();
+        // 设置纠错等级
+        esc.addSelectErrorCorrectionLevelForQRCode((byte) 0x31);
+        // 设置qrcode模块大小
+        esc.addSelectSizeOfModuleForQRCode((byte) 10);
+        // 设置qrcode内容
+        String content = "https://h5.esgao.cn/easygo-pos-invoice?trade_no=" + obj.trade_no;
+        esc.addStoreQRCodeData(content);
+        esc.addPrintQRCode();// 打印QRCode
+        esc.addPrintAndLineFeed();
 
         esc.addPrintAndFeedLines((byte) 3);
 
