@@ -924,13 +924,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     df.format(CouponUtils.getInstance().getCoupon_discount() * 100)));
         }
 
-        //临时整单促销
-        TempOrderPromotion tempOrderPromotion = ActivitiesUtils.getInstance().getCurrentTempOrderPromotion();
-        if (tempOrderPromotion != null) {
-            requestBody1.setCashier_discount(Integer.valueOf(df.format(mTempOrderPromotionMoney * 100)));
-        }
-
-
         int size = mGoodsData.size();
 
         List<CreateOrderRequestBody.GoodsListBean> list = new ArrayList<>();
@@ -946,6 +939,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         float member_discount;//会员促销
         float coupon_discount;//优惠券促销
         float cashier_discount;//收银员促销（= 临时商品促销 + 临时订单促销）
+        float temp_good_discount = 0;// 总临时商品促销
         for (int i = 0; i < size; i++) {
             good = mGoodsData.get(i);
 
@@ -958,6 +952,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             //设置类型
             goodsBean.setType(data.getType());
             discount = Float.valueOf(data.getDiscount_price());
+            temp_good_discount += data.getTemp_goods_discount();
 
             goodsBean.setDiscount(Integer.valueOf(df.format(discount * 100)));
 //            BaseGoodsPromotion promotion = good.getPromotion();
@@ -1015,6 +1010,13 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     break;
             }
 
+        }
+
+        //总收银员让利
+        TempOrderPromotion tempOrderPromotion = ActivitiesUtils.getInstance().getCurrentTempOrderPromotion();
+        if (tempOrderPromotion != null) {
+            requestBody1.setCashier_discount(Integer.valueOf(
+                    df.format(mTempOrderPromotionMoney * 100 + temp_good_discount * 100)));
         }
 
         requestBody1.setGoods_list(list);
