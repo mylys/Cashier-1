@@ -1019,11 +1019,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         }
 
         //总收银员让利
-        TempOrderPromotion tempOrderPromotion = ActivitiesUtils.getInstance().getCurrentTempOrderPromotion();
-        if (tempOrderPromotion != null) {
-            requestBody1.setCashier_discount(Integer.valueOf(
-                    df.format(mTempOrderPromotionMoney * 100 + temp_good_discount * 100)));
-        }
+        requestBody1.setCashier_discount(Integer.valueOf(
+                df.format(mTempOrderPromotionMoney * 100 + temp_good_discount * 100)));
 
         //商品促销详情
         for (Map.Entry<Integer, Float> next : id2discount.entrySet()) {
