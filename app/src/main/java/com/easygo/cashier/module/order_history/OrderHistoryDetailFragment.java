@@ -224,12 +224,12 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         }
 
 //        if(total_discount == 0) {//商品促销金额为0 检查店铺促销金额
-            List<OrderHistorysInfo.ActivitiesBean> activities = mOrderHistorysInfo.getActivities();
-            if(activities != null && activities.size() != 0) {
-                total_discount += Float.valueOf(activities.get(0).getDiscount_money());
-            }
+//            List<OrderHistorysInfo.ActivitiesBean> activities = mOrderHistorysInfo.getActivities();
+//            if(activities != null && activities.size() != 0) {
+//                total_discount += Float.valueOf(activities.get(0).getDiscount_money());
+//            }
 //        }
-        total_discount += Float.valueOf(mOrderHistorysInfo.getCashier_discount());
+//        total_discount += Float.valueOf(mOrderHistorysInfo.getCashier_discount());
 
         DecimalFormat df = new DecimalFormat("0.00");
 
