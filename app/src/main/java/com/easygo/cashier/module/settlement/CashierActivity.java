@@ -35,6 +35,8 @@ import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.request.CreateOrderRequestBody;
 import com.easygo.cashier.bean.request.PrintRequestBody;
 import com.easygo.cashier.module.CouponUtils;
+import com.easygo.cashier.module.promotion.base.IPromotion;
+import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.promotion.shop.BaseShopPromotion;
 import com.easygo.cashier.module.promotion.temp.TempOrderPromotion;
 import com.easygo.cashier.printer.PrintHelper;
@@ -54,6 +56,7 @@ import com.niubility.library.utils.ScreenUtils;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -878,18 +881,16 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 //        }
 //        else
         //店铺促销
+        List<CreateOrderRequestBody.ActivitiesBean> activitiesBeans = new ArrayList<>();
+        requestBody1.setActivities(activitiesBeans);
         if(ActivitiesUtils.getInstance().hasShopPromotion()) {
-            List<CreateOrderRequestBody.ActivitiesBean> activitiesBeans = new ArrayList<>();
-
             BaseShopPromotion promotion = ActivitiesUtils.getInstance().getCurrentShopPromotion();
             CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
             activitiesBean.setId(promotion.getId());
             activitiesBean.setType("shop");
             String shop_promotion_money = df.format(ActivitiesUtils.getInstance().getShopPromotionMoney() * 100);
             activitiesBean.setDiscount(Integer.valueOf(shop_promotion_money));
-
             activitiesBeans.add(activitiesBean);
-            requestBody1.setActivities(activitiesBeans);
         }
 //        //会员
 //        else if(MemberUtils.isMember) {
@@ -940,6 +941,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         float coupon_discount;//优惠券促销
         float cashier_discount;//收银员促销（= 临时商品促销 + 临时订单促销）
         float temp_good_discount = 0;// 总临时商品促销
+        HashMap<Integer, Float> id2discount = new HashMap<>();//商品促销活动id 映射 促销优惠金额
         for (int i = 0; i < size; i++) {
             good = mGoodsData.get(i);
 
@@ -955,13 +957,17 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             temp_good_discount += data.getTemp_goods_discount();
 
             goodsBean.setDiscount(Integer.valueOf(df.format(discount * 100)));
-//            BaseGoodsPromotion promotion = good.getPromotion();
-//            if(promotion != null) {
-//                if (promotion.getType() == IPromotion.TYPE_TEMP) {
-//                    goodsBean.setCashier_discount(Integer.valueOf(df.format(discount * 100)));
-//                    goodsBean.setDiscount(0);
-//                }
-//            }
+            BaseGoodsPromotion promotion = good.getPromotion();
+            if(promotion != null && promotion.getType() != IPromotion.TYPE_TEMP) {
+                //商品促销
+                int id = promotion.getId();
+                Float goods_discount = id2discount.get(id);
+                if(goods_discount == null) {
+                    id2discount.put(id, data.getGoods_activity_discount());
+                } else {
+                    id2discount.put(id, goods_discount + data.getGoods_activity_discount());
+                }
+            }
 
             //商品促销
             good_activity_discount = data.getGoods_activity_discount();
@@ -1017,6 +1023,18 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         if (tempOrderPromotion != null) {
             requestBody1.setCashier_discount(Integer.valueOf(
                     df.format(mTempOrderPromotionMoney * 100 + temp_good_discount * 100)));
+        }
+
+        //商品促销详情
+        for (Map.Entry<Integer, Float> next : id2discount.entrySet()) {
+            Integer key = next.getKey();
+            Float value = next.getValue();
+
+            CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
+            activitiesBean.setId(key);
+            activitiesBean.setType("goods");
+            activitiesBean.setDiscount(Integer.valueOf(df.format(value * 100)));
+            activitiesBeans.add(activitiesBean);
         }
 
         requestBody1.setGoods_list(list);

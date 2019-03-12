@@ -481,12 +481,14 @@ public class ActivitiesUtils {
 
         List<ShopActivityResponse.ListBean> list = response.getList();
         //保存店铺促销需要排除的商品条码
-        List<ShopActivityResponse.ListBean.ExcludeListBean> exclude_list = list.get(0).getExclude_list();
-        if(exclude_list != null) {
-            int exclude_list_size = exclude_list.size();
-            for (int i = 0; i < exclude_list_size; i++) {
-                ShopActivityResponse.ListBean.ExcludeListBean excludeListBean = exclude_list.get(i);
-                excludeBarcodeList.add(excludeListBean.getBarcode());
+        if(list != null && list.size() > 0) {
+            List<ShopActivityResponse.ListBean.ExcludeListBean> exclude_list = list.get(0).getExclude_list();
+            if (exclude_list != null) {
+                int exclude_list_size = exclude_list.size();
+                for (int i = 0; i < exclude_list_size; i++) {
+                    ShopActivityResponse.ListBean.ExcludeListBean excludeListBean = exclude_list.get(i);
+                    excludeBarcodeList.add(excludeListBean.getBarcode());
+                }
             }
         }
 
