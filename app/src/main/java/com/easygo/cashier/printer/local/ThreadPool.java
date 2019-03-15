@@ -1,4 +1,4 @@
-package com.easygo.cashier.printer;
+package com.easygo.cashier.printer.local;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -59,6 +59,11 @@ public class ThreadPool {
         if (runnable == null) {
             throw new NullPointerException("addTask(Runnable runnable)传入参数为空");
         }
+
+        if(threadPoolExecutor == null) {
+            threadPoolExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_COUNTS, ALIVETIME, TimeUnit.SECONDS, mWorkQueue, threadFactory);
+        }
+
         if (threadPoolExecutor != null && threadPoolExecutor.getActiveCount() < MAX_POOL_COUNTS) {
             threadPoolExecutor.execute(runnable);
         }

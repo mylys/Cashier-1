@@ -12,17 +12,20 @@ public class EquipmentState implements Parcelable {
     private String equipment_name;
     private boolean equipment_state;
     private boolean equipment_request;
+    private String equipment_error_content;
 
-    public EquipmentState(String equipment_name, boolean equipment_state,boolean equipment_request) {
+    public EquipmentState(String equipment_name, boolean equipment_state,boolean equipment_request,String equipment_error_content) {
         this.equipment_name = equipment_name;
         this.equipment_state = equipment_state;
         this.equipment_request = equipment_request;
+        this.equipment_error_content = equipment_error_content;
     }
 
     protected EquipmentState(Parcel in) {
         equipment_name = in.readString();
         equipment_state = in.readByte() != 0;
         equipment_request = in.readByte() != 0;
+        equipment_error_content = in.readString();
     }
 
     public static final Creator<EquipmentState> CREATOR = new Creator<EquipmentState>() {
@@ -61,6 +64,14 @@ public class EquipmentState implements Parcelable {
         this.equipment_request = equipment_request;
     }
 
+    public String getEquipment_error_content() {
+        return equipment_error_content;
+    }
+
+    public void setEquipment_error_content(String equipment_error_content) {
+        this.equipment_error_content = equipment_error_content;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -71,5 +82,6 @@ public class EquipmentState implements Parcelable {
         dest.writeString(equipment_name);
         dest.writeByte((byte) (equipment_state ? 1 : 0));
         dest.writeByte((byte) (equipment_request ? 1 : 0));
+        dest.writeString(equipment_error_content);
     }
 }

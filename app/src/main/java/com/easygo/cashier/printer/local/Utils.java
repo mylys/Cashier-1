@@ -1,4 +1,4 @@
-package com.easygo.cashier.printer;
+package com.easygo.cashier.printer.local;
 
 import android.content.Context;
 import android.hardware.usb.UsbDevice;
@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import okhttp3.internal.Util;
 
 /**
  * Created by Administrator

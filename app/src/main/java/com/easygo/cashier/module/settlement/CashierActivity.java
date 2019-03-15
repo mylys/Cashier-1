@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Printer;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,11 +39,10 @@ import com.easygo.cashier.module.CouponUtils;
 import com.easygo.cashier.module.promotion.base.IPromotion;
 import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.promotion.shop.BaseShopPromotion;
-import com.easygo.cashier.module.promotion.temp.TempOrderPromotion;
 import com.easygo.cashier.printer.PrintHelper;
-import com.easygo.cashier.printer.PrinterHelpter;
-import com.easygo.cashier.printer.PrinterUtils;
-import com.easygo.cashier.printer.obj.CashierPrintObj;
+import com.easygo.cashier.printer.local.PrinterHelpter;
+import com.easygo.cashier.printer.local.PrinterUtils;
+import com.easygo.cashier.printer.local.obj.CashierPrintObj;
 import com.easygo.cashier.widget.ChooseCouponsDialog;
 import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.Keyboard;
@@ -1147,6 +1147,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         if (mPayWay == PayWayView.WAY_CASH) {//现金支付时
             //弹出钱箱
             mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, PrintHelper.pop_till);
+            PrinterUtils.getInstance().popTill();
         }
 
         mHandler.postDelayed(new Runnable() {

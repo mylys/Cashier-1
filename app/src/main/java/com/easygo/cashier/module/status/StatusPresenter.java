@@ -11,7 +11,7 @@ import java.util.Map;
 public class StatusPresenter extends BasePresenter<StatusContract.IView> implements StatusContract.IPresenter{
 
     @Override
-    public void printerStatus(String shop_sn, String printer_sn) {
+    public void printerStatus(String shop_sn, final String printer_sn) {
 
         Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(
@@ -20,6 +20,7 @@ public class StatusPresenter extends BasePresenter<StatusContract.IView> impleme
 
                     @Override
                     protected void onSuccess(PrinterStatusResponse result) {
+                        result.setPrinter_sn(printer_sn);
                         mView.printerStatusSuccess(result);
                     }
 

@@ -27,6 +27,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.Events;
 import com.easygo.cashier.ModulePath;
+import com.easygo.cashier.MyApplication;
 import com.easygo.cashier.R;
 import com.easygo.cashier.Test;
 import com.easygo.cashier.adapter.GoodsEntity;
@@ -34,23 +35,23 @@ import com.easygo.cashier.base.BaseAppMvpActivity;
 import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.bean.EquipmentState;
 import com.easygo.cashier.bean.GoodsResponse;
+import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.PrinterStatusResponse;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.status.StatusContract;
 import com.easygo.cashier.module.status.StatusPresenter;
-import com.easygo.cashier.printer.PrinterUtils;
+import com.easygo.cashier.printer.PrintHelper;
+import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.widget.EquipmentstateDialog;
 import com.easygo.cashier.widget.FunctionListDialog;
 import com.easygo.cashier.widget.MyTitleBar;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseEvent;
-import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.utils.NetworkUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
-import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 
 import java.util.ArrayList;
@@ -145,35 +146,37 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         initReceiver();
         mHandler.sendEmptyMessageDelayed(MSG_RED_POINT, 1000);
 
-        initPrinter();
+        initLocalPrinter();
     }
 
-    private void initPrinter() {
+    private void initLocalPrinter() {
 
         PrinterUtils.getInstance().setOnPrinterListener(new PrinterUtils.OnPrinterListener() {
             @Override
             public void onUsbPermissionDeny() {
-                showToast("USB权限 被拒绝！！！");
+                showToast(getString(R.string.str_permission_deny));
             }
 
             @Override
             public void onConnecting() {
-                showToast(getString(R.string.str_conn_state_connecting));
+//                showToast(getString(R.string.str_conn_state_connecting));
             }
 
             @Override
             public void onConnected() {
-                showToast(getString(R.string.str_conn_state_connected) +
-                        "\n" + PrinterUtils.getInstance().getConnDeviceInfo());
-
-//                PrinterUtils.getInstance().popTill();
-//                btnReceiptPrint();
-
-//                btnPrinterState();
+                if(dialog != null && dialog.isShow()) {
+                    dialog.setNewData(0, getString(R.string.local_printer), true);
+                    return;
+                }
+                showToast(PrinterUtils.getInstance().getConnDeviceInfo() + " " + getString(R.string.str_conn_state_connected));
             }
 
             @Override
             public void onDisconnected() {
+                if(dialog != null && dialog.isShow()) {
+                    dialog.setNewData(0, getString(R.string.local_printer), false);
+                    return;
+                }
                 showToast(getString(R.string.str_conn_state_disconnect));
             }
 
@@ -188,8 +191,27 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             }
 
             @Override
+            public void onConnectError(int error, String content) {
+                if(dialog != null && dialog.isShow()) {
+                    if (dialog != null && dialog.isShow()) {
+                        dialog.setErrorData(0, getResources().getString(R.string.local_printer), content);
+                    }
+                }
+            }
+
+            @Override
             public void onCommandError() {
-                showToast(getString(R.string.str_choice_printer_command));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast(getString(R.string.str_choice_printer_command));
+                    }
+                });
+            }
+
+            @Override
+            public void onNeedReplugged() {
+                showToast(getString(R.string.str_need_replugged));
             }
         });
 
@@ -264,6 +286,14 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             transaction.replace(R.id.framelayout, goodsFragment, TAG_MAIN);
         }
         transaction.commit();
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                PrinterUtils.getInstance().connectUSB(MainActivity.this);
+            }
+        }, 1000);
+
     }
 
     @OnClick({R.id.setting, R.id.pop_till, R.id.network, R.id.menu, R.id.update, R.id.cl_back})
@@ -279,8 +309,10 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 //                }
                 FunctionListDialog functionListDialog = new FunctionListDialog();
                 functionListDialog.setOnFunctionListItemListener(mFunctionListItemListener);
-//                functionListDialog.show(getSupportFragmentManager(), TAG_FUNCTION_LIST);
                 functionListDialog.showCenter(this);
+
+
+
                 break;
             case R.id.pop_till://弹出钱箱
                 goodsFragment.clickPopTill();
@@ -289,9 +321,6 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                 //显示打印机状态
                 checkPrinterStatus();
 
-                if(PrinterUtils.STATE_DISCONNECTED == PrinterUtils.getInstance().getPrinterState()) {
-                    showToast(getString(R.string.str_cann_printer));
-                };
                 break;
             case R.id.update://更新
                 checkUpdate();
@@ -460,6 +489,19 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     private void checkPrinterStatus() {
         mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
         getPrinterstateShowLoading();
+
+        //本地打印机
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(PrinterUtils.STATE_DISCONNECTED == PrinterUtils.getInstance().getPrinterState()) {
+                    if (dialog != null && dialog.isShow()) {
+                        dialog.setErrorData(0, getString(R.string.local_printer), "异常");
+                    }
+                };
+            }
+        }, 500);
+
     }
     /**
      * 检查更新
@@ -474,14 +516,35 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
 
     private void getPrinterstateShowLoading() {
+
+        int printer_count = 1;
+        int feie_printer_count = 0;
+        if (PrintHelper.printersBeans != null) {
+            feie_printer_count = PrintHelper.printersBeans.size();
+            printer_count += feie_printer_count;
+        }
+
         Bundle bundle = new Bundle();
         ArrayList<EquipmentState> arrayList = new ArrayList<>();
-        arrayList.add(new EquipmentState(getResources().getString(R.string.the_printer), true, true));
+        arrayList.add(new EquipmentState(getResources().getString(R.string.local_printer), true, true, null));
+
+        for (int i = 0; i < feie_printer_count; i++) {
+            InitResponse.PrintersBean printersBean = PrintHelper.printersBeans.get(i);
+
+            arrayList.add(new EquipmentState(printersBean.getDevice_sn(), true, true, null));
+
+        }
 //        arrayList.add(new EquipmentState(getResources().getString(R.string.the_code_gun), true, true));
 //        arrayList.add(new EquipmentState(getResources().getString(R.string.the_till), true, true));
         bundle.putString("title", getResources().getString(R.string.device_state));
         bundle.putParcelableArrayList("data", arrayList);
         dialog = EquipmentstateDialog.getInstance(bundle);
+        dialog.setCallback(new EquipmentstateDialog.Callback() {
+            @Override
+            public void onConnectClick() {
+                PrinterUtils.getInstance().connectUSB(MyApplication.sApplication);
+            }
+        });
         dialog.showCenter(MainActivity.this);
     }
 
@@ -489,7 +552,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     public void printerStatusSuccess(PrinterStatusResponse result) {
         boolean is_printer_normal = result.getOnline() == 1;
         if (dialog != null && dialog.isShow()) {
-            dialog.setNewData(0, getResources().getString(R.string.the_printer), is_printer_normal);
+            dialog.setNewData(result.getPrinter_sn(), is_printer_normal);
             return;
         }
         showToast("打印机: " + (is_printer_normal?"在线":"离线"));
@@ -498,8 +561,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     @Override
     public void printerStatusFailed(Map<String, Object> map) {
         if (dialog != null && dialog.isShow()) {
-            dialog.setNewData(0, getResources().getString(R.string.the_printer), false);
-            return;
+            dialog.setNewData(1, Configs.printer_sn, false);
         }
     }
 
@@ -514,8 +576,16 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         if(connReceiver != null) {
             unregisterReceiver(connReceiver);
         }
+        mHandler.removeCallbacksAndMessages(null);
+        PrinterUtils.getInstance().setOnPrinterListener(null);
         PrinterUtils.getInstance().unregisterReceiver(this);
-        PrinterUtils.getInstance().release();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                PrinterUtils.getInstance().release();
+            }
+        }).start();
+
     }
 
     @Override

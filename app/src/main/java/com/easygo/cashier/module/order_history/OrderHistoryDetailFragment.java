@@ -19,9 +19,9 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.OrderHistoryGoodsAdapter;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.printer.PrintHelper;
-import com.easygo.cashier.printer.PrinterHelpter;
-import com.easygo.cashier.printer.PrinterUtils;
-import com.easygo.cashier.printer.obj.OrderHistoryGoodsListPrintObj;
+import com.easygo.cashier.printer.local.PrinterHelpter;
+import com.easygo.cashier.printer.local.PrinterUtils;
+import com.easygo.cashier.printer.local.obj.OrderHistoryGoodsListPrintObj;
 import com.niubility.library.base.BaseFragment;
 
 import java.text.DecimalFormat;

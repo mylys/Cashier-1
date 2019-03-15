@@ -1,4 +1,4 @@
-package com.easygo.cashier.printer.obj;
+package com.easygo.cashier.printer.local.obj;
 
 public class HandoverInfoPrintObj {
 

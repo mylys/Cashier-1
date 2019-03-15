@@ -47,7 +47,7 @@ import com.easygo.cashier.module.CouponUtils;
 import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.refund.RefundActivity;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
-import com.easygo.cashier.printer.PrinterUtils;
+import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.widget.ActivitiesView;
 import com.easygo.cashier.widget.ChooseCouponsDialog;
 import com.easygo.cashier.widget.ChooseMembersDialog;
@@ -64,7 +64,6 @@ import com.easygo.cashier.widget.SetCountPopupWindow;
 import com.easygo.cashier.widget.TempPromotionDialog;
 import com.google.gson.reflect.TypeToken;
 import com.niubility.library.base.BaseApplication;
-import com.niubility.library.base.BaseMvpFragment;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.GsonUtils;
@@ -906,6 +905,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                         //清除临时促销
                         ActivitiesUtils.getInstance().clearTempPromotion();
 
+                        editDialog.dialogDismiss();
                         editDialog.dismiss();
                     }
                 });

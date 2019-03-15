@@ -1,4 +1,4 @@
-package com.easygo.cashier.printer;
+package com.easygo.cashier.printer.local;
 
 import android.support.annotation.NonNull;
 

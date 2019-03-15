@@ -1,10 +1,13 @@
 package com.easygo.cashier.module.login;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.display.DisplayManager;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.ActivitiesUtils;
+import com.easygo.cashier.BuildConfig;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.ModulePath;
@@ -29,10 +33,8 @@ import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
 import com.easygo.cashier.module.CouponUtils;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
-import com.easygo.cashier.printer.DeviceConnFactoryManager;
 import com.easygo.cashier.printer.PrintHelper;
-import com.easygo.cashier.printer.PrinterUtils;
-import com.easygo.cashier.printer.ThreadPool;
+import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.widget.AccountWindow;
 import com.easygo.cashier.widget.ConfigDialog;
 import com.easygo.cashier.widget.PettyCashDialog;
@@ -42,13 +44,10 @@ import com.niubility.library.utils.DeviceUtils;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
-import com.tools.command.EscCommand;
-import com.tools.command.LabelCommand;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
@@ -359,14 +358,11 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
+    private void initLocalPrinter() {
         PrinterUtils.getInstance().setOnPrinterListener(new PrinterUtils.OnPrinterListener() {
             @Override
             public void onUsbPermissionDeny() {
-                showToast("USB权限 被拒绝！！！");
+                showToast(getString(R.string.str_permission_deny));
             }
 
             @Override
@@ -376,8 +372,8 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
             @Override
             public void onConnected() {
-                showToast(getString(R.string.str_conn_state_connected) +
-                        "\n" + PrinterUtils.getInstance().getConnDeviceInfo());
+                showToast(PrinterUtils.getInstance().getConnDeviceInfo() + " " + getString(R.string.str_conn_state_connected));
+
             }
 
             @Override
@@ -396,13 +392,39 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
             }
 
             @Override
+            public void onConnectError(int error, String content) {
+
+            }
+
+            @Override
             public void onCommandError() {
-                showToast(getString(R.string.str_choice_printer_command));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast(getString(R.string.str_choice_printer_command));
+                    }
+                });
+            }
+
+            @Override
+            public void onNeedReplugged() {
+                showToast(getString(R.string.str_need_replugged));
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         PrinterUtils.getInstance().registerReceiver(this);
-        PrinterUtils.getInstance().closeport();
-        PrinterUtils.getInstance().connectUSB(this);
+//
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                PrinterUtils.getInstance().popTill(LoginActivity.this);
+//            }
+//        }, 1000);
     }
 
     @Override
@@ -447,8 +469,8 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
             //弹出钱箱
             mPresenter.pop_till(Configs.shop_sn, Configs.printer_sn);
 
+            initLocalPrinter();
             PrinterUtils.getInstance().popTill();
-
 
             if (dialog == null)
                 dialog = new PettyCashDialog();
@@ -586,5 +608,20 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
     @Override
     public void popTillFailed(Map<String, Object> map) {
         showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.i(TAG, "onActivityResult: ");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        Log.i(TAG, "onRequestPermissionsResult: ");
+
     }
 }

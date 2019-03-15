@@ -24,11 +24,10 @@ import com.easygo.cashier.bean.HandoverResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.printer.PrintHelper;
-import com.easygo.cashier.printer.PrinterHelpter;
-import com.easygo.cashier.printer.PrinterUtils;
-import com.easygo.cashier.printer.ThreadPool;
-import com.easygo.cashier.printer.obj.HandoverInfoPrintObj;
-import com.easygo.cashier.printer.obj.HandoverSaleListPrintObj;
+import com.easygo.cashier.printer.local.PrinterHelpter;
+import com.easygo.cashier.printer.local.PrinterUtils;
+import com.easygo.cashier.printer.local.obj.HandoverInfoPrintObj;
+import com.easygo.cashier.printer.local.obj.HandoverSaleListPrintObj;
 import com.easygo.cashier.widget.MyTitleBar;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
@@ -378,8 +377,8 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
         if (mHandoverSaleListView != null) {
             data = mHandoverSaleListView.getData();
         }
-        if(data == null) {
-            Log.i(TAG, "printHandoverSaleList: data = null");
+        if(data == null || data.size() == 0) {
+            Log.i(TAG, "printHandoverSaleList: data = null || size() = 0");
             return;
         }
 
@@ -427,8 +426,8 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
         if (mHandoverSaleListView != null) {
             data = mHandoverSaleListView.getData();
         }
-        if(data == null) {
-            Log.i(TAG, "printHandoverSaleList: data = null");
+        if(data == null || data.size() == 0) {
+            Log.i(TAG, "printHandoverSaleList: data = null || size() = 0");
             return;
         }
 

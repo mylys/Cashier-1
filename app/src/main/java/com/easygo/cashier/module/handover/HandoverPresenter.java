@@ -83,8 +83,6 @@ public class HandoverPresenter extends BasePresenter<HandoverContract.IView> imp
 
     @Override
     public void print_info(String shop_sn, String printer_sn, String info) {
-        mView.showLoading();
-
         Map<String, String> header = HttpClient.getInstance().getHeader();
 
         for (int i = 0; i < PrintHelper.printers_count; i++) {
@@ -97,9 +95,10 @@ public class HandoverPresenter extends BasePresenter<HandoverContract.IView> imp
             }
 
             if(!printersBean.canUse(InitResponse.PrintersBean.type_handover)) {
-                mView.hideLoading();
                 continue;
             }
+            mView.showLoading();
+
             Map<String, Object> requestMap = new HashMap<>();
             requestMap.put("shop_sn", shop_sn);
             requestMap.put("printer_sn", device_sn);

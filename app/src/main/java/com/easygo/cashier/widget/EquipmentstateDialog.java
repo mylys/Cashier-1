@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,6 +21,7 @@ import com.easygo.cashier.bean.EquipmentState;
 import com.niubility.library.base.BaseDialog;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Describe：
@@ -88,17 +90,28 @@ public class EquipmentstateDialog extends BaseDialog {
         recyclerView.addItemDecoration(verticalDecoration);
         recyclerView.setAdapter(adapter = new BaseQuickAdapter<EquipmentState, BaseViewHolder>(R.layout.item_dialog_equipment) {
             @Override
-            protected void convert(BaseViewHolder helper, final EquipmentState item) {
+            protected void convert(final BaseViewHolder helper, final EquipmentState item) {
                 int normal = getResources().getColor(R.color.color_16A1E1);
                 int abnormal = getResources().getColor(R.color.color_B02F38);
                 String normal_str = getResources().getString(R.string.device_normal);
                 String abnormal_str = getResources().getString(R.string.device_abnormal);
+                String error_content = item.getEquipment_error_content();
 
                 helper.getView(R.id.loading).setVisibility(item.isEquipment_request() ? View.VISIBLE : View.GONE);
                 helper.setText(R.id.tv_equipment_name, item.getEquipment_name())
-                        .setText(R.id.tv_equipment_state, item.isEquipment_state() ? normal_str : abnormal_str)
+                        .setText(R.id.tv_equipment_state, item.isEquipment_state() ? normal_str :
+                                !TextUtils.isEmpty(error_content)? error_content : abnormal_str)
                         .setTextColor(R.id.tv_equipment_state, item.isEquipment_state() ? normal : abnormal)
                         .getView(R.id.tv_connection).setVisibility(item.isEquipment_state() ? View.GONE : View.VISIBLE);
+
+                helper.getView(R.id.tv_connection).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(helper.getAdapterPosition() == 0 && mCallback != null) {
+                            mCallback.onConnectClick();
+                        }
+                    }
+                });
             }
         });
         if (data != null) {
@@ -143,4 +156,43 @@ public class EquipmentstateDialog extends BaseDialog {
         bean.setEquipment_request(false);
         adapter.notifyDataSetChanged();
     }
+    public void setNewData(String printer_sn, boolean state) {
+        List<EquipmentState> data = adapter.getData();
+        int size = data.size();
+        int position = -1;
+        for (int i = 0; i < size; i++) {
+            EquipmentState equipmentState = data.get(i);
+            if(printer_sn.equals(equipmentState.getEquipment_name())) {
+                position = i;
+                break;
+            }
+        }
+
+        if(position == -1) {
+            return;
+        }
+
+        EquipmentState bean = data.get(position);
+        bean.setEquipment_name(printer_sn);
+        bean.setEquipment_state(state);
+        bean.setEquipment_request(false);
+        adapter.notifyDataSetChanged();
+    }
+    public void setErrorData(int position, String name, String content) {
+        EquipmentState bean = adapter.getData().get(position);
+        bean.setEquipment_name(name);
+        bean.setEquipment_state(false);
+        bean.setEquipment_request(false);
+        bean.setEquipment_error_content(content);
+        adapter.notifyDataSetChanged();
+    }
+
+    public interface Callback {
+        void onConnectClick();
+    }
+    private Callback mCallback;
+    public void setCallback(Callback callback) {
+        this.mCallback = callback;
+    }
+
 }

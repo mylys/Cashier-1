@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.easygo.cashier.BuildConfig;
 import com.easygo.cashier.R;
 import com.easygo.cashier.SoftKeyboardUtil;
 import com.niubility.library.base.BaseDialog;
@@ -115,7 +116,11 @@ public class ConfigDialog extends BaseDialog {
 
         etId.setText(appkey);
         etSecret.setText(secret);
-        etSecret.setText("d908936a0d53a459c117227b8f1d8608");
+        if("dev".equals(BuildConfig.BUILD_TYPE)) {
+            etSecret.setText("d908936a0d53a459c117227b8f1d8608");
+        } else if("T".equals(BuildConfig.BUILD_TYPE)) {
+            etSecret.setText("121a653ac09dd3164fb4549edb0294d6");
+        }
     }
 
     /**

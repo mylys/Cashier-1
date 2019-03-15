@@ -1,4 +1,4 @@
-package com.easygo.cashier.printer.obj;
+package com.easygo.cashier.printer.local.obj;
 
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsResponse;

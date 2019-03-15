@@ -1,15 +1,15 @@
-package com.easygo.cashier.printer;
+package com.easygo.cashier.printer.local;
 
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
 import com.easygo.cashier.bean.OrderHistorysInfo;
-import com.easygo.cashier.printer.obj.CashierPrintObj;
-import com.easygo.cashier.printer.obj.HandoverInfoPrintObj;
-import com.easygo.cashier.printer.obj.HandoverSaleListPrintObj;
-import com.easygo.cashier.printer.obj.OrderHistoryGoodsListPrintObj;
-import com.easygo.cashier.printer.obj.OrderHistoryRefundPrintObj;
+import com.easygo.cashier.printer.local.obj.CashierPrintObj;
+import com.easygo.cashier.printer.local.obj.HandoverInfoPrintObj;
+import com.easygo.cashier.printer.local.obj.HandoverSaleListPrintObj;
+import com.easygo.cashier.printer.local.obj.OrderHistoryGoodsListPrintObj;
+import com.easygo.cashier.printer.local.obj.OrderHistoryRefundPrintObj;
 import com.tools.command.EscCommand;
 
 import java.text.DecimalFormat;
@@ -88,7 +88,7 @@ public class PrinterHelpter {
                 case GoodsEntity.TYPE_WEIGHT:
                 case GoodsEntity.TYPE_ONLY_PROCESSING:
                 case GoodsEntity.TYPE_PROCESSING:
-                    esc.addText(count + "g");
+                    esc.addText(count + data.getG_u_symbol());
                     break;
                 case GoodsEntity.TYPE_GOODS:
                 default:
@@ -158,6 +158,7 @@ public class PrinterHelpter {
         //发票QRcode
         esc.addText("--扫码开具发票--");
         esc.addPrintAndLineFeed();
+        esc.addPrintAndLineFeed();
         // 设置纠错等级
         esc.addSelectErrorCorrectionLevelForQRCode((byte) 0x31);
         // 设置qrcode模块大小
@@ -168,7 +169,7 @@ public class PrinterHelpter {
         esc.addPrintQRCode();// 打印QRCode
         esc.addPrintAndLineFeed();
 
-        esc.addPrintAndFeedLines((byte) 3);
+        esc.addPrintAndFeedLines((byte) 4);
 
         return esc.getCommand();
 //        return null;
@@ -256,7 +257,7 @@ public class PrinterHelpter {
         esc.addText(info.getRefund_fee() != null ?
                 ((String) info.getRefund_fee()) : "0.00" + "元\n");
 
-        esc.addPrintAndFeedLines((byte) 3);
+        esc.addPrintAndFeedLines((byte) 5);
 
         return esc.getCommand();
     }
@@ -330,7 +331,7 @@ public class PrinterHelpter {
         esc.addText("退款金额：");
         esc.addText(obj.refund + "元\n");
 
-        esc.addPrintAndFeedLines((byte) 3);
+        esc.addPrintAndFeedLines((byte) 4);
 
         return esc.getCommand();
     }
@@ -374,27 +375,27 @@ public class PrinterHelpter {
         esc.addText(obj.refund_count + "\n");
         esc.addText("--------------------------------\n");
         esc.addText("总销售额：");
-        esc.addText(obj.total_sales + "\n");
+        esc.addText(obj.total_sales + "元\n");
         esc.addText("现金：");
-        esc.addText(obj.cash + "\n");
+        esc.addText(obj.cash + "元\n");
         esc.addText("支付宝：");
-        esc.addText(obj.alipay + "\n");
+        esc.addText(obj.alipay + "元\n");
         esc.addText("微信：");
-        esc.addText(obj.wechat + "\n");
+        esc.addText(obj.wechat + "元\n");
         esc.addText("总退款金额：");
-        esc.addText(obj.all_refund + "\n");
+        esc.addText(obj.all_refund + "元\n");
         esc.addText("--------------------------------\n");
         esc.addText("总现金数：");
-        esc.addText(obj.total_cash + "\n");
+        esc.addText(obj.total_cash + "元\n");
         esc.addText("现金收入：");
-        esc.addText(obj.cash_income + "\n");
+        esc.addText(obj.cash_income + "元\n");
         esc.addText("实收金额：");
-        esc.addText(obj.receipts + "\n");
+        esc.addText(obj.receipts + "元\n");
         esc.addText("找零金额：");
-        esc.addText(obj.change + "\n");
+        esc.addText(obj.change + "元\n");
         esc.addText("退款现金：");
-        esc.addText(obj.cash_refund + "\n");
-        esc.addPrintAndFeedLines((byte) 3);
+        esc.addText(obj.cash_refund + "元\n");
+        esc.addPrintAndFeedLines((byte) 4);
 
         return esc.getCommand();
     }
@@ -455,9 +456,9 @@ public class PrinterHelpter {
         esc.addText("总数量：");
         esc.addText(String.valueOf(count) + "\n");
         esc.addText("总金额：");
-        esc.addText(df.format(total_money) + "\n");
+        esc.addText(df.format(total_money) + "元\n");
 
-        esc.addPrintAndFeedLines((byte) 3);
+        esc.addPrintAndFeedLines((byte) 4);
 
         return esc.getCommand();
     }

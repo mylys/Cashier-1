@@ -167,6 +167,7 @@
     <!-- 设备状态 -->
     <string name="device_state">设备状态</string>
     <string name="the_printer">小票机</string>
+    <string name="local_printer">USB打印机</string>
     <string name="the_code_gun">扫码枪</string>
     <string name="the_till">钱柜</string>
     <string name="reconnection">请重新连接</string>
@@ -232,13 +233,15 @@
     <string name="text_lock_user">输入账号密码解锁</string>
 
     <!--打印机-->
-    <string name="str_conn_state_disconnect">连接状态：未连接</string>
-    <string name="str_conn_state_connecting">连接状态：连接中</string>
+    <string name="str_permission_deny">打印机不可用！ USB权限被拒绝</string>
+    <string name="str_conn_state_disconnect">USB打印机：未连接</string>
+    <string name="str_conn_state_connecting">USB打印机：连接中</string>
     <string name="str_connecting">连接中</string>
-    <string name="str_conn_state_connected">连接状态：已连接</string>
-    <string name="str_conn_successful">连接成功！</string>
-    <string name="str_conn_fail">连接失败！</string>
-    <string name="str_cann_printer">请先连接打印机</string>
+    <string name="str_conn_state_connected">USB打印机：已连接</string>
+    <string name="str_conn_successful">USB打印机连接成功！</string>
+    <string name="str_conn_fail">USB打印机连接失败！请重新拔插USB打印机</string>
+    <string name="str_cann_printer">请先连接USB打印机</string>
+    <string name="str_need_replugged">请重新拔插USB打印机</string>
 
     <string name="str_enter_print_counts">请输入打印次数：</string>
     <string name="str_choice_printer_command">请选择正确的打印机指令</string>

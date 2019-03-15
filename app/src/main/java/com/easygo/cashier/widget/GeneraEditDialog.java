@@ -3,6 +3,7 @@ package com.easygo.cashier.widget;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -146,11 +147,13 @@ public class GeneraEditDialog extends BaseDialog {
             case USER_ACCOUNT:
                 editInput.setVisibility(View.INVISIBLE);
                 constraintLayout.setVisibility(View.VISIBLE);
+                editPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 break;
             case USER_ACCREDIT:
                 editInput.setVisibility(View.INVISIBLE);
                 constraintLayout.setVisibility(View.VISIBLE);
                 editAccount.setHint("请输入授权密码");
+                editAccount.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 editPassword.setVisibility(View.GONE);
                 tvPassword.setVisibility(View.GONE);
                 tvAccount.setText("授权密码：");

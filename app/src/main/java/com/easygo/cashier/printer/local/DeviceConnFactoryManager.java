@@ -1,10 +1,11 @@
-package com.easygo.cashier.printer;
+package com.easygo.cashier.printer.local;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbDeviceConnection;
+import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -127,6 +128,9 @@ public class DeviceConnFactoryManager {
     public static final int CONN_STATE_CONNECTING = CONN_STATE_DISCONNECT << 1;
     public static final int CONN_STATE_FAILED = CONN_STATE_DISCONNECT << 2;
     public static final int CONN_STATE_CONNECTED = CONN_STATE_DISCONNECT << 3;
+    public static final int CONN_STATE_CONNECTED_PAPER_ERR = CONN_STATE_DISCONNECT << 4;
+    public static final int CONN_STATE_CONNECTED_COVER_OPEN_ERR = CONN_STATE_DISCONNECT << 5;
+    public static final int CONN_STATE_CONNECTED_ERR_OCCURS= CONN_STATE_DISCONNECT << 6;
     public PrinterReader reader;
 
     public enum CONN_METHOD {
@@ -161,6 +165,7 @@ public class DeviceConnFactoryManager {
      * @return
      */
     public void openPort() {
+        Log.i(TAG, "openPort: ");
         deviceConnFactoryManagers[id].isOpenPort = false;
         sendStateBroadcast(CONN_STATE_CONNECTING);
         switch (deviceConnFactoryManagers[id].connMethod) {
@@ -171,6 +176,15 @@ public class DeviceConnFactoryManager {
                 break;
             case USB:
                 mPort = new UsbPort(mContext, mUsbDevice);
+                isOpenPort = mPort.openPort();
+                if(!isOpenPort) {
+                    UsbManager usbManager = (UsbManager)mContext.getSystemService(Context.USB_SERVICE);
+                    UsbDeviceConnection conn = usbManager.openDevice(mUsbDevice);
+                    if(conn != null) {
+                        Log.i(TAG, "openPort: 重新关闭usb连接");
+                        conn.close();
+                    }
+                }
                 isOpenPort = mPort.openPort();
 //                if (isOpenPort) {
 //                    IntentFilter filter = new IntentFilter(ACTION_USB_DEVICE_DETACHED);
@@ -191,8 +205,10 @@ public class DeviceConnFactoryManager {
 
         //端口打开成功后，检查连接打印机所使用的打印机指令ESC、TSC
         if (isOpenPort) {
+            Log.i(TAG, "openPort: 端口打开成功");
             queryCommand();
         } else {
+            Log.i(TAG, "openPort: 端口打开失败");
             if (this.mPort != null) {
                     this.mPort=null;
             }
@@ -207,6 +223,7 @@ public class DeviceConnFactoryManager {
         //开启读取打印机返回数据线程
         reader = new PrinterReader();
         reader.start(); //读取数据线程
+        Log.i(TAG, "queryCommand: ");
         //查询打印机所使用指令
         queryPrinterCommand(); //
     }
@@ -278,6 +295,7 @@ public class DeviceConnFactoryManager {
                 isOpenPort = false;
                 currentPrinterCommand = null;
             }
+            Log.i(TAG, "closePort: 关闭端口 -> " + b);
         }
         sendStateBroadcast(CONN_STATE_DISCONNECT);
     }
@@ -417,6 +435,7 @@ public class DeviceConnFactoryManager {
         ThreadPool.getInstantiation().addTask(new Runnable() {
             @Override
             public void run() {
+                Log.i(TAG, "queryPrinterCommand: esc");
                 //发送ESC查询打印机状态指令
                 sendCommand = esc;
                 Vector<Byte> data = new Vector<>(esc.length);
@@ -432,6 +451,7 @@ public class DeviceConnFactoryManager {
                     public void run() {
                         if (currentPrinterCommand == null || currentPrinterCommand != PrinterCommand.ESC) {
                             Log.e(TAG, Thread.currentThread().getName());
+                            Log.i(TAG, "queryPrinterCommand: tsc");
                             //发送TSC查询打印机状态指令
                             sendCommand = tsc;
                             Vector<Byte> data = new Vector<>(tsc.length);
@@ -445,6 +465,7 @@ public class DeviceConnFactoryManager {
                                 public void run() {
                                     if (currentPrinterCommand == null||(currentPrinterCommand != PrinterCommand.ESC&&currentPrinterCommand != PrinterCommand.TSC)) {
                                         Log.e(TAG, Thread.currentThread().getName());
+                                        Log.i(TAG, "queryPrinterCommand: cpcl");
                                         //发送CPCL查询打印机状态指令
                                         sendCommand=cpcl;
                                         Vector<Byte> data =new Vector<Byte>(cpcl.length);
@@ -462,6 +483,7 @@ public class DeviceConnFactoryManager {
                                                         mPort.closePort();
                                                         isOpenPort = false;
                                                         mPort=null;
+                                                        Log.i(TAG, "queryPrinterCommand: 连接失败");
                                                         sendStateBroadcast(CONN_STATE_FAILED);
                                                     }
                                                 }
@@ -519,6 +541,7 @@ public class DeviceConnFactoryManager {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case READ_DATA:
+                    Log.i(TAG, "handleMessage: 读取打印机返回数据...");
                     int cnt = msg.getData().getInt(READ_DATA_CNT); //数据长度 >0;
                     byte[] buffer = msg.getData().getByteArray(READ_BUFFER_ARRAY);  //数据
                     //这里只对查询状态返回值做处理，其它返回值可参考编程手册来解析
@@ -527,6 +550,7 @@ public class DeviceConnFactoryManager {
                     }
                     int result = judgeResponseType(buffer[0]); //数据右移
                     String status = MyApplication.sApplication.getString(R.string.str_printer_conn_normal);
+                    int printer_status = 0;
                     if (sendCommand == esc) {
                         //设置当前打印机模式为ESC模式
                         if (currentPrinterCommand == null) {
@@ -540,16 +564,24 @@ public class DeviceConnFactoryManager {
                             } else if (result == 1) {//查询打印机实时状态
                                 if ((buffer[0] & ESC_STATE_PAPER_ERR) > 0) {
                                     status += " "+MyApplication.sApplication.getString(R.string.str_printer_out_of_paper);
+                                    printer_status = ESC_STATE_PAPER_ERR;
+                                    sendStateBroadcast(CONN_STATE_CONNECTED_PAPER_ERR);
                                 }
                                 if ((buffer[0] & ESC_STATE_COVER_OPEN) > 0) {
                                     status += " "+MyApplication.sApplication.getString(R.string.str_printer_open_cover);
+                                    printer_status = ESC_STATE_COVER_OPEN;
+                                    sendStateBroadcast(CONN_STATE_CONNECTED_COVER_OPEN_ERR);
                                 }
                                 if ((buffer[0] & ESC_STATE_ERR_OCCURS) > 0) {
                                     status += " "+MyApplication.sApplication.getString(R.string.str_printer_error);
+                                    printer_status = ESC_STATE_ERR_OCCURS;
+                                    sendStateBroadcast(CONN_STATE_CONNECTED_ERR_OCCURS);
                                 }
                                 System.out.println(MyApplication.sApplication.getString(R.string.str_state) + status);
                                 String mode=MyApplication.sApplication.getString(R.string.str_printer_printmode_esc);
-                                Utils.toast(MyApplication.sApplication, mode+" "+status);
+                                if(printer_status == 0) {
+                                    sendStateBroadcast(CONN_STATE_CONNECTED);
+                                }
                             }
                         }
                     } else if (sendCommand == tsc) {
@@ -633,4 +665,8 @@ public class DeviceConnFactoryManager {
             }
         }
     };
+
+    public UsbDevice getConnectedUsbDevice() {
+        return mUsbDevice;
+    }
 }

@@ -17,6 +17,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
+import com.easygo.cashier.SoftKeyboardUtil;
 import com.easygo.cashier.base.BaseAppActivity;
 import com.easygo.cashier.module.order_history.order_history_refund.OrderHistoryRefundFragment;
 import com.easygo.cashier.widget.MyTitleBar;
@@ -105,6 +106,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
             onBackPressed();
             return;
         }
+        SoftKeyboardUtil.hideSoftKeyboard(this);
         finish();
     }
 
