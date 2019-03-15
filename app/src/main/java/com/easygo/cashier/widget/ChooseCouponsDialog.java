@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.R;
 import com.easygo.cashier.SoftKeyboardUtil;
 import com.easygo.cashier.bean.CouponResponse;
@@ -128,6 +129,16 @@ public class ChooseCouponsDialog extends BaseDialog {
 
         if(searchView != null)
             searchView.setContent("");
+
+        if(MemberUtils.isMember && MemberUtils.memberInfo != null) {
+            List<CouponResponse> coupons = MemberUtils.memberInfo.getCoupons();
+            if(coupons.size() > 0) {
+                adapter.setNewData(coupons);
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        } else {
+            adapter.setNewData(null);
+        }
     }
 
 

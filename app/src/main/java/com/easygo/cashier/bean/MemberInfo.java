@@ -42,7 +42,7 @@ public class MemberInfo {
     private String phone;
     private String nick_name;
     private int is_member;
-    private List<CouponsBean> coupons;
+    private List<CouponResponse> coupons;
 
     public int getMember_id() {
         return member_id;
@@ -164,11 +164,11 @@ public class MemberInfo {
         this.is_member = is_member;
     }
 
-    public List<CouponsBean> getCoupons() {
+    public List<CouponResponse> getCoupons() {
         return coupons;
     }
 
-    public void setCoupons(List<CouponsBean> coupons) {
+    public void setCoupons(List<CouponResponse> coupons) {
         this.coupons = coupons;
     }
 
