@@ -210,6 +210,8 @@ public class PrinterHelpter {
         OrderHistorysInfo info = obj.data;
         List<OrderHistorysInfo.ListBean> list = info.getList();
 
+        DecimalFormat df = new DecimalFormat("0.00");
+
         int size = list.size();
         int count = 0;
         float total_discount = 0f;
@@ -233,10 +235,8 @@ public class PrinterHelpter {
             esc.addText("   ");
             esc.addText(type == 1 ? data.getCount() + data.getG_u_symbol() : String.valueOf(data.getCount()));
             esc.addText("   ");
-            esc.addText(data.getMoney() + "\n");
+            esc.addText(df.format(data.getMoney()) + "\n");
         }
-
-        DecimalFormat df = new DecimalFormat("0.00");
 
         esc.addText("--------------------------------\n");
         esc.addText("总数量：");

@@ -528,12 +528,13 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         ArrayList<EquipmentState> arrayList = new ArrayList<>();
         arrayList.add(new EquipmentState(getResources().getString(R.string.local_printer), true, true, null));
 
-        for (int i = 0; i < feie_printer_count; i++) {
-            InitResponse.PrintersBean printersBean = PrintHelper.printersBeans.get(i);
+//        for (int i = 0; i < feie_printer_count; i++) {
+//            InitResponse.PrintersBean printersBean = PrintHelper.printersBeans.get(i);
+            InitResponse.PrintersBean printersBean = PrintHelper.printersBeans.get(0);
 
-            arrayList.add(new EquipmentState(printersBean.getDevice_sn(), true, true, null));
+            arrayList.add(new EquipmentState(getString(R.string.the_printer), true, true, null));
 
-        }
+//        }
 //        arrayList.add(new EquipmentState(getResources().getString(R.string.the_code_gun), true, true));
 //        arrayList.add(new EquipmentState(getResources().getString(R.string.the_till), true, true));
         bundle.putString("title", getResources().getString(R.string.device_state));
@@ -552,7 +553,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     public void printerStatusSuccess(PrinterStatusResponse result) {
         boolean is_printer_normal = result.getOnline() == 1;
         if (dialog != null && dialog.isShow()) {
-            dialog.setNewData(result.getPrinter_sn(), is_printer_normal);
+            dialog.setNewData(getString(R.string.the_printer), is_printer_normal);
             return;
         }
         showToast("打印机: " + (is_printer_normal?"在线":"离线"));
