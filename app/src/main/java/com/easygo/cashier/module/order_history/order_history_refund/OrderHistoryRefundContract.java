@@ -16,7 +16,7 @@ public class OrderHistoryRefundContract {
 
     public interface IPresenter extends BaseContract.Presenter {
 
-        void post(String json);
+        void refund(String json);
 
         void popTill(String shop_sn, String printer_sn);
 

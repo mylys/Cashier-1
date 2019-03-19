@@ -400,7 +400,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         if (Configs.refund_auth == 0) {
             RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, prices, refund_pay_type, adapter.getList());
             String json = GsonUtils.getInstance().getGson().toJson(body);
-            mPresenter.post(json);
+            mPresenter.refund(json);
             btnRefund.setEnabled(false);
             return;
         }
@@ -424,7 +424,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                             null, account, password, adapter.getList());
                     json = GsonUtils.getInstance().getGson().toJson(body);
                 }
-                mPresenter.post(json);
+                mPresenter.refund(json);
                 btnRefund.setEnabled(false);
             }
         });

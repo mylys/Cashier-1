@@ -22,7 +22,7 @@ import okhttp3.RequestBody;
 public class OrderHistoryRefundPresenter extends BasePresenter<OrderHistoryRefundContract.IView> implements OrderHistoryRefundContract.IPresenter {
 
     @Override
-    public void post(String json) {
+    public void refund(String json) {
         mView.showLoading();
         RequestBody requestBody = HttpClient.getInstance().createRequestBody(json);
         Map<String, String> header = HttpClient.getInstance().getHeader();

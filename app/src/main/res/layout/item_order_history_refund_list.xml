@@ -14,6 +14,13 @@
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/x39" />
 
+    <ImageView
+        android:id="@+id/iv_return_of_goods"
+        android:layout_width="@dimen/x36"
+        android:layout_height="@dimen/y36"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/x39" />
+
     <LinearLayout
         android:layout_width="@dimen/x428"
         android:layout_height="wrap_content"
@@ -54,35 +61,35 @@
     <TextView
         android:id="@+id/tv_product_price"
         style="@style/RefundGoodsList"
-        android:layout_width="@dimen/x220"
+        android:layout_width="@dimen/x200"
         android:layout_height="wrap_content"
         android:text="1000.00" />
 
     <TextView
         android:id="@+id/tv_product_preferential"
         style="@style/RefundGoodsList"
-        android:layout_width="@dimen/x171"
+        android:layout_width="@dimen/x200"
         android:layout_height="wrap_content"
         android:text="0" />
 
     <TextView
         android:id="@+id/tv_product_total_num"
         style="@style/RefundGoodsList"
-        android:layout_width="@dimen/x180"
+        android:layout_width="@dimen/x220"
         android:layout_height="wrap_content"
         android:text="0" />
 
     <TextView
         android:id="@+id/tv_product_subtotal"
         style="@style/RefundGoodsList"
-        android:layout_width="@dimen/x180"
+        android:layout_width="@dimen/x140"
         android:layout_height="wrap_content"
         android:text="1000.00" />
 
     <TextView
         android:id="@+id/tv_refund_num_no"
         style="@style/RefundGoodsList"
-        android:layout_width="@dimen/x306"
+        android:layout_width="@dimen/x240"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
@@ -92,7 +99,7 @@
     <com.easygo.cashier.widget.CountTextView
         android:id="@+id/tv_refund_num"
         style="@style/RefundGoodsList"
-        android:layout_width="@dimen/x306"
+        android:layout_width="@dimen/x240"
         android:layout_height="@dimen/y60"
         android:layout_gravity="center"
         android:visibility="gone" />
