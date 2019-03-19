@@ -58,9 +58,9 @@ public class TempGoodsPromotion extends BaseGoodsPromotion implements IGoodsProm
             goodsBean.setPromotion_money(promotion);
             if(promotion > 0) {
                 goodsEntity.setPromotion(this);
-            }
 //            goodsEntity.getData().setDiscount_price(String.valueOf(promotion));
-            goodsEntity.getData().setTemp_goods_discount(promotion);
+                goodsEntity.getData().setTemp_goods_discount(promotion);
+            }
         }
 
     }

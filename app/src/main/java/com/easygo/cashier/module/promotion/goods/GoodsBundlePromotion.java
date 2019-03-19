@@ -121,13 +121,13 @@ public class GoodsBundlePromotion extends BaseGoodsPromotion implements IGoodsPr
 
                     }
                 }
-                if(promotion_money > 0) {
-                    goodsEntity.setPromotion(this);
-                }
-                goodsBean.setPromotion_money(promotion_money);
                 Log.i(TAG, "computePromotionMoney: index -> " + index + ", 促销金额 -> " + promotion_money);
+                if(promotion_money > 0) {
+                    goodsBean.setPromotion_money(promotion_money);
+                    goodsEntity.setPromotion(this);
 //                goodsEntity.getData().setDiscount_price(String.valueOf(promotion_money));
-                goodsEntity.getData().setGoods_activity_discount(promotion_money);
+                    goodsEntity.getData().setGoods_activity_discount(promotion_money);
+                }
             }
         }
     }

@@ -94,11 +94,13 @@ public class GoodsNormalPromotion extends BaseGoodsPromotion implements IGoodsPr
 
                         }
                     }
-                    goodsEntity.setPromotion(this);
-                    goodsBean.setPromotion_money(promotion_money);
                     Log.i(TAG, "computePromotionMoney: 商品普通（偶数件） index -> " + index + ", 促销金额 -> " + promotion_money);
+                    if(promotion_money > 0) {
+                        goodsBean.setPromotion_money(promotion_money);
+                        goodsEntity.setPromotion(this);
 //                    goodsEntity.getData().setDiscount_price(String.valueOf(promotion_money));
-                    goodsEntity.getData().setGoods_activity_discount(promotion_money);
+                        goodsEntity.getData().setGoods_activity_discount(promotion_money);
+                    }
                 }
 
                 break;
@@ -122,12 +124,12 @@ public class GoodsNormalPromotion extends BaseGoodsPromotion implements IGoodsPr
                     float promotion = (goodsBean.getSubtotal() / total_money) * promotion_money;
                     Log.i(TAG, "computePromotionMoney: 商品普通（满金额） index -> " + goodsBean.getIndex()
                             + ", 促销金额 -> " + promotion);
-                    goodsBean.setPromotion_money(promotion);
                     if(promotion > 0) {
+                        goodsBean.setPromotion_money(promotion);
                         goodsEntity.setPromotion(this);
-                    }
 //                    goodsEntity.getData().setDiscount_price(String.valueOf(promotion));
-                    goodsEntity.getData().setGoods_activity_discount(promotion);
+                        goodsEntity.getData().setGoods_activity_discount(promotion);
+                    }
                 }
                 break;
         }

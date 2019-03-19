@@ -64,14 +64,14 @@ public class GoodsTimePromotion extends BaseGoodsPromotion implements IGoodsProm
                         //需要设置促销金额的  根据比例计算出促销金额
                         float promotion = (goodsBean.getSubtotal() / total_money) * promotion_money;
                         Log.i(TAG, "computePromotionMoney: 商品时段促销 促销金额 -> " + promotion);
-                        goodsBean.setPromotion_money(promotion);
                         if(promotion > 0) {
+                            goodsBean.setPromotion_money(promotion);
                             data.get(goodsBean.getIndex()).setPromotion(this);
-                        }
 //                        data.get(goodsBean.getIndex()).getData()
 //                                .setDiscount_price(String.valueOf(promotion));
-                        data.get(goodsBean.getIndex()).getData()
-                                .setGoods_activity_discount(promotion);
+                            data.get(goodsBean.getIndex()).getData()
+                                    .setGoods_activity_discount(promotion);
+                        }
                     }
                 }
             }

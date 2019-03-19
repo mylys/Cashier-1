@@ -55,12 +55,12 @@ public class GoodsFixedPromotion extends BaseGoodsPromotion implements IGoodsPro
                         promotion = subtract * goodsBean.getCount();
                         Log.i(TAG, "computePromotionMoney: 固定促销, "
                                 + goodsBean.getBarcode() + " 优惠: " + promotion);
-                        goodsBean.setPromotion_money(promotion);
                         if(promotion > 0) {
+                            goodsBean.setPromotion_money(promotion);
                             data.get(goodsBean.getIndex()).setPromotion(this);
-                        }
 //                        data.get(goodsBean.getIndex()).getData().setDiscount_price(String.valueOf(promotion));
-                        data.get(goodsBean.getIndex()).getData().setGoods_activity_discount(promotion);
+                            data.get(goodsBean.getIndex()).getData().setGoods_activity_discount(promotion);
+                        }
 
                     }
                 }
