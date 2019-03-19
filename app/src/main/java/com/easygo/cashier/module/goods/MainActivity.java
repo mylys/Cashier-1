@@ -35,7 +35,6 @@ import com.easygo.cashier.base.BaseAppMvpActivity;
 import com.easygo.cashier.bean.EntryOrders;
 import com.easygo.cashier.bean.EquipmentState;
 import com.easygo.cashier.bean.GoodsResponse;
-import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.PrinterStatusResponse;
 import com.easygo.cashier.module.login.LoginActivity;
@@ -163,12 +162,14 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             }
 
             @Override
-            public void onConnected() {
+            public void onConnected(boolean showTip) {
                 if(dialog != null && dialog.isShow()) {
                     dialog.setNewData(0, getString(R.string.local_printer), true);
                     return;
                 }
-                showToast(PrinterUtils.getInstance().getConnDeviceInfo() + " " + getString(R.string.str_conn_state_connected));
+                if(showTip){
+                    showToast(PrinterUtils.getInstance().getConnDeviceInfo() + " " + getString(R.string.str_conn_state_connected));
+                }
             }
 
             @Override
@@ -216,6 +217,13 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         });
 
         PrinterUtils.getInstance().registerReceiver(this);
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                PrinterUtils.getInstance().connectUSB(MainActivity.this);
+            }
+        }, 1000);
     }
 
     private void initReceiver() {
@@ -286,13 +294,6 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             transaction.replace(R.id.framelayout, goodsFragment, TAG_MAIN);
         }
         transaction.commit();
-
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                PrinterUtils.getInstance().connectUSB(MainActivity.this);
-            }
-        }, 1000);
 
     }
 

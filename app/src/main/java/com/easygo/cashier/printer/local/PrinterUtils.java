@@ -130,6 +130,7 @@ public class PrinterUtils {
                 case PrinterUtils.ACTION_CONN_STATE:
                     int state = intent.getIntExtra(DeviceConnFactoryManager.STATE, -1);
                     int deviceId = intent.getIntExtra(DeviceConnFactoryManager.DEVICE_ID, -1);
+                    boolean showTip = intent.getBooleanExtra(DeviceConnFactoryManager.SHOW_TIP, true);
                     switch (state) {
                         case DeviceConnFactoryManager.CONN_STATE_DISCONNECT:
                             Log.i(TAG, "onReceive: 已断开连接");
@@ -148,7 +149,7 @@ public class PrinterUtils {
                         case DeviceConnFactoryManager.CONN_STATE_CONNECTED:
                             Log.i(TAG, "onReceive: 已连接");
                             if(mListener != null) {
-                                mListener.onConnected();
+                                mListener.onConnected(showTip);
                             }
 
                             execQueue();
@@ -232,7 +233,7 @@ public class PrinterUtils {
     public interface OnPrinterListener {
         void onUsbPermissionDeny();
         void onConnecting();
-        void onConnected();
+        void onConnected(boolean showTip);
         void onDisconnected();
         void onPleaseConnectPrinter();
         void onConnectFailed();

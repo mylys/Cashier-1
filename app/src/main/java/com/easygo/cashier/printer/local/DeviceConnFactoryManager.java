@@ -124,6 +124,7 @@ public class DeviceConnFactoryManager {
     public static final String ACTION_QUERY_PRINTER_STATE = "action_query_printer_state";
     public static final String STATE = "state";
     public static final String DEVICE_ID = "id";
+    public static final String SHOW_TIP = "show_tip";
     public static final int CONN_STATE_DISCONNECT = 0x90;
     public static final int CONN_STATE_CONNECTING = CONN_STATE_DISCONNECT << 1;
     public static final int CONN_STATE_FAILED = CONN_STATE_DISCONNECT << 2;
@@ -572,7 +573,7 @@ public class DeviceConnFactoryManager {
                                 System.out.println(MyApplication.sApplication.getString(R.string.str_state) + status);
                                 String mode=MyApplication.sApplication.getString(R.string.str_printer_printmode_esc);
                                 if(printer_status == 0) {
-                                    sendStateBroadcast(CONN_STATE_CONNECTED);
+                                    sendStateBroadcast(CONN_STATE_CONNECTED, false);
                                 }
                             }
                         }
@@ -631,9 +632,18 @@ public class DeviceConnFactoryManager {
     };
 
     private void sendStateBroadcast(int state) {
+//        Intent intent = new Intent(ACTION_CONN_STATE);
+//        intent.putExtra(STATE, state);
+//        intent.putExtra(DEVICE_ID, id);
+//        MyApplication.sApplication.sendBroadcast(intent);
+        sendStateBroadcast(state, true);
+    }
+
+    private void sendStateBroadcast(int state, boolean showTip) {
         Intent intent = new Intent(ACTION_CONN_STATE);
         intent.putExtra(STATE, state);
         intent.putExtra(DEVICE_ID, id);
+        intent.putExtra(SHOW_TIP, showTip);
         MyApplication.sApplication.sendBroadcast(intent);
     }
 

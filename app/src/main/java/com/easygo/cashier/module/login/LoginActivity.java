@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.ActivitiesUtils;
-import com.easygo.cashier.BuildConfig;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.ModulePath;
@@ -367,13 +366,14 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
             @Override
             public void onConnecting() {
-                showToast(getString(R.string.str_conn_state_connecting));
+//                showToast(getString(R.string.str_conn_state_connecting));
             }
 
             @Override
-            public void onConnected() {
-                showToast(PrinterUtils.getInstance().getConnDeviceInfo() + " " + getString(R.string.str_conn_state_connected));
-
+            public void onConnected(boolean showTip) {
+                if(showTip) {
+                    showToast(PrinterUtils.getInstance().getConnDeviceInfo() + " " + getString(R.string.str_conn_state_connected));
+                }
             }
 
             @Override
@@ -418,13 +418,6 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         super.onStart();
 
         PrinterUtils.getInstance().registerReceiver(this);
-//
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                PrinterUtils.getInstance().popTill(LoginActivity.this);
-//            }
-//        }, 1000);
     }
 
     @Override
