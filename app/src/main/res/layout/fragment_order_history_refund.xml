@@ -101,12 +101,11 @@
             android:text="共退货1件，退货金额：￥ "
             android:textSize="@dimen/x33" />
 
-        <EditText
-            android:id="@+id/edit_refund_case_price"
+        <TextView
+            android:id="@+id/tv_refund_case_price"
             android:layout_width="@dimen/x190"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/bg_frame"
             android:gravity="center"
             android:inputType="number|numberDecimal"
             android:paddingTop="@dimen/x10"

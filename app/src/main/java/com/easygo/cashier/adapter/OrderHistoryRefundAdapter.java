@@ -4,6 +4,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -42,7 +44,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         int type = item.getType();//0:正常商品 --- 1:称重商品 --- 2:无码商品 --- 3:加工方式
 
         //设置选择时显示隐藏
-        if (item.isSelect()) {
+        if (item.isSelectReturnOfGoods()) {
             countTextView.setVisibility(View.VISIBLE);
             helper.getView(R.id.tv_refund_num_no).setVisibility(View.GONE);
 
@@ -57,7 +59,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         helper.getView(R.id.tv_refund).setVisibility(item.getRefund() > 0 ? View.VISIBLE : View.GONE);
 
         //设置选中样式
-        helper.setImageResource(R.id.image_select, item.isSelect() ? R.drawable.icon_select : R.drawable.icon_no_select);
+//        helper.setImageResource(R.id.image_select, item.isSelect() ? R.drawable.icon_select : R.drawable.icon_no_select);
 
         //设置数据
         String tv_total_num = type == 1 ? item.getProduct_num() + item.getG_u_symbol() : df_int.format(item.getProduct_num());
@@ -136,6 +138,20 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 notifyItemChanged(helper.getLayoutPosition());
             }
         });
+
+        helper.setOnCheckedChangeListener(R.id.cb_refund, new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                item.setSelectRefund(isChecked);
+            }
+        });
+        helper.setOnCheckedChangeListener(R.id.cb_return_of_goods, new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                item.setSelectReturnOfGoods(isChecked);
+            }
+        });
+
     }
 
     public ArrayList<RequsetBody.GoodsList> getList() {

@@ -14,6 +14,8 @@ public class GoodsRefundInfo {
     private int quantity;
     private int s_sku_id;
     private boolean isSelect;
+    private boolean isSelectRefund;
+    private boolean isSelectReturnOfGoods;
     private int is_weigh;
     private int refund;
     private int parent_id;
@@ -133,6 +135,22 @@ public class GoodsRefundInfo {
 
     public void setSelect(boolean select) {
         isSelect = select;
+    }
+
+    public boolean isSelectRefund() {
+        return isSelectRefund;
+    }
+
+    public void setSelectRefund(boolean selectRefund) {
+        isSelectRefund = selectRefund;
+    }
+
+    public boolean isSelectReturnOfGoods() {
+        return isSelectReturnOfGoods;
+    }
+
+    public void setSelectReturnOfGoods(boolean selectReturnOfGoods) {
+        isSelectReturnOfGoods = selectReturnOfGoods;
     }
 
     public String getIdentity() {

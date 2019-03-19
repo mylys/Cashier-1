@@ -19,7 +19,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -73,8 +72,8 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
     TextView tvPayType;
     @BindView(R.id.tv_refund_cash_num)
     TextView tvRefundcashNum;
-    @BindView(R.id.edit_refund_case_price)
-    EditText editRefundcashPrice;
+    @BindView(R.id.tv_refund_case_price)
+    TextView tvRefundcashPrice;
     @BindView(R.id.child)
     LinearLayout child;
     @BindView(R.id.rl_view)
@@ -200,7 +199,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         if (adapter.getTotalRefund()) {
             btnRefund.setEnabled(false);
             btnRefund.setBackgroundResource(R.drawable.bg_btn_enable_commit);
-            editRefundcashPrice.setInputType(InputType.TYPE_NULL);
+            tvRefundcashPrice.setInputType(InputType.TYPE_NULL);
         }
         tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件，退款金额：￥");
         setListener();
@@ -224,7 +223,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                 tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件，退款金额：￥");
 
                 if (!checked) {
-                    editRefundcashPrice.setText("0.00");
+                    tvRefundcashPrice.setText("0.00");
                 } else {
                     float totalCoupon = adapter.getTotalCoupon();
                     float discount = 0f;
@@ -240,9 +239,9 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                     if(refund > real_pay) {
                         refund = real_pay;
                     }
-                    editRefundcashPrice.setText(df.format(refund));
+                    tvRefundcashPrice.setText(df.format(refund));
                 }
-                editRefundcashPrice.setSelection(editRefundcashPrice.getText().toString().length());
+//                tvRefundcashPrice.setSelection(tvRefundcashPrice.getText().toString().length());
             }
         });
         adapter.setOnItemClickListener(new OrderHistoryRefundAdapter.OnItemClickListener() {
@@ -255,7 +254,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
             @Override
             public void onListener() {
                 tvRefundcashNum.setText(getResources().getString(R.string.text_total_refund_product) + adapter.getTotalNum() + getResources().getString(R.string.text_total_refund_price));
-                editRefundcashPrice.setText(adapter.getTotalPrice());
+                tvRefundcashPrice.setText(adapter.getTotalPrice());
 
                 float totalCoupon = adapter.getTotalCoupon();
                 float discount = 0f;
@@ -270,9 +269,9 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                 if(refund > real_pay) {
                     refund = real_pay;
                 }
-                editRefundcashPrice.setText(df.format(refund));
+                tvRefundcashPrice.setText(df.format(refund));
 //                }
-                editRefundcashPrice.setSelection(editRefundcashPrice.getText().toString().length());
+//                tvRefundcashPrice.setSelection(tvRefundcashPrice.getText().toString().length());
             }
         });
 
@@ -300,7 +299,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
             }
         });
 
-        editRefundcashPrice.addTextChangedListener(new TextWatcher() {
+        tvRefundcashPrice.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -315,13 +314,13 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
             public void afterTextChanged(Editable s) {
                 if (s.toString().length() != 0) {
                     if (s.toString().substring(0, 1).equals(".")) {
-                        editRefundcashPrice.setText("");
+                        tvRefundcashPrice.setText("");
                     }
                 }
             }
         });
 
-        editRefundcashPrice.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        tvRefundcashPrice.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 /*判断是否是“GO”键*/
@@ -342,7 +341,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
             }
         });
 
-        editRefundcashPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        tvRefundcashPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
@@ -362,15 +361,15 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
             return;
         }
 
-        if (TextUtils.isEmpty(editRefundcashPrice.getText().toString())) {
+        if (TextUtils.isEmpty(tvRefundcashPrice.getText().toString())) {
             return;
         }
-        float price = Float.parseFloat(editRefundcashPrice.getText().toString());
+        float price = Float.parseFloat(tvRefundcashPrice.getText().toString());
         if (price == 0) {
             showToast("退款金额不能为0");
             return;
         }
-        float edit_price = Float.valueOf(editRefundcashPrice.getText().toString().trim());
+        float edit_price = Float.valueOf(tvRefundcashPrice.getText().toString().trim());
 
         if (edit_price > real_pay) {
             showToast("输入金额不能大于订单实收金额");
@@ -394,7 +393,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
 
     public void onCommitOrder() {
         DecimalFormat df = new DecimalFormat("0.00");
-        float price = Float.parseFloat(editRefundcashPrice.getText().toString());
+        float price = Float.parseFloat(tvRefundcashPrice.getText().toString());
         String format = df.format(price);
         final int prices = Integer.parseInt(format.replace(".", ""));
         if (Configs.refund_auth == 0) {
@@ -449,9 +448,9 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         if (adapter.getTotalRefund()) {
             btnRefund.setEnabled(false);
             btnRefund.setBackgroundResource(R.drawable.bg_btn_enable_commit);
-            editRefundcashPrice.setInputType(InputType.TYPE_NULL);
+            tvRefundcashPrice.setInputType(InputType.TYPE_NULL);
         }
-        editRefundcashPrice.setText("0.00");
+        tvRefundcashPrice.setText("0.00");
         ToastUtils.showToast(getActivity(), message);
         if (getActivity() != null) {
             ((OrderHistoryActivity) getActivity()).toRefresh();
@@ -499,7 +498,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                 .append("优惠：").append(df.format(total_discount)).append(PrintHelper.BR)
                 .append("总金额：").append(df.format(real_pay)).append(PrintHelper.BR)
                 .append("退款方式：").append(pay_type).append(PrintHelper.BR)
-                .append("退款金额：").append(Float.parseFloat(editRefundcashPrice.getText().toString())).append(PrintHelper.BR);
+                .append("退款金额：").append(Float.parseFloat(tvRefundcashPrice.getText().toString())).append(PrintHelper.BR);
 
 
         Activity activity = getActivity();
@@ -525,7 +524,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         obj.discount = df.format(total_discount);
         obj.real_pay = df.format(real_pay);
         obj.pay_type = pay_type;
-        obj.refund = editRefundcashPrice.getText().toString();
+        obj.refund = tvRefundcashPrice.getText().toString();
 
         PrinterUtils.getInstance().print(PrinterHelpter.orderHistroyRefund(obj));
     }
