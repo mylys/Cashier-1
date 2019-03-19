@@ -1,5 +1,7 @@
 package com.easygo.cashier.bean;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 public class CouponResponse {
@@ -18,6 +20,7 @@ public class CouponResponse {
      */
 
     private String name;
+    private String sn;
     private String coupon_sn;
     private String condition_value;
     private int offer_type;
@@ -36,8 +39,16 @@ public class CouponResponse {
         this.name = name;
     }
 
+    public String getSn() {
+        return sn;
+    }
+
+    public void setSn(String sn) {
+        this.sn = sn;
+    }
+
     public String getCoupon_sn() {
-        return coupon_sn;
+        return !TextUtils.isEmpty(coupon_sn)? coupon_sn: sn;
     }
 
     public void setCoupon_sn(String coupon_sn) {
