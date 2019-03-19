@@ -194,7 +194,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             public void onConnectError(int error, String content) {
                 if(dialog != null && dialog.isShow()) {
                     if (dialog != null && dialog.isShow()) {
-                        dialog.setErrorData(0, getResources().getString(R.string.local_printer), content);
+                        dialog.setErrorData(0, getResources().getString(R.string.local_printer), getString(R.string.device_abnormal));
                     }
                 }
             }
@@ -496,7 +496,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             public void run() {
                 if(PrinterUtils.STATE_DISCONNECTED == PrinterUtils.getInstance().getPrinterState()) {
                     if (dialog != null && dialog.isShow()) {
-                        dialog.setErrorData(0, getString(R.string.local_printer), "异常");
+                        dialog.setErrorData(0, getString(R.string.local_printer), getString(R.string.device_abnormal));
                     }
                 };
             }
@@ -530,7 +530,6 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
 //        for (int i = 0; i < feie_printer_count; i++) {
 //            InitResponse.PrintersBean printersBean = PrintHelper.printersBeans.get(i);
-            InitResponse.PrintersBean printersBean = PrintHelper.printersBeans.get(0);
 
             arrayList.add(new EquipmentState(getString(R.string.the_printer), true, true, null));
 
@@ -562,7 +561,8 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     @Override
     public void printerStatusFailed(Map<String, Object> map) {
         if (dialog != null && dialog.isShow()) {
-            dialog.setNewData(1, Configs.printer_sn, false);
+//            dialog.setNewData(1, Configs.printer_sn, false);
+            dialog.setNewData(1, getString(R.string.the_printer), false);
         }
     }
 

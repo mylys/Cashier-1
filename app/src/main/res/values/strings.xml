@@ -233,7 +233,7 @@
     <string name="text_lock_user">输入账号密码解锁</string>
 
     <!--打印机-->
-    <string name="str_permission_deny">打印机不可用！ USB权限被拒绝</string>
+    <string name="str_permission_deny">USB打印机不可用！ 权限被拒绝</string>
     <string name="str_conn_state_disconnect">USB打印机：未连接</string>
     <string name="str_conn_state_connecting">USB打印机：连接中</string>
     <string name="str_connecting">连接中</string>
@@ -241,7 +241,7 @@
     <string name="str_conn_successful">USB打印机连接成功！</string>
     <string name="str_conn_fail">USB打印机连接失败！请重新拔插USB打印机</string>
     <string name="str_cann_printer">请先连接USB打印机</string>
-    <string name="str_need_replugged">请重新拔插USB打印机</string>
+    <string name="str_need_replugged">请插入USB打印机</string>
 
     <string name="str_enter_print_counts">请输入打印次数：</string>
     <string name="str_choice_printer_command">请选择正确的打印机指令</string>

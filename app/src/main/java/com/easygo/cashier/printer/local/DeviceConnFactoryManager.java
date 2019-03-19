@@ -177,15 +177,6 @@ public class DeviceConnFactoryManager {
             case USB:
                 mPort = new UsbPort(mContext, mUsbDevice);
                 isOpenPort = mPort.openPort();
-                if(!isOpenPort) {
-                    UsbManager usbManager = (UsbManager)mContext.getSystemService(Context.USB_SERVICE);
-                    UsbDeviceConnection conn = usbManager.openDevice(mUsbDevice);
-                    if(conn != null) {
-                        Log.i(TAG, "openPort: 重新关闭usb连接");
-                        conn.close();
-                    }
-                }
-                isOpenPort = mPort.openPort();
 //                if (isOpenPort) {
 //                    IntentFilter filter = new IntentFilter(ACTION_USB_DEVICE_DETACHED);
 //                    mContext.registerReceiver(usbStateReceiver, filter);
@@ -515,6 +506,7 @@ public class DeviceConnFactoryManager {
                     //读取打印机返回信息
                     int len = readDataImmediately(buffer);
                     if (len > 0) {
+                        Log.i(TAG, "PrinterReader: len = " + len);
                         Message message = Message.obtain();
                         message.what = READ_DATA;
                         Bundle bundle = new Bundle();

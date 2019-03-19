@@ -50,6 +50,15 @@ public class PrinterUtils {
         }
     }
 
+    private void checkPrinterStateAndExecQueue() {
+        //先检查 打印机的状态 再执行
+        if(PrinterUtils.STATE_DISCONNECTED == getPrinterState()) {
+            if(mListener != null) {
+                mListener.onPleaseConnectPrinter();
+            }
+        }
+    }
+
     private void execQueue() {
         while(!queue.isEmpty()) {
             Log.i(TAG, "execQueue: 执行任务");
@@ -292,7 +301,7 @@ public class PrinterUtils {
         if (deviceConnFactoryManager != null
                 && deviceConnFactoryManager.getConnState()) {
             if ("USB".equals(deviceConnFactoryManager.getConnMethod().toString())) {
-                return deviceConnFactoryManager.usbDevice().getSerialNumber();
+                return deviceConnFactoryManager.usbDevice().getProductName();
             }
         }
         return "没有已连接USB打印机";
@@ -307,13 +316,14 @@ public class PrinterUtils {
         Log.i(TAG, "connectUSB:  ");
         UsbManager usbManager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
         List<String> usbDeviceFromName = Utils.getUsbDeviceFromName(context);
+        boolean hasUsbPrinter = false;
         if(usbDeviceFromName.size() > 0) {
             String usbName = usbDeviceFromName.get(0);
             if(!isPrinterDisconnected()) {
                 UsbDevice usbDevice = DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].getConnectedUsbDevice();
                 if(usbDevice != null && usbName.equals(usbDevice.getDeviceName())) {
                     Log.i(TAG, "connectUSB: 打印机已经连接 usbName -> " + usbName);
-                    execQueue();
+                    checkPrinterStateAndExecQueue();
                     return;
                 }
             }
@@ -321,21 +331,25 @@ public class PrinterUtils {
             Log.i(TAG, "connectUSB: 连接打印机名称 usbName -> " + usbName);
             //通过USB设备名找到USB设备
             UsbDevice usbDevice = Utils.getUsbDeviceFromName(context, usbName);
-            //判断USB设备是否有权限
-            if (usbManager.hasPermission(usbDevice)) {
-                Log.i(TAG, "connectUSB: 有权限 usb准备连接 ");
-                usbConn(MyApplication.sApplication, usbDevice);
-            } else {//请求权限
-                Log.i(TAG, "connectUSB: 请求权限 ");
-                PendingIntent mPermissionIntent = PendingIntent.getBroadcast(context, 0,
-                        new Intent(PrinterUtils.ACTION_USB_PERMISSION), 0);
-                usbManager.requestPermission(usbDevice, mPermissionIntent);
+            if(usbDevice != null) {
+                hasUsbPrinter = true;
+                //判断USB设备是否有权限
+                if (usbManager.hasPermission(usbDevice)) {
+                    Log.i(TAG, "connectUSB: 有权限 usb准备连接 ");
+                    usbConn(MyApplication.sApplication, usbDevice);
+                } else {//请求权限
+                    Log.i(TAG, "connectUSB: 请求权限 ");
+                    PendingIntent mPermissionIntent = PendingIntent.getBroadcast(context, 0,
+                            new Intent(PrinterUtils.ACTION_USB_PERMISSION), 0);
+                    usbManager.requestPermission(usbDevice, mPermissionIntent);
+                }
+            } else {
+                hasUsbPrinter = false;
             }
-        } else {
-            if(showRepluggedToast && mListener != null) {
-                Log.i(TAG, "connectUSB: 重新拔插设备");
-                mListener.onNeedReplugged();
-            }
+        }
+        if(!hasUsbPrinter && showRepluggedToast && mListener != null) {
+            Log.i(TAG, "connectUSB: 需要重新插入设备");
+            mListener.onNeedReplugged();
         }
     }
 
