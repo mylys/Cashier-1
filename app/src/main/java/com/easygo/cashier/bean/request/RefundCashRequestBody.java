@@ -1,7 +1,5 @@
 package com.easygo.cashier.bean.request;
 
-import com.easygo.cashier.bean.RequsetBody;
-
 import java.util.List;
 
 public class RefundCashRequestBody {

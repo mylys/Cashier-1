@@ -30,7 +30,7 @@ import com.easygo.cashier.adapter.OrderHistoryRefundAdapter;
 import com.easygo.cashier.base.BaseAppMvpFragment;
 import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
-import com.easygo.cashier.bean.RequsetBody;
+import com.easygo.cashier.bean.RefundRequsetBody;
 import com.easygo.cashier.module.order_history.OrderHistoryActivity;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.printer.local.PrinterHelpter;
@@ -180,7 +180,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                 info.setProduct_preferential(bean.getDiscount());
                 info.setProduct_num(bean.getQuantity());
                 info.setS_sku_id(bean.getS_sku_id());
-                info.setRefund_num("1");
+                info.setRefund_num(bean.getQuantity() + "");
 
                 double refund_subtotal = Double.parseDouble(bean.getSell_price());
                 if(refund_subtotal > money) {
@@ -397,7 +397,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         String format = df.format(price);
         final int prices = Integer.parseInt(format.replace(".", ""));
         if (Configs.refund_auth == 0) {
-            RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, prices, refund_pay_type, adapter.getList());
+            RefundRequsetBody body = new RefundRequsetBody(order_number, Configs.shop_sn, prices, refund_pay_type, adapter.getList());
             String json = GsonUtils.getInstance().getGson().toJson(body);
             mPresenter.refund(json);
             btnRefund.setEnabled(false);
@@ -414,12 +414,12 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
             public void onContent(int type, String account, String password) {
                 String json = "";
                 if (type == GeneraEditDialog.USER_ACCREDIT) {
-                    RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, prices, refund_pay_type,
+                    RefundRequsetBody body = new RefundRequsetBody(order_number, Configs.shop_sn, prices, refund_pay_type,
                             account, null, null, adapter.getList());
                     json = GsonUtils.getInstance().getGson().toJson(body);
 
                 } else if (type == GeneraEditDialog.USER_ACCOUNT) {
-                    RequsetBody body = new RequsetBody(order_number, Configs.shop_sn, prices, refund_pay_type,
+                    RefundRequsetBody body = new RefundRequsetBody(order_number, Configs.shop_sn, prices, refund_pay_type,
                             null, account, password, adapter.getList());
                     json = GsonUtils.getInstance().getGson().toJson(body);
                 }

@@ -8,7 +8,7 @@ import java.util.List;
  * @author：hgeson
  * @date：2018-12-21
  */
-public class RequsetBody {
+public class RefundRequsetBody {
     private String order_no;
     private String shop_sn;
     private int refund_amount;
@@ -18,7 +18,7 @@ public class RequsetBody {
     private String password;
     private List<GoodsList> goods_list;
 
-    public RequsetBody(String order_no, String shop_sn, int refund_amount, String pay_type, List<GoodsList> goodsList) {
+    public RefundRequsetBody(String order_no, String shop_sn, int refund_amount, String pay_type, List<GoodsList> goodsList) {
         this.order_no = order_no;
         this.shop_sn = shop_sn;
         this.refund_amount = refund_amount;
@@ -26,7 +26,7 @@ public class RequsetBody {
         this.goods_list = goodsList;
     }
 
-    public RequsetBody(String order_no, String shop_sn, int refund_amount, String pay_type, String refund_password, String admin_name, String password, List<GoodsList> goods_list) {
+    public RefundRequsetBody(String order_no, String shop_sn, int refund_amount, String pay_type, String refund_password, String admin_name, String password, List<GoodsList> goods_list) {
         this.order_no = order_no;
         this.shop_sn = shop_sn;
         this.refund_amount = refund_amount;
@@ -106,6 +106,8 @@ public class RequsetBody {
         private float count;
         private int is_weigh;
         private String identity;
+        /**类型   1：退款 2：退货*/
+        private int type;
 
         public int getIs_weigh() {
             return is_weigh;
@@ -137,6 +139,14 @@ public class RequsetBody {
 
         public void setIdentity(String identity) {
             this.identity = identity;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
         }
     }
 }

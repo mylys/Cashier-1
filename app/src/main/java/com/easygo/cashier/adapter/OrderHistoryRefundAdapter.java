@@ -1,26 +1,18 @@
 package com.easygo.cashier.adapter;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.easygo.cashier.R;
-import com.easygo.cashier.bean.GoodsInfo;
 import com.easygo.cashier.bean.GoodsRefundInfo;
-import com.easygo.cashier.bean.RequsetBody;
+import com.easygo.cashier.bean.RefundRequsetBody;
 import com.easygo.cashier.widget.CountTextView;
 import com.niubility.library.utils.ToastUtils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Describe：历史订单退款item
@@ -142,23 +134,35 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         helper.setOnCheckedChangeListener(R.id.cb_refund, new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (item.getRefund() > 0) {
+                    ToastUtils.showToast(mContext, "该商品已退款");
+                    return;
+                }
                 item.setSelectRefund(isChecked);
+                listener.onListener();
+                notifyItemChanged(helper.getLayoutPosition());
             }
         });
         helper.setOnCheckedChangeListener(R.id.cb_return_of_goods, new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (item.getRefund() > 0) {
+                    ToastUtils.showToast(mContext, "该商品已退款");
+                    return;
+                }
                 item.setSelectReturnOfGoods(isChecked);
+                listener.onListener();
+                notifyItemChanged(helper.getLayoutPosition());
             }
         });
 
     }
 
-    public ArrayList<RequsetBody.GoodsList> getList() {
-        ArrayList<RequsetBody.GoodsList> goodsLists = new ArrayList<>();
+    public ArrayList<RefundRequsetBody.GoodsList> getList() {
+        ArrayList<RefundRequsetBody.GoodsList> goodsLists = new ArrayList<>();
         for (GoodsRefundInfo item : getData()) {
             if (item.isSelect()) {
-                RequsetBody.GoodsList list = new RequsetBody.GoodsList();
+                RefundRequsetBody.GoodsList list = new RefundRequsetBody.GoodsList();
                 list.setS_sku_id(item.getS_sku_id());
                 list.setIs_weigh(item.getIs_weigh());
                 list.setIdentity(item.getIdentity());

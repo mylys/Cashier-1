@@ -16,21 +16,29 @@
             android:background="@drawable/bg_refund"
             android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="@dimen/x60"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/text_refund"
+                style="@style/RefundList"
+                android:layout_marginStart="@dimen/x39"/>
+
+            <TextView
+                android:layout_width="@dimen/x60"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/text_return_of_goods"
+                style="@style/RefundList"
+                android:layout_marginStart="@dimen/x30"/>
+
             <CheckBox
                 android:id="@+id/checkbox"
                 android:layout_width="@dimen/x36"
                 android:layout_height="@dimen/y36"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/x39"
-                android:background="@drawable/selected_tab_bg"
-                android:button="@null" />
-
-            <CheckBox
-                android:id="@+id/cb_return_of_goods"
-                android:layout_width="@dimen/x36"
-                android:layout_height="@dimen/y36"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/x39"
+                android:layout_marginStart="@dimen/x30"
+                android:visibility="gone"
                 android:background="@drawable/selected_tab_bg"
                 android:button="@null" />
 
@@ -38,7 +46,7 @@
                 style="@style/RefundList"
                 android:layout_width="@dimen/x428"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/x30"
+                android:layout_marginStart="@dimen/x39"
                 android:text="@string/text_goods_name" />
 
             <TextView
