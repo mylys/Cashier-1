@@ -1049,6 +1049,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     public void clickPopTill() {
         if (Configs.till_auth == 0) {
             mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
+            PrinterUtils.getInstance().popTill();
             return;
         }
         if (editDialog == null) {
