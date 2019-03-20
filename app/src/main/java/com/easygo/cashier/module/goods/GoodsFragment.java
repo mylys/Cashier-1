@@ -1293,7 +1293,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
     @Override
     public void popTillSuccess() {
-        showToast("弹出钱箱成功");
+//        showToast("弹出钱箱成功");
     }
 
     @Override

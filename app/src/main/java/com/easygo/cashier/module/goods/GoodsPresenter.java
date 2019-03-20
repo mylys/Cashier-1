@@ -98,8 +98,6 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
     @Override
     public void popTill(String shop_sn, String printer_sn) {
-        mView.showLoading();
-
         Map<String, String> header = HttpClient.getInstance().getHeader();
 
         for (int i = 0; i < PrintHelper.printers_count; i++) {
@@ -109,6 +107,7 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
             if (!printersBean.canUse(InitResponse.PrintersBean.type_settlement)) {
                 return;
             }
+            mView.showLoading();
             Map<String, Object> requestMap = new HashMap<>();
             requestMap.put("shop_sn", shop_sn);
             requestMap.put("printer_sn", device_sn);
