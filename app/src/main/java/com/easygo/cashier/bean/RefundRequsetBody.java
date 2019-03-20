@@ -106,7 +106,7 @@ public class RefundRequsetBody {
         private float count;
         private int is_weigh;
         private String identity;
-        /**类型   1：退款 2：退货*/
+        /**类型   1：仅退款 2：退货退款*/
         private int type;
 
         public int getIs_weigh() {

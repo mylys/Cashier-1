@@ -308,7 +308,7 @@ public class PrinterHelpter {
         for (int i = 0; i < size; i++) {
             GoodsRefundInfo data = info.get(i);
 
-            boolean select = data.isSelect();
+            boolean select = data.isSelectReturnOfGoods();
             if (!select) {
                 continue;
             }

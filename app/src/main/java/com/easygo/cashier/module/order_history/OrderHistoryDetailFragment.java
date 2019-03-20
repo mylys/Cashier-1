@@ -389,7 +389,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
 //        String total_refund_str = df.format(refund_price + change_money);
 //        tvRefundText.setText(payType + getResources().getString(R.string.text_pay) + "：￥" + total_refund_str + " - 找零：￥" + change_price + " = ");
         tvRefund.setText("退款：￥" + orderHistoryInfo.getRefund_fee());
-        tvReturnOfGoodsCount.setText("共退款" + orderHistoryGoodsAdapter.getRefundSize() + "件");
+        tvReturnOfGoodsCount.setText("共退货" + orderHistoryGoodsAdapter.getRefundSize() + "件");
     }
 
     private float getAllDiscount() {

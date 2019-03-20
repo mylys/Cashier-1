@@ -29,7 +29,7 @@
         android:layout_width="@dimen/x428"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginStart="@dimen/x42">
+        android:layout_marginStart="@dimen/x51">
 
         <TextView
             android:id="@+id/tv_product_name"

@@ -182,11 +182,11 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                 info.setS_sku_id(bean.getS_sku_id());
                 info.setRefund_num(bean.getQuantity() + "");
 
-                double refund_subtotal = Double.parseDouble(bean.getSell_price());
-                if(refund_subtotal > money) {
-                    refund_subtotal = money;
-                }
-                info.setRefund_subtotal(df.format(refund_subtotal));
+//                double refund_subtotal = Double.parseDouble(bean.getSell_price());
+//                if(refund_subtotal > money) {
+//                    refund_subtotal = money;
+//                }
+                info.setRefund_subtotal(df.format(money));
                 info.setSelect(false);
                 info.setType(bean.getType());
                 info.setIdentity(bean.getIdentity());
@@ -225,10 +225,6 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                 if (!checked) {
                     tvRefundcashPrice.setText("0.00");
                 } else {
-                    float totalCoupon = adapter.getTotalCoupon();
-                    float discount = 0f;
-
-                    discount += cashier_discount;
 
                     float refund = adapter.getRatioRefund(real_pay);
 
@@ -256,10 +252,6 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                 tvRefundcashNum.setText(getResources().getString(R.string.text_total_refund_product) + adapter.getTotalNum() + getResources().getString(R.string.text_total_refund_price));
                 tvRefundcashPrice.setText(adapter.getTotalPrice());
 
-                float totalCoupon = adapter.getTotalCoupon();
-                float discount = 0f;
-
-//                float refund = Float.valueOf(adapter.getTotalPrice()) - discount;
                 float refund = adapter.getRatioRefund(real_pay);
 
                 if (refund < 0) {
@@ -479,7 +471,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         for (int i = 0; i < size; i++) {
             GoodsRefundInfo goodsRefundInfo = infoList.get(i);
 
-            boolean select = goodsRefundInfo.isSelect();
+            boolean select = goodsRefundInfo.isSelectReturnOfGoods();
             if (!select) {
                 continue;
             }
