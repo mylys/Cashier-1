@@ -371,24 +371,24 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
             @Override
             public void onConnected(boolean showTip) {
-                if(showTip) {
-                    showToast(PrinterUtils.getInstance().getConnDeviceInfo() + " " + getString(R.string.str_conn_state_connected));
-                }
+//                if(showTip) {
+//                    showToast(PrinterUtils.getInstance().getConnDeviceInfo() + " " + getString(R.string.str_conn_state_connected));
+//                }
             }
 
             @Override
             public void onDisconnected() {
-                showToast(getString(R.string.str_conn_state_disconnect));
+//                showToast(getString(R.string.str_conn_state_disconnect));
             }
 
             @Override
             public void onPleaseConnectPrinter() {
-                showToast(getString(R.string.str_cann_printer));
+//                showToast(getString(R.string.str_cann_printer));
             }
 
             @Override
             public void onConnectFailed() {
-                showToast(getString(R.string.str_conn_fail));
+//                showToast(getString(R.string.str_conn_fail));
             }
 
             @Override
@@ -398,17 +398,17 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
             @Override
             public void onCommandError() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showToast(getString(R.string.str_choice_printer_command));
-                    }
-                });
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        showToast(getString(R.string.str_choice_printer_command));
+//                    }
+//                });
             }
 
             @Override
             public void onNeedReplugged() {
-                showToast(getString(R.string.str_need_replugged));
+//                showToast(getString(R.string.str_need_replugged));
             }
         });
     }

@@ -167,9 +167,9 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                     dialog.setNewData(0, getString(R.string.local_printer), true);
                     return;
                 }
-                if(showTip){
-                    showToast(PrinterUtils.getInstance().getConnDeviceInfo() + " " + getString(R.string.str_conn_state_connected));
-                }
+//                if(showTip){
+//                    showToast(PrinterUtils.getInstance().getConnDeviceInfo() + " " + getString(R.string.str_conn_state_connected));
+//                }
             }
 
             @Override
@@ -178,17 +178,17 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                     dialog.setNewData(0, getString(R.string.local_printer), false);
                     return;
                 }
-                showToast(getString(R.string.str_conn_state_disconnect));
+//                showToast(getString(R.string.str_conn_state_disconnect));
             }
 
             @Override
             public void onPleaseConnectPrinter() {
-                showToast(getString(R.string.str_cann_printer));
+//                showToast(getString(R.string.str_cann_printer));
             }
 
             @Override
             public void onConnectFailed() {
-                showToast(getString(R.string.str_conn_fail));
+//                showToast(getString(R.string.str_conn_fail));
             }
 
             @Override
@@ -202,17 +202,17 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
             @Override
             public void onCommandError() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showToast(getString(R.string.str_choice_printer_command));
-                    }
-                });
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        showToast(getString(R.string.str_choice_printer_command));
+//                    }
+//                });
             }
 
             @Override
             public void onNeedReplugged() {
-                showToast(getString(R.string.str_need_replugged));
+//                showToast(getString(R.string.str_need_replugged));
             }
         });
 
