@@ -146,6 +146,15 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
      */
     private boolean needRefreshData = false;
 
+    /**
+     * 创建订单中
+     */
+    private boolean mDuringCreateOrder = false;
+
+    /**
+     * 调用支付接口中
+     */
+    private boolean mDuringPay = false;
 
     @Override
     protected SettlementPresenter createPresenter() {
@@ -341,6 +350,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
      * 点击了确定提交
      */
     private void onConfirmCommit() {
+        if(mOrderFinished || mDuringCreateOrder || mDuringPay) {
+            showToast("请稍候");
+            return;
+        }
         if(mChange < 0) {
             showToast("找零金额小于0");
             return;
@@ -874,6 +887,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     }
 
     public void createOrder() {
+        mDuringCreateOrder = true;
         DecimalFormat df = new DecimalFormat("#");
         String total_money = df.format(mTotalMoney * 100);
         String real_pay = df.format(mTotalMoney * 100 - mCoupon * 100 - mCouponMoney * 100 - mTempOrderPromotionMoney * 100);
@@ -1084,6 +1098,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         Configs.order_no = result.getTrade_num();
 
         onAfterCreateOrder();
+        mDuringCreateOrder = false;
 
     }
 
@@ -1091,6 +1106,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
      * 创建订单后，调起支付方法
      */
     private void onAfterCreateOrder() {
+        mDuringPay = true;
         switch (mPayWay) {
             case PayWayView.WAY_CASH:
 
@@ -1120,6 +1136,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 //        if (HttpExceptionEngine.isBussinessError(map)) {
             showToast(((String) map.get(HttpExceptionEngine.ErrorMsg)));
 //        }
+        mDuringCreateOrder = false;
     }
 
     @Override
@@ -1131,6 +1148,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     private void onPaySuccessAfter() {
         mOrderFinished = true;
+        mDuringPay = false;
         EventUtils.post(Events.CLEAR_GOODS_INFO);
 
         if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
@@ -1176,6 +1194,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             dismissScanDialog();
         }
 
+        mDuringPay = false;
     }
 
     @Override
@@ -1233,6 +1252,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
             dismissScanDialog();
         }
+
+        mDuringPay = false;
     }
 
     /**
@@ -1286,6 +1307,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     @Override
     public void cashFailed(Map<String, Object> map) {
         showToast("现金支付失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
+        mDuringPay = false;
     }
 
     @Override
@@ -1324,6 +1346,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     public void memberWalletFailed(Map<String, Object> map) {
         showToast("会员钱包支付失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
         dismissScanDialog();
+        mDuringPay = false;
     }
 
     @Override
