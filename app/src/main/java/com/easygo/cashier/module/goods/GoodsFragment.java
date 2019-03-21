@@ -623,7 +623,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
         if (mUserGoodsScreen == null && displays.length == 2) {
             mUserGoodsScreen = new UserGoodsScreen(context,
-                    displays[displays.length - 1], admin_name);// displays[1]是副屏
+                    displays[displays.length - 1], String.valueOf(Configs.cashier_id));// displays[1]是副屏
             mUserGoodsScreen.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             mUserGoodsScreen.show();
         }

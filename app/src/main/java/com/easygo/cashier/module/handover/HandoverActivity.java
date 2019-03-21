@@ -294,7 +294,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
 
 
         sb.append(PrintHelper.CB_left).append("交接班单据").append(PrintHelper.CB_right).append(PrintHelper.BR)
-                .append("收银员：").append(admin_name).append(PrintHelper.BR)
+                .append("收银员：").append(String.valueOf(Configs.cashier_id)).append(PrintHelper.BR)
                 .append("登录时间：").append(tvLoginTime.getText().toString()).append(PrintHelper.BR)
                 .append("登出时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
                 .append("--------------------------------").append(PrintHelper.BR)
@@ -349,7 +349,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
     private void printHandoverInfoLocal() {
 
         HandoverInfoPrintObj handoverInfoPrintObj = new HandoverInfoPrintObj();
-        handoverInfoPrintObj.admin_name = admin_name;
+        handoverInfoPrintObj.admin_name = String.valueOf(Configs.cashier_id);
         handoverInfoPrintObj.login_time = tvLoginTime.getText().toString();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         handoverInfoPrintObj.loginout_time = sdf.format(new Date());
@@ -388,7 +388,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
 
         sb.append(PrintHelper.CB_left).append(Configs.shop_name).append(PrintHelper.CB_right).append(PrintHelper.BR)
                 .append("时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
-                .append("收银员：").append(admin_name).append(PrintHelper.BR)
+                .append("收银员：").append(String.valueOf(Configs.cashier_id)).append(PrintHelper.BR)
                 .append("--------------------------------").append(PrintHelper.BR)
                 .append("品名  ").append("分类  ").append("单价  ").append("数量/重量  ").append("小计  ")
                 .append(PrintHelper.BR);
@@ -433,7 +433,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
 
         HandoverSaleListPrintObj obj = new HandoverSaleListPrintObj();
         obj.shop_name = Configs.shop_name;
-        obj.admin_name = admin_name;
+        obj.admin_name = String.valueOf(Configs.cashier_id);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         obj.time = sdf.format(new Date());
         obj.data = data;

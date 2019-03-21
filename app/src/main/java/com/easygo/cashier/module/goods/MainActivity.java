@@ -202,12 +202,13 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
             @Override
             public void onCommandError() {
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast("USB打印异常");
 //                        showToast(getString(R.string.str_choice_printer_command));
-//                    }
-//                });
+                    }
+                });
             }
 
             @Override

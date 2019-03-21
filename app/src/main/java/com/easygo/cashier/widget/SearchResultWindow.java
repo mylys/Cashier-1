@@ -39,7 +39,35 @@ public class SearchResultWindow extends PopupWindow {
 
         searchResultAdapter = new GoodsResponseAdapter();
 
-        rvSearchResult.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        rvSearchResult.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
+                int count = state.getItemCount();
+
+                if (count > 0) {
+                    if(count > 4){
+                        count = 4;
+                    }
+                    int realHeight = 0;
+                    int realWidth = 0;
+                    for(int i = 0;i < count; i++){
+                        View view = recycler.getViewForPosition(0);
+                        if (view != null) {
+                            measureChild(view, widthSpec, heightSpec);
+                            int measuredWidth = View.MeasureSpec.getSize(widthSpec);
+                            int measuredHeight = view.getMeasuredHeight();
+                            realWidth = realWidth > measuredWidth ? realWidth : measuredWidth;
+                            realHeight += measuredHeight;
+                        }
+                        setMeasuredDimension(realWidth, realHeight);
+                    }
+                } else {
+                    super.onMeasure(recycler, state, widthSpec, heightSpec);
+                }
+            }
+        });
+
+
         rvSearchResult.setAdapter(searchResultAdapter);
 
         DividerItemDecoration verticalDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);

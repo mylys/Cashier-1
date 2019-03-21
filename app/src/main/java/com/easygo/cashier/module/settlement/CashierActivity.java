@@ -485,7 +485,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         obj.trade_no = Configs.trade_no;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         obj.time = sdf.format(new Date());
-        obj.admin_name = Configs.admin_name;
+        obj.admin_name = String.valueOf(Configs.cashier_id);
         obj.data = mGoodsData;
         switch (mPayWay) {
             case PayWayView.WAY_CASH:
