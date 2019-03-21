@@ -12,6 +12,7 @@ public class CreateOrderRequestBody {
      * cashier_id : 358
      * shop_sn : GZ1002
      * member_id : 633
+     * buyer :
      * member_card_no : EG
      * total_money : 2400
      * real_pay : 2400
@@ -20,6 +21,7 @@ public class CreateOrderRequestBody {
     private int goods_count;
     private int cashier_id;
     private String shop_sn;
+    private String buyer;//会员昵称
     private int member_id;
     private String member_card_no;
     private int total_money;
@@ -52,6 +54,14 @@ public class CreateOrderRequestBody {
 
     public void setShop_sn(String shop_sn) {
         this.shop_sn = shop_sn;
+    }
+
+    public String getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(String buyer) {
+        this.buyer = buyer;
     }
 
     public int getMember_id() {

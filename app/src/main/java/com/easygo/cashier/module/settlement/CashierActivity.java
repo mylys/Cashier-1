@@ -912,6 +912,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         requestBody1.setGoods_count(mGoodsCount);
 
         if(MemberUtils.isMember && MemberUtils.memberInfo != null) {
+            requestBody1.setBuyer(MemberUtils.memberInfo.getReal_name());
             requestBody1.setMember_id(MemberUtils.memberInfo.getMember_id());
             requestBody1.setMember_card_no(MemberUtils.memberInfo.getCard_no());
         }
