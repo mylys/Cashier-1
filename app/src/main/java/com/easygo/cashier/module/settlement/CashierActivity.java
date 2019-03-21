@@ -543,7 +543,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             }
 //            showToast("付款码 --> " + auth_code);
 
-            float real_pay = getPayMoney();
+            float real_pay = mTotalMoney - mCoupon - mCouponMoney - mTempOrderPromotionMoney;
             if(real_pay <= 0) {
                 real_pay = 0.1f;
             }
