@@ -289,7 +289,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         orderHistoryGoodsAdapter.setHavePromotion(have_shop_promotion);
         orderHistoryGoodsAdapter.setNewData(orderHistoryInfo.getList());
         tvOrderNo.setText(orderHistoryInfo.getTrade_no());
-        tvCashierAcount.setText(orderHistoryInfo.getReal_name() == null ? "" : orderHistoryInfo.getReal_name());
+        tvCashierAcount.setText(orderHistoryInfo.getCashier_id() == 0? "": String.valueOf(orderHistoryInfo.getCashier_id()));
         int size = orderHistoryInfo.getList().size();
         int count = 0;
         for (int i = 0; i < size; i++) {
@@ -314,7 +314,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
             tvReceivableText.setText("");
         }
 
-        order_real_name = orderHistoryInfo.getReal_name() == null ? "" : orderHistoryInfo.getReal_name();
+        order_real_name = orderHistoryInfo.getCashier_id() == 0? "": String.valueOf(orderHistoryInfo.getCashier_id());
         order_number = orderHistoryInfo.getTrade_num();
         order_no_number = orderHistoryInfo.getTrade_no();
         total_price = Integer.parseInt(orderHistoryInfo.getTotal_money().replace(".", ""));

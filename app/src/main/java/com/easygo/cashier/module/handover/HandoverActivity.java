@@ -294,7 +294,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
 
 
         sb.append(PrintHelper.CB_left).append("交接班单据").append(PrintHelper.CB_right).append(PrintHelper.BR)
-                .append("收银员：").append(String.valueOf(Configs.cashier_id)).append(PrintHelper.BR)
+                .append("收银员：").append(Configs.cashier_id).append(PrintHelper.BR)
                 .append("登录时间：").append(tvLoginTime.getText().toString()).append(PrintHelper.BR)
                 .append("登出时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
                 .append("--------------------------------").append(PrintHelper.BR)
@@ -388,7 +388,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
 
         sb.append(PrintHelper.CB_left).append(Configs.shop_name).append(PrintHelper.CB_right).append(PrintHelper.BR)
                 .append("时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
-                .append("收银员：").append(String.valueOf(Configs.cashier_id)).append(PrintHelper.BR)
+                .append("收银员：").append(Configs.cashier_id).append(PrintHelper.BR)
                 .append("--------------------------------").append(PrintHelper.BR)
                 .append("品名  ").append("分类  ").append("单价  ").append("数量/重量  ").append("小计  ")
                 .append(PrintHelper.BR);

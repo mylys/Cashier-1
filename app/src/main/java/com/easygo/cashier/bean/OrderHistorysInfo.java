@@ -49,6 +49,7 @@ public class OrderHistorysInfo {
     private int status;
     private String admin_name;
     private String real_name;
+    private int cashier_id;
     private String cashier_discount;
     private List<ListBean> list;
     private List<ActivitiesBean> activities;
@@ -217,6 +218,14 @@ public class OrderHistorysInfo {
 
     public String getReal_name() {
         return real_name;
+    }
+
+    public int getCashier_id() {
+        return cashier_id;
+    }
+
+    public void setCashier_id(int cashier_id) {
+        this.cashier_id = cashier_id;
     }
 
     public void setReal_name(String real_name) {
