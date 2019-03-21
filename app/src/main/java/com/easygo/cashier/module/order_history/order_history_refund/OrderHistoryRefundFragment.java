@@ -195,6 +195,12 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                 adapter.addData(info);
                 infoList.add(info);
             }
+
+            if(infoList.size() == 1) {//只有一件商品时 默认选中退款 退货
+                GoodsRefundInfo goodsRefundInfo = infoList.get(0);
+                goodsRefundInfo.setSelectReturnOfGoods(true);
+                goodsRefundInfo.setSelectRefund(true);
+            }
         }
         if (adapter.getTotalRefund()) {
             btnRefund.setEnabled(false);

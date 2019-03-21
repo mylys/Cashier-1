@@ -79,7 +79,8 @@ public class PrinterHelpter {
 
 
             esc.addText(String.valueOf(index));
-            esc.addText(".");
+            esc.addText(". ");
+            esc.addText(data.getBarcode() + " ");
             esc.addText(data.getG_sku_name());
             esc.addText("   \n");
             esc.addText("     ");
@@ -113,7 +114,8 @@ public class PrinterHelpter {
 
 
                     esc.addText(String.valueOf(index));
-                    esc.addText(".");
+                    esc.addText(". ");
+                    esc.addText(data.getBarcode() + " ");
                     esc.addText(data.getG_sku_name());
                     esc.addText("   \n");
                     esc.addText("     ");
