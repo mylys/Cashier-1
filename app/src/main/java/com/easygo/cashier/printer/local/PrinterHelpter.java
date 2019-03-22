@@ -11,6 +11,7 @@ import com.easygo.cashier.printer.local.obj.HandoverSaleListPrintObj;
 import com.easygo.cashier.printer.local.obj.OrderHistoryGoodsListPrintObj;
 import com.easygo.cashier.printer.local.obj.OrderHistoryRefundPrintObj;
 import com.tools.command.EscCommand;
+import com.tools.command.LabelCommand;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class PrinterHelpter {
     public static final String TAG = PrinterHelpter.class.getSimpleName();
 
     /**
-     * 收银
+     * 收银、弹钱箱
      */
     public static Vector<Byte> cashier(CashierPrintObj obj) {
         EscCommand esc = new EscCommand();
@@ -170,6 +171,10 @@ public class PrinterHelpter {
         esc.addPrintAndLineFeed();
 
         esc.addPrintAndFeedLines((byte) 4);
+
+        esc.addPrintAndFeedLines((byte) 1);
+        // 开钱箱
+        esc.addGeneratePlus(LabelCommand.FOOT.F5, (byte) 255, (byte) 255);
 
         return esc.getCommand();
 //        return null;

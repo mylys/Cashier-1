@@ -1165,7 +1165,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         if (mPayWay == PayWayView.WAY_CASH) {//现金支付时
             //弹出钱箱
             mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, PrintHelper.pop_till);
-            PrinterUtils.getInstance().popTill();
         }
 
         mHandler.postDelayed(new Runnable() {
