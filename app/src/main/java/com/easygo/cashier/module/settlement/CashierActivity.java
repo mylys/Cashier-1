@@ -443,6 +443,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
                 goodsListBean.setDiscount(1);
                 goodsListBean.setGoods_name(data.getPrintName());
+                goodsListBean.setBarcode(data.getBarcode());
                 goodsListBean.setPrice(price_int);
 
                 switch (good.getItemType()) {
@@ -470,6 +471,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
                         goodsListBean.setDiscount(1);
                         goodsListBean.setGoods_name(data.getG_sku_name());
+                        goodsListBean.setBarcode(data.getBarcode());
                         goodsListBean.setPrice(price_int);
 
                         goodsListBean.setCount(String.valueOf(data.getCount()));

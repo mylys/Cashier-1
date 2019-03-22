@@ -15,6 +15,7 @@ public class PrintRequestBody {
     public static class GoodsListBean {
 
         private String goods_name;
+        private String barcode;
         private String count;
         private int discount;
         private int price;
@@ -26,6 +27,14 @@ public class PrintRequestBody {
 
         public void setGoods_name(String goods_name) {
             this.goods_name = goods_name;
+        }
+
+        public String getBarcode() {
+            return barcode;
+        }
+
+        public void setBarcode(String barcode) {
+            this.barcode = barcode;
         }
 
         public String getCount() {
