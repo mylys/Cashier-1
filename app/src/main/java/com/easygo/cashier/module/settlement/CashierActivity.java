@@ -7,7 +7,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.Printer;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -140,11 +139,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
      * 订单是否支付完成
      */
     private boolean mOrderFinished;
-
-    /**
-     * 需要同步刷新首页数据源
-     */
-    private boolean needRefreshData = false;
 
     /**
      * 创建订单中
@@ -694,6 +688,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
                         //清空键盘输入  回调afterTextChanged()
                         etMoney.setText("");
+
+                        //刷新首页和副屏
+                        refreshGoodsData();
                     }
                 });
                 tempPromotionDialog.showCenter(this);
@@ -711,7 +708,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
 
     /**
-     * 取消临时整单促销
+     * 取消优惠券
      */
     private void cancelCoupon() {
         if(CouponUtils.getInstance().getCouponInfo() == null) {
@@ -720,14 +717,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
         settlementView.setCouponVisiable(false);
 
-        needRefreshData = true;
-
         mCouponMoney = 0f;
         refreshRealPay();
         refreshSettlementView();
 
         //置空
         CouponUtils.getInstance().setCouponInfo(null);
+
+        refreshGoodsData();
 
     }
 
@@ -749,6 +746,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
         //清空键盘输入  回调afterTextChanged()
         etMoney.setText("");
+
+        //刷新首页和副屏
+        refreshGoodsData();
     }
 
     /**
@@ -802,6 +802,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                         //清空键盘输入  回调afterTextChanged()
                         etMoney.setText("");
                     }
+
+                    //刷新首页和副屏
+                    refreshGoodsData();
                 } else {
                     cancelCoupon();
                 }
@@ -881,9 +884,17 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         }
         mTempOrderPromotionMoney = 0f;
 
-        if(!mOrderFinished && needRefreshData) {//订单没有支付，并且需要刷新商品数据（点击了取消优惠券）时
-            EventUtils.post(Events.REFRESH_DATA, mGoodsData);
+        if(!mOrderFinished) {//刷新
+            //刷新首页和副屏
+            refreshGoodsData();
         }
+    }
+
+    /**
+     * 刷新商品数据 （首页 、副屏）
+     */
+    private void refreshGoodsData() {
+        EventUtils.post(Events.REFRESH_DATA, mGoodsData);
     }
 
     public void createOrder() {

@@ -30,6 +30,7 @@ import com.easygo.cashier.BarcodeUtils;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.ModulePath;
+import com.easygo.cashier.MyApplication;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.adapter.GoodsMultiItemAdapter;
@@ -555,7 +556,13 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             cancelCoupon();
         }
 
-        //显示正在参与活动
+        //判断是否有临时订单促销
+        if(ActivitiesUtils.getInstance().hasTempOrderPromotion()) {
+            float tempOrderPromotionMoney = ActivitiesUtils.getInstance().getTempOrderPromotionMoney();
+            coupon += tempOrderPromotionMoney;
+        }
+
+      //显示正在参与活动
         if (goods_coupon == 0 && member_coupon == 0 && shop_coupon == 0) {
 
             //没有任何促销、会员优惠
@@ -582,6 +589,11 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         if (!rvGoods.isComputingLayout()) {
             //刷新界面显示促销
             mGoodsMultiItemAdapter.notifyDataSetChanged();
+        }
+
+        //刷新用户副屏商品优惠显示
+        if(mUserGoodsScreen != null) {
+            mUserGoodsScreen.refreshGoodsData(mData);
         }
     }
 
@@ -622,7 +634,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         Display[] displays = mDisplayManager.getDisplays();
 
         if (mUserGoodsScreen == null && displays.length == 2) {
-            mUserGoodsScreen = new UserGoodsScreen(context,
+            mUserGoodsScreen = new UserGoodsScreen(MyApplication.sApplication,
                     displays[displays.length - 1], String.valueOf(Configs.cashier_id));// displays[1]是副屏
             mUserGoodsScreen.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             mUserGoodsScreen.show();
@@ -771,10 +783,10 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                         mGoodsMultiItemAdapter.addNoCodeItem(price);
                         rvGoods.smoothScrollToPosition(mGoodsMultiItemAdapter.getData().size() - 1);
                         //刷新副屏
-                        if (mUserGoodsScreen != null) {
-                            mUserGoodsScreen.addNoCodeItem(price);
-                            mUserGoodsScreen.toPosition();
-                        }
+//                        if (mUserGoodsScreen != null) {
+//                            mUserGoodsScreen.addNoCodeItem(price);
+//                            mUserGoodsScreen.toPosition();
+//                        }
                     }
                 });
 
@@ -1178,8 +1190,8 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 mUserGoodsScreen.show();
 
             //刷新用户商品列表页面数据
-            mUserGoodsScreen.addItem(result, count);
-            mUserGoodsScreen.toPosition();
+//            mUserGoodsScreen.addItem(result, count);
+//            mUserGoodsScreen.toPosition();
         }
 
         mIsSelfEncode = false;
@@ -1253,10 +1265,10 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                     }
                     rvGoods.smoothScrollToPosition(mGoodsMultiItemAdapter.getData().size() - 1);
                     //刷新副屏
-                    if (mUserGoodsScreen != null) {
-                        mUserGoodsScreen.addItem(list, 1);
-                        mUserGoodsScreen.toPosition();
-                    }
+//                    if (mUserGoodsScreen != null) {
+//                        mUserGoodsScreen.addItem(list, 1);
+//                        mUserGoodsScreen.toPosition();
+//                    }
 
                     clSearch.clearText();
                     mSearchResultWindow.dismiss();
@@ -1565,6 +1577,10 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         }
     }
 
+    /**
+     * 快速选择
+     * @param goodsResponses
+     */
     public void addChooseInfo(List<GoodsResponse> goodsResponses) {
         for (GoodsResponse info : goodsResponses) {
             List<GoodsResponse> infos = new ArrayList<>();
@@ -1582,18 +1598,19 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                     mUserGoodsScreen.show();
 
                 //刷新用户商品列表页面数据
-                mUserGoodsScreen.addItem(infos, 1);
-                mUserGoodsScreen.toPosition();
+//                mUserGoodsScreen.addItem(infos, 1);
+//                mUserGoodsScreen.toPosition();
             }
         }
 
-        computePrice(mTotalMoney, mGoodsCount, 0);
+//        computePrice(mTotalMoney, mGoodsCount, 0);
     }
 
     /**
      * 刷新商品数据
      */
     public void refreshGoodsData(List<GoodsEntity<GoodsResponse>> data) {
+        Log.i(TAG, "refreshGoodsData: ");
         mData = data;
         mGoodsMultiItemAdapter.refreshGoodsData(data);
         mData = mGoodsMultiItemAdapter.getData();
@@ -1615,10 +1632,6 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             }
         }
 
-
-        if (mUserGoodsScreen != null) {
-            mUserGoodsScreen.refreshGoodsData(mData);
-        }
     }
 
     public void lockCashier() {

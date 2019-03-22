@@ -54,7 +54,7 @@ public class PrinterHelpter {
         esc.addText("收银员：");
         esc.addText(obj.admin_name + "\n");
         esc.addText("--------------------------------\n");
-        esc.addText("品名  单价  折扣  数量  小计  \n");
+        esc.addText(" 品名  单价  折扣  数量  小计  \n");
 
         List<GoodsEntity<GoodsResponse>> goodsData = obj.data;
 
@@ -62,6 +62,7 @@ public class PrinterHelpter {
         int size = goodsData.size();
         float count = 0;
         float price = 0f;
+        float discount = 0f;
         String subtotal;
         GoodsEntity<GoodsResponse> good;
         GoodsResponse data;
@@ -73,7 +74,8 @@ public class PrinterHelpter {
 
             count = good.getCount();
             price = Float.valueOf(data.getPrice());
-            subtotal = df.format(count * price);
+            discount = Float.valueOf(data.getDiscount_price());
+            subtotal = df.format(count * price - discount);
 
 
             esc.addText(String.valueOf(index));
@@ -106,7 +108,8 @@ public class PrinterHelpter {
 
                     count = good.getCount();
                     price = Float.valueOf(data.getPrice());
-                    subtotal = df.format(count * price);
+                    discount = Float.valueOf(data.getDiscount_price());
+                    subtotal = df.format(count * price - discount);
 
 
                     esc.addText(String.valueOf(index));

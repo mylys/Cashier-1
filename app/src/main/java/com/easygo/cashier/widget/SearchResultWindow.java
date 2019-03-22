@@ -44,6 +44,11 @@ public class SearchResultWindow extends PopupWindow {
             public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
                 int count = state.getItemCount();
 
+                if(searchResultAdapter.getEmptyViewCount() == 1) {
+                    super.onMeasure(recycler, state, widthSpec, heightSpec);
+                    return;
+                }
+
                 if (count > 0) {
                     if(count > 4){
                         count = 4;
@@ -68,7 +73,8 @@ public class SearchResultWindow extends PopupWindow {
         });
 
 
-        rvSearchResult.setAdapter(searchResultAdapter);
+        searchResultAdapter.bindToRecyclerView(rvSearchResult);
+//        rvSearchResult.setAdapter(searchResultAdapter);
 
         DividerItemDecoration verticalDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         verticalDecoration.setDrawable(context.getResources().getDrawable(R.drawable.bg_item_decoration_vertical));
@@ -113,7 +119,7 @@ public class SearchResultWindow extends PopupWindow {
 
     /* 设置adapter空数据 */
     private void setEmpty(Context context) {
-        View emptyView = LayoutInflater.from(context).inflate(R.layout.item_empty_view, null);
+        View emptyView = LayoutInflater.from(context).inflate(R.layout.item_empty_view, null, false);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         TextView textView = emptyView.findViewById(R.id.text);

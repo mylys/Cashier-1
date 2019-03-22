@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.easygo.cashier.ActivitiesUtils;
 import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.GoodsResponse;
@@ -213,7 +212,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
     //无码商品
     public void addNoCodeItem(float price) {
-        String code = String.valueOf(df.format(price));
+        String code = df.format(price);
 
         //为商品添加时间戳，唯一识别商品以方便后台增减库存
         long timeStamp = System.currentTimeMillis();
@@ -665,7 +664,12 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     public void setOrdersData(List<GoodsEntity<GoodsResponse>> list) {
         ensureNotNull();
         for (GoodsEntity<GoodsResponse> entity : list) {
-            data.put(entity.getData().getBarcode(), entity);
+            if(entity.getData().getType() == GoodsResponse.type_no_code) {
+                String price = entity.getData().getPrice();
+                data.put(df.format(Float.valueOf(price)), entity);
+            } else {
+                data.put(entity.getData().getBarcode(), entity);
+            }
             barcodeData.add(entity.getData().getBarcode());
         }
         mData.addAll(list);
@@ -686,7 +690,12 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         limit.clear();
 
         for (GoodsEntity<GoodsResponse> entity : list) {
-            data.put(entity.getData().getBarcode(), entity);
+            if(entity.getData().getType() == GoodsResponse.type_no_code) {
+                String price = entity.getData().getPrice();
+                data.put(df.format(Float.valueOf(price)), entity);
+            } else {
+                data.put(entity.getData().getBarcode(), entity);
+            }
             barcodeData.add(entity.getData().getBarcode());
         }
         mData.addAll(list);
@@ -771,6 +780,9 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         float temp;
         float count;
         float price;
+        float temp_goods_discount;
+        float goods_discount;
+        float member_discount;
         float coupon;
         float result = 0;
         GoodsResponse good;
@@ -782,8 +794,10 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 continue;
             }
 
-            coupon = Float.valueOf(good.getDiscount_price());
-            if (coupon > 0) {
+            temp_goods_discount = good.getTemp_goods_discount();
+            goods_discount = good.getGoods_activity_discount();
+            member_discount = good.getMember_discount();
+            if (temp_goods_discount != 0 || goods_discount != 0 || member_discount != 0) {
                 continue;
             }
 

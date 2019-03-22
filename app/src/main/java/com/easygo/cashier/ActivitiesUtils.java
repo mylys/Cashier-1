@@ -11,16 +11,16 @@ import com.easygo.cashier.module.promotion.base.IGoodsPromotion;
 import com.easygo.cashier.module.promotion.base.IPromotion;
 import com.easygo.cashier.module.promotion.base.PromotionGoods;
 import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
+import com.easygo.cashier.module.promotion.goods.GoodsBundlePromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsFixedPromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsFulfilMoneyPromotion;
-import com.easygo.cashier.module.promotion.goods.GoodsBundlePromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsNormalPromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsTimePromotion;
 import com.easygo.cashier.module.promotion.shop.BaseShopPromotion;
 import com.easygo.cashier.module.promotion.shop.ShopNormalPromotion;
 import com.easygo.cashier.module.promotion.shop.ShopTimePromotion;
-import com.easygo.cashier.module.promotion.temp.TempOrderPromotion;
 import com.easygo.cashier.module.promotion.temp.TempGoodsPromotion;
+import com.easygo.cashier.module.promotion.temp.TempOrderPromotion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,6 +61,7 @@ public class ActivitiesUtils {
 
     private float mShopPromotionMoney;
     private float mGoodsPromotionMoney;
+    private float mTempGoodsPromotionMoney;
     private float mTempOrderPromotionMoney;
     private boolean goods_with_coupon = true;
     private boolean shop_with_coupon = true;
@@ -588,12 +589,17 @@ public class ActivitiesUtils {
         if(currentShopPromotion != null && mShopPromotionMoney != 0) {
             int data_size = data.size();
             float discount_price;
+            float goods_discount;
+            float temp_goods_discount;
+            float member_discount;
             float subtotal;
             for (int i = 0; i < data_size; i++) {
                 GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
                 GoodsResponse good = goodsEntity.getData();
-                discount_price = Float.parseFloat(good.getDiscount_price());
-                if(discount_price != 0) {
+                temp_goods_discount = good.getTemp_goods_discount();
+                goods_discount = good.getGoods_activity_discount();
+                member_discount = good.getMember_discount();
+                if(temp_goods_discount != 0 || goods_discount != 0 || member_discount != 0) {
                     continue;
                 }
                 if(goodsEntity.isExcludeInShopActivity()) {
@@ -612,6 +618,7 @@ public class ActivitiesUtils {
 
 
     public void getCurrentGoodsPromotions(List<GoodsEntity<GoodsResponse>> data) {
+        mTempGoodsPromotionMoney = 0f;
         mGoodsPromotionMoney = 0f;
         int size = data.size();
         BaseGoodsPromotion promotion;
@@ -622,6 +629,7 @@ public class ActivitiesUtils {
         }
         goods_with_coupon = true;
         hasTempGoodsPromotion = false;
+        float temp_goods_discount = 0f;
         for (int i = 0; i < size; i++) {
 
             promotion = data.get(i).getPromotion();
@@ -629,7 +637,13 @@ public class ActivitiesUtils {
                 //添加到正在参与的商品促销集合中
                 currentGoodsPromotions.add(promotion);
                 //累加商品促销金额
-                mGoodsPromotionMoney += Float.valueOf(data.get(i).getData().getDiscount_price());
+                temp_goods_discount = data.get(i).getData().getTemp_goods_discount();
+                mTempGoodsPromotionMoney += temp_goods_discount;
+                if(temp_goods_discount != 0) {
+                    mGoodsPromotionMoney += temp_goods_discount;
+                } else {
+                    mGoodsPromotionMoney += data.get(i).getData().getGoods_activity_discount();
+                }
                 if(promotion.getWith_coupon() == 0) {
                     goods_with_coupon = false;
                 }
@@ -674,6 +688,14 @@ public class ActivitiesUtils {
 
     public float getGoodsPromotionMoney() {
         return mGoodsPromotionMoney;
+    }
+
+    public float getTempGoodsPromotionMoney() {
+        return mTempGoodsPromotionMoney;
+    }
+
+    public float getTempOrderPromotionMoney() {
+        return mTempOrderPromotionMoney;
     }
 
     public List<String> getCurrentPromotionNames() {
