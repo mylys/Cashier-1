@@ -530,7 +530,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
         helper.setText(R.id.tv_processing_name, processing.getG_sku_name())
                 .setText(R.id.tv_processing_price, processing.getProcess_price())
-                .setText(R.id.tv_processing_coupon, processing.getDiscount_price())
+                .setText(R.id.tv_processing_coupon, df.format(Float.valueOf(processing.getDiscount_price())))
                 .setText(R.id.tv_processing_subtotal, String.valueOf(df.format(processing_subtotal)))
                 .setText(R.id.tv_processing_count, String.valueOf(processing.getCount()));
     }

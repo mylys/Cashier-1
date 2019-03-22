@@ -387,23 +387,23 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
             @Override
             public void onProcessingCheckedChanged(boolean isChecked, int position, GoodsResponse processing) {
-                if (mUserGoodsScreen != null) {
-                    mUserGoodsScreen.chooseProcessing(position, processing);
-                }
+//                if (mUserGoodsScreen != null) {
+//                    mUserGoodsScreen.chooseProcessing(position, processing);
+//                }
             }
 
             @Override
             public void onCountChanged(int position, int count) {
-                if (mUserGoodsScreen != null) {
-                    mUserGoodsScreen.onCountChanged(position, count);
-                }
+//                if (mUserGoodsScreen != null) {
+//                    mUserGoodsScreen.onCountChanged(position, count);
+//                }
             }
 
             @Override
             public void onItemRemoved(int position) {
-                if (mUserGoodsScreen != null) {
-                    mUserGoodsScreen.onItemRemoved(position);
-                }
+//                if (mUserGoodsScreen != null) {
+//                    mUserGoodsScreen.onItemRemoved(position);
+//                }
             }
 
         });
@@ -496,6 +496,10 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             //清空数据时
             refreshPrice(price, count, coupon);
             showCurrentActivities(null);
+
+            if(mUserGoodsScreen != null) {
+                mUserGoodsScreen.clear();
+            }
             return;
         }
 
@@ -593,6 +597,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
         //刷新用户副屏商品优惠显示
         if(mUserGoodsScreen != null) {
+            Log.i(TAG, "computePrice: 刷新用户副屏");
             mUserGoodsScreen.refreshGoodsData(mData);
         }
     }
@@ -687,8 +692,8 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             public void onItemClicked(GoodsResponse result) {
                 mGoodsMultiItemAdapter.chooseProcessing(position, current, result);
                 //刷新副屏
-                if (mUserGoodsScreen != null)
-                    mUserGoodsScreen.chooseProcessing(position, result);
+//                if (mUserGoodsScreen != null)
+//                    mUserGoodsScreen.chooseProcessing(position, result);
             }
         });
         mProcessingChoiceDialog.setData(processing_list);

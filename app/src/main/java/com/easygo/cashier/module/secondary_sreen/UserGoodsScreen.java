@@ -147,6 +147,7 @@ public class UserGoodsScreen extends Presentation {
 
     public void setOrdersData(List<GoodsEntity<GoodsResponse>> goodsEntities) {
         mUserGoodsAdapter.addData(goodsEntities);
+        toPosition();
     }
 
     public void notifyAdapter() {
@@ -168,5 +169,6 @@ public class UserGoodsScreen extends Presentation {
 
     public void refreshGoodsData(List<GoodsEntity<GoodsResponse>> data) {
         mUserGoodsAdapter.refreshGoodsData(data);
+        toPosition();
     }
 }
