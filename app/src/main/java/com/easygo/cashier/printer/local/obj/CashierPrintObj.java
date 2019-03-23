@@ -18,4 +18,5 @@ public class CashierPrintObj {
     public float real_pay;
     public float change;
     public String pay_type;
+    public boolean pop_till;
 }

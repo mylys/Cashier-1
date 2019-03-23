@@ -497,6 +497,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         switch (mPayWay) {
             case PayWayView.WAY_CASH:
                 obj.pay_type = "现金支付";
+                obj.pop_till = true;
                 break;
             case PayWayView.WAY_ALIPAY:
                 obj.pay_type = "支付宝支付";

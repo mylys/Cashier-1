@@ -175,9 +175,11 @@ public class PrinterHelpter {
 
         esc.addPrintAndFeedLines((byte) 4);
 
-        esc.addPrintAndFeedLines((byte) 1);
-        // 开钱箱
-        esc.addGeneratePlus(LabelCommand.FOOT.F5, (byte) 255, (byte) 255);
+        if(obj.pop_till) {
+            esc.addPrintAndFeedLines((byte) 1);
+            // 开钱箱
+            esc.addGeneratePlus(LabelCommand.FOOT.F5, (byte) 255, (byte) 255);
+        }
 
         return esc.getCommand();
 //        return null;
