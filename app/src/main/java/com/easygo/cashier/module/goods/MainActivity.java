@@ -183,12 +183,16 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
             @Override
             public void onPleaseConnectPrinter() {
-//                showToast(getString(R.string.str_cann_printer));
+                if(dialog != null && dialog.isShow()) {
+                    showToast(getString(R.string.str_cann_printer));
+                }
             }
 
             @Override
             public void onConnectFailed() {
-//                showToast(getString(R.string.str_conn_fail));
+                if(dialog != null && dialog.isShow()) {
+                    showToast(getString(R.string.str_conn_fail));
+                }
             }
 
             @Override
@@ -213,7 +217,9 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
             @Override
             public void onNeedReplugged() {
-//                showToast(getString(R.string.str_need_replugged));
+                if(dialog != null && dialog.isShow()) {
+                    showToast(getString(R.string.str_need_replugged));
+                }
             }
         });
 

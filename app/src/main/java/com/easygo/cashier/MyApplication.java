@@ -13,10 +13,13 @@ import com.easygo.cashier.module.goods.MainActivity;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.permission.PermissionActivity;
 import com.niubility.library.base.BaseApplication;
+import com.niubility.library.utils.LogUtils;
 import com.niubility.library.utils.ToastUtils;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.BuglyStrategy;
 import com.tencent.bugly.beta.Beta;
+
+import java.io.File;
 
 public class MyApplication extends BaseApplication {
 

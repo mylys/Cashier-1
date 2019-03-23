@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.usb.UsbDevice;
-import android.hardware.usb.UsbDeviceConnection;
-import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -201,6 +199,7 @@ public class DeviceConnFactoryManager {
             queryCommand();
         } else {
             Log.i(TAG, "openPort: 端口打开失败");
+            PrinterLog.write("openPort: 端口打开失败");
             if (this.mPort != null) {
                     this.mPort=null;
             }
@@ -435,58 +434,75 @@ public class DeviceConnFactoryManager {
                     data.add(esc[i]);
                 }
                 sendDataImmediately(data); //发送esc数据
+                //开启计时器，隔4000毫秒没有没返回值时停止读取打印机数据线程并且关闭端口
                 //开启计时器，隔2000毫秒没有没返回值时发送TSC查询打印机状态指令
                 final ThreadFactoryBuilder threadFactoryBuilder = new ThreadFactoryBuilder("Timer");
                 final ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1, threadFactoryBuilder);
                 scheduledExecutorService.schedule(threadFactoryBuilder.newThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (currentPrinterCommand == null || currentPrinterCommand != PrinterCommand.ESC) {
-                            Log.e(TAG, Thread.currentThread().getName());
-                            Log.i(TAG, "queryPrinterCommand: tsc");
-                            //发送TSC查询打印机状态指令
-                            sendCommand = tsc;
-                            Vector<Byte> data = new Vector<>(tsc.length);
-                            for (int i = 0; i < tsc.length; i++) {
-                                data.add(tsc[i]);
+                        if(currentPrinterCommand==null){
+                            if (reader != null) {
+                                reader.cancel();
+                                mPort.closePort();
+                                isOpenPort = false;
+                                mPort=null;
+                                Log.i(TAG, "queryPrinterCommand: 连接失败");
+                                PrinterLog.write("queryPrinterCommand: 连接失败");
+                                sendStateBroadcast(CONN_STATE_FAILED);
                             }
-                            sendDataImmediately(data);
-                            //开启计时器，隔2000毫秒没有没返回值时发送CPCL查询打印机状态指令
-                            scheduledExecutorService.schedule(threadFactoryBuilder.newThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (currentPrinterCommand == null||(currentPrinterCommand != PrinterCommand.ESC&&currentPrinterCommand != PrinterCommand.TSC)) {
-                                        Log.e(TAG, Thread.currentThread().getName());
-                                        Log.i(TAG, "queryPrinterCommand: cpcl");
-                                        //发送CPCL查询打印机状态指令
-                                        sendCommand=cpcl;
-                                        Vector<Byte> data =new Vector<Byte>(cpcl.length);
-                                        for (int i=0;i<cpcl.length;i++){
-                                            data.add(cpcl[i]);
-                                        }
-                                        sendDataImmediately(data);
-                                        //开启计时器，隔2000毫秒打印机没有响应者停止读取打印机数据线程并且关闭端口
-                                        scheduledExecutorService.schedule(threadFactoryBuilder.newThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                if(currentPrinterCommand==null){
-                                                    if (reader != null) {
-                                                        reader.cancel();
-                                                        mPort.closePort();
-                                                        isOpenPort = false;
-                                                        mPort=null;
-                                                        Log.i(TAG, "queryPrinterCommand: 连接失败");
-                                                        sendStateBroadcast(CONN_STATE_FAILED);
-                                                    }
-                                                }
-                                            }
-                                        }),2000, TimeUnit.MILLISECONDS);
-                                    }
-                                }
-                            }), 2000, TimeUnit.MILLISECONDS);
                         }
+
+
+//                        if (currentPrinterCommand == null || currentPrinterCommand != PrinterCommand.ESC) {
+//                            Log.e(TAG, Thread.currentThread().getName());
+//                            Log.i(TAG, "queryPrinterCommand: tsc");
+//                            PrinterLog.write("queryPrinterCommand: tsc");
+//                            //发送TSC查询打印机状态指令
+//                            sendCommand = tsc;
+//                            Vector<Byte> data = new Vector<>(tsc.length);
+//                            for (int i = 0; i < tsc.length; i++) {
+//                                data.add(tsc[i]);
+//                            }
+//                            sendDataImmediately(data);
+//                            //开启计时器，隔2000毫秒没有没返回值时发送CPCL查询打印机状态指令
+//                            scheduledExecutorService.schedule(threadFactoryBuilder.newThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    if (currentPrinterCommand == null||(currentPrinterCommand != PrinterCommand.ESC&&currentPrinterCommand != PrinterCommand.TSC)) {
+//                                        Log.e(TAG, Thread.currentThread().getName());
+//                                        Log.i(TAG, "queryPrinterCommand: cpcl");
+//                                        PrinterLog.write("queryPrinterCommand: cpcl");
+//                                        //发送CPCL查询打印机状态指令
+//                                        sendCommand=cpcl;
+//                                        Vector<Byte> data =new Vector<Byte>(cpcl.length);
+//                                        for (int i=0;i<cpcl.length;i++){
+//                                            data.add(cpcl[i]);
+//                                        }
+//                                        sendDataImmediately(data);
+//                                        //开启计时器，隔2000毫秒打印机没有响应者停止读取打印机数据线程并且关闭端口
+//                                        scheduledExecutorService.schedule(threadFactoryBuilder.newThread(new Runnable() {
+//                                            @Override
+//                                            public void run() {
+//                                                if(currentPrinterCommand==null){
+//                                                    if (reader != null) {
+//                                                        reader.cancel();
+//                                                        mPort.closePort();
+//                                                        isOpenPort = false;
+//                                                        mPort=null;
+//                                                        Log.i(TAG, "queryPrinterCommand: 连接失败");
+//                                                        PrinterLog.write("queryPrinterCommand: 连接失败");
+//                                                        sendStateBroadcast(CONN_STATE_FAILED);
+//                                                    }
+//                                                }
+//                                            }
+//                                        }),2000, TimeUnit.MILLISECONDS);
+//                                    }
+//                                }
+//                            }), 2000, TimeUnit.MILLISECONDS);
+//                        }
                     }
-                }), 2000, TimeUnit.MILLISECONDS);
+                }), 4000, TimeUnit.MILLISECONDS);
             }
         });
     }
@@ -529,16 +545,21 @@ public class DeviceConnFactoryManager {
         }
     }
 
+    /**是否接收到打印机返回的数据*/
+    public boolean hasAcceptPrinterData = false;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case READ_DATA:
+                    hasAcceptPrinterData = true;
                     Log.i(TAG, "handleMessage: 读取打印机返回数据...");
                     int cnt = msg.getData().getInt(READ_DATA_CNT); //数据长度 >0;
                     byte[] buffer = msg.getData().getByteArray(READ_BUFFER_ARRAY);  //数据
                     //这里只对查询状态返回值做处理，其它返回值可参考编程手册来解析
                     if (buffer == null) {
+                        PrinterLog.write("handleMessage: buffer = null");
                         return;
                     }
                     int result = judgeResponseType(buffer[0]); //数据右移
@@ -559,16 +580,19 @@ public class DeviceConnFactoryManager {
                                     status += " "+MyApplication.sApplication.getString(R.string.str_printer_out_of_paper);
                                     printer_status = ESC_STATE_PAPER_ERR;
                                     sendStateBroadcast(CONN_STATE_CONNECTED_PAPER_ERR);
+                                    PrinterLog.write("esc缺纸");
                                 }
                                 if ((buffer[0] & ESC_STATE_COVER_OPEN) > 0) {
                                     status += " "+MyApplication.sApplication.getString(R.string.str_printer_open_cover);
                                     printer_status = ESC_STATE_COVER_OPEN;
                                     sendStateBroadcast(CONN_STATE_CONNECTED_COVER_OPEN_ERR);
+                                    PrinterLog.write("esc开盖");
                                 }
                                 if ((buffer[0] & ESC_STATE_ERR_OCCURS) > 0) {
                                     status += " "+MyApplication.sApplication.getString(R.string.str_printer_error);
                                     printer_status = ESC_STATE_ERR_OCCURS;
                                     sendStateBroadcast(CONN_STATE_CONNECTED_ERR_OCCURS);
+                                    PrinterLog.write("esc出错");
                                 }
                                 System.out.println(MyApplication.sApplication.getString(R.string.str_state) + status);
                                 String mode=MyApplication.sApplication.getString(R.string.str_printer_printmode_esc);
@@ -581,17 +605,21 @@ public class DeviceConnFactoryManager {
                         //设置当前打印机模式为TSC模式
                         if (currentPrinterCommand == null) {
                             currentPrinterCommand = PrinterCommand.TSC;
+                            PrinterLog.write("handleMessage: 已连接 TSC");
                             sendStateBroadcast(CONN_STATE_CONNECTED);
                         } else {
                             if (cnt == 1) {//查询打印机实时状态
                                 if ((buffer[0] & TSC_STATE_PAPER_ERR) > 0) {//缺纸
                                     status += " "+MyApplication.sApplication.getString(R.string.str_printer_out_of_paper);
+                                    PrinterLog.write("tsc缺纸");
                                 }
                                 if ((buffer[0] & TSC_STATE_COVER_OPEN) > 0) {//开盖
                                     status += " "+MyApplication.sApplication.getString(R.string.str_printer_open_cover);
+                                    PrinterLog.write("tsc开盖");
                                 }
                                 if ((buffer[0] & TSC_STATE_ERR_OCCURS) > 0) {//打印机报错
                                     status += " "+MyApplication.sApplication.getString(R.string.str_printer_error);
+                                    PrinterLog.write("tsc出错");
                                 }
                                 System.out.println(MyApplication.sApplication.getString(R.string.str_state) + status);
                                 String mode=MyApplication.sApplication.getString(R.string.str_printer_printmode_tsc);
@@ -605,15 +633,18 @@ public class DeviceConnFactoryManager {
                     }else if(sendCommand==cpcl){
                         if (currentPrinterCommand == null) {
                             currentPrinterCommand = PrinterCommand.CPCL;
+                            PrinterLog.write("handleMessage: 已连接 CPCL");
                             sendStateBroadcast(CONN_STATE_CONNECTED);
                         }else {
                             if (cnt == 1) {
                                 System.out.println(MyApplication.sApplication.getString(R.string.str_state) + status);
                                 if ((buffer[0] ==CPCL_STATE_PAPER_ERR)) {//缺纸
                                     status += " "+MyApplication.sApplication.getString(R.string.str_printer_out_of_paper);
+                                    PrinterLog.write("cpcl缺纸");
                                 }
                                 if ((buffer[0] ==CPCL_STATE_COVER_OPEN)) {//开盖
                                     status += " "+MyApplication.sApplication.getString(R.string.str_printer_open_cover);
+                                    PrinterLog.write("cpcl开盖");
                                 }
                                 String mode=MyApplication.sApplication.getString(R.string.str_printer_printmode_cpcl);
                                 Utils.toast(MyApplication.sApplication, mode+" "+status);

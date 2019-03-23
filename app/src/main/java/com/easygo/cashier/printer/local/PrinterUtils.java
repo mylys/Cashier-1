@@ -17,6 +17,9 @@ import com.tools.command.LabelCommand;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -34,7 +37,7 @@ public class PrinterUtils {
         static final PrinterUtils sInstance = new PrinterUtils();
     }
 
-    private LinkedList<CMD> queue = new LinkedList<>();
+    public LinkedList<CMD> queue = new LinkedList<>();
 
     private static class CMD {
         public int type;
@@ -56,6 +59,8 @@ public class PrinterUtils {
             if(mListener != null) {
                 mListener.onPleaseConnectPrinter();
             }
+        } else {
+            PrinterLog.write("checkPrinterStateAndExecQueue 打印机未连接");
         }
     }
 
@@ -64,10 +69,10 @@ public class PrinterUtils {
             Log.i(TAG, "execQueue: 执行任务");
             CMD cmd = queue.removeFirst();
 
-            if(System.currentTimeMillis() - cmd.timeStamp > 5 * 60 * 1000) {
-                //超过一定时间的 不再执行
-                return;
-            }
+//            if(System.currentTimeMillis() - cmd.timeStamp > 5 * 60 * 1000) {
+//                //超过一定时间的 不再执行
+//                return;
+//            }
             ThreadPool.getInstantiation().addTask(cmd.task);
         }
     }
@@ -121,6 +126,7 @@ public class PrinterUtils {
                             }
                         } else {
                             Log.i(TAG, "onReceive: usb权限被拒绝 " + device);
+                            PrinterLog.write("onReceive: usb权限被拒绝");
                             if(mListener != null) {
                                 mListener.onUsbPermissionDeny();
                             }
@@ -282,16 +288,32 @@ public class PrinterUtils {
                     }
                     DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].sendDataImmediately(data);
                 }else if (DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].getCurrentPrinterCommand() == PrinterCommand.TSC) {
+                    PrinterLog.write("getPrinterState tsc模式");
                     for (int i = 0; i < tsc.length; i++) {
                         data.add(tsc[i]);
                     }
                     DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].sendDataImmediately(data);
                 }else if (DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].getCurrentPrinterCommand() == PrinterCommand.CPCL) {
+                    PrinterLog.write("getPrinterState tsc模式");
                     for (int i = 0; i < cpcl.length; i++) {
                         data.add(cpcl[i]);
                     }
                     DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].sendDataImmediately(data);
                 }
+                //隔4秒 判断是否接收到打印机返回的数据
+                DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].hasAcceptPrinterData = false;
+                final ThreadFactoryBuilder threadFactoryBuilder = new ThreadFactoryBuilder("Timer");
+                final ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1, threadFactoryBuilder);
+                scheduledExecutorService.schedule(threadFactoryBuilder.newThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if(!DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].hasAcceptPrinterData) {
+                            PrinterLog.write("接收打印机返回失败");
+                            Utils.toast(MyApplication.sApplication, "接受打印机返回失败");
+                        }
+                    }
+                }), 4000, TimeUnit.MILLISECONDS);
             }
         });
         return STATE_CONNECTING;
@@ -389,6 +411,7 @@ public class PrinterUtils {
                     // 发送数据
                     DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].sendDataImmediately(datas);
                 } else {
+                    PrinterLog.write("弹钱箱 不是ESC模式");
                     if(mListener != null) {
                         mListener.onCommandError();
                     }
@@ -439,6 +462,7 @@ public class PrinterUtils {
             @Override
             public void run() {
                 if (!PrinterUtils.getInstance().isEscPrinterCommand()) {
+                    PrinterLog.write("打印 不是ESC模式");
                     if (mListener != null) {
                         mListener.onCommandError();
                     }

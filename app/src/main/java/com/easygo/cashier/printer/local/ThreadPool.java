@@ -66,6 +66,8 @@ public class ThreadPool {
 
         if (threadPoolExecutor != null && threadPoolExecutor.getActiveCount() < MAX_POOL_COUNTS) {
             threadPoolExecutor.execute(runnable);
+        } else {
+            PrinterLog.write("线程池异常:" + threadPoolExecutor.getActiveCount());
         }
     }
 

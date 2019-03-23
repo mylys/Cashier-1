@@ -877,6 +877,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 if (editDialog == null) {
                     editDialog = new GeneraEditDialog();
                 }
+                editDialog.setVisiable(true);
                 editDialog.showCenter(getActivity());
                 editDialog.setType(GeneraEditDialog.ENTRY_ORDER);
                 editDialog.setTitle(getResources().getString(R.string.text_entry_orders));
@@ -1072,6 +1073,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         if (editDialog == null) {
             editDialog = new GeneraEditDialog();
         }
+        editDialog.setVisiable(true);
         editDialog.showCenter(getActivity());
         editDialog.setTitle(getResources().getString(R.string.text_cashbox_accredit));
         editDialog.setType(Configs.till_auth == 1 ? GeneraEditDialog.USER_ACCREDIT : GeneraEditDialog.USER_ACCOUNT);
