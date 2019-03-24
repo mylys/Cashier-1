@@ -1054,6 +1054,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             goodsBean.setCount(count);
             if (good.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
                 price = Float.valueOf(data.getProcess_price());
+            } else if (good.getItemType() == GoodsEntity.TYPE_WEIGHT) {
+                price = Float.valueOf(data.getPrice()) * count;
             } else {
                 price = Float.valueOf(data.getPrice());
             }
@@ -1072,7 +1074,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                         //设置类型
                         goodsBean.setType(data.getType());
                         goodsBean.setCount(data.getCount());
-                        price = Float.valueOf(data.getProcess_price());
+                        price = Float.valueOf(data.getProcess_price()) * data.getCount();
                         goodsBean.setPrice(Integer.valueOf(df.format(price * 100)));
                         goodsBean.setBarcode(data.getBarcode());
                         list.add(goodsBean);

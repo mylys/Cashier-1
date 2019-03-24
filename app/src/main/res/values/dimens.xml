@@ -57,7 +57,7 @@
 
 
     <!--功能列表-->
-    <dimen name="function_list_width">@dimen/x1159</dimen>
+    <dimen name="function_list_width">@dimen/x1160</dimen>
     <dimen name="function_list_height">@dimen/y632</dimen>
     <dimen name="function_list_item_width">@dimen/x289</dimen>
     <dimen name="function_list_item_height">@dimen/y273</dimen>

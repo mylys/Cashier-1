@@ -1,7 +1,7 @@
 package com.easygo.cashier.printer.local;
 
 import com.niubility.library.base.BaseApplication;
-import com.niubility.library.tools.FileUtils;
+import com.niubility.library.utils.FileUtils;
 import com.niubility.library.utils.LogUtils;
 
 import java.io.File;
