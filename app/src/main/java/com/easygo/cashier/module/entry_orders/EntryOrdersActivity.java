@@ -46,7 +46,7 @@ public class EntryOrdersActivity extends BaseActivity {
     }
 
     private void init() {
-        clTitle.setCashierAccount(Configs.admin_name);
+        clTitle.setCashierAccount(String.valueOf(Configs.cashier_id));
         clTitle.setTitle(getResources().getString(R.string.text_entry_orders_list));
 
         fragment = getSupportFragmentManager().findFragmentByTag(TAG_ENTRY_ORDERS);

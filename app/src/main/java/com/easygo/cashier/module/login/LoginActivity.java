@@ -490,7 +490,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
     private void login() {
         //跳转首页
         ARouter.getInstance().build(ModulePath.goods)
-                .withString("admin_name", Configs.admin_name)
+                .withString("admin_name", String.valueOf(Configs.cashier_id))
                 .navigation();
         showToast("登录成功：" + Configs.admin_name);
         finish();
