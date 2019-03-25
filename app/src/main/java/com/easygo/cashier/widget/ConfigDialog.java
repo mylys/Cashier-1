@@ -117,7 +117,7 @@ public class ConfigDialog extends BaseDialog {
         etId.setText(appkey);
         etSecret.setText(secret);
         if("dev".equals(BuildConfig.BUILD_TYPE)) {
-            etSecret.setText("d908936a0d53a459c117227b8f1d8608");
+            etSecret.setText("134ad99e0d7a37ecc89e544938426e58");
         } else if("T".equals(BuildConfig.BUILD_TYPE)) {
             etSecret.setText("121a653ac09dd3164fb4549edb0294d6");
         }

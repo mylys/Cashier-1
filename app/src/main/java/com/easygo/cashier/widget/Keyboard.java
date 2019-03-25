@@ -37,6 +37,10 @@ public class Keyboard extends ConstraintLayout {
 
     private TextView[] mTvs;
     private EditText mEditText;
+    /**
+     * 小数点后保留的位数，-1为不限制
+     */
+    private int retain = -1;
 
     public Keyboard(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -97,12 +101,20 @@ public class Keyboard extends ConstraintLayout {
                     if(mEditText != null && mEditText.isEnabled()) {
                         Editable editable = mEditText.getText();
                         CharSequence text = textView.getText();
-                        if(text.equals(".")) {
-                            if (editable.toString().contains(".")) {
+                        String editableString = editable.toString();
+                        if (editableString.contains(".")) {
+                            if(text.equals(".")) {
                                 return;
+                            } else if(retain != -1) {//限制小数点后位数
+                                String[] split = editableString.split(".");
+                                if(split.length == 2) {
+                                    if (split[1].length() == retain) {//判断小数点后位数是否已经达到限制
+                                        return;
+                                    }
+                                }
                             }
                         }
-                        if (editable.length() <= 10) {
+                        if (editable.length() < 8) {
                             editable.append(text);
                         }
                     }
@@ -129,5 +141,9 @@ public class Keyboard extends ConstraintLayout {
         this.mEditText = editText;
 
         mEditText.setInputType(InputType.TYPE_NULL);
+    }
+
+    public void setRetain(int retain) {
+        this.retain = retain;
     }
 }

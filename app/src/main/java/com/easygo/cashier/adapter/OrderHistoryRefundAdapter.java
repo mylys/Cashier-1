@@ -189,6 +189,14 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 item.setSelectReturnOfGoods(isChecked);
                 CheckBox refund = helper.getView(R.id.cb_refund);
+                if(isChecked) {//选中了退货，此时退款已经被选中时 刷新
+                    if(refund.isChecked()) {
+                        item.setSelectRefund(true);
+                        listener.onListener();
+                        notifyItemChanged(helper.getLayoutPosition());
+                        return;
+                    }
+                }
                 //同步改变 退款
                 refund.setChecked(isChecked);
             }

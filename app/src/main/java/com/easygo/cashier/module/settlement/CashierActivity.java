@@ -250,6 +250,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
         //关联EditText
         kb.attachEditText(etMoney);
+        //保留小数点后一位
+        kb.setRetain(1);
         etMoney.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
