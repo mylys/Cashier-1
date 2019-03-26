@@ -846,12 +846,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             @Override
             public void onScanCode(String barcode) {
                 onScanAuthCode(barcode);
+                mScanCodeDialog.setStopScan(true);
             }
         });
         mScanCodeDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 unlockCoupon();
+                mDuringPay = false;
             }
         });
         mScanCodeDialog.show();

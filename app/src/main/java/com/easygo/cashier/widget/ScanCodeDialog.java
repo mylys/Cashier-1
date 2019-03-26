@@ -27,6 +27,11 @@ public class ScanCodeDialog extends Dialog {
     private ConstraintLayout mClose;
     private EditText etBarcode;
 
+    /**
+     * 是否禁止回调 扫码数据
+     */
+    private boolean mStopScan = false;
+
     Handler mHandler = new Handler();
 
     public ScanCodeDialog(@NonNull Context context) {
@@ -63,7 +68,7 @@ public class ScanCodeDialog extends Dialog {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
-                    if (mListener != null) {
+                    if (!mStopScan && mListener != null) {
                         mListener.onScanCode(etBarcode.getText().toString().trim());
                     }
                     etBarcode.setText("");
@@ -167,6 +172,10 @@ public class ScanCodeDialog extends Dialog {
     }
     public interface OnScanCodeListener {
         void onScanCode(String barcode);
+    }
+
+    public void setStopScan(boolean stopScan) {
+        this.mStopScan = stopScan;
     }
 
 }
