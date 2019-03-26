@@ -167,7 +167,8 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         adapter = new OrderHistoryRefundAdapter();
-        recyclerView.setAdapter(adapter);
+        adapter.bindToRecyclerView(recyclerView);
+//        recyclerView.setAdapter(adapter);
         setEmpty();
 
         if (data != null) {
@@ -195,12 +196,6 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                 adapter.addData(info);
                 infoList.add(info);
             }
-
-            if(infoList.size() == 1) {//只有一件商品时 默认选中退款 不退货
-                GoodsRefundInfo goodsRefundInfo = infoList.get(0);
-                goodsRefundInfo.setSelectReturnOfGoods(false);
-                goodsRefundInfo.setSelectRefund(true);
-            }
         }
         if (adapter.getTotalRefund()) {
             btnRefund.setEnabled(false);
@@ -209,6 +204,14 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         }
         tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件，退款金额：￥");
         setListener();
+
+        recyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                adapter.judgeNeedSelectRefund();
+            }
+        });
+
     }
 
     /* 设置adapter数据 */

@@ -236,6 +236,16 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         return goodsLists;
     }
 
+    /**判断是否需要默认选中退款*/
+    public void judgeNeedSelectRefund() {
+        if(mData.size() == 1) {
+            CheckBox refund = (CheckBox) getViewByPosition(0, R.id.cb_refund);
+            if(refund != null) {
+                refund.setChecked(true);
+            }
+        }
+    }
+
     /** 设置全选按钮（true ： 全选 ； false : 全否） */
     public void setClick(boolean click) {
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
