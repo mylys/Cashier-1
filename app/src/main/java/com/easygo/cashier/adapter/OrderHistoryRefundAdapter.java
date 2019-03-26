@@ -47,7 +47,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         helper.setChecked(R.id.cb_return_of_goods, selectReturnOfGoods);
 
         //设置选择时显示隐藏
-        if (selectReturnOfGoods) {//退货时
+        if (selectRefund || selectReturnOfGoods) {//退货时
             countTextView.setVisibility(View.VISIBLE);
             helper.getView(R.id.tv_refund_num_no).setVisibility(View.GONE);
 
