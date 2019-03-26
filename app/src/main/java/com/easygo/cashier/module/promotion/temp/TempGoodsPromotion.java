@@ -50,7 +50,8 @@ public class TempGoodsPromotion extends BaseGoodsPromotion implements IGoodsProm
             }
             GoodsEntity<GoodsResponse> goodsEntity = data.get(goodsBean.getIndex());
 
-            promotion_money = getPromotionMoney(goodsBean.getPrice()) * goodsBean.getQuanlity();
+//            promotion_money = getPromotionMoney(goodsBean.getPrice()) * goodsBean.getQuanlity();
+            promotion_money = getPromotionMoney(goodsBean.getPrice() * goodsBean.getCount());
 
             //需要设置促销金额的  根据比例计算出促销金额
             float promotion = (goodsBean.getSubtotal() / total_money) * promotion_money;
