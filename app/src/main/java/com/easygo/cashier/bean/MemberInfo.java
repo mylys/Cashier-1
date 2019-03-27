@@ -31,7 +31,7 @@ public class MemberInfo {
     private int etps_id;
     private String real_name;
     private String headimg;
-    private int integral;
+    private float integral;
     private double wallet;
     private int consumefee_convert_integral;
     private String etps_name;
@@ -76,11 +76,11 @@ public class MemberInfo {
         this.headimg = headimg;
     }
 
-    public int getIntegral() {
+    public float getIntegral() {
         return integral;
     }
 
-    public void setIntegral(int integral) {
+    public void setIntegral(float integral) {
         this.integral = integral;
     }
 

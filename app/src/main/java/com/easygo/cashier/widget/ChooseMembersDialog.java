@@ -21,6 +21,7 @@ import com.easygo.cashier.bean.MemberInfo;
 import com.niubility.library.base.BaseDialog;
 import com.niubility.library.utils.EventUtils;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -74,13 +75,16 @@ public class ChooseMembersDialog extends BaseDialog {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(verticalDecoration);
         recyclerView.setAdapter(adapter = new BaseQuickAdapter<MemberInfo, BaseViewHolder>(R.layout.item_members_list) {
+
+            DecimalFormat df = new DecimalFormat("0.00");
+
             @Override
             protected void convert(BaseViewHolder helper, final MemberInfo item) {
                 helper.setText(R.id.tv_telphone, item.getPhone())
                         .setText(R.id.tv_nick, item.getNick_name())
                         .setText(R.id.tv_member_card, item.getCard_no())
-                        .setText(R.id.tv_package_balance, "￥" + item.getWallet())
-                        .setText(R.id.tv_integral_balance, item.getIntegral() + "")
+                        .setText(R.id.tv_package_balance, "￥" + df.format(item.getWallet()))
+                        .setText(R.id.tv_integral_balance, df.format(item.getIntegral()))
                         .setText(R.id.tv_process, "选择")
                         .getView(R.id.tv_process).setOnClickListener(new View.OnClickListener() {
                     @Override
