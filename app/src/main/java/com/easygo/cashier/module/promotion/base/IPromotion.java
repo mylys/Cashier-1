@@ -35,7 +35,11 @@ public interface IPromotion {
     /**活动类型 固定*/
     int TYPE_FIXED = 5;
     /**活动类型 临时*/
-    int TYPE_TEMP = 6;
+    int TYPE_TEMP = 10;
+    /**活动类型 满减*/
+    int TYPE_REDUCE = 6;
+    /**活动类型 满赠*/
+    int TYPE_GIVE = 7;
 
 
 

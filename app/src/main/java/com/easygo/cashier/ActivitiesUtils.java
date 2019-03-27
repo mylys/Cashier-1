@@ -14,6 +14,8 @@ import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsBundlePromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsFixedPromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsFulfilMoneyPromotion;
+import com.easygo.cashier.module.promotion.goods.GoodsFulfilReducePromotion;
+import com.easygo.cashier.module.promotion.goods.GoodsFullfilGivePromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsNormalPromotion;
 import com.easygo.cashier.module.promotion.goods.GoodsTimePromotion;
 import com.easygo.cashier.module.promotion.shop.BaseShopPromotion;
@@ -278,39 +280,52 @@ public class ActivitiesUtils {
             GoodsActivityResponse.ActivitiesBean.ConfigBean config = activitiesBean.getConfig();
             int type = activitiesBean.getType();
             switch (type) {
-                case IGoodsPromotion.TYPE_NORMAL:
+                case IGoodsPromotion.TYPE_NORMAL://普通促销
                     GoodsNormalPromotion normalPromotion = new GoodsNormalPromotion();
                     fillData(normalPromotion, activitiesBean);
                     normalPromotion.setCondition_type(config.getCondition_type());
                     normalPromotion.setCondition_value(Float.valueOf(config.getCondition_value()));
-                    normalPromotion.setOffer_type(activitiesBean.getConfig().getOffer_type());
-                    normalPromotion.setOffer_value(Float.valueOf(activitiesBean.getConfig().getOffer_value()));
+                    normalPromotion.setOffer_type(config.getOffer_type());
+                    normalPromotion.setOffer_value(Float.valueOf(config.getOffer_value()));
                     id2PromotionMap.put(activitiesBean.getId(), normalPromotion);
                     break;
-                case IGoodsPromotion.TYPE_TIME:
+                case IGoodsPromotion.TYPE_TIME://时段促销
                     GoodsTimePromotion timePromotion = new GoodsTimePromotion();
                     fillData(timePromotion, activitiesBean);
-                    timePromotion.setListBeans(activitiesBean.getConfig().getList());
+                    timePromotion.setListBeans(config.getList());
                     id2PromotionMap.put(activitiesBean.getId(), timePromotion);
                     break;
-                case IGoodsPromotion.TYPE_MEET:
+                case IGoodsPromotion.TYPE_MEET://满额促销
                     GoodsFulfilMoneyPromotion moneyPromotion = new GoodsFulfilMoneyPromotion();
                     fillData(moneyPromotion, activitiesBean);
-                    moneyPromotion.setCondition_value(Float.valueOf(activitiesBean.getConfig().getCondition_value()));
-                    moneyPromotion.setListBeans(activitiesBean.getConfig().getList());
+                    moneyPromotion.setCondition_value(Float.valueOf(config.getCondition_value()));
+                    moneyPromotion.setListBeans(config.getList());
                     id2PromotionMap.put(activitiesBean.getId(), moneyPromotion);
                     break;
-                case IGoodsPromotion.TYPE_BUNDLE:
+                case IGoodsPromotion.TYPE_BUNDLE://捆绑促销
                     GoodsBundlePromotion bundlePromotion = new GoodsBundlePromotion();
                     fillData(bundlePromotion, activitiesBean);
-                    bundlePromotion.setListBeans(activitiesBean.getConfig().getList());
+                    bundlePromotion.setListBeans(config.getList());
                     id2PromotionMap.put(activitiesBean.getId(), bundlePromotion);
                     break;
-                case IGoodsPromotion.TYPE_FIXED:
+                case IGoodsPromotion.TYPE_FIXED://固定促销
                     GoodsFixedPromotion fixedPromotion = new GoodsFixedPromotion();
                     fillData(fixedPromotion, activitiesBean);
-                    fixedPromotion.setListBeans(activitiesBean.getConfig().getList());
+                    fixedPromotion.setListBeans(config.getList());
                     id2PromotionMap.put(activitiesBean.getId(), fixedPromotion);
+                    break;
+                case IGoodsPromotion.TYPE_REDUCE://满减促销
+                    GoodsFulfilReducePromotion reducePromotion = new GoodsFulfilReducePromotion();
+                    fillData(reducePromotion, activitiesBean);
+                    reducePromotion.setListBeans(config.getList());
+                    id2PromotionMap.put(activitiesBean.getId(), reducePromotion);
+                    break;
+                case IGoodsPromotion.TYPE_GIVE://满赠促销
+                    GoodsFullfilGivePromotion givePromotion = new GoodsFullfilGivePromotion();
+                    fillData(givePromotion, activitiesBean);
+                    givePromotion.setCondition_type(config.getCondition_type());
+                    givePromotion.setListBeans(config.getList());
+                    id2PromotionMap.put(activitiesBean.getId(), givePromotion);
                     break;
             }
         }
