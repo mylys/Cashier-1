@@ -250,6 +250,7 @@ public class OrderHistorysInfo {
          * type : 3
          * quantity : 1
          * sell_price : 0.01
+         * unit_price : 0.01
          * discount : 0.01
          * cashier_discount : 0.01
          * identity : 1547787879989
@@ -264,6 +265,7 @@ public class OrderHistorysInfo {
         private int type;
         private int quantity;
         private String sell_price;
+        private String unit_price;
         private String discount;
         private String cashier_discount;
         private String identity;
@@ -277,6 +279,7 @@ public class OrderHistorysInfo {
             type = in.readInt();
             quantity = in.readInt();
             sell_price = in.readString();
+            unit_price = in.readString();
             discount = in.readString();
             cashier_discount = in.readString();
             identity = in.readString();
@@ -314,7 +317,7 @@ public class OrderHistorysInfo {
         }
 
         public String getG_u_symbol() {
-            return g_u_symbol;
+            return !TextUtils.isEmpty(g_u_symbol)? g_u_symbol: "斤";
         }
 
         public void setG_u_symbol(String g_u_symbol) {
@@ -327,6 +330,10 @@ public class OrderHistorysInfo {
 
         public void setType(int type) {
             this.type = type;
+        }
+
+        public boolean isWeightGood() {
+            return GoodsResponse.isWeightGood(type);
         }
 
         public int getQuantity() {
@@ -343,6 +350,14 @@ public class OrderHistorysInfo {
 
         public void setSell_price(String sell_price) {
             this.sell_price = sell_price;
+        }
+
+        public String getUnit_price() {
+            return unit_price;
+        }
+
+        public void setUnit_price(String unit_price) {
+            this.unit_price = unit_price;
         }
 
         public String getDiscount() {
@@ -387,7 +402,8 @@ public class OrderHistorysInfo {
         }
 
         public double getMoney() {
-            return money;
+            return Double.valueOf(unit_price) * count - Double.valueOf(discount);
+//            return money;
         }
 
         public void setMoney(double money) {
@@ -406,6 +422,7 @@ public class OrderHistorysInfo {
             dest.writeInt(type);
             dest.writeFloat(quantity);
             dest.writeString(sell_price);
+            dest.writeString(unit_price);
             dest.writeString(discount);
             dest.writeString(cashier_discount);
             dest.writeString(identity);

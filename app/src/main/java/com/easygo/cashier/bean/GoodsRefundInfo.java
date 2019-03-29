@@ -10,7 +10,8 @@ public class GoodsRefundInfo {
     private String product_subtotal;
     private String refund_num;
     private String refund_subtotal;
-    private int product_num;
+    private float product_num;
+    private float count;
     private int quantity;
     private int s_sku_id;
     private boolean isSelect;
@@ -65,11 +66,11 @@ public class GoodsRefundInfo {
         this.s_sku_id = s_sku_id;
     }
 
-    public int getProduct_num() {
+    public float getProduct_num() {
         return product_num;
     }
 
-    public void setProduct_num(int product_num) {
+    public void setProduct_num(float product_num) {
         this.product_num = product_num;
     }
 
@@ -79,6 +80,14 @@ public class GoodsRefundInfo {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public float getCount() {
+        return count;
+    }
+
+    public void setCount(float count) {
+        this.count = count;
     }
 
     public String getProduct_name() {

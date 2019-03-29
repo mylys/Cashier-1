@@ -12,6 +12,7 @@ public class HandoverSaleResponse {
      * type : 0
      * quantity : 3
      * sell_price : 0.02
+     * unit_price : 0.02
      * discount : 0.02
      * cashier_discount : 0.02
      * refund : 0
@@ -26,6 +27,7 @@ public class HandoverSaleResponse {
     private int type;
     private int quantity;
     private String sell_price;
+    private String unit_price;
     private String discount;
     private String cashier_discount;
     private int refund;
@@ -81,9 +83,16 @@ public class HandoverSaleResponse {
         this.sell_price = sell_price;
     }
 
+    public String getUnit_price() {
+        return unit_price;
+    }
+
+    public void setUnit_price(String unit_price) {
+        this.unit_price = unit_price;
+    }
+
     public String getDiscount() {
-        return !TextUtils.isEmpty(cashier_discount) && !"0".equals(cashier_discount) && !"0.00".equals(cashier_discount)?
-                cashier_discount: discount;
+        return discount;
     }
 
     public void setDiscount(String discount) {
@@ -115,7 +124,8 @@ public class HandoverSaleResponse {
     }
 
     public double getMoney() {
-        return money;
+        return Float.valueOf(unit_price) * count - Float.valueOf(discount);
+//        return money;
     }
 
     public void setMoney(double money) {
@@ -123,7 +133,7 @@ public class HandoverSaleResponse {
     }
 
     public String getG_u_symbol() {
-        return g_u_symbol;
+        return !TextUtils.isEmpty(g_u_symbol)? g_u_symbol: "斤";
     }
 
     public void setG_u_symbol(String g_u_symbol) {

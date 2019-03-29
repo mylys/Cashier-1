@@ -447,6 +447,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 goodsListBean.setGoods_name(data.getPrintName());
                 goodsListBean.setBarcode(data.getBarcode());
                 goodsListBean.setPrice(price_int);
+                goodsListBean.setUnit_price(price_int);
 
                 switch (good.getItemType()) {
                     case GoodsEntity.TYPE_WEIGHT:
@@ -475,6 +476,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                         goodsListBean.setGoods_name(data.getG_sku_name());
                         goodsListBean.setBarcode(data.getBarcode());
                         goodsListBean.setPrice(price_int);
+                        goodsListBean.setUnit_price(price_int);
 
                         goodsListBean.setCount(String.valueOf(data.getCount()));
 
@@ -1003,6 +1005,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         GoodsResponse data;
         CreateOrderRequestBody.GoodsListBean goodsBean;
         float price;
+        float unit_price;
         float count;
 
         float discount;//总优惠
@@ -1011,6 +1014,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         float member_discount;//会员促销
         float coupon_discount;//优惠券促销
         float cashier_discount;//收银员促销（= 临时商品促销 + 临时订单促销）
+        float cashier_item_discount;//收银员单品促销（= 临时商品促销）
         float temp_good_discount = 0;// 总临时商品促销
         HashMap<Integer, Float> id2discount = new HashMap<>();//商品促销活动id 映射 促销优惠金额
         for (int i = 0; i < size; i++) {
@@ -1025,7 +1029,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             //设置类型
             goodsBean.setType(data.getType());
             discount = Float.valueOf(data.getDiscount_price());
-            temp_good_discount += data.getTemp_goods_discount();
 
             goodsBean.setDiscount(Integer.valueOf(df.format(discount * 100)));
             BaseGoodsPromotion promotion = good.getPromotion();
@@ -1052,21 +1055,31 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             //优惠券促销
             coupon_discount = data.getCoupon_discount();
             goodsBean.setCoupon_discount(Integer.valueOf(df.format(coupon_discount * 100)));
+            //收银员单品促销（临时商品折扣）
+            cashier_item_discount = data.getTemp_goods_discount();
+            goodsBean.setCashier_item_discount(Integer.valueOf(
+                    df.format(cashier_item_discount * 100)));
             //收银员促销
+            temp_good_discount += cashier_item_discount;
             cashier_discount = data.getTemp_goods_discount() + data.getTemp_order_discount();
             goodsBean.setCashier_discount(Integer.valueOf(
                     df.format(cashier_discount * 100)));
 
 
+
             goodsBean.setCount(count);
             if (good.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
                 price = Float.valueOf(data.getProcess_price());
+                unit_price = price;
             } else if (good.getItemType() == GoodsEntity.TYPE_WEIGHT) {
                 price = Float.valueOf(data.getPrice()) * count;
+                unit_price = Float.valueOf(data.getPrice());
             } else {
                 price = Float.valueOf(data.getPrice());
+                unit_price = Float.valueOf(data.getPrice());
             }
             goodsBean.setPrice(Integer.valueOf(df.format(price * 100)));
+            goodsBean.setUnit_price(Integer.valueOf(df.format(unit_price * 100)));
             goodsBean.setBarcode(data.getBarcode());
             list.add(goodsBean);
 
@@ -1082,7 +1095,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                         goodsBean.setType(data.getType());
                         goodsBean.setCount(data.getCount());
                         price = Float.valueOf(data.getProcess_price()) * data.getCount();
+                        unit_price = Float.valueOf(data.getProcess_price());
                         goodsBean.setPrice(Integer.valueOf(df.format(price * 100)));
+                        goodsBean.setUnit_price(Integer.valueOf(df.format(unit_price * 100)));
                         goodsBean.setBarcode(data.getBarcode());
                         list.add(goodsBean);
                     }
@@ -1094,6 +1109,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         //总收银员让利
         requestBody1.setCashier_discount(Integer.valueOf(
                 df.format(mTempOrderPromotionMoney * 100 + temp_good_discount * 100)));
+        //收银员整单让利
+        requestBody1.setCashier_order_discount(Integer.valueOf(
+                df.format(mTempOrderPromotionMoney * 100)));
+
 
         //商品促销详情
         for (Map.Entry<Integer, Float> next : id2discount.entrySet()) {

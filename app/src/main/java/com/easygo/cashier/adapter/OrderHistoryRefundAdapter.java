@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.GoodsRefundInfo;
+import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.RefundRequsetBody;
 import com.easygo.cashier.widget.CountTextView;
 import com.niubility.library.utils.ToastUtils;
@@ -65,7 +66,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
 //        helper.setImageResource(R.id.image_select, item.isSelect() ? R.drawable.icon_select : R.drawable.icon_no_select);
 
         //设置数据
-        String tv_total_num = type == 1 ? item.getProduct_num() + item.getG_u_symbol() : df_int.format(item.getProduct_num());
+        String tv_total_num = type == 1 ? item.getProduct_num() + item.getG_u_symbol(): df_int.format(item.getProduct_num());
 
         double product_subtotal = Double.parseDouble(item.getProduct_subtotal());//小计
         double refund_subtotal = Double.parseDouble(item.getRefund_subtotal());//退货小计
@@ -81,8 +82,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 .setText(R.id.tv_product_subtotal, tv_subtotal)
                 .setText(R.id.tv_product_total_num, tv_total_num)
                 .setText(R.id.tv_refund_subtotal, type == 1 || type == 3 ? tv_subtotal : tv_refund_subtotal)
-//                .setText(R.id.tv_refund_num_no, type == 1 || type == 3 ? tv_total_num : item.getRefund_num());
-                .setText(R.id.tv_refund_num_no, df_int.format(item.getProduct_num()));
+                .setText(R.id.tv_refund_num_no, type == 1 ? item.getProduct_num() + "": df_int.format(item.getProduct_num()));
 
         if (type == 1) {
             helper.setText(R.id.tv_refund, "全退");
@@ -217,11 +217,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 list.setIs_weigh(item.getIs_weigh());
                 list.setIdentity(item.getIdentity());
                 if (item.getIs_weigh() == 1) {
-                    if (item.getParent_id() == 0) {
-                        list.setCount(item.getProduct_num());
-                    } else {
-                        list.setCount(Integer.parseInt(item.getRefund_num()));
-                    }
+                    list.setCount(item.getProduct_num());
                 } else {
                     list.setCount(Integer.parseInt(item.getRefund_num()));
                 }
@@ -266,8 +262,13 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         float product_subtotal;
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
             if (goodsRefundInfo.isSelectRefund()) {
+
                 product_subtotal = Float.parseFloat(goodsRefundInfo.getProduct_subtotal());
-                refund_total += (Integer.parseInt(goodsRefundInfo.getRefund_num()) * (product_subtotal / goodsRefundInfo.getProduct_num()));
+                if(GoodsResponse.isWeightGood(goodsRefundInfo.getType())) {
+                    refund_total = product_subtotal;
+                } else {
+                    refund_total += (Integer.parseInt(goodsRefundInfo.getRefund_num()) * (product_subtotal / goodsRefundInfo.getProduct_num()));
+                }
             }
             total += Float.parseFloat(goodsRefundInfo.getProduct_subtotal());
         }

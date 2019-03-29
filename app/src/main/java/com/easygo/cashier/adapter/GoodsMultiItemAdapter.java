@@ -182,7 +182,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 if (goodsResponse.getIs_weigh() == 1) {
                     //重量商品
                     goodsResponse.setType(GoodsResponse.type_weight);
-                    addWeightItem(goodsResponse, weight / 1000f);
+                    addWeightItem(goodsResponse, goodsResponse.isJin()? weight / 1000f * 2: weight / 1000f);
                 } else {
                     //普通商品
                     goodsResponse.setType(GoodsResponse.type_normal);
@@ -205,7 +205,8 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                     goodsResponse.setType(GoodsResponse.type_processing);
                 }
             }
-            addPrcessingItem(t, weight / 1000f);
+            goodsResponse = t.get(0);
+            addPrcessingItem(t, goodsResponse.isJin()? weight / 1000f * 2: weight / 1000f);
         }
         return true;
     }
@@ -422,7 +423,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 final boolean is_processing = cb_processing.isChecked();
 
                 //设置加工方式相关控件可见性
-                helper.setText(R.id.tv_count, good_count + good.getG_u_symbol());
+                helper.setText(R.id.tv_count,  good_count + good.getG_u_symbol());
                 setProcessingLayout(helper, is_processing);
 
 

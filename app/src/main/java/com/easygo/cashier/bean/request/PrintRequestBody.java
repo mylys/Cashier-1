@@ -19,6 +19,7 @@ public class PrintRequestBody {
         private String count;
         private int discount;
         private int price;
+        private int unit_price;
         private int count_price;
 
         public String getGoods_name() {
@@ -59,6 +60,14 @@ public class PrintRequestBody {
 
         public void setPrice(int price) {
             this.price = price;
+        }
+
+        public int getUnit_price() {
+            return unit_price;
+        }
+
+        public void setUnit_price(int unit_price) {
+            this.unit_price = unit_price;
         }
 
         public int getCount_price() {

@@ -398,6 +398,9 @@ public class ActivitiesUtils {
                 promotion = id2PromotionMap.get(actvitity_id);
             }
 
+            if(promotion == null) {
+                continue;
+            }
 
             List<GoodsActivityResponse.ActivitiesBean.GoodsBean> goodsBeans = promotion.getGoodsBeans();
             int goods_size = goodsBeans.size();

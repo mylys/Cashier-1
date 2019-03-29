@@ -29,6 +29,7 @@ public class CreateOrderRequestBody {
     private String coupon_sn;
     private int coupon_discount;
     private int cashier_discount;
+    private int cashier_order_discount;
     private List<GoodsListBean> goods_list;
     private List<ActivitiesBean> activities;
 
@@ -120,6 +121,14 @@ public class CreateOrderRequestBody {
         this.cashier_discount = cashier_discount;
     }
 
+    public int getCashier_order_discount() {
+        return cashier_order_discount;
+    }
+
+    public void setCashier_order_discount(int cashier_order_discount) {
+        this.cashier_order_discount = cashier_order_discount;
+    }
+
     public List<GoodsListBean> getGoods_list() {
         return goods_list;
     }
@@ -140,12 +149,14 @@ public class CreateOrderRequestBody {
         /**
          * g_sku_id : 5
          * count : 1
+         * unit_print : 400
          * price : 400
          * type : 0
          * identity : "0"
          * barcode : 096619756803
          * discount :
          * cashier_discount :
+         * cashier_item_discount :
          * shop_activity_discount :
          * goods_activity_discount :
          * coupon_discount :
@@ -154,6 +165,13 @@ public class CreateOrderRequestBody {
 
         private int g_sku_id;
         private float count;
+        /**
+         * 单价
+         */
+        private int unit_price;
+        /**
+         * 售价 （单价乘重量）
+         */
         private int price;
         /**
          * 0: 非重量  1：重量  2：无码商品 3: 加工商品
@@ -166,6 +184,8 @@ public class CreateOrderRequestBody {
         private String barcode;
         private int discount;
         private int cashier_discount;
+        /**收银员单品促销（临时商品促销)*/
+        private int  cashier_item_discount;
         private int shop_activity_discount;
         private int goods_activity_discount;
         private int coupon_discount;
@@ -193,6 +213,14 @@ public class CreateOrderRequestBody {
 
         public void setPrice(int price) {
             this.price = price;
+        }
+
+        public int getUnit_price() {
+            return unit_price;
+        }
+
+        public void setUnit_price(int unit_price) {
+            this.unit_price = unit_price;
         }
 
         public int getType() {
@@ -233,6 +261,14 @@ public class CreateOrderRequestBody {
 
         public void setCashier_discount(int cashier_discount) {
             this.cashier_discount = cashier_discount;
+        }
+
+        public int getCashier_item_discount() {
+            return cashier_item_discount;
+        }
+
+        public void setCashier_item_discount(int cashier_item_discount) {
+            this.cashier_item_discount = cashier_item_discount;
         }
 
         public int getShop_activity_discount() {

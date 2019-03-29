@@ -1,5 +1,6 @@
 package com.easygo.cashier.adapter;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -27,15 +28,18 @@ public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo
     protected void convert(BaseViewHolder helper, OrderHistorysInfo.ListBean item) {
 
         float count = item.getCount();
+        String unit_price = item.getUnit_price();
         String sell_price = item.getSell_price();
         String discount = item.getDiscount();
+        float subtotal = Float.valueOf(unit_price) * count - Float.valueOf(discount);
 
         helper.getView(R.id.tv_refund).setVisibility(item.getRefund() > 0 ? View.VISIBLE : View.GONE);
         helper.setText(R.id.tv_text_goods_name, item.getG_sku_name())
-                .setText(R.id.tv_text_price, sell_price)
+                .setText(R.id.tv_text_price, unit_price)
                 .setText(R.id.tv_text_coupon, discount)
-                .setText(R.id.tv_text_goods_count, item.getType() == 1 ? count + item.getG_u_symbol() : df_int.format(count))
-                .setText(R.id.tv_text_subtotal, df.format(item.getMoney()));
+                .setText(R.id.tv_text_goods_count, item.isWeightGood() ?
+                        count + item.getG_u_symbol() : df_int.format(count))
+                .setText(R.id.tv_text_subtotal, df.format(subtotal));
 
         helper.setVisible(R.id.image_discount, Float.valueOf(discount) > 0);
 

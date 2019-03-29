@@ -209,10 +209,10 @@ public class OrderHistoryDetailFragment extends BaseFragment {
             sb.append(i + 1).append(".")
                     .append(listBean.getG_sku_name()).append("   ").append(PrintHelper.BR)
                     .append("     ")
-                    .append(listBean.getSell_price()).append("   ")
+                    .append(listBean.getUnit_price()).append("   ")
                     .append(listBean.getDiscount()).append("   ")
                     .append(type == 1 ? listBean.getCount() + listBean.getG_u_symbol() : listBean.getCount()).append("   ")
-                    .append(listBean.getMoney()).append(PrintHelper.BR);
+                    .append(df.format(listBean.getMoney())).append(PrintHelper.BR);
         }
 
         DecimalFormat df = new DecimalFormat("0.00");
@@ -287,9 +287,10 @@ public class OrderHistoryDetailFragment extends BaseFragment {
             orderHistoryGoodsAdapter.setHavePromotion(true);
         }
 
-        if(have_shop_promotion || has_temp_order_promotion) {
+        float allDiscount = getAllDiscount();
+        if(allDiscount > 0) {
             tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money()
-                    + " - 优惠：￥" + df.format(getAllDiscount()) + " = ");
+                    + " - 优惠：￥" + df.format(allDiscount) + " = ");
         } else {
             tvReceivableText.setText("");
         }

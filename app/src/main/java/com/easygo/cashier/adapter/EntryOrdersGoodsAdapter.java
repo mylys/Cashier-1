@@ -25,11 +25,10 @@ public class EntryOrdersGoodsAdapter extends BaseQuickAdapter<GoodsEntity<GoodsR
         final String price = goods.getPrice();
         float subtotal = Float.valueOf(price) * count;
 
-        boolean is_weight = goods.getType() == 1 || goods.getType() == 3;
 
         helper.setText(R.id.tv_text_goods_name, goods.getG_sku_name())
                 .setText(R.id.tv_text_price, price)
-                .setText(R.id.tv_text_goods_count, is_weight ? count + goods.getG_u_symbol() : df_int.format(count))
+                .setText(R.id.tv_text_goods_count, goods.isWeightGood() ? count + goods.getG_u_symbol() : df_int.format(count))
                 .setText(R.id.tv_text_subtotal, df.format(subtotal));
     }
 }

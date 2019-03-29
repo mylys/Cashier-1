@@ -85,6 +85,14 @@ public class GoodsResponse implements Serializable {
     public static final int type_no_code = 2;
     public static final int type_processing = 3;
 
+    public boolean isWeightGood() {
+        return type == type_weight;
+    }
+
+    public static boolean isWeightGood(int type) {
+        return type == type_weight;
+    }
+
 
     /**
      * 商品促销优惠金额
@@ -185,6 +193,13 @@ public class GoodsResponse implements Serializable {
 
     public void setG_sku_name(String g_sku_name) {
         this.g_sku_name = g_sku_name;
+    }
+
+    /**
+     * 判断 按斤为单位
+     */
+    public boolean isJin() {
+        return TextUtils.equals("斤", g_u_name);
     }
 
     public String getShort_name() {
@@ -436,7 +451,7 @@ public class GoodsResponse implements Serializable {
     }
 
     public String getG_u_symbol() {
-        return g_u_symbol;
+        return !TextUtils.isEmpty(g_u_symbol)? g_u_symbol: "斤";
     }
 
     public void setG_u_symbol(String g_u_symbol) {

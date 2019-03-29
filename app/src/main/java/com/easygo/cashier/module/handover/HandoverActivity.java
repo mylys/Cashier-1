@@ -405,8 +405,8 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
             .append(saleResponse.getG_sku_name()).append("   ").append(PrintHelper.BR)
             .append(saleResponse.getG_c_name()).append("   ").append(PrintHelper.BR)
             .append("            ")
-            .append(saleResponse.getSell_price()).append("   ")
-            .append(saleResponse.getCount()).append(saleResponse.getType() == GoodsResponse.type_weight? saleResponse.getG_u_symbol(): "").append("   ")
+            .append(saleResponse.getUnit_price()).append("   ")
+            .append(saleResponse.getCount()).append(GoodsResponse.isWeightGood(saleResponse.getType())? saleResponse.getG_u_symbol(): "").append("   ")
             .append(df.format(saleResponse.getMoney())).append(PrintHelper.BR);
         }
         sb.append("--------------------------------").append(PrintHelper.BR)

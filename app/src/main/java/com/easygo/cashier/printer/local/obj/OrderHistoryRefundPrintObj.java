@@ -17,4 +17,5 @@ public class OrderHistoryRefundPrintObj {
     public String real_pay;
     public String pay_type;
     public String refund;
+    public boolean pop_till;
 }

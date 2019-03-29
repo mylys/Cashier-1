@@ -22,6 +22,10 @@ public class GoodsEntity<T> implements MultiItemEntity, Serializable {
         this.itemType = itemType;
     }
 
+    public boolean isWeightGood() {
+        return itemType == TYPE_WEIGHT || itemType == TYPE_PROCESSING;
+    }
+
     @Override
     public int getItemType() {
         return itemType;

@@ -60,9 +60,9 @@ public class PrinterHelpter {
 
         DecimalFormat df = new DecimalFormat("#0.00");
         int size = goodsData.size();
-        float count = 0;
-        float price = 0f;
-        float discount = 0f;
+        float count ;
+        float price;
+        float discount;
         String subtotal;
         GoodsEntity<GoodsResponse> good;
         GoodsResponse data;
@@ -82,19 +82,19 @@ public class PrinterHelpter {
             esc.addText(". ");
             esc.addText(data.getBarcode() + " ");
             esc.addText(data.getG_sku_name());
-            esc.addText("   \n");
-            esc.addText("     ");
+            esc.addText("  \n");
+            esc.addText("    ");
             esc.addText(data.getPrice());
-            esc.addText("   ");
+            esc.addText("  ");
             esc.addText("1.00");
-            esc.addText("   ");
+            esc.addText("  ");
             switch (good.getItemType()) {
                 case GoodsEntity.TYPE_WEIGHT:
-                case GoodsEntity.TYPE_ONLY_PROCESSING:
                 case GoodsEntity.TYPE_PROCESSING:
                     esc.addText(count + data.getG_u_symbol());
                     break;
                 case GoodsEntity.TYPE_GOODS:
+                case GoodsEntity.TYPE_ONLY_PROCESSING:
                 default:
                     esc.addText(String.valueOf(count));
                     break;
@@ -108,7 +108,7 @@ public class PrinterHelpter {
                     index += 1;
 
                     count = good.getCount();
-                    price = Float.valueOf(data.getPrice());
+                    price = Float.valueOf(data.getProcess_price());
                     discount = Float.valueOf(data.getDiscount_price());
                     subtotal = df.format(count * price - discount);
 
@@ -118,13 +118,13 @@ public class PrinterHelpter {
                     esc.addText(data.getBarcode() + " ");
                     esc.addText(data.getG_sku_name());
                     esc.addText("   \n");
-                    esc.addText("     ");
+                    esc.addText("    ");
                     esc.addText(data.getPrice());
-                    esc.addText("   ");
+                    esc.addText("  ");
                     esc.addText("1.00");
-                    esc.addText("   ");
+                    esc.addText("  ");
                     esc.addText(String.valueOf(count));
-                    esc.addText("   ");
+                    esc.addText("  ");
                     esc.addText(subtotal + "\n");
                 }
             }
@@ -227,7 +227,7 @@ public class PrinterHelpter {
         int size = list.size();
         int count = 0;
         float total_discount = 0f;
-        float discount = 0f;
+        float discount;
         for (int i = 0; i < size; i++) {
             OrderHistorysInfo.ListBean data = list.get(i);
 
@@ -240,13 +240,13 @@ public class PrinterHelpter {
             esc.addText(".");
             esc.addText(data.getG_sku_name());
             esc.addText("   \n");
-            esc.addText("     ");
-            esc.addText(data.getSell_price());
-            esc.addText("   ");
+            esc.addText("    ");
+            esc.addText(data.getUnit_price());
+            esc.addText("  ");
             esc.addText(data.getDiscount());
-            esc.addText("   ");
-            esc.addText(type == 1 ? data.getCount() + data.getG_u_symbol() : String.valueOf(data.getCount()));
-            esc.addText("   ");
+            esc.addText("  ");
+            esc.addText(GoodsResponse.isWeightGood(type)? data.getCount() + data.getG_u_symbol() : String.valueOf(data.getCount()));
+            esc.addText("  ");
             esc.addText(df.format(data.getMoney()) + "\n");
         }
 
@@ -267,7 +267,7 @@ public class PrinterHelpter {
         esc.addText(info.getChange_money() + "元\n");
         esc.addText("退款：");
         esc.addText(info.getRefund_fee() != null ?
-                ((String) info.getRefund_fee()) : "0.00" + "元\n");
+                 info.getRefund_fee() + "元\n" : "0.00" + "元\n");
 
         esc.addPrintAndFeedLines((byte) 5);
 
@@ -319,16 +319,18 @@ public class PrinterHelpter {
             esc.addText(".");
             esc.addText(data.getProduct_name());
             esc.addText("   \n");
-            esc.addText("      ");
+            esc.addText("     ");
             esc.addText(data.getProduct_price());
-            esc.addText("   ");
+            esc.addText("  ");
             esc.addText(data.getProduct_preferential());
-            esc.addText("    ");
-            esc.addText(data.getRefund_num());
-            esc.addText(data.getG_u_symbol());
             esc.addText("   ");
+            esc.addText(data.getRefund_num());
+            if(GoodsResponse.isWeightGood(data.getType())) {
+                esc.addText(data.getG_u_symbol());
+            }
+            esc.addText("  ");
             esc.addText(data.getRefund_subtotal());
-            esc.addText("   \n");
+            esc.addText("  \n");
         }
         esc.addText("总数量：");
         esc.addText(obj.count + "\n");
@@ -344,6 +346,12 @@ public class PrinterHelpter {
         esc.addText(obj.refund + "元\n");
 
         esc.addPrintAndFeedLines((byte) 4);
+
+        if(obj.pop_till) {
+            esc.addPrintAndFeedLines((byte) 1);
+            // 开钱箱
+            esc.addGeneratePlus(LabelCommand.FOOT.F5, (byte) 255, (byte) 255);
+        }
 
         return esc.getCommand();
     }
@@ -447,19 +455,21 @@ public class PrinterHelpter {
         float total_money = 0;
         for (int i = 0; i < size; i++) {
             HandoverSaleResponse saleResponse = obj.data.get(i);
-            count += Integer.valueOf(saleResponse.getQuantity());
+            count += saleResponse.getQuantity();
             total_money += saleResponse.getMoney();
 
             esc.addText(String.valueOf(i+1));
             esc.addText(".");
             esc.addText(saleResponse.getG_sku_name());
-            esc.addText("   \n");
+            esc.addText("\n");
+            esc.addText("   ");
             esc.addText(saleResponse.getG_c_name());
-            esc.addText("            ");
-            esc.addText(saleResponse.getSell_price());
+            esc.addText("\n");
+            esc.addText("          ");
+            esc.addText(saleResponse.getUnit_price());
             esc.addText("   ");
             esc.addText(String.valueOf(saleResponse.getCount()));
-            esc.addText(saleResponse.getType() == GoodsResponse.type_weight? saleResponse.getG_u_symbol(): "");
+            esc.addText(GoodsResponse.isWeightGood(saleResponse.getType())? saleResponse.getG_u_symbol(): "");
             esc.addText("   ");
             esc.addText(df.format(saleResponse.getMoney()) + "\n");
 

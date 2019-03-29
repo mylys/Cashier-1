@@ -174,12 +174,13 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         if (data != null) {
             for (OrderHistorysInfo.ListBean bean : data) {
                 GoodsRefundInfo info = new GoodsRefundInfo();
+                info.setIs_weigh(bean.isWeightGood()? 1: 0);
                 info.setProduct_name(bean.getG_sku_name());
-                info.setProduct_price(bean.getSell_price());
+                info.setProduct_price(bean.getUnit_price());
                 double money = bean.getMoney();
                 info.setProduct_subtotal(df.format(money));
                 info.setProduct_preferential(bean.getDiscount());
-                info.setProduct_num(bean.getQuantity());
+                info.setProduct_num(bean.getCount());
                 info.setS_sku_id(bean.getS_sku_id());
                 info.setRefund_num(bean.getQuantity() + "");
 
@@ -442,7 +443,6 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         if (pay_type.equals(getResources().getString(R.string.pay_cash))) {
 
             mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
-            PrinterUtils.getInstance().popTill();
         }
         checkbox.setChecked(false);
         adapter.setRefundInfo();
@@ -526,6 +526,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         obj.real_pay = df.format(real_pay);
         obj.pay_type = pay_type;
         obj.refund = tvRefundcashPrice.getText().toString();
+        obj.pop_till = pay_type.equals(getString(R.string.pay_cash));
 
         PrinterUtils.getInstance().print(PrinterHelpter.orderHistroyRefund(obj));
     }
