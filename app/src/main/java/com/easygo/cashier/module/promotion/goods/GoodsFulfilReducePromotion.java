@@ -87,7 +87,7 @@ public class GoodsFulfilReducePromotion extends BaseGoodsPromotion implements IG
                     return;
                 }
 
-                for (int i = 0; i < size; i++) {
+                for (int i = 0; i < goods_size; i++) {
                     PromotionGoods.GoodsBean goodsBean = goodsBeans.get(i);
 
                     if (goodsBean.getCount() == 0) {
