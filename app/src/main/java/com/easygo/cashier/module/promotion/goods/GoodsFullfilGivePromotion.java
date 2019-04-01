@@ -60,7 +60,7 @@ public class GoodsFullfilGivePromotion extends BaseGoodsPromotion implements IGo
             int condition_type = getCondition_type();
 
             switch (condition_type) {
-                case 1: { //统一计算
+                case 2: { //统一计算
 
                     //存储 需要考虑的条件
                     List<GoodsActivityResponse.ActivitiesBean.ConfigBean.ListBean> temp = new ArrayList<>();
@@ -123,7 +123,7 @@ public class GoodsFullfilGivePromotion extends BaseGoodsPromotion implements IGo
                     }
                 }
                 break;
-                case 2: { //独立计算
+                case 1: { //独立计算
                     List<PromotionGoods.GoodsBean> goodsBeans = promotionGoods.getGoodsBeans();
                     int goods_size = goodsBeans.size();
 
