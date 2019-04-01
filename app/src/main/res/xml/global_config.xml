@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:title="环境配置">
+
+    </ListPreference>
+
+
+    <PreferenceScreen
+        android:title="环境配置">
+
+        <SwitchPreference
+            android:title="测试环境"
+            android:key="key_environment_dev"
+            />
+
+
+    </PreferenceScreen>
+
+</PreferenceScreen>
