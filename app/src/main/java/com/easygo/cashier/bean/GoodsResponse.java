@@ -58,7 +58,7 @@ public class GoodsResponse implements Serializable {
     private String discount_price;
     private String membership_price;
     private int is_inventory_limit;
-    private int on_sale_count;
+    private String on_sale_count;
     private String birthday_price;
     private int sell_status;
     private int status;
@@ -410,11 +410,11 @@ public class GoodsResponse implements Serializable {
         this.is_inventory_limit = is_inventory_limit;
     }
 
-    public int getOn_sale_count() {
-        return on_sale_count;
+    public float getOn_sale_count() {
+        return !TextUtils.isEmpty(on_sale_count)? Float.valueOf(on_sale_count): 0f;
     }
 
-    public void setOn_sale_count(int on_sale_count) {
+    public void setOn_sale_count(String on_sale_count) {
         this.on_sale_count = on_sale_count;
     }
 

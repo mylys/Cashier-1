@@ -356,7 +356,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                             limit.remove(barcode);
                             notifyItemRemoved(position);
                         } else {
-                            int on_sale_count = good.getOn_sale_count();
+                            float on_sale_count = good.getOn_sale_count();
                             if (good.getIs_inventory_limit() == 1 && helper.getItemViewType() == GoodsEntity.TYPE_GOODS
                                     && count > on_sale_count) {
                                 //数量大于在售数量了
@@ -922,7 +922,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         GoodsEntity<GoodsResponse> goodsEntity = mData.get(position);
         GoodsResponse good = goodsEntity.getData();
         String barcode = good.getBarcode();
-        int on_sale_count = good.getOn_sale_count();
+        float on_sale_count = good.getOn_sale_count();
 
         if (good.getIs_inventory_limit() == 1 && good.getType() == GoodsResponse.type_normal
                 && count > on_sale_count) {
