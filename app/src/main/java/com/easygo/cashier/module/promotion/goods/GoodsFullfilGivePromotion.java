@@ -2,7 +2,6 @@ package com.easygo.cashier.module.promotion.goods;
 
 import android.util.Log;
 
-import com.easygo.cashier.Configs;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
@@ -132,18 +131,19 @@ public class GoodsFullfilGivePromotion extends BaseGoodsPromotion implements IGo
                     int condition_value = Integer.valueOf(listBean.getCondition_value());
                     int offer_value = Integer.valueOf(listBean.getOffer_value());
 
+                    Log.i(TAG, "computePromotionMoney: 满足件数 -> " + condition_value);
+                    Log.i(TAG, "computePromotionMoney: 优惠件数 -> " + offer_value);
+
                     int quanlity;
                     float promotion_money;
                     for (int j = 0; j < goods_size; j++) {
                         PromotionGoods.GoodsBean goodsBean = goodsBeans.get(j);
-                        quanlity = goodsBean.getQuanlity();
+                        quanlity = (int) goodsBean.getCount();
                         if (quanlity < condition_value) {
                             continue;
                         }
 
-                        if (offer_value > quanlity) {
-                            offer_value = quanlity;
-                        }
+                        offer_value = quanlity / condition_value;
 
                         GoodsEntity<GoodsResponse> goodsEntity = data.get(goodsBean.getIndex());
 
@@ -273,12 +273,8 @@ public class GoodsFullfilGivePromotion extends BaseGoodsPromotion implements IGo
         }
         Log.i(TAG, "getRules: 匹配到规则序号 -> " + index);
 
-        //创建一个规则对象
-        Rule rule = new Rule();
-
-
         GoodsActivityResponse.ActivitiesBean.ConfigBean.ListBean current = listBeans.get(index);
-        //满足的指定件数
+//        //满足的指定件数
         int condition_value = Integer.valueOf(current.getCondition_value());
         //优惠件数
         int offer_value = Integer.valueOf(current.getOffer_value());
@@ -286,10 +282,23 @@ public class GoodsFullfilGivePromotion extends BaseGoodsPromotion implements IGo
         Log.i(TAG, "getRules: 满足的件数 -> " + condition_value);
         Log.i(TAG, "getRules: 优惠件数 -> " + offer_value);
 
+
+        getRules(list, goodsBeans, count, condition_value, offer_value);
+    }
+
+
+    private void getRules(List<Rule> list, List<PromotionGoods.GoodsBean> goodsBeans, int count,
+                          int needCount, int offer_value) {
+
+
+        //创建一个规则对象
+        Rule rule = new Rule();
         rule.offer_value = offer_value;
+        rule.condition_value = needCount;
 
         //记录还需添加多少件 才能满足 指定件数
-        int needCount = condition_value;
+        int lastNeedCount = needCount;
+        int has_add = 0;
 
         int size = goodsBeans.size();
         for (int i = 0; i < size; i++) {
@@ -305,6 +314,7 @@ public class GoodsFullfilGivePromotion extends BaseGoodsPromotion implements IGo
             good.index = goodsBean.getIndex();
             good.price = goodsBean.getPrice();
             if(needCount > good_count) {//指定数量大于此商品数量， 将此商品全部添加到Rule.list
+                has_add += good_count;
                 good.count = good_count;
                 good.subtotal = good.price * good.count;
 
@@ -318,6 +328,7 @@ public class GoodsFullfilGivePromotion extends BaseGoodsPromotion implements IGo
                 goodsBean.setSubtotal(0f);
 
             } else {//指定数量小于此商品数量，将指定数量添加到Rule.list
+                has_add += needCount;
                 good.count = needCount;
                 good.subtotal = good.price * good.count;
 
@@ -333,16 +344,17 @@ public class GoodsFullfilGivePromotion extends BaseGoodsPromotion implements IGo
             }
         }
 
-        //将规则对象添加到list
-        list.add(rule);
+        if(rule.list.size() != 0 && has_add == lastNeedCount) {
+            //将规则对象添加到list
+            list.add(rule);
+            count -= has_add;
+        } else {
+            count--;
+        }
 
+        if(count >= lastNeedCount)
+            getRules(list, goodsBeans, count, lastNeedCount, offer_value);
 
-        //更新数量
-        count -= condition_value;
-        //移除已经应用的规则
-        listBeans.remove(index);
-
-        getRules(list, goodsBeans, count, listBeans);
     }
 
 
@@ -371,6 +383,8 @@ public class GoodsFullfilGivePromotion extends BaseGoodsPromotion implements IGo
         private float total_promotion_money;
         /**本部分商品优惠件数*/
         private int offer_value;
+        /**本部分商品满足件数*/
+        private int condition_value;
         /**本部分商品列表*/
         private List<Good> list = new ArrayList<>();
 

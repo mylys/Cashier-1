@@ -436,7 +436,8 @@ public class ActivitiesUtils {
                     PromotionGoods.GoodsBean good = new PromotionGoods.GoodsBean();
                     good.setIndex(i);//设置在data数据源中的位置
                     good.setBarcode(barcode);
-                    good.setQuanlity(weight? 1: (int) goodsEntity.getCount());
+//                    good.setQuanlity(weight? 1: (int) goodsEntity.getCount());
+                    good.setQuanlity((int) goodsEntity.getCount());
                     good.setCount(goodsEntity.getCount());
                     good.setPrice(Float.valueOf(goodsEntity.getData().getPrice()));
                     good.setSubtotal(goodsEntity.getCount() * Float.valueOf(goodsEntity.getData().getPrice()));

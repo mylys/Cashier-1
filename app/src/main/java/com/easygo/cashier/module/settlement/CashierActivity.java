@@ -429,21 +429,24 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
             DecimalFormat df = new DecimalFormat("#");
             float price;
+            float count;
+            float discount;
             int total_count = mGoodsData.size();
             for (int i = 0; i < total_count; i++) {
                 goodsListBean = new PrintRequestBody.GoodsListBean();
                 GoodsEntity<GoodsResponse> good = mGoodsData.get(i);
-                float count = good.getCount();
+                count = good.getCount();
                 GoodsResponse data;
                 Integer price_int;
 
                 data = good.getData();
                 price = Float.valueOf(data.getPrice());
+                discount = Float.valueOf(data.getDiscount_price());
                 price_int = Integer.valueOf(df.format(price * 100));
 //                goodsListBean.setCount_price(count * price_int);
-                goodsListBean.setCount_price(Integer.valueOf(df.format(count * price * 100)));
+                goodsListBean.setCount_price(Integer.valueOf(df.format((count * price - discount) * 100)));
 
-                goodsListBean.setDiscount(1);
+                goodsListBean.setDiscount(Integer.valueOf(df.format(discount)));
                 goodsListBean.setGoods_name(data.getPrintName());
                 goodsListBean.setBarcode(data.getBarcode());
                 goodsListBean.setPrice(price_int);
@@ -451,11 +454,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
                 switch (good.getItemType()) {
                     case GoodsEntity.TYPE_WEIGHT:
-                    case GoodsEntity.TYPE_ONLY_PROCESSING:
                     case GoodsEntity.TYPE_PROCESSING:
-                        goodsListBean.setCount(count + "g");
+                        goodsListBean.setCount(count + data.getG_u_symbol());
                         break;
                     case GoodsEntity.TYPE_GOODS:
+                    case GoodsEntity.TYPE_ONLY_PROCESSING:
                     default:
                         goodsListBean.setCount(String.valueOf(count));
                         break;
@@ -469,10 +472,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     if (data != null) {
                         goodsListBean = new PrintRequestBody.GoodsListBean();
                         price = Float.valueOf(data.getProcess_price());
+                        discount = Float.valueOf(data.getDiscount_price());
                         price_int = Integer.valueOf(df.format(price * 100));
                         goodsListBean.setCount_price(price_int);
 
-                        goodsListBean.setDiscount(1);
+                        goodsListBean.setDiscount(Integer.valueOf(df.format(discount)));
                         goodsListBean.setGoods_name(data.getG_sku_name());
                         goodsListBean.setBarcode(data.getBarcode());
                         goodsListBean.setPrice(price_int);
