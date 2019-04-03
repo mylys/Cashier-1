@@ -11,6 +11,7 @@ import java.text.DecimalFormat;
 public class HandoverSaleListAdapter extends BaseQuickAdapter<HandoverSaleResponse, BaseViewHolder> {
 
     private DecimalFormat df = new DecimalFormat("0.00");
+    private DecimalFormat df_weight = new DecimalFormat("#0.000");
 
     public HandoverSaleListAdapter() {
         super(R.layout.item_handover_sale_list);
@@ -26,7 +27,7 @@ public class HandoverSaleListAdapter extends BaseQuickAdapter<HandoverSaleRespon
                 break;
             case GoodsResponse.type_weight:
             case GoodsResponse.type_processing:
-                count = String.valueOf(item.getCount() + item.getG_u_symbol());
+                count = String.valueOf(df_weight.format(item.getCount()) + item.getG_u_symbol());
                 break;
             default:
                 count = String.valueOf(item.getQuantity());

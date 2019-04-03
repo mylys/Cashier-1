@@ -18,6 +18,7 @@ public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo
     private boolean have_promotion = false;
     private DecimalFormat df = new DecimalFormat("#0.00");
     private DecimalFormat df_int = new DecimalFormat("#");
+    private DecimalFormat df_weight= new DecimalFormat("#0.000");
 
 
     public OrderHistoryGoodsAdapter() {
@@ -38,7 +39,7 @@ public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo
                 .setText(R.id.tv_text_price, unit_price)
                 .setText(R.id.tv_text_coupon, discount)
                 .setText(R.id.tv_text_goods_count, item.isWeightGood() ?
-                        count + item.getG_u_symbol() : df_int.format(count))
+                        df_weight.format(count) + item.getG_u_symbol() : df_int.format(count))
                 .setText(R.id.tv_text_subtotal, df.format(subtotal));
 
         helper.setVisible(R.id.image_discount, Float.valueOf(discount) > 0);

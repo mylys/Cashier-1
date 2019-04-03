@@ -428,6 +428,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
 
             DecimalFormat df = new DecimalFormat("#");
+            DecimalFormat df_weight = new DecimalFormat("#0.000");
             float price;
             float count;
             float discount;
@@ -455,7 +456,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 switch (good.getItemType()) {
                     case GoodsEntity.TYPE_WEIGHT:
                     case GoodsEntity.TYPE_PROCESSING:
-                        goodsListBean.setCount(count + data.getG_u_symbol());
+                        goodsListBean.setCount(df_weight.format(count) + data.getG_u_symbol());
                         break;
                     case GoodsEntity.TYPE_GOODS:
                     case GoodsEntity.TYPE_ONLY_PROCESSING:

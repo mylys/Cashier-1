@@ -54,11 +54,12 @@ public class PrinterHelpter {
         esc.addText("收银员：");
         esc.addText(obj.admin_name + "\n");
         esc.addText("--------------------------------\n");
-        esc.addText(" 品名  单价  折扣  数量  小计  \n");
+        esc.addText(" 品名  单价  优惠  数量  小计  \n");
 
         List<GoodsEntity<GoodsResponse>> goodsData = obj.data;
 
         DecimalFormat df = new DecimalFormat("#0.00");
+        DecimalFormat df_weight = new DecimalFormat("#0.000");
         int size = goodsData.size();
         float count ;
         float price;
@@ -86,12 +87,12 @@ public class PrinterHelpter {
             esc.addText("    ");
             esc.addText(data.getPrice());
             esc.addText("  ");
-            esc.addText("1.00");
+            esc.addText(df.format(discount));
             esc.addText("  ");
             switch (good.getItemType()) {
                 case GoodsEntity.TYPE_WEIGHT:
                 case GoodsEntity.TYPE_PROCESSING:
-                    esc.addText(count + data.getG_u_symbol());
+                    esc.addText(df_weight.format(count) + data.getG_u_symbol());
                     break;
                 case GoodsEntity.TYPE_GOODS:
                 case GoodsEntity.TYPE_ONLY_PROCESSING:
@@ -121,7 +122,7 @@ public class PrinterHelpter {
                     esc.addText("    ");
                     esc.addText(data.getPrice());
                     esc.addText("  ");
-                    esc.addText("1.00");
+                    esc.addText(df.format(discount));
                     esc.addText("  ");
                     esc.addText(String.valueOf(count));
                     esc.addText("  ");
@@ -223,6 +224,7 @@ public class PrinterHelpter {
         List<OrderHistorysInfo.ListBean> list = info.getList();
 
         DecimalFormat df = new DecimalFormat("0.00");
+        DecimalFormat df_weight = new DecimalFormat("#0.000");
 
         int size = list.size();
         int count = 0;
@@ -245,7 +247,7 @@ public class PrinterHelpter {
             esc.addText("  ");
             esc.addText(data.getDiscount());
             esc.addText("  ");
-            esc.addText(GoodsResponse.isWeightGood(type)? data.getCount() + data.getG_u_symbol() : String.valueOf(data.getCount()));
+            esc.addText(GoodsResponse.isWeightGood(type)? df_weight.format(data.getCount()) + data.getG_u_symbol() : String.valueOf(data.getCount()));
             esc.addText("  ");
             esc.addText(df.format(data.getMoney()) + "\n");
         }
@@ -305,6 +307,8 @@ public class PrinterHelpter {
         esc.addText("--------------------------------\n");
         esc.addText("品名  单价  优惠  数量/重量  小计  \n");
 
+        DecimalFormat df_weight = new DecimalFormat("#0.000");
+
         ArrayList<GoodsRefundInfo> info = obj.data;
         int size = info.size();
         for (int i = 0; i < size; i++) {
@@ -324,10 +328,8 @@ public class PrinterHelpter {
             esc.addText("  ");
             esc.addText(data.getProduct_preferential());
             esc.addText("   ");
-            esc.addText(data.getRefund_num());
-            if(GoodsResponse.isWeightGood(data.getType())) {
-                esc.addText(data.getG_u_symbol());
-            }
+            esc.addText(GoodsResponse.isWeightGood(data.getType())? df_weight.format(data.getRefund_num()) + data.getG_u_symbol()
+                    : data.getRefund_num());
             esc.addText("  ");
             esc.addText(data.getRefund_subtotal());
             esc.addText("  \n");
@@ -450,6 +452,7 @@ public class PrinterHelpter {
 
 
         DecimalFormat df = new DecimalFormat("0.00");
+        DecimalFormat df_weight = new DecimalFormat("0.000");
         int size = obj.data.size();
         int count = 0;
         float total_money = 0;
@@ -468,8 +471,8 @@ public class PrinterHelpter {
             esc.addText("          ");
             esc.addText(saleResponse.getUnit_price());
             esc.addText("   ");
-            esc.addText(String.valueOf(saleResponse.getCount()));
-            esc.addText(GoodsResponse.isWeightGood(saleResponse.getType())? saleResponse.getG_u_symbol(): "");
+            esc.addText(GoodsResponse.isWeightGood(saleResponse.getType())? df_weight.format(saleResponse.getCount()) + saleResponse.getG_u_symbol()
+                    : String.valueOf(saleResponse.getCount()));
             esc.addText("   ");
             esc.addText(df.format(saleResponse.getMoney()) + "\n");
 

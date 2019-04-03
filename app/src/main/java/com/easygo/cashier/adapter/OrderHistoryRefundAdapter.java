@@ -25,11 +25,13 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
     private OnItemClickListener listener;
     private DecimalFormat df;
     private DecimalFormat df_int;
+    private DecimalFormat df_weight;
 
     public OrderHistoryRefundAdapter() {
         super(R.layout.item_order_history_refund_list);
         df = new DecimalFormat("0.00");
         df_int = new DecimalFormat("#");
+        df_weight = new DecimalFormat("#0.000");
     }
 
     @Override
@@ -66,7 +68,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
 //        helper.setImageResource(R.id.image_select, item.isSelect() ? R.drawable.icon_select : R.drawable.icon_no_select);
 
         //设置数据
-        String tv_total_num = type == 1 ? item.getProduct_num() + item.getG_u_symbol(): df_int.format(item.getProduct_num());
+        String tv_total_num = type == 1 ? df_weight.format(item.getProduct_num()) + item.getG_u_symbol(): df_int.format(item.getProduct_num());
 
         double product_subtotal = Double.parseDouble(item.getProduct_subtotal());//小计
         double refund_subtotal = Double.parseDouble(item.getRefund_subtotal());//退货小计

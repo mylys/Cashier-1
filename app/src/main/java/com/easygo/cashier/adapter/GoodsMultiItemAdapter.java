@@ -31,11 +31,13 @@ import java.util.List;
 public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity<GoodsResponse>, BaseViewHolder> {
     DecimalFormat df;
     DecimalFormat df_int;
+    DecimalFormat df_weight;
 
     public GoodsMultiItemAdapter() {
         super(null);
         df = new DecimalFormat("0.00");
         df_int = new DecimalFormat("#");
+        df_weight = new DecimalFormat("#0.000");
         addItemType(GoodsEntity.TYPE_GOODS, R.layout.item_goods);
         addItemType(GoodsEntity.TYPE_WEIGHT, R.layout.item_goods_weight);
         addItemType(GoodsEntity.TYPE_ONLY_PROCESSING, R.layout.item_goods);
@@ -398,7 +400,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 });
                 break;
             case GoodsEntity.TYPE_WEIGHT://称重商品
-                helper.setText(R.id.tv_count, good_count + good.getG_u_symbol());
+                helper.setText(R.id.tv_count, df_weight.format(good_count) + good.getG_u_symbol());
                 break;
             case GoodsEntity.TYPE_ONLY_PROCESSING://纯加工方式
                 CountTextView view = (CountTextView) helper.getView(R.id.count_view);
@@ -423,7 +425,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 final boolean is_processing = cb_processing.isChecked();
 
                 //设置加工方式相关控件可见性
-                helper.setText(R.id.tv_count,  good_count + good.getG_u_symbol());
+                helper.setText(R.id.tv_count,  df_weight.format(good_count) + good.getG_u_symbol());
                 setProcessingLayout(helper, is_processing);
 
 
