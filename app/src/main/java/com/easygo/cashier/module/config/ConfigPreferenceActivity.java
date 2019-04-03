@@ -26,7 +26,6 @@ public class ConfigPreferenceActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        SharedPreferences sp = getSharedPreferences(ConfigPreferenceFragment.mSharedPreferencesName, MODE_PRIVATE);
-        Configs.environment_index =  Integer.valueOf(sp.getString("key_environment", "0"));
+        Configs.readConfig(ConfigPreferenceActivity.this);
     }
 }

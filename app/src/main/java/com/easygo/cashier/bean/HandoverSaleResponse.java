@@ -126,7 +126,7 @@ public class HandoverSaleResponse {
 
     public double getMoney() {
         String money;
-        if(!TextUtils.isEmpty(unit_price)) {
+        if(TextUtils.isEmpty(unit_price)) {
             money = sell_price;
         } else {
             money = unit_price;

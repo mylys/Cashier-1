@@ -6,20 +6,16 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
-import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.module.goods.MainActivity;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.permission.PermissionActivity;
 import com.niubility.library.base.BaseApplication;
-import com.niubility.library.utils.LogUtils;
 import com.niubility.library.utils.ToastUtils;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.BuglyStrategy;
 import com.tencent.bugly.beta.Beta;
-
-import java.io.File;
 
 public class MyApplication extends BaseApplication {
 
@@ -39,6 +35,8 @@ public class MyApplication extends BaseApplication {
         ARouter.init(this);
 
         ToastUtils.text_size_times = 1.5f;
+
+        Configs.readConfig(this);
     }
 
     private void initBugly() {
