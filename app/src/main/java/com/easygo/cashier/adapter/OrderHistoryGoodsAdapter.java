@@ -30,7 +30,10 @@ public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo
 
         float count = item.getCount();
         String unit_price = item.getUnit_price();
-        String sell_price = item.getSell_price();
+        if (TextUtils.isEmpty(unit_price)) {
+            unit_price = item.getSell_price();
+        }
+//        String sell_price = item.getSell_price();
         String discount = item.getDiscount();
         float subtotal = Float.valueOf(unit_price) * count - Float.valueOf(discount);
 

@@ -1,6 +1,7 @@
 package com.easygo.cashier.bean;
 
 import android.text.TextUtils;
+import android.view.TextureView;
 
 public class HandoverSaleResponse {
 
@@ -124,7 +125,13 @@ public class HandoverSaleResponse {
     }
 
     public double getMoney() {
-        return Float.valueOf(unit_price) * count - Float.valueOf(discount);
+        String money;
+        if(!TextUtils.isEmpty(unit_price)) {
+            money = sell_price;
+        } else {
+            money = unit_price;
+        }
+        return Float.valueOf(money) * count - Float.valueOf(discount);
 //        return money;
     }
 

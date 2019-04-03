@@ -31,11 +31,13 @@ import com.easygo.cashier.bean.AccountInfo;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
 import com.easygo.cashier.module.CouponUtils;
+import com.easygo.cashier.module.config.ConfigPreferenceActivity;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.widget.AccountWindow;
 import com.easygo.cashier.widget.ConfigDialog;
+import com.easygo.cashier.widget.MyTitleBar;
 import com.easygo.cashier.widget.PettyCashDialog;
 import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
@@ -62,6 +64,8 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
     @BindView(R.id.constraint_parent)
     ConstraintLayout parent;
+    @BindView(R.id.cl_title)
+    MyTitleBar clTitle;
     @BindView(R.id.cl_frame)
     ConstraintLayout child;
     @BindView(R.id.et_account)
@@ -161,6 +165,15 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         MemberUtils.reset();
         CouponUtils.getInstance().reset();
         ActivitiesUtils.getInstance().reset();
+
+
+        clTitle.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                startActivity(new Intent(LoginActivity.this, ConfigPreferenceActivity.class));
+                return true;
+            }
+        });
 
 
     }

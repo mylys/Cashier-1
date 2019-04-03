@@ -15,6 +15,11 @@ import io.reactivex.Observable;
 public class Configs {
 
     /**
+     * 环境变量指示变量
+     */
+    public static int environment_index;
+
+    /**
      * 门店
      */
     public static String shop_sn;

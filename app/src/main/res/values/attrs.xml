@@ -27,4 +27,17 @@
         <attr name="text_size" format="dimension"/>
     </declare-styleable>
 
+    <string-array name="attr_environment">
+        <item>测试环境</item>
+        <item>预发布环境</item>
+        <item>正式环境</item>
+        <item>离线模式</item>
+    </string-array>
+    <string-array name="values_environment">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
 </resources>
