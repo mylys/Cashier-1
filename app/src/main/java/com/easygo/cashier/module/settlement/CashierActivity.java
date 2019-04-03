@@ -360,7 +360,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 //            return;
 //        }
         if (MemberUtils.isMember && mPayWay == PayWayView.WAY_MEMBER) {
-            if (getPayMoney() > Float.parseFloat(mBalance.substring(1,mBalance.length()))) {
+            if (getReceivableMoney() > Float.parseFloat(mBalance.substring(1,mBalance.length()))) {
                 showToast("会员钱包余额不足，不能进行支付");
                 return;
             }
@@ -587,8 +587,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     }
 
     /**
-     * 顾客应该支付的钱     （订单总额-优惠-优惠券优惠） =  应收 + 临时整单折扣
-     * @return
+     * 应用临时整单折扣之前的金额     （订单总额-优惠-优惠券优惠） =  应收 + 临时整单折扣
      */
     private float getPayMoney() {
         float money = mTotalMoney - mCoupon - mCouponMoney;
@@ -597,6 +596,30 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         }
         return money;
     }
+
+    /**
+     * 应收金额     （订单总额-优惠-优惠券优惠-临时整单折扣） =  应收
+     */
+    private float getReceivableMoney() {
+        float money = getPayMoney() - mTempOrderPromotionMoney;
+        if(money <= 0) {
+            return 0;
+        }
+        return money;
+    }
+
+    /**
+     * 金额     （订单总额-优惠-优惠券优惠-临时整单折扣）+ 找零 =  实收
+     */
+    private float getReceipts() {
+        float money = getPayMoney() - mTempOrderPromotionMoney + mChange;
+        if(money <= 0) {
+            return 0;
+        }
+        return money;
+    }
+
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -1156,11 +1179,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             case PayWayView.WAY_CASH:
 
                 DecimalFormat df = new DecimalFormat("#");
-                float pay = mTotalMoney * 100 - mCoupon * 100 - mCouponMoney * 100 - mTempOrderPromotionMoney * 100;
-                if(pay < 0) {
-                    pay = 0;
-                }
-                String real_pay = df.format(pay);
+                float pay = getReceivableMoney();
+                String real_pay = df.format(pay * 100);
                 String change_money = df.format(mChange * 100);
 
                 mPresenter.cash(Configs.shop_sn, Configs.order_no,
