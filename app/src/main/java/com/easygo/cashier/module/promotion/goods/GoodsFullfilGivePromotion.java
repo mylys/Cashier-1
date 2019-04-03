@@ -143,7 +143,7 @@ public class GoodsFullfilGivePromotion extends BaseGoodsPromotion implements IGo
                             continue;
                         }
 
-                        offer_value = quanlity / condition_value;
+                        offer_value = (quanlity / condition_value) * offer_value;
 
                         GoodsEntity<GoodsResponse> goodsEntity = data.get(goodsBean.getIndex());
 
