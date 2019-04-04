@@ -14,6 +14,7 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.FunctionListAdapter;
 import com.easygo.cashier.bean.FunctionListBean;
 import com.niubility.library.base.BaseDialog;
+import com.niubility.library.utils.ToastUtils;
 
 import java.util.ArrayList;
 
@@ -46,6 +47,7 @@ public class FunctionListDialog extends BaseDialog {
             R.string.text_function_entry,
             R.string.text_function_device,
             R.string.text_function_lock,
+            R.string.text_switch_mode_offline,
     };
 
 //    private int[] res = new int[]{
@@ -69,6 +71,7 @@ public class FunctionListDialog extends BaseDialog {
             R.drawable.ic_lock,
 //            R.drawable.ic_system_setting,
 //            R.drawable.ic_enter_system,
+            R.drawable.ic_switch_mode,
     };
 
 
@@ -78,8 +81,9 @@ public class FunctionListDialog extends BaseDialog {
         Window window = getDialog().getWindow();
         if (window != null) {
             window.setLayout(getResources().getDimensionPixelSize(R.dimen.function_list_width),
-                    getResources().getDimensionPixelSize(Configs.lock_auth == 0 ? R.dimen.y359 : R.dimen.function_list_height));
+//                    getResources().getDimensionPixelSize(Configs.lock_auth == 0 ? R.dimen.y359 : R.dimen.function_list_height));
 //                    getResources().getDimensionPixelSize(R.dimen.y359));
+                    getResources().getDimensionPixelSize(R.dimen.function_list_height));
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -116,6 +120,13 @@ public class FunctionListDialog extends BaseDialog {
 
         if (Configs.lock_auth == 0) {
             integers.add(4);
+        }
+
+//        if(Config.isOnlineMode()) {
+        if(Configs.isOnlineMode()) {
+            functions[5] = R.string.text_switch_mode_offline;
+        } else {
+            functions[5] = R.string.text_switch_mode_online;
         }
 
         //分割线
@@ -172,6 +183,12 @@ public class FunctionListDialog extends BaseDialog {
                             case R.string.text_function_lock:
                                 lockCashier();
                                 break;
+                            case R.string.text_switch_mode_offline:
+                                switchOffline();
+                                break;
+                            case R.string.text_switch_mode_online:
+                                switchOnline();
+                                break;
                         }
 
                         dismiss();
@@ -189,6 +206,17 @@ public class FunctionListDialog extends BaseDialog {
 
         if (mListener != null) {
             mListener.onItemClickAfter();
+        }
+    }
+
+    private void switchOnline() {
+        if(mListener != null) {
+            mListener.switchMode(Configs.mode_online);
+        }
+    }
+    private void switchOffline() {
+        if(mListener != null) {
+            mListener.switchMode(Configs.mode_offline);
         }
     }
 
@@ -274,6 +302,8 @@ public class FunctionListDialog extends BaseDialog {
         void onItemClickAfter();
 
         void lockCashier();
+
+        void switchMode(int mode);
     }
 
     @Override

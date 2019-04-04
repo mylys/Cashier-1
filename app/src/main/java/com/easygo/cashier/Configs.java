@@ -10,8 +10,6 @@ import com.niubility.library.utils.SharedPreferencesUtils;
 
 import java.util.List;
 
-import io.reactivex.Observable;
-
 public class Configs {
 
     /**
@@ -23,6 +21,20 @@ public class Configs {
      * 环境变量指示变量
      */
     public static int environment_index;
+    public static int environment_online;
+    public static int environment_offline = 3;
+
+    public static final int mode_online = 0;
+    public static final int mode_offline = 1;
+    /**
+     * 当前模式（在线/离线）
+     */
+    public static int current_mode = mode_online;
+    public static boolean isOnlineMode() {
+        return current_mode == mode_online;
+    }
+
+
 
     /**
      * 门店
@@ -105,7 +117,8 @@ public class Configs {
      */
     public static void readConfig(Context context) {
         SharedPreferences sp = context.getSharedPreferences(sp_config, Context.MODE_PRIVATE);
-        environment_index = Integer.valueOf(sp.getString("key_environment", "0"));
+        environment_index = Integer.valueOf(sp.getString("key_environment", BuildConfig.DEBUG? "2": "0"));
+        environment_online = environment_index;
 
     }
 

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.ActivitiesUtils;
+import com.easygo.cashier.BuildConfig;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.ModulePath;
@@ -167,13 +168,15 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         ActivitiesUtils.getInstance().reset();
 
 
-        clTitle.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                startActivity(new Intent(LoginActivity.this, ConfigPreferenceActivity.class));
-                return true;
-            }
-        });
+        if(BuildConfig.DEBUG) {
+            clTitle.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    startActivity(new Intent(LoginActivity.this, ConfigPreferenceActivity.class));
+                    return true;
+                }
+            });
+        }
 
 
     }

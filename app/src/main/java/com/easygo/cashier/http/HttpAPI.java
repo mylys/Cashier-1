@@ -11,9 +11,9 @@ public class HttpAPI extends API {
 
 
     public final String[] domain = new String[]{
-            "http://api.dev.pos.esgao.cn/",
-            "http://api.staging.pos.esgao.cn/",
             "https://api.pos.esgao.cn/",
+            "http://api.staging.pos.esgao.cn/",
+            "http://api.dev.pos.esgao.cn/",
             "http://192.168.31.120:8071/",
     };
 
@@ -25,7 +25,7 @@ public class HttpAPI extends API {
 
     public HttpService httpService() {
 
-        HttpService httpService = serviceArrayMap.get(Configs.environment_index);
+        httpService = serviceArrayMap.get(Configs.environment_index);
         if(httpService == null) {
             httpService = BaseRetrofit.getInstance()
                     .getRetrofit(domain[Configs.environment_index])

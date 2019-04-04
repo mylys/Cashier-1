@@ -274,6 +274,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                 public void run() {
                     myTitleBar.setOnline(networkOnline);
                     mHandler.sendEmptyMessageDelayed(MSG_NETWORK, 60 * 1000);
+//                    Configs.current_mode = networkOnline? Configs.mode_online: Configs.mode_offline;
                 }
             });
         }
@@ -488,6 +489,11 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         @Override
         public void lockCashier() {
             goodsFragment.lockCashier();
+        }
+
+        @Override
+        public void switchMode(int mode) {
+            goodsFragment.switchMode(mode);
         }
     };
 

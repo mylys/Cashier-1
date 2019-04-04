@@ -1,6 +1,21 @@
 <resources>
     <string name="app_name">EG收银系统</string>
 
+    <!--配置-->
+    <string-array name="attr_environment">
+        <item>正式环境</item>
+        <item>预发布环境</item>
+        <item>测试环境</item>
+        <item>离线模式</item>
+    </string-array>
+    <string-array name="values_environment">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+
     <string name="text_login">登录</string>
 
     <!--主页面-->
@@ -193,6 +208,8 @@
     <string name="text_function_setting">系统设置</string>
     <string name="text_function_system">进入系统</string>
     <string name="text_function_lock">锁定收银机</string>
+    <string name="text_switch_mode_offline">切换为离线模式</string>
+    <string name="text_switch_mode_online">切换为在线模式</string>
 
     <!-- 通用dialog -->
     <string name="text_dialog_title_clear">确认情况商品？</string>

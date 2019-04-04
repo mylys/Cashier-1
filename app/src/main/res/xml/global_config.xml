@@ -5,7 +5,7 @@
         android:title="环境配置"
         android:key="key_environment"
         android:summary="点击切换环境"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_config"
         android:dialogTitle="请选择环境"
         android:entries="@array/attr_environment"
         android:entryValues="@array/values_environment">

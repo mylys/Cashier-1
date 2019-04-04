@@ -1,6 +1,7 @@
 package com.easygo.cashier.module.goods;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.display.DisplayManager;
@@ -45,6 +46,7 @@ import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
 import com.easygo.cashier.module.CouponUtils;
+import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.refund.RefundActivity;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
@@ -445,7 +447,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         if (Configs.getRole(Configs.menus[21]) == 0) {
             clNoBarcode.setVisibility(View.GONE);
         }
-//        if (Configs.getRole(Configs.menus[13]) == 0) {
+//        if (Config.getRole(Config.menus[13]) == 0) {
 //            clPopMoneyBox.setVisibility(View.GONE);
 //        }
 
@@ -1678,5 +1680,38 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 }
             }
         });
+    }
+
+    public void switchMode(final int mode) {
+
+        String text = getString(Configs.mode_offline == mode? R.string.text_switch_mode_offline: R.string.text_switch_mode_online);
+
+        GeneraDialog generaDialog = GeneraDialog.getInstance(text + ", 需要\n重新登录？", "取消", "确定");
+        generaDialog.showCenter(getActivity());
+        generaDialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
+            @Override
+            public void onSubmit() {
+                realSwitchMode(mode);
+            }
+        });
+    }
+
+    public void realSwitchMode(int mode) {
+        switch(mode) {
+            case Configs.mode_offline:
+                Configs.environment_index = Configs.environment_offline;
+                Configs.current_mode = Configs.mode_offline;
+                showToast("已切换到离线模式");
+                break;
+            case Configs.mode_online:
+                Configs.environment_index = Configs.environment_online;
+                Configs.current_mode = Configs.mode_online;
+                showToast("已切换到在线模式");
+                break;
+        }
+
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }
