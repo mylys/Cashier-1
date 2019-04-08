@@ -16,6 +16,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.Configs;
+import com.easygo.cashier.Constants;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.base.BaseAppMvpActivity;
@@ -29,7 +30,7 @@ import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.printer.local.obj.HandoverInfoPrintObj;
 import com.easygo.cashier.printer.local.obj.HandoverSaleListPrintObj;
 import com.easygo.cashier.widget.MyTitleBar;
-import com.niubility.library.constants.Constans;
+import com.niubility.library.common.constants.BaseConstants;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
@@ -109,7 +110,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
 
         //获取交接班信息
         SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getApplicationContext());
-        handover_id = sp.getInt(Constans.KEY_HANDOVER_ID, -1);
+        handover_id = sp.getInt(Constants.KEY_HANDOVER_ID, -1);
 
         mPresenter.handover(handover_id);
 
@@ -186,23 +187,23 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
         SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sp.edit();
         //登录状态中，清除 session_id 、 admin_name
-        if (sp.contains(Constans.KEY_SESSION_ID)) {
-            editor.remove(Constans.KEY_SESSION_ID).apply();
+        if (sp.contains(BaseConstants.KEY_SESSION_ID)) {
+            editor.remove(BaseConstants.KEY_SESSION_ID).apply();
         }
-        if (sp.contains(Constans.KEY_ADMIN_NAME)) {
-            editor.remove(Constans.KEY_ADMIN_NAME).apply();
+        if (sp.contains(Constants.KEY_ADMIN_NAME)) {
+            editor.remove(Constants.KEY_ADMIN_NAME).apply();
         }
-        if (sp.contains(Constans.KEY_SHOP_SN)) {
-            editor.remove(Constans.KEY_SHOP_SN).apply();
+        if (sp.contains(BaseConstants.KEY_SHOP_SN)) {
+            editor.remove(BaseConstants.KEY_SHOP_SN).apply();
         }
-        if (sp.contains(Constans.KEY_SHOP_NAME)) {
-            editor.remove(Constans.KEY_SHOP_NAME).apply();
+        if (sp.contains(BaseConstants.KEY_SHOP_NAME)) {
+            editor.remove(BaseConstants.KEY_SHOP_NAME).apply();
         }
-        if (sp.contains(Constans.KEY_TIME)) {
-            editor.remove(Constans.KEY_TIME).apply();
+        if (sp.contains(BaseConstants.KEY_TIME)) {
+            editor.remove(BaseConstants.KEY_TIME).apply();
         }
-        if (sp.contains(Constans.KEY_HANDOVER_ID)) {
-            editor.remove(Constans.KEY_HANDOVER_ID).apply();
+        if (sp.contains(Constants.KEY_HANDOVER_ID)) {
+            editor.remove(Constants.KEY_HANDOVER_ID).apply();
         }
     }
 

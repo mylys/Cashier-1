@@ -14,13 +14,12 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.easygo.cashier.Configs;
+import com.easygo.cashier.Constants;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.OrderHistoryAdapter;
 import com.easygo.cashier.base.BaseAppMvpFragment;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.widget.MySearchView;
-import com.niubility.library.base.BaseMvpFragment;
-import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
@@ -78,7 +77,7 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
             transaction.replace(R.id.framelayout, orderHistoryDetailFragment, "tag_order_history").commit();
         }
 
-        handover_id = sp.getInt(Constans.KEY_HANDOVER_ID, -1);
+        handover_id = sp.getInt(Constants.KEY_HANDOVER_ID, -1);
 
         rvOrderHistory.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvOrderHistory.setAdapter(adapter);

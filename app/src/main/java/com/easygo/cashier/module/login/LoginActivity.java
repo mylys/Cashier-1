@@ -23,6 +23,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.ActivitiesUtils;
 import com.easygo.cashier.BuildConfig;
 import com.easygo.cashier.Configs;
+import com.easygo.cashier.Constants;
 import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
@@ -32,7 +33,6 @@ import com.easygo.cashier.bean.AccountInfo;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
 import com.easygo.cashier.module.CouponUtils;
-import com.easygo.cashier.module.config.ConfigPreferenceActivity;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.printer.local.PrinterUtils;
@@ -40,7 +40,8 @@ import com.easygo.cashier.widget.AccountWindow;
 import com.easygo.cashier.widget.ConfigDialog;
 import com.easygo.cashier.widget.MyTitleBar;
 import com.easygo.cashier.widget.PettyCashDialog;
-import com.niubility.library.constants.Constans;
+import com.niubility.library.common.config.ConfigPreferenceActivity;
+import com.niubility.library.common.constants.BaseConstants;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.DeviceUtils;
 import com.niubility.library.utils.GsonUtils;
@@ -129,17 +130,10 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         textUtils.addSoftKeyBoardListener(parent, child);
 
         sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getApplicationContext());
-        String session_id = sp.getString(Constans.KEY_SESSION_ID, "");
-        String admin_name = sp.getString(Constans.KEY_ADMIN_NAME, "");
-        int handover_id = sp.getInt(Constans.KEY_HANDOVER_ID, -1);
-        String shop_sn = sp.getString(Constans.KEY_SHOP_SN, "");
-        String shop_name = sp.getString(Constans.KEY_SHOP_NAME, "");
-        String appkey = sp.getString(Constans.KEY_APPKEY, "");
-        String secret = sp.getString(Constans.KEY_SECRET, "");
-        String account = sp.getString("account", "");
+        String appkey = sp.getString(BaseConstants.KEY_APPKEY, "");
+        String secret = sp.getString(BaseConstants.KEY_SECRET, "");
+        String account = sp.getString(Constants.KEY_ACCOUNT, "");
         etAccount.setText(account);
-//            etAccount.setText("15017740901");
-//            etPassword.setText("123456");
 
 
         initAccount();
@@ -310,8 +304,8 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
     @OnClick({R.id.btn_login})
     public void onClick() {
 
-        String appkey = sp.getString(Constans.KEY_APPKEY, "");
-        String secret = sp.getString(Constans.KEY_SECRET, "");
+        String appkey = sp.getString(BaseConstants.KEY_APPKEY, "");
+        String secret = sp.getString(BaseConstants.KEY_SECRET, "");
 
         if(TextUtils.isEmpty(appkey) || TextUtils.isEmpty(secret)) {
             showToast("请先配置id、secret");
@@ -462,10 +456,10 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         saveAccount(account);
 
         SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(this).edit();
-        editor.putString(Constans.KEY_ADMIN_NAME, result.getReal_name())
-                .putString(Constans.KEY_SESSION_ID, result.getSession_id())
-                .putString("account", account)
-                .putInt(Constans.KEY_HANDOVER_ID, result.getHandover_id())
+        editor.putString(Constants.KEY_ADMIN_NAME, result.getReal_name())
+                .putString(BaseConstants.KEY_SESSION_ID, result.getSession_id())
+                .putString(Constants.KEY_ACCOUNT, account)
+                .putInt(Constants.KEY_HANDOVER_ID, result.getHandover_id())
                 .apply();
 
         Configs.cashier_id = result.getCashier_id();
@@ -537,8 +531,8 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         is_reserve = result.getShop().getIs_reserve();
 
         SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(this).edit();
-        editor.putString(Constans.KEY_SHOP_SN, shop_sn)
-                .putString(Constans.KEY_SHOP_NAME, shop_name)
+        editor.putString(BaseConstants.KEY_SHOP_SN, shop_sn)
+                .putString(BaseConstants.KEY_SHOP_NAME, shop_name)
                 .apply();
 
         Configs.shop_name = shop_name;

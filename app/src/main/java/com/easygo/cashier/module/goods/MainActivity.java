@@ -25,6 +25,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.Configs;
+import com.easygo.cashier.Constants;
 import com.easygo.cashier.Events;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.MyApplication;
@@ -47,7 +48,7 @@ import com.easygo.cashier.widget.FunctionListDialog;
 import com.easygo.cashier.widget.MyTitleBar;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseEvent;
-import com.niubility.library.constants.Constans;
+import com.niubility.library.common.constants.BaseConstants;
 import com.niubility.library.utils.NetworkUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
@@ -415,20 +416,20 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getApplicationContext());
             SharedPreferences.Editor editor = sp.edit();
             //登录状态中，清除 session_id 、 admin_name
-            if (sp.contains(Constans.KEY_SESSION_ID)) {
-                editor.remove(Constans.KEY_SESSION_ID).apply();
+            if (sp.contains(BaseConstants.KEY_SESSION_ID)) {
+                editor.remove(BaseConstants.KEY_SESSION_ID).apply();
             }
-            if (sp.contains(Constans.KEY_ADMIN_NAME)) {
-                editor.remove(Constans.KEY_ADMIN_NAME).apply();
+            if (sp.contains(Constants.KEY_ADMIN_NAME)) {
+                editor.remove(Constants.KEY_ADMIN_NAME).apply();
             }
-            if (sp.contains(Constans.KEY_SHOP_SN)) {
-                editor.remove(Constans.KEY_SHOP_SN).apply();
+            if (sp.contains(BaseConstants.KEY_SHOP_SN)) {
+                editor.remove(BaseConstants.KEY_SHOP_SN).apply();
             }
-            if (sp.contains(Constans.KEY_TIME)) {
-                editor.remove(Constans.KEY_TIME).apply();
+            if (sp.contains(BaseConstants.KEY_TIME)) {
+                editor.remove(BaseConstants.KEY_TIME).apply();
             }
-            if (sp.contains(Constans.KEY_HANDOVER_ID)) {
-                editor.remove(Constans.KEY_HANDOVER_ID).apply();
+            if (sp.contains(Constants.KEY_HANDOVER_ID)) {
+                editor.remove(Constants.KEY_HANDOVER_ID).apply();
             }
             //跳转登录页
 //            ARouter.getInstance()
@@ -450,12 +451,12 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         @Override
         public void entryOrders() {
             SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication);
-            if (TextUtils.isEmpty(sp.getString(Constans.KEY_ENTRY_ORDERS_LIST, ""))) {
+            if (TextUtils.isEmpty(sp.getString(Constants.KEY_ENTRY_ORDERS_LIST, ""))) {
                 showToast("暂无挂单信息");
                 return;
             }
 //            SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication).edit();
-//            editor.remove(Constans.KEY_ENTRY_ORDERS_LIST).apply();
+//            editor.remove(Constants.KEY_ENTRY_ORDERS_LIST).apply();
             ARouter.getInstance()
                     .build(ModulePath.entry_orders)
                     .navigation();

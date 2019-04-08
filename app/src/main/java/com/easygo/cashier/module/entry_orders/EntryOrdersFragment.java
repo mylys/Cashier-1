@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.easygo.cashier.Constants;
 import com.easygo.cashier.Events;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.EntryOrdersAdapter;
@@ -19,7 +20,6 @@ import com.easygo.cashier.bean.EntryOrders;
 import com.google.gson.reflect.TypeToken;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseFragment;
-import com.niubility.library.constants.Constans;
 import com.niubility.library.utils.EventUtils;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
@@ -82,7 +82,7 @@ public class EntryOrdersFragment extends BaseFragment {
         rvEntryOrders.addItemDecoration(verticalDecoration);
 
         SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication);
-        String json = sp.getString(Constans.KEY_ENTRY_ORDERS_LIST, "");
+        String json = sp.getString(Constants.KEY_ENTRY_ORDERS_LIST, "");
 
         list = GsonUtils.getInstance().getGson().fromJson(json, new TypeToken<List<EntryOrders>>() {
         }.getType());
@@ -134,13 +134,13 @@ public class EntryOrdersFragment extends BaseFragment {
 
         SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication).edit();
         if (list.size() == 0) {
-            editor.remove(Constans.KEY_ENTRY_ORDERS_LIST).apply();
+            editor.remove(Constants.KEY_ENTRY_ORDERS_LIST).apply();
             if (getActivity() != null) {
                 getActivity().finish();
             }
             return;
         }
-        editor.putString(Constans.KEY_ENTRY_ORDERS_LIST, GsonUtils.getInstance().getGson().toJson(list)).apply();
+        editor.putString(Constants.KEY_ENTRY_ORDERS_LIST, GsonUtils.getInstance().getGson().toJson(list)).apply();
 
         adapter.setItemClick();
         entryOrdersDetailFragment.showEntryOrders(adapter.getData().get(0));
@@ -155,9 +155,9 @@ public class EntryOrdersFragment extends BaseFragment {
 
         SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication).edit();
         if (list.size() == 0) {
-            editor.remove(Constans.KEY_ENTRY_ORDERS_LIST).apply();
+            editor.remove(Constants.KEY_ENTRY_ORDERS_LIST).apply();
         } else {
-            editor.putString(Constans.KEY_ENTRY_ORDERS_LIST, GsonUtils.getInstance().getGson().toJson(list)).apply();
+            editor.putString(Constants.KEY_ENTRY_ORDERS_LIST, GsonUtils.getInstance().getGson().toJson(list)).apply();
         }
 
         if (getActivity() != null) {

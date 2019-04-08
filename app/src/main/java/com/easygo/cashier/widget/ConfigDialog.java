@@ -18,7 +18,7 @@ import com.easygo.cashier.BuildConfig;
 import com.easygo.cashier.R;
 import com.easygo.cashier.SoftKeyboardUtil;
 import com.niubility.library.base.BaseDialog;
-import com.niubility.library.constants.Constans;
+import com.niubility.library.common.constants.BaseConstants;
 import com.niubility.library.utils.SharedPreferencesUtils;
 import com.niubility.library.utils.ToastUtils;
 
@@ -69,8 +69,8 @@ public class ConfigDialog extends BaseDialog {
                         return;
                     }
 
-                    edit.putString(Constans.KEY_APPKEY, id)
-                            .putString(Constans.KEY_SECRET, secret)
+                    edit.putString(BaseConstants.KEY_APPKEY, id)
+                            .putString(BaseConstants.KEY_SECRET, secret)
                             .apply();
                     if (getActivity() != null) {
                         SoftKeyboardUtil.hideSoftKeyboard(getActivity());
@@ -111,16 +111,16 @@ public class ConfigDialog extends BaseDialog {
      * 读取本地配置并显示
      */
     private void readAndSetConfig() {
-        appkey = sp.getString(Constans.KEY_APPKEY, "");
-        secret = sp.getString(Constans.KEY_SECRET, "");
+        appkey = sp.getString(BaseConstants.KEY_APPKEY, "");
+        secret = sp.getString(BaseConstants.KEY_SECRET, "");
 
         etId.setText(appkey);
         etSecret.setText(secret);
-        if("dev".equals(BuildConfig.BUILD_TYPE)) {
-            etSecret.setText("134ad99e0d7a37ecc89e544938426e58");
-        } else if("T".equals(BuildConfig.BUILD_TYPE)) {
-            etSecret.setText("121a653ac09dd3164fb4549edb0294d6");
-        }
+//        if("dev".equals(BuildConfig.BUILD_TYPE)) {
+//            etSecret.setText("134ad99e0d7a37ecc89e544938426e58");
+//        } else if("T".equals(BuildConfig.BUILD_TYPE)) {
+//            etSecret.setText("121a653ac09dd3164fb4549edb0294d6");
+//        }
     }
 
     /**

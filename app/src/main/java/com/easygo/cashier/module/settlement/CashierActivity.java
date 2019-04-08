@@ -169,7 +169,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     protected void init() {
         ARouter.getInstance().inject(this);
 
-        if(getPayMoney() <= 0) {//支付金额为 小于等于0时 只能现金支付
+        if(getPayMoney() <= 0 || !Configs.isOnlineMode()) {//支付金额为 小于等于0时 只能现金支付
             payWayView.setPayWayShow(new int[]{PayWayView.WAY_CASH});
         } else {
             payWayView.setPayWayShow(MemberUtils.isMember ?
@@ -329,7 +329,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         });
 
         //支付金额大于0时
-        if(getPayMoney() > 0) {
+        if(getPayMoney() > 0 && Configs.isOnlineMode()) {
             //登录会员时 默认选择会员钱包支付
             if(MemberUtils.isMember) {
                 payWayView.performSelect(PayWayView.WAY_MEMBER);

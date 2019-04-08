@@ -29,6 +29,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.easygo.cashier.ActivitiesUtils;
 import com.easygo.cashier.BarcodeUtils;
 import com.easygo.cashier.Configs;
+import com.easygo.cashier.Constants;
 import com.easygo.cashier.MemberUtils;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.MyApplication;
@@ -67,7 +68,6 @@ import com.easygo.cashier.widget.SetCountPopupWindow;
 import com.easygo.cashier.widget.TempPromotionDialog;
 import com.google.gson.reflect.TypeToken;
 import com.niubility.library.base.BaseApplication;
-import com.niubility.library.constants.Constans;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
@@ -888,7 +888,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                     public void onContent(int type, String account, String password) {
                         SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication).edit();
                         SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication);
-                        String json = sp.getString(Constans.KEY_ENTRY_ORDERS_LIST, "");
+                        String json = sp.getString(Constants.KEY_ENTRY_ORDERS_LIST, "");
 
                         List<EntryOrders> entryOrders;
                         if (!TextUtils.isEmpty(json)) {
@@ -915,7 +915,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                             entryOrders.add(orders);
                         }
 
-                        editor.putString(Constans.KEY_ENTRY_ORDERS_LIST, GsonUtils.getInstance().getGson().toJson(entryOrders)).apply();
+                        editor.putString(Constants.KEY_ENTRY_ORDERS_LIST, GsonUtils.getInstance().getGson().toJson(entryOrders)).apply();
 
                         mGoodsMultiItemAdapter.clear();
 
@@ -1699,12 +1699,12 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     public void realSwitchMode(int mode) {
         switch(mode) {
             case Configs.mode_offline:
-                Configs.environment_index = Configs.environment_offline;
+//                Configs.environment_index = Configs.environment_offline;
                 Configs.current_mode = Configs.mode_offline;
                 showToast("已切换到离线模式");
                 break;
             case Configs.mode_online:
-                Configs.environment_index = Configs.environment_online;
+//                Configs.environment_index = Configs.environment_online;
                 Configs.current_mode = Configs.mode_online;
                 showToast("已切换到在线模式");
                 break;

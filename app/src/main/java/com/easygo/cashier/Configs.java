@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.easygo.cashier.bean.LoginResponse;
-import com.niubility.library.constants.Constans;
+import com.niubility.library.common.constants.BaseConstants;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
 import java.util.List;
@@ -107,7 +107,7 @@ public class Configs {
     public static String getShop_sn(Context context) {
         if (TextUtils.isEmpty(shop_sn)) {
             SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(context);
-            shop_sn = sp.getString(Constans.KEY_SHOP_SN, "");
+            shop_sn = sp.getString(BaseConstants.KEY_SHOP_SN, "");
         }
         return shop_sn;
     }

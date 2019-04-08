@@ -20,7 +20,7 @@ public class PrinterLog {
     public static void write(String content) {
         if(writeToFile) {
             if(logFile == null) {
-                logFile = new File(BaseApplication.logDir, LogUtils.getFormatFileName("usb_printer"));
+                logFile = new File(BaseApplication.logDir, LogUtils.getInstance().getFormatFileName("usb_printer"));
             }
 
 
