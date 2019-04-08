@@ -143,11 +143,11 @@ public class GoodsFullfilGivePromotion extends BaseGoodsPromotion implements IGo
                             continue;
                         }
 
-                        offer_value = (quanlity / condition_value) * offer_value;
+                        int offer_time = (quanlity / condition_value) * offer_value;
 
                         GoodsEntity<GoodsResponse> goodsEntity = data.get(goodsBean.getIndex());
 
-                        promotion_money = offer_value * goodsBean.getPrice();
+                        promotion_money = offer_time * goodsBean.getPrice();
 
                         Log.i(TAG, "computePromotionMoney: 独立计算 促销金额 -> " + promotion_money);
                         if (promotion_money > 0) {

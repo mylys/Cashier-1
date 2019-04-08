@@ -562,7 +562,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             }
 //            showToast("付款码 --> " + auth_code);
 
-            float real_pay = mTotalMoney - mCoupon - mCouponMoney - mTempOrderPromotionMoney;
+            float real_pay = getReceivableMoney();
             if(real_pay <= 0) {
                 real_pay = 0.1f;
             }
@@ -938,7 +938,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         mDuringCreateOrder = true;
         DecimalFormat df = new DecimalFormat("#");
         String total_money = df.format(mTotalMoney * 100);
-        String real_pay = df.format(mTotalMoney * 100 - mCoupon * 100 - mCouponMoney * 100 - mTempOrderPromotionMoney * 100);
+
+        float receivableMoney = getReceivableMoney();
+        String real_pay = df.format(receivableMoney * 100);
 
         CreateOrderRequestBody requestBody1 = new CreateOrderRequestBody();
         requestBody1.setCashier_id(Configs.cashier_id);
