@@ -1068,8 +1068,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
      */
     public void clickPopTill() {
         if (Configs.till_auth == 0) {
-            mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
-            PrinterUtils.getInstance().popTill();
+            realPopTill();
             return;
         }
         if (editDialog == null) {
@@ -1089,6 +1088,14 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 }
             }
         });
+    }
+
+    /**
+     * 弹出钱箱
+     */
+    public void realPopTill() {
+        mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
+        PrinterUtils.getInstance().popTill();
     }
 
     /**
@@ -1468,8 +1475,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         if (editDialog != null && editDialog.isShow()){
             editDialog.dismiss();
         }
-        mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
-        PrinterUtils.getInstance().popTill();
+        realPopTill();
     }
 
     @Override

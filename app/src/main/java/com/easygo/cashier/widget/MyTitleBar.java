@@ -19,6 +19,7 @@ public class MyTitleBar extends ConstraintLayout {
     private ImageView mLogo;
     private View mLine;
     private TextView mCashierAccount;
+    private ConstraintLayout mExit;
     private ImageView mPopTill;
     private ImageView mSetting;
     private ImageView mUpdate;
@@ -78,6 +79,7 @@ public class MyTitleBar extends ConstraintLayout {
         mLogo.setVisibility(mShowLogo ? VISIBLE: GONE);
         setVisibility(mTitleView, mShowTitle);
         mCashierAccount.setVisibility(mShowAccount ? VISIBLE: GONE);
+        mExit.setVisibility(mShowAccount ? VISIBLE: GONE);
         mLine.setVisibility(mShowAccount ? VISIBLE: GONE);
         setVisibility(mRightIconView, mShowRightIcon);
         mCashierAccountRight.setVisibility(mShowRightAccount ? VISIBLE: GONE);
@@ -97,6 +99,7 @@ public class MyTitleBar extends ConstraintLayout {
         mLogo = (ImageView) mView.findViewById(R.id.iv);
         mLine = mView.findViewById(R.id.line);
         mCashierAccount = (TextView) mView.findViewById(R.id.tv_cashier_account);
+        mExit = (ConstraintLayout) mView.findViewById(R.id.cl_exit);
 
         mPopTill = (ImageView) mView.findViewById(R.id.pop_till);
         mSetting = (ImageView) mView.findViewById(R.id.setting);

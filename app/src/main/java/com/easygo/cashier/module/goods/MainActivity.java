@@ -45,6 +45,7 @@ import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.widget.EquipmentstateDialog;
 import com.easygo.cashier.widget.FunctionListDialog;
+import com.easygo.cashier.widget.GeneraDialog;
 import com.easygo.cashier.widget.MyTitleBar;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseEvent;
@@ -306,10 +307,14 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
     }
 
-    @OnClick({R.id.setting, R.id.pop_till, R.id.network, R.id.menu, R.id.update, R.id.cl_back})
+    @OnClick({R.id.cl_exit, R.id.setting, R.id.pop_till, R.id.network, R.id.menu, R.id.update, R.id.cl_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.setting://设置
+
+                break;
+            case R.id.cl_exit://退出系统 到登录页
+                exit();
 
                 break;
             case R.id.menu://功能列表
@@ -338,6 +343,34 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             case R.id.cl_back://返回
                 break;
         }
+    }
+
+    /**
+     * 退出登录 到登录页
+     */
+    private void exit() {
+
+        GeneraDialog generaDialog = GeneraDialog.getInstance("确认退出到登录页面？", "取消", "确定");
+        generaDialog.showCenter(MainActivity.this);
+        generaDialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
+                @Override
+                public void onSubmit() {
+                    //弹出钱箱
+                    goodsFragment.realPopTill();
+
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }
+                    }, 500);
+                }
+            });
+
+
+
     }
 
 
