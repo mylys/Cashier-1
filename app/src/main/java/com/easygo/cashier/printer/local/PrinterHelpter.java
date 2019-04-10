@@ -10,6 +10,7 @@ import com.easygo.cashier.printer.local.obj.HandoverInfoPrintObj;
 import com.easygo.cashier.printer.local.obj.HandoverSaleListPrintObj;
 import com.easygo.cashier.printer.local.obj.OrderHistoryGoodsListPrintObj;
 import com.easygo.cashier.printer.local.obj.OrderHistoryRefundPrintObj;
+import com.niubility.library.common.config.BaseConfig;
 import com.tools.command.EscCommand;
 import com.tools.command.LabelCommand;
 
@@ -172,6 +173,9 @@ public class PrinterHelpter {
         esc.addSelectSizeOfModuleForQRCode((byte) 10);
         // 设置qrcode内容
         String content = "https://h5.esgao.cn/easygo-pos-invoice?trade_no=" + obj.trade_no;
+        if(BaseConfig.environment_index != 0) {
+            content = "http://test.h5.esgao.cn/easygo-pos-invoice?trade_no=" + obj.trade_no;
+        }
         esc.addStoreQRCodeData(content);
         esc.addPrintQRCode();// 打印QRCode
         esc.addPrintAndLineFeed();

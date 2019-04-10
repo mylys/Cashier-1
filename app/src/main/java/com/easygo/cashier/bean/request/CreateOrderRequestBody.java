@@ -27,6 +27,8 @@ public class CreateOrderRequestBody {
     private int total_money;
     private int real_pay;
     private String coupon_sn;
+    private int activity_discount;
+    private int member_discount;
     private int coupon_discount;
     private int cashier_discount;
     private int cashier_order_discount;
@@ -103,6 +105,22 @@ public class CreateOrderRequestBody {
 
     public void setCoupon_sn(String coupon_sn) {
         this.coupon_sn = coupon_sn;
+    }
+
+    public int getActivity_discount() {
+        return activity_discount;
+    }
+
+    public void setActivity_discount(int activity_discount) {
+        this.activity_discount = activity_discount;
+    }
+
+    public int getMember_discount() {
+        return member_discount;
+    }
+
+    public void setMember_discount(int member_discount) {
+        this.member_discount = member_discount;
     }
 
     public int getCoupon_discount() {

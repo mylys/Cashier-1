@@ -955,6 +955,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             requestBody1.setMember_card_no(MemberUtils.memberInfo.getCard_no());
         }
 
+        float all_activity_discount = 0f;
+        float all_member_discount = 0f;
+
 //        //促销
 //        if (ActivitiesUtils.getInstance().hasGoodsPromotion()) {
 //            List<CreateOrderRequestBody.ActivitiesBean> activitiesBeans = new ArrayList<>();
@@ -994,6 +997,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             String shop_promotion_money = df.format(ActivitiesUtils.getInstance().getShopPromotionMoney() * 100);
             activitiesBean.setDiscount(Integer.valueOf(shop_promotion_money));
             activitiesBeans.add(activitiesBean);
+            all_activity_discount += ActivitiesUtils.getInstance().getShopPromotionMoney();
         }
 //        //会员
 //        else if(MemberUtils.isMember) {
@@ -1075,9 +1079,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
             //商品促销
             good_activity_discount = data.getGoods_activity_discount();
+            all_activity_discount += good_activity_discount;
             goodsBean.setGoods_activity_discount(Integer.valueOf(df.format(good_activity_discount * 100)));
             //会员促销
             member_discount = data.getMember_discount();
+            all_member_discount += member_discount;
             goodsBean.setMember_discount(Integer.valueOf(df.format(member_discount * 100)));
             //店铺促销
             shop_activity_discount = data.getShop_activity_discount();
@@ -1142,7 +1148,12 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         //收银员整单让利
         requestBody1.setCashier_order_discount(Integer.valueOf(
                 df.format(mTempOrderPromotionMoney * 100)));
-
+        //总促销让利
+        requestBody1.setActivity_discount(Integer.valueOf(
+                df.format(all_activity_discount * 100)));
+        //总会员让利
+        requestBody1.setMember_discount(Integer.valueOf(
+                df.format(all_member_discount * 100)));
 
         //商品促销详情
         for (Map.Entry<Integer, Float> next : id2discount.entrySet()) {

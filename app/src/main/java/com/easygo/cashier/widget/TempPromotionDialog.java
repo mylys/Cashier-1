@@ -2,6 +2,7 @@ package com.easygo.cashier.widget;
 
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -282,13 +283,23 @@ public class TempPromotionDialog extends BaseDialog {
                     if(isFreeOrder) {
                         value = 0f;
                     } else {
-                        value = Float.valueOf(etDiscount.getText().toString());
+                        String discount = etDiscount.getText().toString();
+                        if(TextUtils.isEmpty(discount)) {
+                            ToastUtils.showToast(getContext(), "折扣不能为空");
+                            return;
+                        }
+                        value = Float.valueOf(discount);
                     }
                 } else {
                     if(isFreeOrder) {
                         value = 0f;
                     } else {
-                        value = Float.valueOf(etChangePrice.getText().toString());
+                        String changePrice = etChangePrice.getText().toString();
+                        if(TextUtils.isEmpty(changePrice)) {
+                            ToastUtils.showToast(getContext(), "改价金额不能为空");
+                            return;
+                        }
+                        value = Float.valueOf(changePrice);
                     }
                 }
 

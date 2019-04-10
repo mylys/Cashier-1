@@ -79,7 +79,8 @@ public class MyTitleBar extends ConstraintLayout {
         mLogo.setVisibility(mShowLogo ? VISIBLE: GONE);
         setVisibility(mTitleView, mShowTitle);
         mCashierAccount.setVisibility(mShowAccount ? VISIBLE: GONE);
-        mExit.setVisibility(mShowAccount ? VISIBLE: GONE);
+//        mExit.setVisibility(mShowAccount ? VISIBLE: GONE);
+        mExit.setVisibility(GONE);
         mLine.setVisibility(mShowAccount ? VISIBLE: GONE);
         setVisibility(mRightIconView, mShowRightIcon);
         mCashierAccountRight.setVisibility(mShowRightAccount ? VISIBLE: GONE);
