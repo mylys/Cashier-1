@@ -1,5 +1,6 @@
 package com.easygo.cashier.module.settlement;
 
+import com.easygo.cashier.bean.BankcardStatusResponse;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.InitResponse;
@@ -177,6 +178,26 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
                     @Override
                     protected void onFailure(Map<String, Object> map) {
                         mView.cashFailed(map);
+                    }
+                });
+    }
+
+    @Override
+    public void checkBankcardStatus(String order_no) {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().checkBankcardPayStatus(header, order_no),
+                new BaseResultObserver<BankcardStatusResponse>() {
+
+                    @Override
+                    protected void onSuccess(BankcardStatusResponse result) {
+                        mView.bankcardSuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.bankcardFailed(map);
                     }
                 });
     }

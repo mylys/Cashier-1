@@ -10,6 +10,9 @@ public class CreateOderResponse {
 
     private String trade_no;
     private String trade_num;
+    private String real_pay;
+    private String transaction_no;
+    private int pay_fee;
 
     public String getTrade_no() {
         return trade_no;
@@ -25,5 +28,29 @@ public class CreateOderResponse {
 
     public void setTrade_num(String trade_num) {
         this.trade_num = trade_num;
+    }
+
+    public String getReal_pay() {
+        return real_pay;
+    }
+
+    public void setReal_pay(String real_pay) {
+        this.real_pay = real_pay;
+    }
+
+    public String getTransaction_no() {
+        return transaction_no;
+    }
+
+    public void setTransaction_no(String transaction_no) {
+        this.transaction_no = transaction_no;
+    }
+
+    public int getPay_fee() {
+        return pay_fee;
+    }
+
+    public void setPay_fee(int pay_fee) {
+        this.pay_fee = pay_fee;
     }
 }

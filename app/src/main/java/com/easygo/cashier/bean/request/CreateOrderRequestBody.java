@@ -32,6 +32,7 @@ public class CreateOrderRequestBody {
     private int coupon_discount;
     private int cashier_discount;
     private int cashier_order_discount;
+    private int order_type;
     private List<GoodsListBean> goods_list;
     private List<ActivitiesBean> activities;
 
@@ -145,6 +146,14 @@ public class CreateOrderRequestBody {
 
     public void setCashier_order_discount(int cashier_order_discount) {
         this.cashier_order_discount = cashier_order_discount;
+    }
+
+    public int getOrder_type() {
+        return order_type;
+    }
+
+    public void setOrder_type(int order_type) {
+        this.order_type = order_type;
     }
 
     public List<GoodsListBean> getGoods_list() {

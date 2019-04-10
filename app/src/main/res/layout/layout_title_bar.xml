@@ -120,7 +120,7 @@
         android:id="@+id/network"
         android:layout_width="@dimen/x61"
         android:layout_height="@dimen/y44"
-        android:layout_marginEnd="@dimen/x71"
+        android:layout_marginEnd="@dimen/x76"
         android:background="@null"
         android:contentDescription="网络状态"
         android:src="@drawable/ic_main_online"

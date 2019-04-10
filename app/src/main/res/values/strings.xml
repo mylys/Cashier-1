@@ -79,7 +79,7 @@
     <string name="text_cash">现金</string>
     <string name="text_wechat">微信</string>
     <string name="text_alipay">支付宝</string>
-    <string name="text_bank_card">银行卡</string>
+    <string name="text_bank_card">银联</string>
     <string name="text_other">八达通</string>
     <string name="text_receivable">应收</string>
     <string name="text_receipts">实收</string>
@@ -87,6 +87,8 @@
     <string name="text_print">打印</string>
     <string name="text_change">找零</string>
     <string name="text_commit_order">提交交易</string>
+    <string name="text_bankcard_pay">银联支付</string>
+    <string name="text_bankcard_scan">请使用银联POS机扫码</string>
 
     <string name="text_receivable_colon">应收：</string>
     <string name="text_receivable_refound">应退：</string>

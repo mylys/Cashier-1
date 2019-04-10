@@ -1,5 +1,6 @@
 package com.easygo.cashier.http;
 
+import com.easygo.cashier.bean.BankcardStatusResponse;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GoodsActivityResponse;
@@ -13,7 +14,6 @@ import com.easygo.cashier.bean.MemberDiscountInfo;
 import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.PrinterStatusResponse;
-import com.easygo.cashier.bean.QuickClassifyInfo;
 import com.easygo.cashier.bean.QuickInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
@@ -137,11 +137,10 @@ public interface HttpService {
 
 
     /**
-     * 调起会员支付
+     * 银联支付
      */
-    @FormUrlEncoded
-    @POST("api/v1/cashier/weixin/minapp/eq_s/pay/pay_vip")
-    Observable<HttpResult<String>> payVip();
+    @GET("api/v1/cashier/pay/check_order")
+    Observable<HttpResult<BankcardStatusResponse>> checkBankcardPayStatus(@HeaderMap Map<String, String> header, @Query("order_no") String order_no);
 
     /**
      * pos银联支付

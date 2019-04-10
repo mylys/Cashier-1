@@ -3,6 +3,7 @@ package com.easygo.cashier.module.settlement;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -28,6 +29,7 @@ import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.Test;
 import com.easygo.cashier.adapter.GoodsEntity;
+import com.easygo.cashier.bean.BankcardStatusResponse;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GoodsResponse;
@@ -42,6 +44,7 @@ import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.printer.local.PrinterHelpter;
 import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.printer.local.obj.CashierPrintObj;
+import com.easygo.cashier.widget.BankcardDialog;
 import com.easygo.cashier.widget.ChooseCouponsDialog;
 import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.Keyboard;
@@ -125,12 +128,39 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
      */
     float mChange;
 
+    /**
+     * 银联支付 单号
+     */
+    String transaction_no;
+    /**
+     * 银联支付 金额（以分为单位）
+     */
+    int pay_fee;
+    /**
+     * 银联支付 是否查询支付状态
+     */
+    boolean mCheckBankcardStatus;
+
     private SettlementView settlementView;
 
     private int mPayWay = PayWayView.WAY_CASH;
     private ConfirmDialog confirmDialog;
 
-    private Handler mHandler = new Handler();
+    private final int MSG_CHECK_BANK_CARD_PAY_STATUS = 0;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            removeMessages(msg.what);
+            switch (msg.what) {
+                case MSG_CHECK_BANK_CARD_PAY_STATUS:
+                    Log.i(TAG, "bankcardSuccess: 银联支付查询中");
+                    mPresenter.checkBankcardStatus(Configs.order_no);
+                    break;
+            }
+
+        }
+    };
 
     private ChooseCouponsDialog couponsDialog;
 
@@ -178,11 +208,13 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                             PayWayView.WAY_WECHAT,
                             PayWayView.WAY_MEMBER,
                             PayWayView.WAY_CASH,
+                            PayWayView.WAY_BANK_CARD,
                     }
                     : new int[] {
                             PayWayView.WAY_ALIPAY,
                             PayWayView.WAY_WECHAT,
                             PayWayView.WAY_CASH,
+                            PayWayView.WAY_BANK_CARD,
                     }
             );
         }
@@ -860,6 +892,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
 
     private ScanCodeDialog mScanCodeDialog;
+    private BankcardDialog mBankcardDialog;
 
     /**
      * 显示扫码弹窗
@@ -891,6 +924,35 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     }
 
     /**
+     * 显示银联支付QRcode
+     * <p>
+     * 二维码字符串 格式： _201903201441469383566861039274_YHTEST8920932_100
+     */
+    public void showBankcardDialog() {
+        String text = "_" + transaction_no + "_YHTEST8920932_" + pay_fee;
+        Log.i(TAG, "showBankcardDialog: 银联QRcode -> " + text);
+        DecimalFormat df = new DecimalFormat("0.00");
+        mBankcardDialog = BankcardDialog.getInstance(df.format(getReceivableMoney()), text);
+        mBankcardDialog.showCenter(this);
+        mBankcardDialog.setOnDialogListener(new BankcardDialog.OnDialogClickListener() {
+            @Override
+            public void onClose() {
+                mCheckBankcardStatus = false;
+                mDuringPay = false;
+            }
+        });
+
+        mCheckBankcardStatus = true;
+        checkBankcardPayStatus();
+    }
+
+    public void checkBankcardPayStatus() {
+        if(mCheckBankcardStatus) {
+            mHandler.sendEmptyMessageDelayed(MSG_CHECK_BANK_CARD_PAY_STATUS, 1500);
+        }
+    }
+
+    /**
      * 解绑优惠券
      */
     public void unlockCoupon() {
@@ -909,6 +971,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             settlementView.release();
         }
         dismissScanDialog();
+        dismissBankcardDialog();
         //离开页面 清除订单
         Configs.order_no = null;
         Configs.trade_no = null;
@@ -925,6 +988,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             //刷新首页和副屏
             refreshGoodsData();
         }
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     /**
@@ -948,6 +1012,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         requestBody1.setTotal_money(Integer.valueOf(total_money));
         requestBody1.setReal_pay(Integer.valueOf(real_pay));
         requestBody1.setGoods_count(mGoodsCount);
+        switch (mPayWay) {
+            case PayWayView.WAY_BANK_CARD:
+                requestBody1.setOrder_type(2);
+                break;
+            default:
+                requestBody1.setOrder_type(0);
+                break;
+        }
 
         if(MemberUtils.isMember && MemberUtils.memberInfo != null) {
             requestBody1.setBuyer(MemberUtils.memberInfo.getNick_name());
@@ -1178,6 +1250,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         Configs.trade_no = result.getTrade_no();
         Configs.order_no = result.getTrade_num();
 
+        transaction_no = result.getTransaction_no();
+        pay_fee = result.getPay_fee();
+
         onAfterCreateOrder();
         mDuringCreateOrder = false;
 
@@ -1206,6 +1281,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             case PayWayView.WAY_MEMBER:
                 showScanCodeDialog();
                 break;
+            case PayWayView.WAY_BANK_CARD:
+                showBankcardDialog();
+                break;
         }
     }
 
@@ -1231,6 +1309,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
         if (mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
             mScanCodeDialog.setStatus(ScanCodeDialog.STATUS_SUCCESSFUL_RECEIPT);
+        }
+
+        if(mBankcardDialog != null && mBankcardDialog.getDialog() != null && mBankcardDialog.getDialog().isShowing()) {
+            mBankcardDialog.dismiss();
         }
 
         //设置为已收款
@@ -1341,6 +1423,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             mScanCodeDialog.dismiss();
         }
     }
+    /**
+     * 取消银联弹窗
+     */
+    private void dismissBankcardDialog() {
+        if (mBankcardDialog != null &&  mBankcardDialog.getDialog() != null && mBankcardDialog.getDialog().isShowing()) {
+            mBankcardDialog.dismiss();
+        }
+    }
 
     @Override
     public void checkWechatStatusSuccess(String result) {
@@ -1385,6 +1475,25 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     public void cashFailed(Map<String, Object> map) {
         showToast("现金支付失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
         mDuringPay = false;
+    }
+
+    @Override
+    public void bankcardSuccess(BankcardStatusResponse result) {
+        int status = result.getStatus();
+        switch (status) {
+            case 1:
+                checkBankcardPayStatus();
+                break;
+            case 2:
+                showToast("银联支付成功");
+                onPaySuccessAfter();
+                break;
+        }
+    }
+
+    @Override
+    public void bankcardFailed(Map<String, Object> map) {
+        checkBankcardPayStatus();
     }
 
     @Override

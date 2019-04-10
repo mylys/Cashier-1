@@ -1,5 +1,6 @@
 package com.easygo.cashier.module.settlement;
 
+import com.easygo.cashier.bean.BankcardStatusResponse;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.niubility.library.mvp.BaseContract;
@@ -21,6 +22,8 @@ public class SettlementContract {
         void checkAliPayStatus(String shop_sn, String order_no);
 
         void cash(String shop_sn, String order_no, int buyer_pay, int change_money);
+
+        void checkBankcardStatus(String order_no);
 
         void print(String json);
 
@@ -52,6 +55,9 @@ public class SettlementContract {
 
         void cashSuccess(String result);
         void cashFailed(Map<String, Object> map);
+
+        void bankcardSuccess(BankcardStatusResponse result);
+        void bankcardFailed(Map<String, Object> map);
 
         void printSuccess(String result);
         void printFailed(Map<String, Object> map);
