@@ -999,6 +999,9 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                     scanCodeDialog.setOnScanCodeListener(new ScanCodeDialog.OnScanCodeListener() {
                         @Override
                         public void onScanCode(String barcode) {
+                            if (scanCodeDialog != null) {
+                                scanCodeDialog.setStatus(ScanCodeDialog.STATUS_SCANNING);
+                            }
                             mPresenter.gift_card(barcode);
                         }
                     });
@@ -1510,6 +1513,10 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         setShow(clGiftCard);
         tvGiftCardNo.setText(result.getSn());
         tvGiftCardPrice.setText("-" + result.getBalance_amount());
+
+        if(scanCodeDialog != null && scanCodeDialog.isShowing()) {
+            scanCodeDialog.dismiss();
+        }
     }
 
     @Override

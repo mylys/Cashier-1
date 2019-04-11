@@ -34,6 +34,7 @@ import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 public interface HttpService {
 
@@ -162,9 +163,8 @@ public interface HttpService {
     /**
      * 查询礼品卡
      */
-    @FormUrlEncoded
-    @POST("api/v1/cashier/gift_card/info")
-    Observable<HttpResult<GiftCardResponse>> gift_card(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
+    @GET("api/v1/cashier/gift_card/info")
+    Observable<HttpResult<GiftCardResponse>> gift_card(@HeaderMap Map<String, String> header, @QueryMap Map<String, Object> map);
 
     /**
      * 礼品卡支付

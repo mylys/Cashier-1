@@ -254,7 +254,6 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
 
     @Override
     public void gift_card(String card_no) {
-        mView.showLoading();
         Map<String, String> header = HttpClient.getInstance().getHeader();
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("type", 2);
@@ -264,13 +263,11 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
                 new BaseResultObserver<GiftCardResponse>() {
                     @Override
                     protected void onSuccess(GiftCardResponse result) {
-                        mView.hideLoading();
                         mView.giftCardSuccess(result);
                     }
 
                     @Override
                     protected void onFailure(Map<String, Object> map) {
-                        mView.hideLoading();
                         mView.giftCardFailed(map);
                     }
                 });

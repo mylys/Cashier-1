@@ -188,8 +188,8 @@ public class SettlementView extends FrameLayout {
                     case PayWayView.WAY_BANK_CARD:
                         tvReceiptsWay.setText(R.string.text_bank_card);
                         break;
-                    case PayWayView.WAY_OTHER:
-                        tvReceiptsWay.setText(R.string.text_other);
+                    case PayWayView.WAY_GIFT_CARD:
+                        tvReceiptsWay.setText(R.string.text_gift_card);
                         break;
                 }
             }
@@ -251,8 +251,8 @@ public class SettlementView extends FrameLayout {
                     setCancleTempPromotionVisibility(true);
 
                     break;
-                case PayWayView.WAY_OTHER://其他
-                    tvReceiptsWay.setText(R.string.text_other);
+                case PayWayView.WAY_GIFT_CARD://礼品卡
+                    tvReceiptsWay.setText(R.string.text_gift_card);
                     showAlreadySettlement(false);
                     setScanVisibility(false);
                     setChangeVisibilty(false);
