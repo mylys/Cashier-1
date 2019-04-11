@@ -39,6 +39,7 @@ import com.easygo.cashier.adapter.GoodsMultiItemAdapter;
 import com.easygo.cashier.base.BaseAppMvpFragment;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.EntryOrders;
+import com.easygo.cashier.bean.GiftCardResponse;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.MemberDayInfo;
@@ -47,6 +48,7 @@ import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
 import com.easygo.cashier.module.CouponUtils;
+import com.easygo.cashier.module.GiftCardUtils;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.refund.RefundActivity;
@@ -105,6 +107,11 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     TextView tvCouponNo;
     @BindView(R.id.tv_coupon_price)
     TextView tvCouponPrice;
+    @BindView(R.id.tv_gift_card_no)
+    TextView tvGiftCardNo;
+    @BindView(R.id.tv_gift_card_price)
+    TextView tvGiftCardPrice;
+
     @BindView(R.id.activities_view)
     ActivitiesView activitiesView;
 
@@ -112,6 +119,8 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     ConstraintLayout clMember;
     @BindView(R.id.cl_coupon)
     ConstraintLayout clCoupon;
+    @BindView(R.id.cl_gift_card)
+    ConstraintLayout clGiftCard;
     @BindView(R.id.tv_goods_count)
     TextView tvGoodsCount;
     @BindView(R.id.tv_total_money)
@@ -763,10 +772,12 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             R.id.btn_orders,
             R.id.btn_temp_promotion,
             R.id.btn_cancel_temp_promotion,
+            R.id.btn_gift_card,
             R.id.btn_choose_member,
             R.id.btn_choose_coupon,
             R.id.iv_cancel_member,
             R.id.iv_cancel_coupon,
+            R.id.iv_cancel_gift_card,
             R.id.btn_quick_choose})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -982,7 +993,19 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
 
                 break;
-            case R.id.btn_choose_member:
+            case R.id.btn_gift_card://礼品卡
+                showScanCodeDialog();
+                if(scanCodeDialog != null) {
+                    scanCodeDialog.setOnScanCodeListener(new ScanCodeDialog.OnScanCodeListener() {
+                        @Override
+                        public void onScanCode(String barcode) {
+                            mPresenter.gift_card(barcode);
+                        }
+                    });
+                }
+                setScanCodeDialogStatus(ScanCodeDialog.STATUS_SCAN_GIFT_CARD);
+                break;
+            case R.id.btn_choose_member://会员
                 if (membersDialog == null) {
                     membersDialog = new ChooseMembersDialog();
                 }
@@ -1003,7 +1026,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                     }
                 });
                 break;
-            case R.id.btn_choose_coupon:
+            case R.id.btn_choose_coupon://优惠券
                 //判断是否有促销
                 if (ActivitiesUtils.getInstance().hasGoodsPromotion() || ActivitiesUtils.getInstance().hasShopPromotion()) {
 
@@ -1050,14 +1073,17 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                     }
                 });
                 break;
-            case R.id.iv_cancel_member:
+            case R.id.iv_cancel_member://取消会员
                 updateMebmerInfo(null);
 //                setMemberVisiable(false);
                 break;
-            case R.id.iv_cancel_coupon:
+            case R.id.iv_cancel_coupon://取消优惠券
                 cancelCouponWithRefresh();
                 break;
-            case R.id.btn_quick_choose:
+            case R.id.iv_cancel_gift_card://取消礼品卡
+                cancelGiftCard();
+                break;
+            case R.id.btn_quick_choose://快速选择
                 ARouter.getInstance().build(ModulePath.quick).navigation();
                 break;
         }
@@ -1121,23 +1147,20 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         mGoodsMultiItemAdapter.notifyDataSetChanged();
     }
 
+    /**
+     *  取消礼品卡
+     */
+    private void cancelGiftCard() {
+        GiftCardUtils.getInstance().setGiftCardInfo(null);
+        setHide(clGiftCard);
+    }
+
     private void setHide(ConstraintLayout constraintLayout) {
-//        if (constraintLayout == clMember) {
-//            if (clCoupon.getVisibility() == View.VISIBLE) {
-//                clMember.setVisibility(View.GONE);
-//                return;
-//            }
-//        } else if (constraintLayout == clCoupon) {
-//            if (clMember.getVisibility() == View.VISIBLE) {
-//                clCoupon.setVisibility(View.GONE);
-//                return;
-//            }
-//        }
-//        clExtraInfo.setVisibility(View.GONE);
         if (constraintLayout == clExtraInfo) {
             clExtraInfo.setVisibility(View.GONE);
             clMember.setVisibility(View.GONE);
             clCoupon.setVisibility(View.GONE);
+            clGiftCard.setVisibility(View.GONE);
             return;
         }
 
@@ -1148,6 +1171,8 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             needHide = clCoupon.getVisibility() == View.GONE;
         } else if (constraintLayout == clCoupon) {
             needHide = clMember.getVisibility() == View.GONE;
+        } else if(constraintLayout == clGiftCard) {
+            needHide = clGiftCard.getVisibility() == View.GONE;
         }
 
         if (needHide) {
@@ -1164,6 +1189,9 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         }
         if (CouponUtils.getInstance().getCouponInfo() != null) {
             clCoupon.setVisibility(View.VISIBLE);
+        }
+        if(GiftCardUtils.getInstance().getGiftCardInfo() != null) {
+            clGiftCard.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1407,6 +1435,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     public void getMemberFailed(Map<String, Object> map, String barcode, String phone) {
         if (!TextUtils.isEmpty(barcode)) {
             showScanCodeDialog();
+            setScanCodeDialogStatus(ScanCodeDialog.STATUS_MEMBER_NULL);
         } else if (!TextUtils.isEmpty(phone)) {
             if (membersDialog != null && membersDialog.isShow()) {
                 membersDialog.setNewData(new ArrayList<MemberInfo>());
@@ -1470,6 +1499,27 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     }
 
     @Override
+    public void giftCardSuccess(GiftCardResponse result) {
+        Log.i(TAG, "giftCardSuccess: gc_id ->" + result.getGc_id());
+        Log.i(TAG, "giftCardSuccess: sn ->" + result.getSn());
+        Log.i(TAG, "giftCardSuccess: card_no ->" + result.getCard_no());
+        Log.i(TAG, "giftCardSuccess: balance_amount ->" + result.getBalance_amount());
+        Log.i(TAG, "giftCardSuccess: total_amount ->" + result.getTotal_amount());
+
+        GiftCardUtils.getInstance().setGiftCardInfo(result);
+        setShow(clGiftCard);
+        tvGiftCardNo.setText(result.getSn());
+        tvGiftCardPrice.setText("-" + result.getBalance_amount());
+    }
+
+    @Override
+    public void giftCardFailed(Map<String, Object> map) {
+        if(scanCodeDialog != null && scanCodeDialog.isShowing()) {
+            scanCodeDialog.setStatus(ScanCodeDialog.STATUS_GIFT_CARD_NULL);
+        }
+    }
+
+    @Override
     public void getTillAuthSuccess(String result) {
         Log.i(TAG, "getTillAuthSuccess :校验钱箱权限成功");
         if (editDialog != null && editDialog.isShow()){
@@ -1512,6 +1562,9 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         if (mSetCountPopupWindow != null && mSetCountPopupWindow.isShowing()) {
             mSetCountPopupWindow.dismiss();
         }
+        if (scanCodeDialog != null && scanCodeDialog.isShowing()) {
+            scanCodeDialog.dismiss();
+        }
 
         mHandler.removeCallbacksAndMessages(null);
     }
@@ -1543,6 +1596,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         setHide(clExtraInfo);
         CouponUtils.getInstance().setCouponInfo(null);
         updateMebmerInfo(null);
+        GiftCardUtils.getInstance().setGiftCardInfo(null);
     }
 
     public void showScanCodeDialog() {
@@ -1554,7 +1608,13 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         scanCodeDialog.setCanceledOnTouchOutside(false);
         scanCodeDialog.setCancelable(false);
         scanCodeDialog.show();
-        scanCodeDialog.setStatus(ScanCodeDialog.STATUS_MEMBER_NULL);
+//        scanCodeDialog.setStatus(ScanCodeDialog.STATUS_MEMBER_NULL);
+    }
+    public void setScanCodeDialogStatus(int status) {
+
+        if(scanCodeDialog != null && scanCodeDialog.isShowing()) {
+            scanCodeDialog.setStatus(status);
+        }
     }
 
     public void updateMebmerInfo(MemberInfo info) {

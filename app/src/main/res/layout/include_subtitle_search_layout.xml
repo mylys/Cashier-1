@@ -62,6 +62,19 @@
 
     <!--优惠券-->
     <com.easygo.cashier.widget.GeneraButton
+        android:id="@+id/btn_gift_card"
+        android:layout_width="@dimen/x160"
+        android:layout_height="@dimen/y118"
+        android:background="@drawable/bg_ripple_btn"
+        app:image="@drawable/ic_main_gift_card"
+        app:text="@string/text_gift_card"
+        app:text_size="@dimen/text_size_23"
+        app:layout_constraintEnd_toStartOf="@id/btn_choose_coupon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--优惠券-->
+    <com.easygo.cashier.widget.GeneraButton
         android:id="@+id/btn_choose_coupon"
         android:layout_width="@dimen/x160"
         android:layout_height="@dimen/y118"
@@ -72,7 +85,6 @@
         app:layout_constraintEnd_toStartOf="@id/btn_choose_member"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <!--选择会员-->
     <com.easygo.cashier.widget.GeneraButton

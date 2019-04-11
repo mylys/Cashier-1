@@ -32,11 +32,13 @@ import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.BankcardStatusResponse;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
+import com.easygo.cashier.bean.GiftCardResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.request.CreateOrderRequestBody;
 import com.easygo.cashier.bean.request.PrintRequestBody;
 import com.easygo.cashier.module.CouponUtils;
+import com.easygo.cashier.module.GiftCardUtils;
 import com.easygo.cashier.module.promotion.base.IPromotion;
 import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.promotion.shop.BaseShopPromotion;
@@ -209,12 +211,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                             PayWayView.WAY_MEMBER,
                             PayWayView.WAY_CASH,
                             PayWayView.WAY_BANK_CARD,
+                            PayWayView.WAY_GIFT_CARD,
                     }
                     : new int[] {
                             PayWayView.WAY_ALIPAY,
                             PayWayView.WAY_WECHAT,
                             PayWayView.WAY_CASH,
                             PayWayView.WAY_BANK_CARD,
+                            PayWayView.WAY_GIFT_CARD,
                     }
             );
         }
@@ -365,6 +369,13 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             //登录会员时 默认选择会员钱包支付
             if(MemberUtils.isMember) {
                 payWayView.performSelect(PayWayView.WAY_MEMBER);
+            } else if(GiftCardUtils.getInstance().getGiftCardInfo() != null) {
+                float balance_amount = GiftCardUtils.getInstance().getGiftCardInfo().getBalance_amount();
+                if (balance_amount >= getPayMoney()) {
+                    payWayView.performSelect(PayWayView.WAY_GIFT_CARD);
+                } else {
+                    payWayView.performSelect(PayWayView.WAY_ALIPAY);
+                }
             } else {
                 payWayView.performSelect(PayWayView.WAY_ALIPAY);
             }
@@ -391,9 +402,17 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 //            showScanCodeDialog();
 //            return;
 //        }
+        //会员钱包支付时
         if (MemberUtils.isMember && mPayWay == PayWayView.WAY_MEMBER) {
             if (getReceivableMoney() > Float.parseFloat(mBalance.substring(1,mBalance.length()))) {
                 showToast("会员钱包余额不足，不能进行支付");
+                return;
+            }
+        }
+        //礼品卡支付时
+        else if(GiftCardUtils.getInstance().getGiftCardInfo() != null && mPayWay == PayWayView.WAY_GIFT_CARD) {
+            if (getReceivableMoney() > GiftCardUtils.getInstance().getGiftCardInfo().getBalance_amount()) {
+                showToast("礼品卡余额不足，请选择其他方式进行混合支付");
                 return;
             }
         }
@@ -551,6 +570,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             case PayWayView.WAY_MEMBER:
                 obj.pay_type = "会员钱包支付";
                 break;
+            case PayWayView.WAY_GIFT_CARD:
+                obj.pay_type = "礼品卡支付";
+                break;
         }
         obj.count = String.valueOf(mGoodsCount);
         obj.total_money = mTotalMoney;
@@ -596,7 +618,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
             float real_pay = getReceivableMoney();
             if(real_pay <= 0) {
-                real_pay = 0.1f;
+                real_pay = 0.01f;
             }
 
             //请求接口
@@ -1021,6 +1043,19 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 break;
         }
 
+        //礼品卡
+        GiftCardResponse giftCardInfo = GiftCardUtils.getInstance().getGiftCardInfo();
+        if(giftCardInfo != null) {
+            requestBody1.setGift_card_no(giftCardInfo.getSn());
+            float balance_amount = giftCardInfo.getBalance_amount();
+
+            if(balance_amount >= receivableMoney) {//礼品卡余额大于 应收
+                requestBody1.setGift_card_pay(Integer.valueOf(df.format(receivableMoney * 100)));
+            } else {
+                requestBody1.setGift_card_pay(Integer.valueOf(df.format(balance_amount * 100)));
+            }
+        }
+        //会员
         if(MemberUtils.isMember && MemberUtils.memberInfo != null) {
             requestBody1.setBuyer(MemberUtils.memberInfo.getNick_name());
             requestBody1.setMember_id(MemberUtils.memberInfo.getMember_id());
@@ -1281,6 +1316,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             case PayWayView.WAY_MEMBER:
                 showScanCodeDialog();
                 break;
+            case PayWayView.WAY_GIFT_CARD://礼品卡支付
+                mPresenter.giftCardPay(Configs.order_no);
+
+                break;
             case PayWayView.WAY_BANK_CARD:
                 showBankcardDialog();
                 break;
@@ -1494,6 +1533,16 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     @Override
     public void bankcardFailed(Map<String, Object> map) {
         checkBankcardPayStatus();
+    }
+
+    @Override
+    public void giftCardPaySuccess(String result) {
+
+    }
+
+    @Override
+    public void giftCardPayFailed(Map<String, Object> map) {
+
     }
 
     @Override

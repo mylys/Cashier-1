@@ -73,6 +73,11 @@
     <string name="text_no_search_coupon">搜不到该优惠券</string>
     <string name="text_no_coupon">暂无此优惠券</string>
 
+    <!--礼品卡-->
+    <string name="text_gift_card">礼品卡</string>
+    <string name="text_gift_card_colon">礼品卡：</string>
+    <string name="text_scan_gift_card_code">请扫描礼品卡二维码</string>
+    <string name="text_no_gift_card">暂无此礼品卡</string>
 
     <!--结算页面-->
     <string name="text_combined_payment">组合支付</string>

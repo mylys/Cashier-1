@@ -85,29 +85,17 @@
         app:layout_constraintTop_toTopOf="@id/btn_cash" />
 
 
-    <!--其他支付（八达通）-->
+    <!--礼品卡-->
     <Button
-        android:id="@+id/btn_other"
+        android:id="@+id/btn_gift_card"
         style="@style/PayButtonStyle"
         android:layout_width="@dimen/pay_btn_width"
         android:layout_height="@dimen/pay_btn_height"
         android:background="@drawable/bg_pay_way_button"
-        android:text="@string/text_other"
+        android:text="@string/text_gift_card"
         app:layout_constraintBottom_toBottomOf="@id/btn_cash"
         app:layout_constraintStart_toEndOf="@id/btn_bank_card"
         app:layout_constraintTop_toTopOf="@id/btn_cash" />
 
-    <!--<Button-->
-        <!--android:id="@+id/btn_coupon"-->
-        <!--style="@style/PayButtonStyle"-->
-        <!--android:layout_width="@dimen/pay_btn_width"-->
-        <!--android:layout_height="@dimen/pay_btn_height"-->
-        <!--android:layout_marginEnd="@dimen/x60"-->
-        <!--android:textColor="@color/color_4cbbac"-->
-        <!--android:background="@drawable/bg_pay_way_button"-->
-        <!--android:text="@string/text_coupon_coupon"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

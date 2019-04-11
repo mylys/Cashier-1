@@ -25,8 +25,7 @@ public class PayWayView extends ConstraintLayout {
     private Button mMember;
     private Button mBankCard;
     private Button mCash;
-    private Button mOther;
-//    private Button mCoupon;
+    private Button mGiftCard;
     public List<View> mButtons;
 
     public static final int WAY_ALIPAY = 0x0000;
@@ -34,7 +33,7 @@ public class PayWayView extends ConstraintLayout {
     public static final int WAY_MEMBER = 0x0002;
     public static final int WAY_BANK_CARD = 0x0003;
     public static final int WAY_CASH = 0x0004;
-    public static final int WAY_OTHER = 0x0005;
+    public static final int WAY_GIFT_CARD = 0x0005;
 
     private Button mSelected;
 
@@ -64,22 +63,15 @@ public class PayWayView extends ConstraintLayout {
         mAlipay = ((Button) mView.findViewById(R.id.btn_alipay));
         mWechat = ((Button) mView.findViewById(R.id.btn_wechat));
         mBankCard = ((Button) mView.findViewById(R.id.btn_bank_card));
-        mOther = ((Button) mView.findViewById(R.id.btn_other));
+        mGiftCard = ((Button) mView.findViewById(R.id.btn_gift_card));
         mMember = ((Button) mView.findViewById(R.id.btn_member));
-//        mCoupon = ((Button) mView.findViewById(R.id.btn_coupon));
 
         mCash.setOnClickListener(listener);
         mAlipay.setOnClickListener(listener);
         mWechat.setOnClickListener(listener);
         mBankCard.setOnClickListener(listener);
-        mOther.setOnClickListener(listener);
+        mGiftCard.setOnClickListener(listener);
         mMember.setOnClickListener(listener);
-//        mCoupon.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mListener.onPayWaySelected(false, getPayWay(mCoupon));
-//            }
-//        });
 
         mCombineCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -105,8 +97,7 @@ public class PayWayView extends ConstraintLayout {
 
         mMember.setVisibility(GONE);
         mBankCard.setVisibility(GONE);
-        mOther.setVisibility(GONE);
-//        mCoupon.setVisibility(GONE);
+        mGiftCard.setVisibility(GONE);
 
         mButtons = new ArrayList<>();
         mButtons.add(mAlipay);
@@ -114,8 +105,7 @@ public class PayWayView extends ConstraintLayout {
         mButtons.add(mMember);
         mButtons.add(mBankCard);
         mButtons.add(mCash);
-        mButtons.add(mOther);
-//        mButtons.add(mCoupon);
+        mButtons.add(mGiftCard);
 
         mSelected = mAlipay;
 //        mSelected = mCash;
@@ -178,8 +168,8 @@ public class PayWayView extends ConstraintLayout {
                 return WAY_MEMBER;
             case R.id.btn_bank_card:
                 return WAY_BANK_CARD;
-            case R.id.btn_other:
-                return WAY_OTHER;
+            case R.id.btn_gift_card:
+                return WAY_GIFT_CARD;
             default:
 //                return WAY_CASH;
                 return WAY_ALIPAY;

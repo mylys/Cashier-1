@@ -1,6 +1,7 @@
 package com.easygo.cashier.module.goods;
 
 import com.easygo.cashier.bean.CouponResponse;
+import com.easygo.cashier.bean.GiftCardResponse;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.MemberDayInfo;
@@ -35,6 +36,8 @@ public class GoodsContract {
         void getMemberDiscount();//会员折扣
 
         void get_coupon(String coupon);
+
+        void gift_card(String card_no);
         /**心跳*/
         void heartbeat();
 
@@ -71,6 +74,9 @@ public class GoodsContract {
 
         void couponSuccess(CouponResponse result);
         void couponFailed(Map<String,Object> map);
+
+        void giftCardSuccess(GiftCardResponse result);
+        void giftCardFailed(Map<String,Object> map);
 
         void getTillAuthSuccess(String result);
         void getTillAythFailed(Map<String, Object> map);

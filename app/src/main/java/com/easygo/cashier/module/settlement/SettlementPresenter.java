@@ -202,6 +202,28 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
                 });
     }
 
+    @Override
+    public void giftCardPay(String order_no) {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("order_no", order_no);
+
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().cash(header, requestMap),
+                new BaseResultObserver<String>() {
+                    @Override
+                    protected void onSuccess(String result) {
+                        mView.giftCardPaySuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.giftCardPayFailed(map);
+                    }
+                });
+    }
+
 
     @Override
     public void print(String json) {

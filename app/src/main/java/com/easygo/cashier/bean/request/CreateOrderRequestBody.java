@@ -23,6 +23,8 @@ public class CreateOrderRequestBody {
     private String shop_sn;
     private String buyer;//会员昵称
     private int member_id;
+    private String gift_card_no;
+    private int gift_card_pay;
     private String member_card_no;
     private int total_money;
     private int real_pay;
@@ -82,6 +84,22 @@ public class CreateOrderRequestBody {
 
     public void setMember_card_no(String member_card_no) {
         this.member_card_no = member_card_no;
+    }
+
+    public String getGift_card_no() {
+        return gift_card_no;
+    }
+
+    public void setGift_card_no(String gift_card_no) {
+        this.gift_card_no = gift_card_no;
+    }
+
+    public int getGift_card_pay() {
+        return gift_card_pay;
+    }
+
+    public void setGift_card_pay(int gift_card_pay) {
+        this.gift_card_pay = gift_card_pay;
     }
 
     public int getTotal_money() {

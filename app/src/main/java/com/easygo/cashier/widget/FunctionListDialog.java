@@ -81,9 +81,9 @@ public class FunctionListDialog extends BaseDialog {
         Window window = getDialog().getWindow();
         if (window != null) {
             window.setLayout(getResources().getDimensionPixelSize(R.dimen.function_list_width),
-                    getResources().getDimensionPixelSize(Configs.lock_auth == 0 ? R.dimen.y359 : R.dimen.function_list_height));
+//                    getResources().getDimensionPixelSize(Configs.lock_auth == 0 ? R.dimen.y359 : R.dimen.function_list_height));
 //                    getResources().getDimensionPixelSize(R.dimen.y359));
-//                    getResources().getDimensionPixelSize(R.dimen.function_list_height));
+                    getResources().getDimensionPixelSize(R.dimen.function_list_height));
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -122,7 +122,7 @@ public class FunctionListDialog extends BaseDialog {
             integers.add(4);
         }
 
-        integers.add(5);
+//        integers.add(5);
 
 //        if(Config.isOnlineMode()) {
         if(Configs.isOnlineMode()) {

@@ -3,6 +3,7 @@ package com.easygo.cashier.http;
 import com.easygo.cashier.bean.BankcardStatusResponse;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
+import com.easygo.cashier.bean.GiftCardResponse;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.HandoverResponse;
@@ -156,6 +157,21 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("api/v1/cashier/pay/wechat")
     Observable<HttpResult<String>> checkUnionPayStatus(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
+
+
+    /**
+     * 查询礼品卡
+     */
+    @FormUrlEncoded
+    @POST("api/v1/cashier/gift_card/info")
+    Observable<HttpResult<GiftCardResponse>> gift_card(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
+
+    /**
+     * 礼品卡支付
+     */
+    @FormUrlEncoded
+    @POST("api/v1/cashier/pay/gift_card_pay")
+    Observable<HttpResult<GiftCardResponse>> gift_card_pay(@HeaderMap Map<String, String> header,  @FieldMap Map<String, Object> map);
 
 
     /**

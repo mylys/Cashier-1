@@ -25,6 +25,8 @@ public class SettlementContract {
 
         void checkBankcardStatus(String order_no);
 
+        void giftCardPay(String order_no);
+
         void print(String json);
 
         void print_info(String shop_sn, String printer_sn, String info);
@@ -58,6 +60,9 @@ public class SettlementContract {
 
         void bankcardSuccess(BankcardStatusResponse result);
         void bankcardFailed(Map<String, Object> map);
+
+        void giftCardPaySuccess(String result);
+        void giftCardPayFailed(Map<String, Object> map);
 
         void printSuccess(String result);
         void printFailed(Map<String, Object> map);

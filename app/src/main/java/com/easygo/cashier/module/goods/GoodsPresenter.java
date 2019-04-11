@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.bean.CouponResponse;
+import com.easygo.cashier.bean.GiftCardResponse;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.InitResponse;
@@ -247,6 +248,30 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
                     protected void onFailure(Map<String, Object> map) {
                         mView.hideLoading();
                         mView.couponFailed(map);
+                    }
+                });
+    }
+
+    @Override
+    public void gift_card(String card_no) {
+        mView.showLoading();
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("type", 2);
+        requestMap.put("card_no", card_no);
+
+        subscribeAsyncToResult(HttpAPI.getInstance().httpService().gift_card(header, requestMap),
+                new BaseResultObserver<GiftCardResponse>() {
+                    @Override
+                    protected void onSuccess(GiftCardResponse result) {
+                        mView.hideLoading();
+                        mView.giftCardSuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.hideLoading();
+                        mView.giftCardFailed(map);
                     }
                 });
     }

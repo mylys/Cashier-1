@@ -21,18 +21,19 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class ScanCodeDialog extends Dialog {
 
-    private ImageView mLogo;
-    private ProgressBar mLoading;
-    private TextView mTextView;
-    private ConstraintLayout mClose;
-    private EditText etBarcode;
+    protected ImageView mLogo;
+    protected ProgressBar mLoading;
+    protected TextView mTextView;
+    protected ConstraintLayout mClose;
+    protected EditText etBarcode;
+    protected String mText;
 
     /**
      * 是否禁止回调 扫码数据
      */
     private boolean mStopScan = false;
 
-    Handler mHandler = new Handler();
+    protected Handler mHandler = new Handler();
 
     public ScanCodeDialog(@NonNull Context context) {
         super(context);
@@ -91,6 +92,8 @@ public class ScanCodeDialog extends Dialog {
     public static final int STATUS_SUCCESSFUL_RECEIPT = 2;
     public static final int STATUS_MEMBER_NULL = 3;
     public static final int STATUS_COUPON_NULL = 4;
+    public static final int STATUS_SCAN_GIFT_CARD = 5;
+    public static final int STATUS_GIFT_CARD_NULL = 6;
 
     private int mStatus = STATUS_SCAN;
     public void setStatus(int status) {
@@ -130,6 +133,24 @@ public class ScanCodeDialog extends Dialog {
 
                 delayedDismiss(2000);
                 break;
+
+            case STATUS_SCAN_GIFT_CARD:
+                mLogo.setImageResource(R.drawable.dialog_scan);
+                mLogo.setVisibility(View.VISIBLE);
+                mClose.setVisibility(View.VISIBLE);
+                mLoading.setVisibility(View.GONE);
+                mTextView.setText(R.string.text_scan_gift_card_code);
+                break;
+            case STATUS_GIFT_CARD_NULL:
+                mLogo.setImageResource(R.drawable.icon_null);
+                mLogo.setVisibility(View.VISIBLE);
+                mClose.setVisibility(View.GONE);
+                mLoading.setVisibility(View.GONE);
+                mTextView.setText(R.string.text_no_gift_card);
+
+                delayedDismiss(2000);
+                break;
+
         }
     }
 
