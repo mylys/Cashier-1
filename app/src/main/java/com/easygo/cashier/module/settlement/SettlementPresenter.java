@@ -3,6 +3,7 @@ package com.easygo.cashier.module.settlement;
 import com.easygo.cashier.bean.BankcardStatusResponse;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
+import com.easygo.cashier.bean.GiftCardResponse;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.http.HttpAPI;
 import com.easygo.cashier.printer.PrintHelper;
@@ -203,6 +204,29 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
     }
 
     @Override
+    public void giftCard(String card_no) {
+        Map<String, String> header = HttpClient.getInstance().getHeader();
+
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("type", 2);
+        requestMap.put("card_no", card_no);
+
+        subscribeAsyncToResult(
+                HttpAPI.getInstance().httpService().gift_card(header, requestMap),
+                new BaseResultObserver<GiftCardResponse>() {
+                    @Override
+                    protected void onSuccess(GiftCardResponse result) {
+                        mView.giftCardSuccess(result);
+                    }
+
+                    @Override
+                    protected void onFailure(Map<String, Object> map) {
+                        mView.giftCardFailed(map);
+                    }
+                });
+    }
+
+    @Override
     public void giftCardPay(String order_no) {
         Map<String, String> header = HttpClient.getInstance().getHeader();
 
@@ -210,7 +234,7 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
         requestMap.put("order_no", order_no);
 
         subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().cash(header, requestMap),
+                HttpAPI.getInstance().httpService().gift_card_pay(header, requestMap),
                 new BaseResultObserver<String>() {
                     @Override
                     protected void onSuccess(String result) {

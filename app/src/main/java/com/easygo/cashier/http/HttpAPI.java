@@ -81,9 +81,9 @@ public class HttpAPI extends BaseHttpAPI {
         };
 
         String[] array_url_offline = new String[] {
-                "http://192.168.31.142:8071/",
-                "http://192.168.31.142:8071/",
-                "http://192.168.31.142:8071/",
+                "http://192.168.31.74:8071/",
+                "http://192.168.31.74:8071/",
+                "http://192.168.31.74:8071/",
         };
 
         return new String[][]{

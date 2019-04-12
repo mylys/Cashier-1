@@ -1171,11 +1171,11 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
         boolean needHide = false;
         if (constraintLayout == clMember) {
-            needHide = clCoupon.getVisibility() == View.GONE;
+            needHide = clCoupon.getVisibility() == View.GONE &&  clGiftCard.getVisibility() == View.GONE;
         } else if (constraintLayout == clCoupon) {
-            needHide = clMember.getVisibility() == View.GONE;
+            needHide = clMember.getVisibility() == View.GONE &&  clGiftCard.getVisibility() == View.GONE;
         } else if(constraintLayout == clGiftCard) {
-            needHide = clGiftCard.getVisibility() == View.GONE;
+            needHide = clMember.getVisibility() == View.GONE &&  clCoupon.getVisibility() == View.GONE;
         }
 
         if (needHide) {
@@ -1503,16 +1503,10 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
     @Override
     public void giftCardSuccess(GiftCardResponse result) {
-        Log.i(TAG, "giftCardSuccess: gc_id ->" + result.getGc_id());
-        Log.i(TAG, "giftCardSuccess: sn ->" + result.getSn());
-        Log.i(TAG, "giftCardSuccess: card_no ->" + result.getCard_no());
-        Log.i(TAG, "giftCardSuccess: balance_amount ->" + result.getBalance_amount());
-        Log.i(TAG, "giftCardSuccess: total_amount ->" + result.getTotal_amount());
-
         GiftCardUtils.getInstance().setGiftCardInfo(result);
         setShow(clGiftCard);
         tvGiftCardNo.setText(result.getSn());
-        tvGiftCardPrice.setText("-" + result.getBalance_amount());
+        tvGiftCardPrice.setText("-" + df.format(result.getBalance_amount()));
 
         if(scanCodeDialog != null && scanCodeDialog.isShowing()) {
             scanCodeDialog.dismiss();

@@ -112,6 +112,7 @@
 
     <string name="text_cancel_coupon">取消优惠券</string>
     <string name="text_cancle_temp_promotion">取消折扣</string>
+    <string name="text_cancle_gift_card">取消礼品卡</string>
 
     <!--历史订单详情-->
     <string name="text_order_history">历史订单</string>

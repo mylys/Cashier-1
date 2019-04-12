@@ -43,6 +43,11 @@ public class SettlementView extends FrameLayout {
     TextView tvCouponColonPrice;
     @BindView(R.id.btn_cancel_coupon)
     Button btnCancelCoupon;
+    @BindView(R.id.tv_text_gift_card_colon)
+    TextView tvTextGiftCardColon;
+    @BindView(R.id.tv_gift_card_price)
+    TextView tvGiftCardPrice;
+
     @BindView(R.id.view1)
     View view1;
     @BindView(R.id.tv_receivable)
@@ -71,6 +76,8 @@ public class SettlementView extends FrameLayout {
     View line4;
     @BindView(R.id.line5)
     View line5;
+    @BindView(R.id.line6)
+    View line6;
     @BindView(R.id.tv_text_change)
     TextView tvTextChange;
     @BindView(R.id.tv_change)
@@ -99,6 +106,8 @@ public class SettlementView extends FrameLayout {
 
     //是否有优惠券
     private boolean isCoupon = false;
+    //是否有礼品卡
+    private boolean isGiftCard = false;
 
     public SettlementView(@NonNull Context context) {
         super(context);
@@ -268,10 +277,16 @@ public class SettlementView extends FrameLayout {
 
     public void setCouponVisiable(boolean isCoupon) {
         this.isCoupon = isCoupon;
-//        btnCancelCoupon.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
         tvTextCouponColon.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
         tvCouponColonPrice.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
         line3.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
+    }
+
+    public void setGiftCardVisiable(boolean isGiftCard) {
+        this.isGiftCard = isGiftCard;
+        tvTextGiftCardColon.setVisibility(isGiftCard ? View.VISIBLE : View.GONE);
+        tvGiftCardPrice.setVisibility(isGiftCard ? View.VISIBLE : View.GONE);
+        line5.setVisibility(isGiftCard ? View.VISIBLE : View.GONE);
     }
 
     public void setMemberVisiable(boolean visiable) {
@@ -282,7 +297,7 @@ public class SettlementView extends FrameLayout {
     }
 
     public void setChangeVisibilty(boolean visibilty) {
-        line5.setVisibility(visibilty ? View.VISIBLE : View.GONE);
+        line6.setVisibility(visibilty ? View.VISIBLE : View.GONE);
         tvTextChange.setVisibility(visibilty ? View.VISIBLE : View.GONE);
         tvChange.setVisibility(visibilty ? View.VISIBLE : View.GONE);
     }
@@ -395,14 +410,22 @@ public class SettlementView extends FrameLayout {
 
     /**
      * 设置优惠券信息
-     * @param name
-     * @param coupon_discount
      */
     public void setCouponInfo(String name, float coupon_discount) {
         tvTextCouponColon.setText("优惠券：(" + name + ")");
         DecimalFormat df = new DecimalFormat("0.00");
         tvCouponColonPrice.setText("-" + df.format(coupon_discount));
     }
+
+    /**
+     * 设置礼品卡信息
+     */
+    public void setGiftCardInfo(String name, float price) {
+        tvTextGiftCardColon.setText("礼品卡：(" + name + ")");
+        DecimalFormat df = new DecimalFormat("0.00");
+        tvGiftCardPrice.setText("-" + df.format(price));
+    }
+
 
 
     private OnClickListener mListener;

@@ -234,6 +234,12 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             showCouponInfo(CouponUtils.getInstance().getCouponInfo().getName(), mCouponMoney);
         }
 
+        if(GiftCardUtils.getInstance().getGiftCardInfo() != null) {
+            settlementView.setGiftCardVisiable(true);
+            settlementView.setGiftCardInfo(GiftCardUtils.getInstance().getGiftCardInfo().getSn(),
+                    GiftCardUtils.getInstance().getGiftCardInfo().getBalance_amount());
+        }
+
         mGoodsData = (List<GoodsEntity<GoodsResponse>>) this.mGoodsDataSerializable;
 
         //扫码、打印、提交 按钮监听
@@ -728,8 +734,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         return false;
     }
 
-    @OnClick({R.id.cl_back, R.id.btn_delete, R.id.btn_coupon, R.id.btn_cancel_coupon,
-            R.id.btn_temp_promotion, R.id.btn_cancel_temp_promotion, R.id.cl_confirm_commit})
+    @OnClick({R.id.cl_back, R.id.btn_delete,
+            R.id.btn_coupon, R.id.btn_cancel_coupon,
+            R.id.btn_temp_promotion, R.id.btn_cancel_temp_promotion,
+            R.id.btn_search_gift_card, R.id.btn_cancel_gift_card,
+            R.id.cl_confirm_commit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cl_back://返回
@@ -784,8 +793,16 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 });
                 tempPromotionDialog.showCenter(this);
                 break;
-            case R.id.btn_cancel_temp_promotion:
+            case R.id.btn_cancel_temp_promotion://取消临时整单促销
                 cancelTempPromotion();
+
+                break;
+            case R.id.btn_search_gift_card://礼品卡
+                showGiftCardDialog();
+
+                break;
+            case R.id.btn_cancel_gift_card://取消礼品卡
+                cancelGiftCard();
 
                 break;
             case R.id.cl_confirm_commit:
@@ -838,6 +855,17 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
         //刷新首页和副屏
         refreshGoodsData();
+    }
+
+    /**
+     * 取消礼品卡
+     */
+    private void cancelGiftCard() {
+        if(GiftCardUtils.getInstance().getGiftCardInfo() == null) {
+            return;
+        }
+        GiftCardUtils.getInstance().setGiftCardInfo(null);
+        settlementView.setGiftCardVisiable(false);
     }
 
     /**
@@ -944,6 +972,31 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         mScanCodeDialog.show();
 
     }
+    /**
+     * 显示礼品卡弹窗
+     */
+    public void showGiftCardDialog() {
+        mScanCodeDialog = new ScanCodeDialog(this, R.style.DialogStyle);
+        WindowManager.LayoutParams lp = mScanCodeDialog.getWindow().getAttributes();
+        lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+        lp.y = getResources().getDimensionPixelSize(R.dimen.y411);
+        mScanCodeDialog.getWindow().setAttributes(lp);
+        mScanCodeDialog.setCanceledOnTouchOutside(false);
+        mScanCodeDialog.setCancelable(false);
+        mScanCodeDialog.setOnScanCodeListener(new ScanCodeDialog.OnScanCodeListener() {
+            @Override
+            public void onScanCode(String barcode) {
+
+                mPresenter.giftCard(barcode);
+                mScanCodeDialog.setStopScan(true);
+
+                mScanCodeDialog.setStatus(ScanCodeDialog.STATUS_SCAN_GIFT_CARD);
+            }
+        });
+        mScanCodeDialog.show();
+
+    }
+
 
     /**
      * 显示银联支付QRcode
@@ -1536,13 +1589,32 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     }
 
     @Override
-    public void giftCardPaySuccess(String result) {
+    public void giftCardSuccess(GiftCardResponse result) {
+        GiftCardUtils.getInstance().setGiftCardInfo(result);
+        settlementView.setGiftCardInfo(result.getSn(), result.getBalance_amount());
 
+        if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
+            mScanCodeDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void giftCardFailed(Map<String, Object> map) {
+        if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
+            mScanCodeDialog.setStatus(ScanCodeDialog.STATUS_GIFT_CARD_NULL);
+        }
+    }
+
+    @Override
+    public void giftCardPaySuccess(String result) {
+        showToast("礼品卡支付成功");
+        onPaySuccessAfter();
     }
 
     @Override
     public void giftCardPayFailed(Map<String, Object> map) {
-
+        showToast("礼品卡支付失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
+        mDuringPay = false;
     }
 
     @Override

@@ -120,14 +120,26 @@
         app:layout_constraintStart_toStartOf="@id/btn_delete"
         app:layout_constraintTop_toBottomOf="@id/btn_cancel_coupon"/>
 
+    <Button
+        android:id="@+id/btn_cancel_gift_card"
+        android:layout_width="@dimen/x170"
+        android:layout_height="@dimen/y110"
+        android:text="@string/text_cancle_gift_card"
+        style="@style/DetailTextStyle"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
+        android:background="@drawable/bg_keyboard_key"
+        app:layout_constraintStart_toStartOf="@id/btn_delete"
+        app:layout_constraintTop_toBottomOf="@id/btn_cancel_temp_promotion"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_confirm_commit"
         android:layout_width="@dimen/x170"
-        android:layout_height="@dimen/y354"
+        android:layout_height="0dp"
         android:background="@drawable/bg_ripple_commit_btn"
         android:layout_marginTop="@dimen/keyboard_key_margin"
         app:layout_constraintStart_toStartOf="@id/btn_delete"
-        app:layout_constraintTop_toBottomOf="@id/btn_cancel_temp_promotion">
+        app:layout_constraintTop_toBottomOf="@id/btn_cancel_gift_card"
+        app:layout_constraintBottom_toBottomOf="@id/kb">
 
         <TextView
             android:layout_width="wrap_content"
@@ -201,6 +213,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_discount"
+            android:ems="1"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_26"
+            android:textColor="@color/color_text_white"
+            android:layout_marginStart="@dimen/x28"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--礼品卡-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btn_search_gift_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_temp_promotion">
+
+        <ImageView
+            android:layout_width="@dimen/x96"
+            android:layout_height="@dimen/y120"
+            android:src="@drawable/bg_promotion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_gift_card"
             android:ems="1"
             android:textStyle="bold"
             android:textSize="@dimen/text_size_26"

@@ -171,7 +171,7 @@ public interface HttpService {
      */
     @FormUrlEncoded
     @POST("api/v1/cashier/pay/gift_card_pay")
-    Observable<HttpResult<GiftCardResponse>> gift_card_pay(@HeaderMap Map<String, String> header,  @FieldMap Map<String, Object> map);
+    Observable<HttpResult<String>> gift_card_pay(@HeaderMap Map<String, String> header,  @FieldMap Map<String, Object> map);
 
 
     /**
