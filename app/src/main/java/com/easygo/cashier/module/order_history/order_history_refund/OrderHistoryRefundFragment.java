@@ -162,6 +162,8 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         } else if (pay_type.equals(getResources().getString(R.string.pay_wallet))) {
             refund_pay_type = "member_wallet";
             pay_way = PayWayView.WAY_MEMBER;
+        } else {
+            refund_pay_type = "cash";
         }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -381,7 +383,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
             showToast("输入金额不能大于所选商品总额");
             return;
         }
-        Bundle bundle = ConfirmDialog.getDataBundle(adapter.getTotalNum() + "", price, pay_way, false, "退货：", "实退：");
+        Bundle bundle = ConfirmDialog.getDataBundle(adapter.getTotalNum() + "", price, pay_type, false, "退货：", "实退：");
         confirmDialog = new ConfirmDialog();
         confirmDialog.setArguments(bundle);
         confirmDialog.setOnConfirmListener(new ConfirmDialog.OnConfirmListenr() {

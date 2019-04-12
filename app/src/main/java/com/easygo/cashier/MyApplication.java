@@ -12,6 +12,7 @@ import com.easygo.cashier.module.goods.MainActivity;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.permission.PermissionActivity;
 import com.niubility.library.base.BaseApplication;
+import com.niubility.library.common.config.BaseConfig;
 import com.niubility.library.utils.ToastUtils;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.BuglyStrategy;
@@ -36,7 +37,7 @@ public class MyApplication extends BaseApplication {
 
         ToastUtils.text_size_times = 1.5f;
 
-        Configs.readConfig(this);
+        BaseConfig.readConfig(this);
     }
 
     private void initBugly() {

@@ -5,24 +5,14 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.easygo.cashier.bean.LoginResponse;
+import com.niubility.library.common.config.BaseConfig;
 import com.niubility.library.common.constants.BaseConstants;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
 import java.util.List;
 
-public class Configs {
+public class Configs extends BaseConfig {
 
-    /**
-     * 配置sharedPreference名称
-     */
-    public static final String sp_config = "Config";
-
-    /**
-     * 环境变量指示变量
-     */
-    public static int environment_index;
-    public static int environment_online;
-    public static int environment_offline = 3;
 
     public static final int mode_online = 0;
     public static final int mode_offline = 1;
@@ -112,14 +102,5 @@ public class Configs {
         return shop_sn;
     }
 
-    /**
-     * 读取配置信息
-     */
-    public static void readConfig(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(sp_config, Context.MODE_PRIVATE);
-        environment_index = Integer.valueOf(sp.getString("key_environment", BuildConfig.DEBUG? "2": "0"));
-        environment_online = environment_index;
-
-    }
 
 }

@@ -48,7 +48,6 @@ import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.printer.local.obj.CashierPrintObj;
 import com.easygo.cashier.widget.BankcardDialog;
 import com.easygo.cashier.widget.ChooseCouponsDialog;
-import com.easygo.cashier.widget.ConfirmDialog;
 import com.easygo.cashier.widget.Keyboard;
 import com.easygo.cashier.widget.MyTitleBar;
 import com.easygo.cashier.widget.PayWayView;
@@ -146,7 +145,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     private SettlementView settlementView;
 
     private int mPayWay = PayWayView.WAY_CASH;
-    private ConfirmDialog confirmDialog;
 
     private final int MSG_CHECK_BANK_CARD_PAY_STATUS = 0;
 

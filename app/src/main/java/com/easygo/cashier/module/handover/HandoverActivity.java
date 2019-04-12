@@ -361,6 +361,9 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
         handoverInfoPrintObj.cash = mHandoverView.tvCash.getText().toString();
         handoverInfoPrintObj.alipay = mHandoverView.tvAlipay.getText().toString();
         handoverInfoPrintObj.wechat = mHandoverView.tvWechat.getText().toString();
+        handoverInfoPrintObj.member = mHandoverView.tvMember.getText().toString();
+        handoverInfoPrintObj.bank_card = mHandoverView.tvBankCard.getText().toString();
+        handoverInfoPrintObj.gift_card = mHandoverView.tvGiftCard.getText().toString();
         handoverInfoPrintObj.all_refund = mHandoverView.tvAllRefund.getText().toString();
         handoverInfoPrintObj.total_cash = mHandoverView.tvTotalCash.getText().toString();
         handoverInfoPrintObj.cash_income = mHandoverView.tvCashIncome.getText().toString();

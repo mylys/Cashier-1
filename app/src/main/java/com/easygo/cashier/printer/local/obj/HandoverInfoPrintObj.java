@@ -12,6 +12,9 @@ public class HandoverInfoPrintObj {
     public String cash;
     public String alipay;
     public String wechat;
+    public String member;
+    public String bank_card;
+    public String gift_card;
     public String all_refund;
     public String total_cash;
     public String cash_income;

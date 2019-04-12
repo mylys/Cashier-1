@@ -190,6 +190,12 @@
     <string name="pay_wechat_wallet">微信 + 企业钱包</string>
     <string name="pay_cash">现金</string>
     <string name="pay_wallet">企业钱包</string>
+    <string name="pay_bank_card">银联</string>
+    <string name="pay_gift_card">礼品卡</string>
+    <string name="pay_wechat_gift_card">微信 + 礼品卡</string>
+    <string name="pay_alipay_gift_card">支付宝 + 礼品卡</string>
+    <string name="pay_wallet_gift_card">企业钱包 + 礼品卡</string>
+    <string name="pay_cash_gift_card">现金 + 礼品卡</string>
 
     <!-- 功能列表 -->
     <string name="text_function_history">历史订单</string>

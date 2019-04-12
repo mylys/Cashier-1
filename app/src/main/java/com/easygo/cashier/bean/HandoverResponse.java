@@ -11,6 +11,9 @@ public class HandoverResponse {
      * cash_money : 5.00
      * wx_money :
      * alipay_money :
+     * wallet_money :
+     * union_pay_money :
+     * gift_card_money :
      * all_refund :
      * cash_refund :
      * cash_change : 1.00
@@ -27,6 +30,9 @@ public class HandoverResponse {
     private String cash_money;
     private String wx_money;
     private String alipay_money;
+    private String wallet_money;
+    private String union_pay_money;
+    private String gift_card_money;
     private String all_refund;
     private String cash_refund;
     private String cash_change;
@@ -75,6 +81,30 @@ public class HandoverResponse {
 
     public void setAlipay_money(String alipay_money) {
         this.alipay_money = alipay_money;
+    }
+
+    public String getWallet_money() {
+        return wallet_money;
+    }
+
+    public void setWallet_money(String wallet_money) {
+        this.wallet_money = wallet_money;
+    }
+
+    public String getUnion_pay_money() {
+        return union_pay_money;
+    }
+
+    public void setUnion_pay_money(String union_pay_money) {
+        this.union_pay_money = union_pay_money;
+    }
+
+    public String getGift_card_money() {
+        return gift_card_money;
+    }
+
+    public void setGift_card_money(String gift_card_money) {
+        this.gift_card_money = gift_card_money;
     }
 
     public String getAll_refund() {

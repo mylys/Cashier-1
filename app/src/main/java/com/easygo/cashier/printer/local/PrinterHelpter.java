@@ -408,6 +408,12 @@ public class PrinterHelpter {
         esc.addText(obj.alipay + "元\n");
         esc.addText("微信：");
         esc.addText(obj.wechat + "元\n");
+        esc.addText("会员钱包：");
+        esc.addText(obj.member + "元\n");
+        esc.addText("银联：");
+        esc.addText(obj.bank_card + "元\n");
+        esc.addText("礼品卡：");
+        esc.addText(obj.gift_card + "元\n");
         esc.addText("总退款金额：");
         esc.addText(obj.all_refund + "元\n");
         esc.addText("--------------------------------\n");

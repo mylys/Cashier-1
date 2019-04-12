@@ -320,6 +320,26 @@ public class OrderHistoryDetailFragment extends BaseFragment {
             case 6:
                 payType = getResources().getString(R.string.pay_alipay);
                 break;
+            case 8:
+                payType = getResources().getString(R.string.pay_bank_card);
+                break;
+            case 9:
+                payType = getResources().getString(R.string.pay_gift_card);
+                break;
+            case 10:
+                payType = getResources().getString(R.string.pay_wechat_gift_card);
+                break;
+            case 11:
+                payType = getResources().getString(R.string.pay_alipay_gift_card);
+                break;
+            case 12:
+                payType = getResources().getString(R.string.pay_wallet_gift_card);
+                break;
+            case 13:
+                payType = getResources().getString(R.string.pay_cash_gift_card);
+                break;
+
+
         }
         double change_money = Double.parseDouble(orderHistoryInfo.getChange_money());
         double buyer_price = Double.parseDouble(orderHistoryInfo.getBuyer_pay());
@@ -342,6 +362,11 @@ public class OrderHistoryDetailFragment extends BaseFragment {
             case 1:
                 break;
             case 2://状态为已付款
+                if(getString(R.string.pay_gift_card).equals(payType)) {//礼品卡支付时
+                    tvBuyer.setVisibility(View.VISIBLE);
+                    tvBuyer.setText(getResources().getString(R.string.text_gift_card_colon) + orderHistoryInfo.getGift_card_no());
+                    return;
+                }
                 String buyer = orderHistoryInfo.getBuyer();
                 if (buyer != null) {
                     tvBuyer.setVisibility(View.VISIBLE);

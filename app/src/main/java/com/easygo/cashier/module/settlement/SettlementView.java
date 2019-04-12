@@ -423,7 +423,7 @@ public class SettlementView extends FrameLayout {
     public void setGiftCardInfo(String name, float price) {
         tvTextGiftCardColon.setText("礼品卡：(" + name + ")");
         DecimalFormat df = new DecimalFormat("0.00");
-        tvGiftCardPrice.setText("-" + df.format(price));
+        tvGiftCardPrice.setText(df.format(price));
     }
 
 

@@ -26,6 +26,8 @@ public class OrderHistorysInfo {
      * change_money : 0.00
      * refund_fee : 0.00
      * sku_count : 1
+     * gift_card_no : “10000007”
+     * gift_card_pay : "1.00"
      * pay_type : 3
      * status : 2
      * admin_name : cs2@163.com
@@ -45,6 +47,8 @@ public class OrderHistorysInfo {
     private int refund_status;
     private String refund_fee;
     private int sku_count;
+    private String gift_card_no;
+    private String gift_card_pay;
     private int pay_type;
     private int status;
     private String admin_name;
@@ -190,6 +194,22 @@ public class OrderHistorysInfo {
 
     public void setSku_count(int sku_count) {
         this.sku_count = sku_count;
+    }
+
+    public String getGift_card_no() {
+        return gift_card_no;
+    }
+
+    public void setGift_card_no(String gift_card_no) {
+        this.gift_card_no = gift_card_no;
+    }
+
+    public String getGift_card_pay() {
+        return gift_card_pay;
+    }
+
+    public void setGift_card_pay(String gift_card_pay) {
+        this.gift_card_pay = gift_card_pay;
     }
 
     public int getPay_type() {

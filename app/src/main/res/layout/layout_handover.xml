@@ -13,10 +13,10 @@
         android:layout_height="wrap_content"
         android:text="@string/text_total_sales"
         style="@style/HandoverTextStyle"
-        android:layout_marginTop="@dimen/y51"
+        android:layout_marginTop="@dimen/y70"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/left"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/tv_total_sales"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_text_total_sales"/>
     
     <View
-        android:id="@id/line1"
+        android:id="@+id/line1"
         android:layout_width="@dimen/x472"
         android:layout_height="@dimen/y1"
         android:background="@color/color_d3d3d3"
@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_total_sales" />
 
     <View
-        android:id="@id/line2"
+        android:id="@+id/line2"
         android:layout_width="@dimen/x472"
         android:layout_height="@dimen/y1"
         android:background="@color/color_d3d3d3"
@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@id/line1" />
 
     <View
-        android:id="@id/line3"
+        android:id="@+id/line3"
         android:layout_width="@dimen/x472"
         android:layout_height="@dimen/y1"
         android:background="@color/color_d3d3d3"
@@ -60,18 +60,17 @@
         app:layout_constraintTop_toBottomOf="@id/line2" />
 
     <View
-        android:id="@id/line4"
+        android:id="@+id/line4"
         android:layout_width="@dimen/x472"
         android:layout_height="@dimen/y1"
         android:background="@color/color_d3d3d3"
         android:layout_marginTop="@dimen/y70"
-        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/line1"
         app:layout_constraintEnd_toEndOf="@id/line1"
         app:layout_constraintTop_toBottomOf="@id/line3" />
 
     <View
-        android:id="@id/line5"
+        android:id="@+id/line5"
         android:layout_width="@dimen/x472"
         android:layout_height="@dimen/y1"
         android:background="@color/color_d3d3d3"
@@ -79,6 +78,27 @@
         app:layout_constraintStart_toStartOf="@id/line1"
         app:layout_constraintEnd_toEndOf="@id/line1"
         app:layout_constraintTop_toBottomOf="@id/line4" />
+
+    <View
+        android:id="@+id/line6"
+        android:layout_width="@dimen/x472"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y70"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintTop_toBottomOf="@id/line5" />
+
+
+    <View
+        android:id="@+id/line7"
+        android:layout_width="@dimen/x472"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y70"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintTop_toBottomOf="@id/line6" />
 
 
 
@@ -151,14 +171,13 @@
     <!--会员钱包-->
     <TextView
         android:id="@+id/tv_text_member"
+        style="@style/DetailTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_member_package"
-        style="@style/DetailTextStyle"
-        android:visibility="gone"
         android:layout_marginBottom="@dimen/y22"
         app:layout_constraintStart_toStartOf="@id/tv_text_cash"
-        app:layout_constraintBottom_toTopOf="@id/line4"/>
+        app:layout_constraintBottom_toTopOf="@id/line4" />
 
     <TextView
         android:id="@+id/tv_member"
@@ -166,10 +185,54 @@
         android:layout_height="wrap_content"
         android:text="0.00"
         style="@style/DetailTextStyle"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/tv_cash"
         app:layout_constraintTop_toTopOf="@id/tv_text_member"
         app:layout_constraintBottom_toBottomOf="@id/tv_text_member"/>
+
+
+
+    <!--银联-->
+    <TextView
+        android:id="@+id/tv_text_bank_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_bank_card"
+        style="@style/DetailTextStyle"
+        android:layout_marginBottom="@dimen/y22"
+        app:layout_constraintStart_toStartOf="@id/tv_text_cash"
+        app:layout_constraintBottom_toTopOf="@id/line5"/>
+
+    <TextView
+        android:id="@+id/tv_bank_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/DetailTextStyle"
+        app:layout_constraintEnd_toEndOf="@id/tv_cash"
+        app:layout_constraintTop_toTopOf="@id/tv_text_bank_card"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_bank_card"/>
+
+    <!--礼品卡-->
+    <TextView
+        android:id="@+id/tv_text_gift_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_gift_card"
+        style="@style/DetailTextStyle"
+        android:layout_marginBottom="@dimen/y22"
+        app:layout_constraintStart_toStartOf="@id/tv_text_cash"
+        app:layout_constraintBottom_toTopOf="@id/line6"/>
+
+    <TextView
+        android:id="@+id/tv_gift_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/DetailTextStyle"
+        app:layout_constraintEnd_toEndOf="@id/tv_cash"
+        app:layout_constraintTop_toTopOf="@id/tv_text_gift_card"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_gift_card"/>
+
 
 
     <!--总退款金额-->
@@ -181,7 +244,7 @@
         style="@style/DetailTextStyle"
         android:layout_marginBottom="@dimen/y22"
         app:layout_constraintStart_toStartOf="@id/tv_text_cash"
-        app:layout_constraintBottom_toTopOf="@id/line5"/>
+        app:layout_constraintBottom_toTopOf="@id/line7"/>
 
     <TextView
         android:id="@+id/tv_all_refund"

@@ -55,7 +55,7 @@ public class ConfirmDialog extends BaseDialog {
     private float mReceivable;
     private float mReceipts;
     private float mChange;
-    private int mPayWay;
+    private String mPayWay;
     private String mRefundNum = "";
 
 
@@ -75,11 +75,11 @@ public class ConfirmDialog extends BaseDialog {
         return bundle;
     }
 
-    public static Bundle getDataBundle(String refund_num, float receipts, int pay_way, boolean isVisiable, String... str) {
+    public static Bundle getDataBundle(String refund_num, float receipts, String pay_way, boolean isVisiable, String... str) {
         Bundle bundle = new Bundle();
         bundle.putString("refund_num", refund_num);
         bundle.putFloat("receipts", receipts);
-        bundle.putInt("pay_way", pay_way);
+        bundle.putString("pay_way", pay_way);
         bundle.putBoolean("visiable", isVisiable);
         bundle.putStringArray("change_text", str);
         return bundle;
@@ -107,7 +107,7 @@ public class ConfirmDialog extends BaseDialog {
             mReceivable = bundle.getFloat("receivable");
             mReceipts = bundle.getFloat("receipts");
             mChange = bundle.getFloat("change");
-            mPayWay = bundle.getInt("pay_way");
+            mPayWay = bundle.getString("pay_way");
             mRefundNum = bundle.getString("refund_num");
             visiable = bundle.getBoolean("visiable", true);
             strings = bundle.getStringArray("change_text");
@@ -128,20 +128,22 @@ public class ConfirmDialog extends BaseDialog {
             tvTitle.setText(R.string.text_confirm_refund);
         }
 
-        switch (mPayWay) {
-            case PayWayView.WAY_CASH:
-                tvPayWay.setText("(现金)");
-                break;
-            case PayWayView.WAY_ALIPAY:
-                tvPayWay.setText("(支付宝)");
-                break;
-            case PayWayView.WAY_WECHAT:
-                tvPayWay.setText("(微信)");
-                break;
-            case PayWayView.WAY_MEMBER:
-                tvPayWay.setText("(会员卡)");
-                break;
-        }
+        tvPayWay.setText("(" + mPayWay + ")");
+
+//        switch (mPayWay) {
+//            case PayWayView.WAY_CASH:
+//                tvPayWay.setText("(现金)");
+//                break;
+//            case PayWayView.WAY_ALIPAY:
+//                tvPayWay.setText("(支付宝)");
+//                break;
+//            case PayWayView.WAY_WECHAT:
+//                tvPayWay.setText("(微信)");
+//                break;
+//            case PayWayView.WAY_MEMBER:
+//                tvPayWay.setText("(会员卡)");
+//                break;
+//        }
 
     }
 

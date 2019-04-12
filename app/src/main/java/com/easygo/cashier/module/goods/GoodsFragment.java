@@ -1503,10 +1503,17 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
     @Override
     public void giftCardSuccess(GiftCardResponse result) {
+        if(result.getBalance_amount() <= 0) {
+            if(scanCodeDialog != null && scanCodeDialog.isShowing()) {
+                scanCodeDialog.setStatus(ScanCodeDialog.STATUS_GIFT_CARD_NULL);
+            }
+            return;
+        }
+
         GiftCardUtils.getInstance().setGiftCardInfo(result);
         setShow(clGiftCard);
         tvGiftCardNo.setText(result.getSn());
-        tvGiftCardPrice.setText("-" + df.format(result.getBalance_amount()));
+        tvGiftCardPrice.setText(df.format(result.getBalance_amount()));
 
         if(scanCodeDialog != null && scanCodeDialog.isShowing()) {
             scanCodeDialog.dismiss();
