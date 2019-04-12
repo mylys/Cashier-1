@@ -80,10 +80,15 @@ public class HttpAPI extends BaseHttpAPI {
                 "http://api.dev.pos.esgao.cn/", //测试
         };
 
+//        String[] array_url_offline = new String[] {
+//                "http://192.168.31.74:8071/",
+//                "http://192.168.31.74:8071/",
+//                "http://192.168.31.74:8071/",
+//        };
         String[] array_url_offline = new String[] {
-                "http://192.168.31.74:8071/",
-                "http://192.168.31.74:8071/",
-                "http://192.168.31.74:8071/",
+                "http://" + BaseConfig.environment_ip + "/",
+                "http://" + BaseConfig.environment_ip + "/",
+                "http://" + BaseConfig.environment_ip + "/",
         };
 
         return new String[][]{

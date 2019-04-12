@@ -1589,6 +1589,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     @Override
     public void giftCardSuccess(GiftCardResponse result) {
         GiftCardUtils.getInstance().setGiftCardInfo(result);
+        settlementView.setGiftCardVisiable(true);
         settlementView.setGiftCardInfo(result.getSn(), result.getBalance_amount());
 
         if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {

@@ -214,6 +214,7 @@ public class SettlementView extends FrameLayout {
                     setCouponVisiable(isCoupon);
                     setCancleCouponVisibility(false);
                     setCancleTempPromotionVisibility(false);
+                    setGiftCardVisiable(isGiftCard);
 
                     break;
                 case PayWayView.WAY_WECHAT://微信
@@ -225,6 +226,7 @@ public class SettlementView extends FrameLayout {
                     setCouponVisiable(isCoupon);
                     setCancleCouponVisibility(true);
                     setCancleTempPromotionVisibility(true);
+                    setGiftCardVisiable(isGiftCard);
 
                     break;
                 case PayWayView.WAY_ALIPAY://支付宝
@@ -236,6 +238,7 @@ public class SettlementView extends FrameLayout {
                     setCouponVisiable(isCoupon);
                     setCancleCouponVisibility(true);
                     setCancleTempPromotionVisibility(true);
+                    setGiftCardVisiable(isGiftCard);
 
                     break;
                 case PayWayView.WAY_MEMBER://会员钱包
@@ -247,6 +250,7 @@ public class SettlementView extends FrameLayout {
                     setCouponVisiable(isCoupon);
                     setCancleCouponVisibility(true);
                     setCancleTempPromotionVisibility(true);
+                    setGiftCardVisiable(isGiftCard);
 
                     break;
                 case PayWayView.WAY_BANK_CARD://银行卡
@@ -258,6 +262,7 @@ public class SettlementView extends FrameLayout {
                     setCouponVisiable(isCoupon);
                     setCancleCouponVisibility(true);
                     setCancleTempPromotionVisibility(true);
+                    setGiftCardVisiable(isGiftCard);
 
                     break;
                 case PayWayView.WAY_GIFT_CARD://礼品卡
@@ -269,6 +274,7 @@ public class SettlementView extends FrameLayout {
                     setCouponVisiable(isCoupon);
                     setCancleCouponVisibility(true);
                     setCancleTempPromotionVisibility(true);
+                    setGiftCardVisiable(isGiftCard);
 
                     break;
             }
@@ -286,7 +292,7 @@ public class SettlementView extends FrameLayout {
         this.isGiftCard = isGiftCard;
         tvTextGiftCardColon.setVisibility(isGiftCard ? View.VISIBLE : View.GONE);
         tvGiftCardPrice.setVisibility(isGiftCard ? View.VISIBLE : View.GONE);
-        line5.setVisibility(isGiftCard ? View.VISIBLE : View.GONE);
+        line4.setVisibility(isGiftCard ? View.VISIBLE : View.GONE);
     }
 
     public void setMemberVisiable(boolean visiable) {
@@ -423,7 +429,7 @@ public class SettlementView extends FrameLayout {
     public void setGiftCardInfo(String name, float price) {
         tvTextGiftCardColon.setText("礼品卡：(" + name + ")");
         DecimalFormat df = new DecimalFormat("0.00");
-        tvGiftCardPrice.setText(df.format(price));
+        tvGiftCardPrice.setText("-￥" + df.format(price));
     }
 
 
