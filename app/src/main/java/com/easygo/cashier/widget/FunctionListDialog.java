@@ -351,7 +351,7 @@ public class FunctionListDialog extends BaseDialog {
         showCenter(activity, "DIALOG_FUNCTION_LIST");
     }
 
-    @OnClick(R.id.iv_cancel)
+    @OnClick(R.id.cl_cancel)
     public void onViewClicked() {
         dismiss();
     }

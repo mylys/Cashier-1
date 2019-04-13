@@ -338,41 +338,6 @@
         app:layout_constraintTop_toBottomOf="@+id/view1" />
 
 
-    <!--微信、支付宝 扫码-->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_scan"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/x39"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/line4"
-        app:layout_constraintStart_toEndOf="@id/line2"
-        app:layout_constraintTop_toBottomOf="@id/line3">
-
-        <ImageView
-            android:id="@+id/iv_scan"
-            android:layout_width="@dimen/x52"
-            android:layout_height="@dimen/y48"
-            android:layout_marginBottom="@dimen/y5"
-            android:src="@drawable/ic_scan"
-            app:layout_constraintBottom_toTopOf="@id/tv_text_scan"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_text_scan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/y10"
-            android:gravity="center"
-            android:text="扫码收款"
-            android:textColor="@color/color_53c0b1"
-            android:textSize="@dimen/text_size_25"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/tv_already_settlement"
@@ -389,27 +354,18 @@
         app:layout_constraintStart_toEndOf="@id/line2"
         app:layout_constraintBottom_toBottomOf="@id/tv_text_receipts" />
 
-    <CheckBox
-        android:id="@+id/cb_print"
-        android:layout_width="@dimen/x225"
-        android:layout_height="@dimen/y98"
-        android:layout_marginStart="@dimen/x112"
-        android:layout_marginBottom="@dimen/y72"
-        android:background="@drawable/bg_btn_frame"
-        android:button="@null"
-        android:checked="true"
-        android:drawableStart="@drawable/check_box"
-        android:drawablePadding="@dimen/x12"
-        android:gravity="center_vertical"
-        android:paddingStart="@dimen/x31"
-        android:text="@string/text_print_paper"
-        android:textColor="@color/color_4cbbac"
-        android:textSize="@dimen/text_size_29"
-        android:textStyle="bold"
-        android:visibility="gone"
+    <Button
+        android:id="@+id/btn_cancel_gift_card"
+        android:layout_width="@dimen/x170"
+        android:layout_height="@dimen/y92"
+        android:text="@string/text_cancel_gift_card"
+        style="@style/DetailTextStyle"
+        android:layout_marginBottom="@dimen/y40"
+        android:background="@drawable/bg_keyboard_key"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/line1" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_cancel_coupon"/>
 
     <Button
         android:id="@+id/btn_cancel_coupon"
@@ -421,19 +377,21 @@
         android:layout_marginBottom="@dimen/y40"
         android:background="@drawable/bg_keyboard_key"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/line1" />
+        app:layout_constraintStart_toEndOf="@id/btn_cancel_gift_card"
+        app:layout_constraintEnd_toStartOf="@id/btn_cancel_temp_promotion"/>
 
     <Button
         android:id="@+id/btn_cancel_temp_promotion"
         android:layout_width="@dimen/x170"
         android:layout_height="@dimen/y92"
-        android:text="@string/text_cancle_temp_promotion"
+        android:text="@string/text_cancel_promotion"
         style="@style/DetailTextStyle"
         android:background="@drawable/bg_keyboard_key"
         android:layout_marginStart="@dimen/x30"
         app:layout_constraintStart_toEndOf="@id/btn_cancel_coupon"
         app:layout_constraintTop_toTopOf="@id/btn_cancel_coupon"
-        app:layout_constraintBottom_toBottomOf="@id/btn_cancel_coupon"/>
+        app:layout_constraintBottom_toBottomOf="@id/btn_cancel_coupon"
+        app:layout_constraintEnd_toStartOf="@id/btn_commit"/>
 
     <Button
         android:id="@+id/btn_commit"
@@ -445,10 +403,10 @@
         android:textSize="@dimen/text_size_29"
         android:textStyle="bold"
         android:layout_marginStart="@dimen/x30"
-        android:layout_marginEnd="@dimen/x42"
         app:layout_constraintTop_toTopOf="@id/btn_cancel_coupon"
         app:layout_constraintBottom_toBottomOf="@id/btn_cancel_coupon"
-        app:layout_constraintEnd_toEndOf="@id/line1" />
+        app:layout_constraintStart_toEndOf="@id/btn_cancel_temp_promotion"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

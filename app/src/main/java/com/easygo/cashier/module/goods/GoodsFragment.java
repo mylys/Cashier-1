@@ -571,6 +571,11 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             cancelCoupon();
         }
 
+        //判断是否有礼品卡
+        if(GiftCardUtils.getInstance().getGiftCardInfo() == null) {
+            cancelGiftCard();
+        }
+
         //判断是否有临时订单促销
         if(ActivitiesUtils.getInstance().hasTempOrderPromotion()) {
             float tempOrderPromotionMoney = ActivitiesUtils.getInstance().getTempOrderPromotionMoney();
@@ -745,6 +750,15 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
         if (real_pay < 0) {
             real_pay = 0;
+        } else {
+            if (GiftCardUtils.getInstance().getGiftCardInfo() != null) {
+                float giftCardBalance = GiftCardUtils.getInstance().getGiftCardInfo().getBalance_amount();
+                if(giftCardBalance >= real_pay) {
+                    real_pay = 0f;
+                } else {
+                    real_pay -= giftCardBalance;
+                }
+            }
         }
 
         tvTotalMoney.setText("￥" + df.format(price));
@@ -994,6 +1008,11 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
                 break;
             case R.id.btn_gift_card://礼品卡
+//                if(true) {
+//                    mPresenter.gift_card("LP2019041275725166");
+//                    return;
+//                }
+
                 showScanCodeDialog();
                 if(scanCodeDialog != null) {
                     scanCodeDialog.setOnScanCodeListener(new ScanCodeDialog.OnScanCodeListener() {
@@ -1085,6 +1104,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 break;
             case R.id.iv_cancel_gift_card://取消礼品卡
                 cancelGiftCard();
+                refreshPrice(mTotalMoney, mGoodsCount, mCoupon);
                 break;
             case R.id.btn_quick_choose://快速选择
                 ARouter.getInstance().build(ModulePath.quick).navigation();
@@ -1509,15 +1529,16 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             }
             return;
         }
+        if(scanCodeDialog != null && scanCodeDialog.isShowing()) {
+            scanCodeDialog.dismiss();
+        }
 
         GiftCardUtils.getInstance().setGiftCardInfo(result);
         setShow(clGiftCard);
         tvGiftCardNo.setText(result.getSn());
         tvGiftCardPrice.setText(df.format(result.getBalance_amount()));
 
-        if(scanCodeDialog != null && scanCodeDialog.isShowing()) {
-            scanCodeDialog.dismiss();
-        }
+        computePrice(mTotalMoney, mGoodsCount, mCoupon);
     }
 
     @Override
@@ -1713,6 +1734,15 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 DecimalFormat df = new DecimalFormat("0.0");
                 tvCouponPrice.setText(df.format((100 - offer_value) / 10f) + "折");
             }
+        }
+
+        //更新礼品卡信息
+        GiftCardResponse giftCardInfo = GiftCardUtils.getInstance().getGiftCardInfo();
+        if(giftCardInfo != null) {
+            setShow(clGiftCard);
+            tvGiftCardNo.setText(giftCardInfo.getSn());
+            tvGiftCardPrice.setText(df.format(giftCardInfo.getBalance_amount()));
+
         }
 
     }

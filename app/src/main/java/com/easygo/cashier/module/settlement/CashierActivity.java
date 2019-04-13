@@ -97,7 +97,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     String admin_name;
     @Autowired(name = "goods_count")
     int mGoodsCount;
-    /**优惠金额（包含优惠券优惠金额）*/
+    /**优惠金额（不包含优惠券优惠金额）*/
     @Autowired(name = "coupon")
     float mCoupon;
     /**优惠券优惠金额*/
@@ -114,6 +114,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     Serializable mGoodsDataSerializable;
 
     float mTempOrderPromotionMoney;
+    float mGiftCardMoney;
+    /**是否纯礼品卡支付*/
+    boolean mOnlyGiftCardPay;
 
     /**
      * 商品数据
@@ -198,8 +201,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     @Override
     protected void init() {
         ARouter.getInstance().inject(this);
+        float payMoney = getPayMoney();
 
-        if(getPayMoney() <= 0 || !Configs.isOnlineMode()) {//支付金额为 小于等于0时 只能现金支付
+        if(payMoney <= 0 || !Configs.isOnlineMode()) {//支付金额为 小于等于0时 只能现金支付
             payWayView.setPayWayShow(new int[]{PayWayView.WAY_CASH});
         } else {
             payWayView.setPayWayShow(MemberUtils.isMember ?
@@ -209,14 +213,12 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                             PayWayView.WAY_MEMBER,
                             PayWayView.WAY_CASH,
                             PayWayView.WAY_BANK_CARD,
-                            PayWayView.WAY_GIFT_CARD,
                     }
                     : new int[] {
                             PayWayView.WAY_ALIPAY,
                             PayWayView.WAY_WECHAT,
                             PayWayView.WAY_CASH,
                             PayWayView.WAY_BANK_CARD,
-                            PayWayView.WAY_GIFT_CARD,
                     }
             );
         }
@@ -225,36 +227,19 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
         clTitle.setCashierAccount(admin_name);
 
-        refreshRealPay();
-        refreshSettlementView();
-
         if(mCouponMoney != 0) {
             showCouponInfo(CouponUtils.getInstance().getCouponInfo().getName(), mCouponMoney);
         }
 
-        if(GiftCardUtils.getInstance().getGiftCardInfo() != null) {
-            settlementView.setGiftCardVisiable(true);
-            settlementView.setGiftCardInfo(GiftCardUtils.getInstance().getGiftCardInfo().getSn(),
-                    GiftCardUtils.getInstance().getGiftCardInfo().getBalance_amount());
-        }
+        refreshGiftCardMoney();
+        refreshRealPay();
+        refreshSettlementView();
+
 
         mGoodsData = (List<GoodsEntity<GoodsResponse>>) this.mGoodsDataSerializable;
 
         //扫码、打印、提交 按钮监听
         settlementView.setOnSettlementClickListener(new SettlementView.OnClickListener() {
-
-            @Override
-            public void onScanClicked() {
-                showScanCodeDialog();
-            }
-
-            @Override
-            public void onPrintClicked(boolean isChecked) {
-                if (!isChecked) {
-                    showToast("交易完成后将不打印小票");
-                }
-//                print();
-            }
 
             @Override
             public void onCommitOrderClicked() {
@@ -286,6 +271,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 cancelTempPromotion();
             }
 
+            @Override
+            public void onCancelGiftCard() {
+                cancelGiftCard();
+            }
+
         });
 
         //关联EditText
@@ -309,6 +299,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
                 if (TextUtils.isEmpty(text)) {
                     mChange = 0;
+                    refreshGiftCardMoney();
                     refreshRealPay();
                     //刷新价格
                     refreshSettlementView();
@@ -369,18 +360,17 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         });
 
         //支付金额大于0时
-        if(getPayMoney() > 0 && Configs.isOnlineMode()) {
+        if(payMoney > 0 && Configs.isOnlineMode()) {
             //登录会员时 默认选择会员钱包支付
             if(MemberUtils.isMember) {
                 payWayView.performSelect(PayWayView.WAY_MEMBER);
-            } else if(GiftCardUtils.getInstance().getGiftCardInfo() != null) {
-                float balance_amount = GiftCardUtils.getInstance().getGiftCardInfo().getBalance_amount();
-                if (balance_amount >= getPayMoney()) {
-                    payWayView.performSelect(PayWayView.WAY_GIFT_CARD);
-                } else {
-                    payWayView.performSelect(PayWayView.WAY_ALIPAY);
-                }
-            } else {
+            }
+            //纯礼品卡支付时
+            else if(mOnlyGiftCardPay) {
+                payWayView.performSelect(PayWayView.WAY_CASH);
+            }
+            //其他情况
+            else {
                 payWayView.performSelect(PayWayView.WAY_ALIPAY);
             }
         } else {
@@ -408,15 +398,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 //        }
         //会员钱包支付时
         if (MemberUtils.isMember && mPayWay == PayWayView.WAY_MEMBER) {
-            if (getReceivableMoney() > Float.parseFloat(mBalance.substring(1,mBalance.length()))) {
+            if (getReceivableMoney() - mGiftCardMoney > Float.parseFloat(mBalance.substring(1,mBalance.length()))) {
                 showToast("会员钱包余额不足，不能进行支付");
                 return;
             }
         }
-        //礼品卡支付时
-        else if(GiftCardUtils.getInstance().getGiftCardInfo() != null && mPayWay == PayWayView.WAY_GIFT_CARD) {
-            if (getReceivableMoney() > GiftCardUtils.getInstance().getGiftCardInfo().getBalance_amount()) {
-                showToast("礼品卡余额不足，请选择其他方式进行混合支付");
+        if(mPayWay == PayWayView.WAY_BANK_CARD) {
+            if(!mOnlyGiftCardPay) {
+                showToast("银联不能与礼品卡混合支付，请选择其他支付方式");
                 return;
             }
         }
@@ -430,32 +419,54 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         //刷新找零
         refreshChangeMoney();
         settlementView.setData(mTotalMoney, mCoupon,
-                mCouponMoney, mTempOrderPromotionMoney,
+                mCouponMoney, mGiftCardMoney, mTempOrderPromotionMoney,
                 mRealPay, mChange, mBalance);
     }
 
 
     /**
-     * 刷新实收       订单总额-优惠-优惠券优惠 - 临时整单折扣 = 实收 - 找零
+     * 刷新实收       订单总额-优惠-优惠券优惠 -礼品卡- 临时整单折扣 = 实收 - 找零
      */
     private void refreshRealPay() {
-        mRealPay = getPayMoney() - mTempOrderPromotionMoney + mChange;
+        mRealPay = getPayMoney() - mGiftCardMoney - mTempOrderPromotionMoney + mChange;
         if(mRealPay < 0) {
             mRealPay = 0;
         }
     }
 
     /**
-     * 刷新找零      找零 = 实收 - （订单总额-优惠-优惠券优惠 - 临时整单折扣）
+     * 刷新找零      找零 = 实收 - （订单总额-优惠-优惠券优惠 -礼品卡 - 临时整单折扣）
      */
     private void refreshChangeMoney() {
-        float pay = getPayMoney() - mTempOrderPromotionMoney;
+        float pay = getPayMoney() - mGiftCardMoney - mTempOrderPromotionMoney;
         if(pay < 0) {
             pay = 0;
         }
         mChange = mRealPay - pay;
 
         etMoney.setSelected(mChange < 0);
+    }
+
+    /**
+     * 刷新礼品卡金额
+     */
+    private void refreshGiftCardMoney() {
+        if(GiftCardUtils.getInstance().getGiftCardInfo() == null) {
+            return;
+        }
+        float giftCardBalance = GiftCardUtils.getInstance().getGiftCardInfo().getBalance_amount();
+        float payMoney = getPayMoney() - mTempOrderPromotionMoney;
+        if(giftCardBalance > payMoney) {
+            mGiftCardMoney = payMoney;
+            mOnlyGiftCardPay = true;
+        } else {
+            mGiftCardMoney = giftCardBalance;
+            mOnlyGiftCardPay = false;
+        }
+
+        settlementView.setGiftCardVisiable(true);
+        settlementView.setGiftCardInfo(GiftCardUtils.getInstance().getGiftCardInfo().getSn(),
+                mGiftCardMoney);
     }
 
     public void print() {
@@ -499,7 +510,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 price = Float.valueOf(data.getPrice());
                 discount = Float.valueOf(data.getDiscount_price());
                 price_int = Integer.valueOf(df.format(price * 100));
-//                goodsListBean.setCount_price(count * price_int);
                 goodsListBean.setCount_price(Integer.valueOf(df.format((count * price - discount) * 100)));
 
                 goodsListBean.setDiscount(Integer.valueOf(df.format(discount)));
@@ -574,14 +584,12 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             case PayWayView.WAY_MEMBER:
                 obj.pay_type = "会员钱包支付";
                 break;
-            case PayWayView.WAY_GIFT_CARD:
-                obj.pay_type = "礼品卡支付";
-                break;
         }
         obj.count = String.valueOf(mGoodsCount);
         obj.total_money = mTotalMoney;
         obj.discount = mCoupon + mCouponMoney + mTempOrderPromotionMoney;
         obj.real_pay = mTotalMoney - mCoupon - mCouponMoney - mTempOrderPromotionMoney;
+        obj.gift_card_money = mGiftCardMoney;
         obj.change = mChange;
 
         PrinterUtils.getInstance().print(PrinterHelpter.cashier(obj));
@@ -645,7 +653,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
     }
 
     /**
-     * 应用临时整单折扣之前的金额     （订单总额-优惠-优惠券优惠） =  应收 + 临时整单折扣
+     * 首页的收银金额，应用临时整单折扣之前的金额     （订单总额-优惠-优惠券优惠） =  应收 + 临时整单折扣
      */
     private float getPayMoney() {
         float money = mTotalMoney - mCoupon - mCouponMoney;
@@ -796,6 +804,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
                 break;
             case R.id.btn_search_gift_card://礼品卡
+                if(GiftCardUtils.getInstance().getGiftCardInfo() != null) {
+                    showToast("已设置礼品卡");
+                    return;
+                }
                 showGiftCardDialog();
 
                 break;
@@ -864,6 +876,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         }
         GiftCardUtils.getInstance().setGiftCardInfo(null);
         settlementView.setGiftCardVisiable(false);
+
+        mGiftCardMoney = 0f;
+        mOnlyGiftCardPay = false;
+        refreshRealPay();
+        refreshSettlementView();
     }
 
     /**
@@ -932,6 +949,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             settlementView.setCouponVisiable(true);
             settlementView.setCouponInfo(name, couponMoney);
 
+            refreshGiftCardMoney();
             refreshRealPay();
             refreshSettlementView();
 
@@ -1098,13 +1116,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         GiftCardResponse giftCardInfo = GiftCardUtils.getInstance().getGiftCardInfo();
         if(giftCardInfo != null) {
             requestBody1.setGift_card_no(giftCardInfo.getSn());
-            float balance_amount = giftCardInfo.getBalance_amount();
-
-            if(balance_amount >= receivableMoney) {//礼品卡余额大于 应收
-                requestBody1.setGift_card_pay(Integer.valueOf(df.format(receivableMoney * 100)));
-            } else {
-                requestBody1.setGift_card_pay(Integer.valueOf(df.format(balance_amount * 100)));
-            }
+            requestBody1.setGift_card_pay(Integer.valueOf(df.format(mGiftCardMoney * 100)));
         }
         //会员
         if(MemberUtils.isMember && MemberUtils.memberInfo != null) {
@@ -1116,34 +1128,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         float all_activity_discount = 0f;
         float all_member_discount = 0f;
 
-//        //促销
-//        if (ActivitiesUtils.getInstance().hasGoodsPromotion()) {
-//            List<CreateOrderRequestBody.ActivitiesBean> activitiesBeans = new ArrayList<>();
-//
-//            List<BaseGoodsPromotion> promotions = ActivitiesUtils.getInstance().getCurrentGoodsPromotions();
-//
-//            int size = promotions.size();
-//            for (int i = 0; i < size; i++) {
-//                BaseGoodsPromotion promotion = promotions.get(i);
-//
-//                CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
-//
-//                activitiesBean.setId(promotion.getId());
-//                activitiesBean.setType("goods");
-//                PromotionGoods promotionGoods = promotion.getPromotionGoods();
-//                List<PromotionGoods.GoodsBean> goodsBeans = promotionGoods.getGoodsBeans();
-//                int goods_size = goodsBeans.size();
-//
-//                float all_promotion_money = 0f;
-//                for (int j = 0; j < goods_size; j++) {
-//                    all_promotion_money += goodsBeans.get(j).getPromotion_money();
-//                }
-//                activitiesBean.setDiscount(Integer.valueOf(df.format(all_promotion_money*100)));
-//                activitiesBeans.add(activitiesBean);
-//            }
-//            requestBody1.setActivities(activitiesBeans);
-//        }
-//        else
         //店铺促销
         List<CreateOrderRequestBody.ActivitiesBean> activitiesBeans = new ArrayList<>();
         requestBody1.setActivities(activitiesBeans);
@@ -1349,6 +1333,11 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
      */
     private void onAfterCreateOrder() {
         mDuringPay = true;
+
+        if(mOnlyGiftCardPay) {//纯礼品卡支付
+            mPresenter.giftCardPay(Configs.order_no);
+            return;
+        }
         switch (mPayWay) {
             case PayWayView.WAY_CASH:
 
@@ -1366,10 +1355,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 break;
             case PayWayView.WAY_MEMBER:
                 showScanCodeDialog();
-                break;
-            case PayWayView.WAY_GIFT_CARD://礼品卡支付
-                mPresenter.giftCardPay(Configs.order_no);
-
                 break;
             case PayWayView.WAY_BANK_CARD:
                 showBankcardDialog();
@@ -1408,10 +1393,10 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         //设置为已收款
         settlementView.setAlreadySettlement();
 
-        if (settlementView.needPrint()) {
-            print();
-            printLocal();
-        }
+        //打印小票
+        print();
+        printLocal();
+
         if (mPayWay == PayWayView.WAY_CASH) {//现金支付时
             //弹出钱箱
             mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, PrintHelper.pop_till);
@@ -1588,9 +1573,18 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
     @Override
     public void giftCardSuccess(GiftCardResponse result) {
+        float giftCardBalance = result.getBalance_amount();
+        if (giftCardBalance <= 0) {
+            if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
+                mScanCodeDialog.setStatus(ScanCodeDialog.STATUS_GIFT_CARD_NULL);
+            }
+            return;
+        }
         GiftCardUtils.getInstance().setGiftCardInfo(result);
-        settlementView.setGiftCardVisiable(true);
-        settlementView.setGiftCardInfo(result.getSn(), result.getBalance_amount());
+        refreshGiftCardMoney();
+        refreshRealPay();
+        refreshSettlementView();
+
 
         if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
             mScanCodeDialog.dismiss();

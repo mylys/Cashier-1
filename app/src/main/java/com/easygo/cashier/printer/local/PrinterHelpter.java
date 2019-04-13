@@ -143,6 +143,8 @@ public class PrinterHelpter {
         esc.addText(df.format(obj.real_pay) + "元\n");
         esc.addText("支付方式：");
         esc.addText(obj.pay_type + "\n");
+        esc.addText("礼品卡：");
+        esc.addText(df.format(obj.gift_card_money) + "元\n");
         esc.addText("实收：");
         esc.addText(df.format(obj.real_pay + obj.change) + "元\n");
         esc.addText("找零：");

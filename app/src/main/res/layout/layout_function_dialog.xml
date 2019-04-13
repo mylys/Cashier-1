@@ -40,7 +40,8 @@
         android:layout_height="@dimen/y84"
         app:layout_constraintBottom_toBottomOf="@id/tv_function_list"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_function_list">
+        app:layout_constraintTop_toTopOf="@id/tv_function_list"
+        android:background="@drawable/bg_btn_press">
 
         <ImageView
             android:id="@+id/iv_cancel"

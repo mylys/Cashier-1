@@ -15,6 +15,7 @@ public class CashierPrintObj {
     public String count;
     public float total_money;
     public float discount;
+    public float gift_card_money;
     public float real_pay;
     public float change;
     public String pay_type;

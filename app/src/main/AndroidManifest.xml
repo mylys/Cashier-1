@@ -43,7 +43,8 @@
             <!--</intent-filter>-->
         </activity>
         <activity android:name=".base.BaseAppActivity" />
-        <activity android:name=".module.settlement.CashierActivity" />
+        <activity android:name=".module.settlement.CashierActivity"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".module.order_history.OrderHistoryActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />

@@ -58,6 +58,8 @@ public class SettlementView extends FrameLayout {
     TextView tvCancelTempPromotion;
     @BindView(R.id.btn_cancel_temp_promotion)
     Button btnCancelTempPromotion;
+    @BindView(R.id.btn_cancel_gift_card)
+    Button btnCancelGiftCard;
     @BindView(R.id.tv_coupon)
     TextView tvCoupon;
     @BindView(R.id.tv_text_receipts_way)
@@ -82,12 +84,8 @@ public class SettlementView extends FrameLayout {
     TextView tvTextChange;
     @BindView(R.id.tv_change)
     TextView tvChange;
-    @BindView(R.id.cl_scan)
-    ConstraintLayout clScan;
     @BindView(R.id.tv_already_settlement)
     TextView tvAlreadySettlement;
-    @BindView(R.id.cb_print)
-    CheckBox cbPrint;
     @BindView(R.id.btn_commit)
     Button btnCommit;
     private Unbinder unbinder;
@@ -120,27 +118,10 @@ public class SettlementView extends FrameLayout {
 
 
         tvAlreadySettlement.setVisibility(View.GONE);
-        clScan.setVisibility(View.GONE);
 
 
         setPayType(false, PayWayView.WAY_CASH);
 
-        clScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener != null) {
-                    mListener.onScanClicked();
-                }
-            }
-        });
-        cbPrint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (mListener != null) {
-                    mListener.onPrintClicked(isChecked);
-                }
-            }
-        });
         btnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,6 +146,14 @@ public class SettlementView extends FrameLayout {
                 }
             }
         });
+        btnCancelGiftCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mListener != null) {
+                    mListener.onCancelGiftCard();
+                }
+            }
+        });
     }
 
 
@@ -180,7 +169,6 @@ public class SettlementView extends FrameLayout {
         if (isCombinePay) {
             tvReceiptsWay.setText(R.string.text_cash);
             showAlreadySettlement(false);
-            setScanVisibility(false);
             setChangeVisibilty(true);
 
             if (payType != PayWayView.WAY_CASH) {
@@ -208,72 +196,72 @@ public class SettlementView extends FrameLayout {
                 case PayWayView.WAY_CASH://现金
                     tvReceiptsWay.setText(R.string.text_cash);
                     showAlreadySettlement(false);
-                    setScanVisibility(false);
                     setChangeVisibilty(true);
                     setMemberVisiable(false);
                     setCouponVisiable(isCoupon);
                     setCancleCouponVisibility(false);
                     setCancleTempPromotionVisibility(false);
+                    setCancleGiftCardVisibility(false);
                     setGiftCardVisiable(isGiftCard);
 
                     break;
                 case PayWayView.WAY_WECHAT://微信
                     tvReceiptsWay.setText(R.string.text_wechat);
                     showAlreadySettlement(false);
-                    setScanVisibility(false);
                     setChangeVisibilty(false);
                     setMemberVisiable(false);
                     setCouponVisiable(isCoupon);
                     setCancleCouponVisibility(true);
                     setCancleTempPromotionVisibility(true);
+                    setCancleGiftCardVisibility(true);
                     setGiftCardVisiable(isGiftCard);
 
                     break;
                 case PayWayView.WAY_ALIPAY://支付宝
                     tvReceiptsWay.setText(R.string.text_alipay);
                     showAlreadySettlement(false);
-                    setScanVisibility(false);
                     setChangeVisibilty(false);
                     setMemberVisiable(false);
                     setCouponVisiable(isCoupon);
                     setCancleCouponVisibility(true);
                     setCancleTempPromotionVisibility(true);
+                    setCancleGiftCardVisibility(true);
                     setGiftCardVisiable(isGiftCard);
 
                     break;
                 case PayWayView.WAY_MEMBER://会员钱包
                     tvReceiptsWay.setText(R.string.text_member_card_wallet);
                     showAlreadySettlement(false);
-                    setScanVisibility(false);
                     setChangeVisibilty(false);
                     setMemberVisiable(true);
                     setCouponVisiable(isCoupon);
                     setCancleCouponVisibility(true);
                     setCancleTempPromotionVisibility(true);
+                    setCancleGiftCardVisibility(true);
                     setGiftCardVisiable(isGiftCard);
 
                     break;
                 case PayWayView.WAY_BANK_CARD://银行卡
                     tvReceiptsWay.setText(R.string.text_bank_card);
                     showAlreadySettlement(false);
-                    setScanVisibility(false);
                     setChangeVisibilty(false);
                     setMemberVisiable(false);
                     setCouponVisiable(isCoupon);
                     setCancleCouponVisibility(true);
                     setCancleTempPromotionVisibility(true);
+                    setCancleGiftCardVisibility(true);
                     setGiftCardVisiable(isGiftCard);
 
                     break;
                 case PayWayView.WAY_GIFT_CARD://礼品卡
                     tvReceiptsWay.setText(R.string.text_gift_card);
                     showAlreadySettlement(false);
-                    setScanVisibility(false);
                     setChangeVisibilty(false);
                     setMemberVisiable(false);
                     setCouponVisiable(isCoupon);
                     setCancleCouponVisibility(true);
                     setCancleTempPromotionVisibility(true);
+                    setCancleGiftCardVisibility(true);
                     setGiftCardVisiable(isGiftCard);
 
                     break;
@@ -308,10 +296,6 @@ public class SettlementView extends FrameLayout {
         tvChange.setVisibility(visibilty ? View.VISIBLE : View.GONE);
     }
 
-    public void setScanVisibility(boolean visibilty) {
-        clScan.setVisibility(visibilty ? View.VISIBLE : View.GONE);
-    }
-
     public void showAlreadySettlement(boolean visibilty) {
         tvAlreadySettlement.setVisibility(visibilty ? View.VISIBLE : View.GONE);
     }
@@ -320,7 +304,6 @@ public class SettlementView extends FrameLayout {
         mAlreadySettlement = true;
 
         tvAlreadySettlement.setVisibility(VISIBLE);
-        clScan.setVisibility(GONE);
     }
 
     public boolean hasAlreadySettlement() {
@@ -329,10 +312,11 @@ public class SettlementView extends FrameLayout {
 
 
     public void setData(float receivable, float coupon, float receipts, float change,String balance) {
-        setData(receivable, coupon, 0, 0, receipts, change, balance);
+        setData(receivable, coupon, 0, 0, 0,receipts, change, balance);
     }
 
-    public void setData(float receivable, float coupon, float couponMoney, float tempOrderPromotionMoney,
+    public void setData(float receivable, float coupon, float couponMoney,
+                        float giftCardMoney, float tempOrderPromotionMoney,
                         float receipts, float change,String balance) {
         mReceivable = receivable;
         mCoupon = coupon;
@@ -344,10 +328,10 @@ public class SettlementView extends FrameLayout {
 
         String sign = "￥";
 
-        String after = sign + df.format(receivable-coupon-couponMoney-tempOrderPromotionMoney);
+        String after = sign + df.format(receivable-coupon-couponMoney-giftCardMoney-tempOrderPromotionMoney);
         String before = sign + df.format(receivable);
 
-        if(coupon == 0 && couponMoney == 0 && tempOrderPromotionMoney == 0) {
+        if(coupon == 0 && couponMoney == 0 && giftCardMoney  == 0 && tempOrderPromotionMoney == 0) {
             tvRealReceivable.setVisibility(GONE);
             tvReceivable.setText(sign + df.format(mReceivable));
         } else {
@@ -420,7 +404,7 @@ public class SettlementView extends FrameLayout {
     public void setCouponInfo(String name, float coupon_discount) {
         tvTextCouponColon.setText("优惠券：(" + name + ")");
         DecimalFormat df = new DecimalFormat("0.00");
-        tvCouponColonPrice.setText("-" + df.format(coupon_discount));
+        tvCouponColonPrice.setText("-￥" + df.format(coupon_discount));
     }
 
     /**
@@ -440,9 +424,6 @@ public class SettlementView extends FrameLayout {
         this.mListener = listener;
     }
 
-    public boolean needPrint() {
-        return cbPrint.isChecked();
-    }
 
     public void setBottomButtonVisibility(boolean needShowKeyboard) {
 
@@ -458,15 +439,16 @@ public class SettlementView extends FrameLayout {
         btnCancelTempPromotion.setVisibility(visibility? VISIBLE: GONE);
     }
 
+    public void setCancleGiftCardVisibility(boolean visibility) {
+        btnCancelGiftCard.setVisibility(visibility? VISIBLE: GONE);
+    }
+
     public interface OnClickListener {
-        void onScanClicked();
-
-        void onPrintClicked(boolean isChecked);
-
         void onCommitOrderClicked();
 
         void onCancelCoupon();
         void onCancelTempPromotion();
+        void onCancelGiftCard();
     }
 
 
