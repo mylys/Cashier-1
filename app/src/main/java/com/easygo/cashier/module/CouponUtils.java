@@ -189,9 +189,9 @@ public class CouponUtils {
                 coupon_discount = offer_value;
             } else if(offer_type == 2) {//折扣
                 if(goods_need_compute) {//针对商品
-                    coupon_discount = promotionGoods.getTotal_money() * (offer_type / 100f);
+                    coupon_discount = promotionGoods.getTotal_money() * (offer_value / 100f);
                 } else if(shop_need_compute) {//针对店铺
-                    coupon_discount = price * (offer_type / 100f);
+                    coupon_discount = price * (offer_value / 100f);
                 }
             }
 

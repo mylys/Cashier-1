@@ -340,23 +340,23 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 countTextView.setOnCountListener(new CountTextView.OnCountListener() {
                     @Override
                     public void onCountChanged(int count) {
-//                        if (mListener != null) {
-////                            mListener.onCountChanged(position, count);
-////                        }
 
                         if (count == 0) {
                             //清除当前商品
-                            if (TextUtils.isEmpty(barcode)) {
-                                //无码商品
-                                barcodeData.remove(price);
-                                data.remove(price);
-                            } else {
-                                barcodeData.remove(barcode);
-                                data.remove(barcode);
-                            }
-                            mData.remove(item);
-                            limit.remove(barcode);
-                            notifyItemRemoved(position);
+//                            if (TextUtils.isEmpty(barcode)) {
+//                                //无码商品
+//                                barcodeData.remove(price);
+//                                data.remove(price);
+//                            } else {
+//                                barcodeData.remove(barcode);
+//                                data.remove(barcode);
+//                            }
+//                            mData.remove(item);
+//                            limit.remove(barcode);
+//                            notifyItemRemoved(position);
+                            remove(position);
+                            return;
+
                         } else {
                             float on_sale_count = good.getOn_sale_count();
                             if (good.getIs_inventory_limit() == 1 && helper.getItemViewType() == GoodsEntity.TYPE_GOODS
@@ -382,9 +382,6 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
                             item.setCount(count);
                             notifyItemChanged(position);
-                        }
-                        if (mListener != null) {
-                            mListener.onCountChanged(position, count);
                         }
                         //刷新价格
                         refreshPrice();
@@ -483,6 +480,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                         }
 
                         remove(position);
+                        limit.remove(barcode);
                         refreshPrice();
                     }
                 });
@@ -567,6 +565,11 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         if(position >= mData.size()) {
             return;
         }
+
+        if (mListener != null) {
+            mListener.onItemRemoved(position);
+        }
+
         GoodsEntity<GoodsResponse> goodsEntity = mData.get(position);
         GoodsResponse data = goodsEntity.getData();
 

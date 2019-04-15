@@ -84,7 +84,7 @@ public class HandoverResponse {
     }
 
     public String getWallet_money() {
-        return wallet_money;
+        return TextUtils.isEmpty(wallet_money)? "0.00": wallet_money;
     }
 
     public void setWallet_money(String wallet_money) {
@@ -92,7 +92,7 @@ public class HandoverResponse {
     }
 
     public String getUnion_pay_money() {
-        return union_pay_money;
+        return TextUtils.isEmpty(union_pay_money)? "0.00": union_pay_money;
     }
 
     public void setUnion_pay_money(String union_pay_money) {
@@ -100,7 +100,7 @@ public class HandoverResponse {
     }
 
     public String getGift_card_money() {
-        return gift_card_money;
+        return TextUtils.isEmpty(gift_card_money)? "0.00": gift_card_money;
     }
 
     public void setGift_card_money(String gift_card_money) {

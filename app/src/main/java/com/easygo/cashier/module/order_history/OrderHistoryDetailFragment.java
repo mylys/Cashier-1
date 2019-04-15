@@ -1,5 +1,6 @@
 package com.easygo.cashier.module.order_history;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -148,6 +149,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                     bundle.putParcelableArrayList("data", data);
                     bundle.putParcelableArrayList("activities", (ArrayList<OrderHistorysInfo.ActivitiesBean>) mOrderHistorysInfo.getActivities());
                     bundle.putString("pay_type", payType);
+                    bundle.putFloat("gift_card_pay", mOrderHistorysInfo.getGift_card_pay());
                     bundle.putInt("total_price", total_price);
                     bundle.putFloat("real_pay", real_pay);
                     bundle.putString("order_number", order_number);
@@ -301,6 +303,17 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         total_price = Integer.parseInt(orderHistoryInfo.getTotal_money().replace(".", ""));
         real_pay = Float.valueOf(orderHistoryInfo.getReal_pay());
 
+        float gift_card_pay = orderHistoryInfo.getGift_card_pay();
+        String pay_text = "";
+        Resources res = getResources();
+        double change_money = Double.parseDouble(orderHistoryInfo.getChange_money());
+        double buyer_price = Double.parseDouble(orderHistoryInfo.getBuyer_pay());
+        double total_price = buyer_price + change_money;
+        String total_buyer_price = df.format(total_price);
+        String change_price = "0.00";
+        if (change_money != 0) {
+            change_price = df.format(change_money);
+        }
         switch (orderHistoryInfo.getPay_type()) {
             case 1:
                 payType = getResources().getString(R.string.pay_wechat);
@@ -325,30 +338,41 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 break;
             case 9:
                 payType = getResources().getString(R.string.pay_gift_card);
+                pay_text = res.getString(R.string.pay_gift_card) + "：￥" + df.format(gift_card_pay);
                 break;
             case 10:
                 payType = getResources().getString(R.string.pay_wechat_gift_card);
+                pay_text = res.getString(R.string.pay_wechat) + "：￥" + df.format(real_pay - gift_card_pay)
+                        + " + "
+                        + res.getString(R.string.pay_gift_card) + "：￥" + df.format(gift_card_pay);
                 break;
             case 11:
                 payType = getResources().getString(R.string.pay_alipay_gift_card);
+                pay_text = res.getString(R.string.pay_alipay) + "：￥" + df.format(real_pay - gift_card_pay)
+                        + " + "
+                        + res.getString(R.string.pay_gift_card) + "：￥" + df.format(gift_card_pay);
                 break;
             case 12:
                 payType = getResources().getString(R.string.pay_wallet_gift_card);
+                pay_text = res.getString(R.string.pay_wallet) + "：￥" + df.format(real_pay - gift_card_pay)
+                        + " + "
+                        + res.getString(R.string.pay_gift_card) + "：￥" + df.format(gift_card_pay);
                 break;
             case 13:
                 payType = getResources().getString(R.string.pay_cash_gift_card);
+                pay_text = res.getString(R.string.pay_cash) + "：￥" + df.format(total_price - gift_card_pay)
+                        + " + "
+                        + res.getString(R.string.pay_gift_card) + "：￥" + df.format(gift_card_pay);
                 break;
 
 
         }
-        double change_money = Double.parseDouble(orderHistoryInfo.getChange_money());
-        double buyer_price = Double.parseDouble(orderHistoryInfo.getBuyer_pay());
-        String total_buyer_price = df.format(buyer_price + change_money);
-        String change_price = "0.00";
-        if (change_money != 0) {
-            change_price = df.format(change_money);
+
+        if(gift_card_pay > 0) {
+            tvReceiptsText.setText(pay_text + " - 找零：￥" + change_price + " = ");
+        } else {
+            tvReceiptsText.setText(payType + "：￥" + total_buyer_price + " - 找零：￥" + change_price + " = ");
         }
-        tvReceiptsText.setText(payType + getResources().getString(R.string.text_pay) + "：￥" + total_buyer_price + " - 找零：￥" + change_price + " = ");
 
         /*付款*/
         tvBuyer.setVisibility(View.INVISIBLE);

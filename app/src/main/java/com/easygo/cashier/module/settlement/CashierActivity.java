@@ -751,6 +751,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 finish();
                 break;
             case R.id.btn_coupon://优惠券
+                if(getReceivableMoney() <= 0) {
+                    return;
+                }
                 if(ActivitiesUtils.getInstance().hasShopPromotion() || ActivitiesUtils.getInstance().hasGoodsPromotion()) {
                     if(!ActivitiesUtils.getInstance().isWith_coupon()) {
                         showToast("促销不可与优惠券共用");
@@ -777,6 +780,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                 if(ActivitiesUtils.getInstance().getCurrentTempOrderPromotion() != null) {
                     showToast("已设置折扣");
                     return;
+                } else if(getReceivableMoney() <= 0) {
+                    return;
                 }
 
                 final TempPromotionDialog tempPromotionDialog = new TempPromotionDialog();
@@ -785,6 +790,12 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                     @Override
                     public void onClick(List<GoodsEntity<GoodsResponse>> selectGoods, int mode, boolean isFreeOrder, float value) {
                         tempPromotionDialog.dismiss();
+
+                        if(isFreeOrder) {//免单时取消优惠券和礼品卡
+                            cancelCoupon();
+                            cancelGiftCard();
+                        }
+
                         ActivitiesUtils.getInstance().createTempOrderPromotion(mode, isFreeOrder, value);
 
                         mTempOrderPromotionMoney = ActivitiesUtils.getInstance().getTempOrderPromotionMoney(mGoodsData, getPayMoney());
@@ -806,6 +817,8 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             case R.id.btn_search_gift_card://礼品卡
                 if(GiftCardUtils.getInstance().getGiftCardInfo() != null) {
                     showToast("已设置礼品卡");
+                    return;
+                } else if(getReceivableMoney() <= 0) {
                     return;
                 }
                 showGiftCardDialog();
@@ -831,14 +844,13 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             return;
         }
 
+        //置空
+        CouponUtils.getInstance().setCouponInfo(null);
         settlementView.setCouponVisiable(false);
 
         mCouponMoney = 0f;
-        refreshRealPay();
-        refreshSettlementView();
-
-        //置空
-        CouponUtils.getInstance().setCouponInfo(null);
+        //清空键盘输入  回调afterTextChanged()
+        etMoney.setText("");
 
         refreshGoodsData();
 
@@ -879,8 +891,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
 
         mGiftCardMoney = 0f;
         mOnlyGiftCardPay = false;
-        refreshRealPay();
-        refreshSettlementView();
+
+        //清空键盘输入  回调afterTextChanged()
+        etMoney.setText("");
     }
 
     /**
@@ -1003,14 +1016,14 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             @Override
             public void onScanCode(String barcode) {
 
-                mPresenter.giftCard(barcode);
                 mScanCodeDialog.setStopScan(true);
+                mScanCodeDialog.setStatus(ScanCodeDialog.STATUS_SCANNING);
+                mPresenter.giftCard(barcode);
 
-                mScanCodeDialog.setStatus(ScanCodeDialog.STATUS_SCAN_GIFT_CARD);
             }
         });
         mScanCodeDialog.show();
-
+        mScanCodeDialog.setStatus(ScanCodeDialog.STATUS_SCAN_GIFT_CARD);
     }
 
 
@@ -1581,10 +1594,9 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             return;
         }
         GiftCardUtils.getInstance().setGiftCardInfo(result);
-        refreshGiftCardMoney();
-        refreshRealPay();
-        refreshSettlementView();
 
+        //清空键盘输入  回调afterTextChanged()
+        etMoney.setText("");
 
         if(mScanCodeDialog != null && mScanCodeDialog.isShowing()) {
             mScanCodeDialog.dismiss();

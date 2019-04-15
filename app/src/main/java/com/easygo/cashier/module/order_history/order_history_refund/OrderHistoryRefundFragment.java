@@ -3,6 +3,7 @@ package com.easygo.cashier.module.order_history.order_history_refund;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -90,6 +91,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
 
     private String order_number = "";
     private String pay_type = "";
+    private float gift_card_pay = 0f;
     private String refund_pay_type = "";
     private String real_name = "";
     private String order_no_number = "";
@@ -138,6 +140,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
             order_number = getArguments().getString("order_number");
             order_no_number = getArguments().getString("order_no_number");
             pay_type = getArguments().getString("pay_type");
+            gift_card_pay = getArguments().getFloat("gift_card_pay");
             real_name = getArguments().getString("real_name");
             total_price = getArguments().getInt("total_price");
             refund_status = getArguments().getInt("refund_status");
@@ -146,7 +149,35 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
             cashier_discount = getArguments().getFloat("cashier_discount");
             real_pay = getArguments().getFloat("real_pay");
         }
-        tvPayType.setText(getResources().getString(R.string.text_pay_type) + pay_type + getResources().getString(R.string.text_pay));
+        Resources res = getResources();
+        String text = "";
+        if(pay_type.equals(res.getString(R.string.pay_wechat_gift_card))) {
+            text = res.getString(R.string.text_pay_type)
+                    + res.getString(R.string.pay_wechat) + "￥" + df.format(real_pay - gift_card_pay)
+                    + " + "
+                    + res.getString(R.string.pay_gift_card) + "￥" + df.format(gift_card_pay);
+        } else if(pay_type.equals(res.getString(R.string.pay_alipay_gift_card))) {
+            text = res.getString(R.string.text_pay_type)
+                    + res.getString(R.string.pay_alipay) + "￥" + df.format(real_pay - gift_card_pay)
+                    + " + "
+                    + res.getString(R.string.pay_gift_card) + "￥" + df.format(gift_card_pay);
+        } else if(pay_type.equals(res.getString(R.string.pay_wallet_gift_card))) {
+            text = res.getString(R.string.text_pay_type)
+                    + res.getString(R.string.pay_wallet) + "￥" + df.format(real_pay - gift_card_pay)
+                    + " + "
+                    + res.getString(R.string.pay_gift_card) + "￥" + df.format(gift_card_pay);
+        } else if(pay_type.equals(res.getString(R.string.pay_cash_gift_card))) {
+            text = res.getString(R.string.text_pay_type)
+                    + res.getString(R.string.pay_cash) + "￥" + df.format(real_pay - gift_card_pay)
+                    + "+"
+                    + res.getString(R.string.pay_gift_card) + "￥" + df.format(gift_card_pay);
+        } else {
+            text = getResources().getString(R.string.text_pay_type)
+                    + pay_type + "￥" + df.format(real_pay);
+        }
+
+        tvPayType.setText(text);
+//        tvPayType.setText(getResources().getString(R.string.text_pay_type) + pay_type + getResources().getString(R.string.text_pay));
         tvOrderNumber.setText(getResources().getString(R.string.text_order_number) + order_no_number);
         tvOrderCashier.setText(getResources().getString(R.string.text_cashier) + real_name);
 

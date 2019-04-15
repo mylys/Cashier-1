@@ -33,6 +33,7 @@ import com.easygo.cashier.bean.AccountInfo;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
 import com.easygo.cashier.module.CouponUtils;
+import com.easygo.cashier.module.GiftCardUtils;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.printer.local.PrinterUtils;
@@ -156,10 +157,11 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
             }
         });
 
-        //清除会员、优惠券、促销等信息
+        //清除会员、优惠券、促销、礼品卡等信息
         MemberUtils.reset();
         CouponUtils.getInstance().reset();
         ActivitiesUtils.getInstance().reset();
+        GiftCardUtils.getInstance().reset();
 
 
         if(BuildConfig.DEBUG) {

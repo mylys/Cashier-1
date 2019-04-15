@@ -10,16 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
-import com.easygo.cashier.widget.ChooseCouponsDialog;
 import com.easygo.cashier.widget.PayWayView;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
@@ -91,7 +88,6 @@ public class SettlementView extends FrameLayout {
     private Unbinder unbinder;
     private View mView;
 
-    private ChooseCouponsDialog dialog;
     //结算数据
     private float mReceivable;//应收
     private float mCoupon;//优惠
@@ -102,6 +98,7 @@ public class SettlementView extends FrameLayout {
     private boolean mAlreadySettlement;
     //结算数据
 
+    private int payType;
     //是否有优惠券
     private boolean isCoupon = false;
     //是否有礼品卡
@@ -166,6 +163,7 @@ public class SettlementView extends FrameLayout {
      * 根据选择的支付方式，改变相应布局
      */
     public void setPayType(boolean isCombinePay, int payType) {
+        this.payType = payType;
         if (isCombinePay) {
             tvReceiptsWay.setText(R.string.text_cash);
             showAlreadySettlement(false);
@@ -274,6 +272,10 @@ public class SettlementView extends FrameLayout {
         tvTextCouponColon.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
         tvCouponColonPrice.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
         line3.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
+
+        if(payType == PayWayView.WAY_MEMBER && isCoupon && isGiftCard) {
+            updateLineMargin(payType);
+        }
     }
 
     public void setGiftCardVisiable(boolean isGiftCard) {
@@ -281,6 +283,10 @@ public class SettlementView extends FrameLayout {
         tvTextGiftCardColon.setVisibility(isGiftCard ? View.VISIBLE : View.GONE);
         tvGiftCardPrice.setVisibility(isGiftCard ? View.VISIBLE : View.GONE);
         line4.setVisibility(isGiftCard ? View.VISIBLE : View.GONE);
+
+        if(payType == PayWayView.WAY_MEMBER && isCoupon && isGiftCard) {
+            updateLineMargin(payType);
+        }
     }
 
     public void setMemberVisiable(boolean visiable) {
@@ -362,13 +368,19 @@ public class SettlementView extends FrameLayout {
      */
     public void updateLineMargin(int payType) {
         int root_dimen = getResources().getDimensionPixelSize(R.dimen.y43);
-//        int line1_dimen = getResources().getDimensionPixelSize(R.dimen.y33);
-//        int dimen = getResources().getDimensionPixelSize(R.dimen.y99);
+        int line1_dimen = getResources().getDimensionPixelSize(R.dimen.y42);
+        int dimen = getResources().getDimensionPixelSize(R.dimen.y120);
         switch (payType) {
             case PayWayView.WAY_CASH:
 //                line1_dimen = getResources().getDimensionPixelSize(R.dimen.y42);
                 root_dimen = getResources().getDimensionPixelSize(R.dimen.y100);
 //                dimen = getResources().getDimensionPixelSize(R.dimen.y120);
+                break;
+            case PayWayView.WAY_MEMBER:
+                if(isCoupon && isGiftCard) {
+                    line1_dimen = getResources().getDimensionPixelSize(R.dimen.y33);
+                    dimen = getResources().getDimensionPixelSize(R.dimen.y99);
+                }
                 break;
             default:
 
@@ -378,24 +390,28 @@ public class SettlementView extends FrameLayout {
         FrameLayout.LayoutParams flp = (FrameLayout.LayoutParams) root.getLayoutParams();
         flp.topMargin = root_dimen;
         root.setLayoutParams(flp);
-//        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) line1.getLayoutParams();
-//        lp.topMargin = line1_dimen;
-//        line1.setLayoutParams(lp);
-//        lp = (ConstraintLayout.LayoutParams) line2.getLayoutParams();
-//        lp.topMargin = dimen;
-//        line2.setLayoutParams(lp);
-//        lp = (ConstraintLayout.LayoutParams) line3.getLayoutParams();
-//        lp.topMargin = dimen;
-//        line3.setLayoutParams(lp);
-//        lp = (ConstraintLayout.LayoutParams) line4.getLayoutParams();
-//        lp.topMargin = dimen;
-//        line4.setLayoutParams(lp);
-//        lp = (ConstraintLayout.LayoutParams) line5.getLayoutParams();
-//        lp.topMargin = dimen;
-//        line5.setLayoutParams(lp);
-//        lp = (ConstraintLayout.LayoutParams) view1.getLayoutParams();
-//        lp.topMargin = dimen;
-//        view1.setLayoutParams(lp);
+
+        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) line1.getLayoutParams();
+        lp.topMargin = line1_dimen;
+        line1.setLayoutParams(lp);
+        lp = (ConstraintLayout.LayoutParams) line2.getLayoutParams();
+        lp.topMargin = dimen;
+        line2.setLayoutParams(lp);
+        lp = (ConstraintLayout.LayoutParams) line3.getLayoutParams();
+        lp.topMargin = dimen;
+        line3.setLayoutParams(lp);
+        lp = (ConstraintLayout.LayoutParams) line4.getLayoutParams();
+        lp.topMargin = dimen;
+        line4.setLayoutParams(lp);
+        lp = (ConstraintLayout.LayoutParams) line5.getLayoutParams();
+        lp.topMargin = dimen;
+        line5.setLayoutParams(lp);
+        lp = (ConstraintLayout.LayoutParams) line6.getLayoutParams();
+        lp.topMargin = dimen;
+        lp = (ConstraintLayout.LayoutParams) view1.getLayoutParams();
+        lp.topMargin = dimen;
+        view1.setLayoutParams(lp);
+
     }
 
     /**

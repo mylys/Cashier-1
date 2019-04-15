@@ -178,6 +178,11 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
      */
     private float mCouponMoney;
 
+    /**
+     * 右下角收银金额
+     */
+    private float mRealPay;
+
 
     /**
      * 搜索结果弹窗
@@ -405,16 +410,17 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
             @Override
             public void onCountChanged(int position, int count) {
-//                if (mUserGoodsScreen != null) {
-//                    mUserGoodsScreen.onCountChanged(position, count);
-//                }
             }
 
             @Override
             public void onItemRemoved(int position) {
-//                if (mUserGoodsScreen != null) {
-//                    mUserGoodsScreen.onItemRemoved(position);
-//                }
+                GoodsEntity<GoodsResponse> goodsEntity = mData.get(position);
+                BaseGoodsPromotion promotion = goodsEntity.getPromotion();
+                if(promotion.isTempGoodsPromotion()) {
+                    //取消临时促销
+                    ActivitiesUtils.getInstance().cancelTempGoodsPromotion(
+                            goodsEntity.getData().getBarcode() + "_" + goodsEntity.getData().getPrice());
+                }
             }
 
         });
@@ -760,6 +766,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 }
             }
         }
+        mRealPay = real_pay;
 
         tvTotalMoney.setText("￥" + df.format(price));
         tvCoupon.setText("￥" + df.format(coupon));
@@ -969,6 +976,11 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                     public void onClick(List<GoodsEntity<GoodsResponse>> selectGoods, int mode, boolean isFreeOrder, float value) {
                         tempPromotionDialog.dismiss();
 
+                        if(isFreeOrder) {
+                            cancelCoupon();
+                            cancelGiftCard();
+                        }
+
                         ActivitiesUtils.getInstance().createTempGoodsPromotion(selectGoods, mode, isFreeOrder, value);
 
                         mGoodsMultiItemAdapter.cancelAllSelected();
@@ -1008,10 +1020,9 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
                 break;
             case R.id.btn_gift_card://礼品卡
-//                if(true) {
-//                    mPresenter.gift_card("LP2019041275725166");
-//                    return;
-//                }
+                if(mRealPay <= 0) {
+                    return;
+                }
 
                 showScanCodeDialog();
                 if(scanCodeDialog != null) {
@@ -1021,6 +1032,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                             if (scanCodeDialog != null) {
                                 scanCodeDialog.setStatus(ScanCodeDialog.STATUS_SCANNING);
                             }
+                            scanCodeDialog.setStopScan(true);
                             mPresenter.gift_card(barcode);
                         }
                     });
@@ -1049,6 +1061,10 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 });
                 break;
             case R.id.btn_choose_coupon://优惠券
+
+                if(mRealPay <= 0) {
+                    return;
+                }
                 //判断是否有促销
                 if (ActivitiesUtils.getInstance().hasGoodsPromotion() || ActivitiesUtils.getInstance().hasShopPromotion()) {
 

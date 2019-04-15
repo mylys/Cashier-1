@@ -204,8 +204,8 @@ public class OrderHistorysInfo {
         this.gift_card_no = gift_card_no;
     }
 
-    public String getGift_card_pay() {
-        return gift_card_pay;
+    public float getGift_card_pay() {
+        return TextUtils.isEmpty(gift_card_pay)? 0f: Float.valueOf(gift_card_pay);
     }
 
     public void setGift_card_pay(String gift_card_pay) {
