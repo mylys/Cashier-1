@@ -19,6 +19,7 @@ import com.niubility.library.base.BaseDialog;
 
 import java.text.DecimalFormat;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -144,6 +145,19 @@ public class ConfirmDialog extends BaseDialog {
 //                tvPayWay.setText("(会员卡)");
 //                break;
 //        }
+
+        int size = getResources().getDimensionPixelSize(R.dimen.x109);;
+        if(mPayWay.length() > 8) {
+            size = getResources().getDimensionPixelSize(R.dimen.x50);
+        } else if(mPayWay.length() > 4) {
+            size = getResources().getDimensionPixelSize(R.dimen.x90);
+        }
+        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) tvTextReceivable.getLayoutParams();
+        lp.leftMargin = size;
+        tvTextReceivable.setLayoutParams(lp);
+        lp = (ConstraintLayout.LayoutParams) tvReceivable.getLayoutParams();
+        lp.rightMargin = size;
+        tvReceivable.setLayoutParams(lp);
 
     }
 

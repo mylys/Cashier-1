@@ -169,7 +169,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         } else if(pay_type.equals(res.getString(R.string.pay_cash_gift_card))) {
             text = res.getString(R.string.text_pay_type)
                     + res.getString(R.string.pay_cash) + "￥" + df.format(real_pay - gift_card_pay)
-                    + "+"
+                    + " + "
                     + res.getString(R.string.pay_gift_card) + "￥" + df.format(gift_card_pay);
         } else {
             text = getResources().getString(R.string.text_pay_type)

@@ -1020,7 +1020,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
                 break;
             case R.id.btn_gift_card://礼品卡
-                if(mRealPay <= 0) {
+                if(mRealPay <= 0 && mGoodsCount > 0) {
                     return;
                 }
 
@@ -1062,7 +1062,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 break;
             case R.id.btn_choose_coupon://优惠券
 
-                if(mRealPay <= 0) {
+                if(mRealPay <= 0 && mGoodsCount > 0) {
                     return;
                 }
                 //判断是否有促销

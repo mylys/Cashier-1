@@ -14,7 +14,6 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.FunctionListAdapter;
 import com.easygo.cashier.bean.FunctionListBean;
 import com.niubility.library.base.BaseDialog;
-import com.niubility.library.utils.ToastUtils;
 
 import java.util.ArrayList;
 
@@ -43,10 +42,10 @@ public class FunctionListDialog extends BaseDialog {
 
     private int[] functions = new int[]{
             R.string.text_function_history,
-            R.string.text_function_handover,
             R.string.text_function_entry,
             R.string.text_function_device,
             R.string.text_function_lock,
+            R.string.text_function_handover,
             R.string.text_switch_mode_offline,
     };
 
@@ -63,27 +62,26 @@ public class FunctionListDialog extends BaseDialog {
 
     private int[] res = new int[]{
             R.drawable.ic_order_history,
-//            R.drawable.ic_refund,
-            R.drawable.ic_shift,
             R.drawable.ic_entry_orders,
-//            R.drawable.ic_lauage,
             R.drawable.ic_device_status,
             R.drawable.ic_lock,
-//            R.drawable.ic_system_setting,
-//            R.drawable.ic_enter_system,
+            R.drawable.ic_shift,
             R.drawable.ic_switch_mode,
     };
+    private ArrayList<Integer> hideList;
+    private FunctionListAdapter functionListAdapter;
 
 
     @Override
     public void onResume() {
         super.onResume();
         Window window = getDialog().getWindow();
+        boolean singleLine = functionListAdapter.getItemCount() <= 4;
         if (window != null) {
             window.setLayout(getResources().getDimensionPixelSize(R.dimen.function_list_width),
-//                    getResources().getDimensionPixelSize(Configs.lock_auth == 0 ? R.dimen.y359 : R.dimen.function_list_height));
+                    getResources().getDimensionPixelSize(singleLine ? R.dimen.y359 : R.dimen.function_list_height));
 //                    getResources().getDimensionPixelSize(R.dimen.y359));
-                    getResources().getDimensionPixelSize(R.dimen.function_list_height));
+//                    getResources().getDimensionPixelSize(R.dimen.function_list_height));
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -103,26 +101,24 @@ public class FunctionListDialog extends BaseDialog {
 
     public void init() {
 
-        FunctionListAdapter functionListAdapter = new FunctionListAdapter();
-        ArrayList<Integer> integers = new ArrayList<>();
+        functionListAdapter = new FunctionListAdapter();
+        hideList = new ArrayList<>();
 
-        if (Configs.getRole(Configs.menus[10]) == 0) {
-//            integers.add(5);
-            integers.add(3);
+        if (Configs.getRole(Configs.menus[10]) == 0) {//设备状态
+            hideList.add(2);
         }
-        if (Configs.getRole(Configs.menus[7]) == 0) {
-//            integers.add(2);
-            integers.add(1);
+        if (Configs.getRole(Configs.menus[7]) == 0) {//交接班
+            hideList.add(4);
         }
-        if (Configs.getRole(Configs.menus[4]) == 0) {
-            integers.add(0);
+        if (Configs.getRole(Configs.menus[4]) == 0) {//历史订单
+            hideList.add(0);
         }
 
-        if (Configs.lock_auth == 0) {
-            integers.add(4);
+        if (Configs.lock_auth == 0) {//收银机
+            hideList.add(3);
         }
 
-//        integers.add(5);
+        hideList.add(5);
 
 //        if(Config.isOnlineMode()) {
         if(Configs.isOnlineMode()) {
@@ -140,9 +136,9 @@ public class FunctionListDialog extends BaseDialog {
         rvFunction.addItemDecoration(verticalDecoration);
 
         rvFunction.setLayoutManager(new GridLayoutManager(getContext(), 4));
-        rvFunction.setAdapter(functionListAdapter);
+        functionListAdapter.bindToRecyclerView(rvFunction);
         for (int i = 0; i < functions.length; i++) {
-            if (!integers.contains(i)) {
+            if (!hideList.contains(i)) {
                 functionListAdapter.addData(new FunctionListBean(functions[i], res[i]));
             }
         }

@@ -212,13 +212,13 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                             PayWayView.WAY_WECHAT,
                             PayWayView.WAY_MEMBER,
                             PayWayView.WAY_CASH,
-                            PayWayView.WAY_BANK_CARD,
+//                            PayWayView.WAY_BANK_CARD,
                     }
                     : new int[] {
                             PayWayView.WAY_ALIPAY,
                             PayWayView.WAY_WECHAT,
                             PayWayView.WAY_CASH,
-                            PayWayView.WAY_BANK_CARD,
+//                            PayWayView.WAY_BANK_CARD,
                     }
             );
         }
