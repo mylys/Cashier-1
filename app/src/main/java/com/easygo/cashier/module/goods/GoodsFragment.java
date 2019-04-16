@@ -416,7 +416,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             public void onItemRemoved(int position) {
                 GoodsEntity<GoodsResponse> goodsEntity = mData.get(position);
                 BaseGoodsPromotion promotion = goodsEntity.getPromotion();
-                if(promotion.isTempGoodsPromotion()) {
+                if(promotion != null && promotion.isTempGoodsPromotion()) {
                     //取消临时促销
                     ActivitiesUtils.getInstance().cancelTempGoodsPromotion(
                             goodsEntity.getData().getBarcode() + "_" + goodsEntity.getData().getPrice());
