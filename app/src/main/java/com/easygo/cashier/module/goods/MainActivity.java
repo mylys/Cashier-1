@@ -49,7 +49,6 @@ import com.easygo.cashier.widget.GeneraDialog;
 import com.easygo.cashier.widget.MyTitleBar;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseEvent;
-import com.niubility.library.common.constants.BaseConstants;
 import com.niubility.library.utils.NetworkUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
@@ -298,7 +297,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             transaction.show(fragment);
         } else {
             Bundle bundle = new Bundle();
-            bundle.putString(GoodsFragment.KEY_ADMIN_NAME, admin_name);
+            bundle.putString(Constants.KEY_ADMIN_NAME, admin_name);
             goodsFragment = GoodsFragment.newInstance(bundle);
 
             transaction.replace(R.id.framelayout, goodsFragment, TAG_MAIN);
@@ -318,15 +317,9 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
                 break;
             case R.id.menu://功能列表
-//                if (goodsFragment.getAdapterSize() != 0) {
-//                    ToastUtils.showToast(this, "请先完成收银操作");
-//                    return;
-//                }
                 FunctionListDialog functionListDialog = new FunctionListDialog();
                 functionListDialog.setOnFunctionListItemListener(mFunctionListItemListener);
                 functionListDialog.showCenter(this);
-
-
 
                 break;
             case R.id.pop_till://弹出钱箱
@@ -426,14 +419,6 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         }
 
         @Override
-        public void refund() {
-            ARouter.getInstance()
-                    .build(ModulePath.refund)
-                    .withString("admin_name", admin_name)
-                    .navigation();
-        }
-
-        @Override
         public void handover() {
 
             //跳转交接班页面
@@ -441,39 +426,6 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                     .build(ModulePath.handover)
                     .withString("admin_name", admin_name)
                     .navigation();
-
-            if (true)
-                return;
-
-
-            SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getApplicationContext());
-            SharedPreferences.Editor editor = sp.edit();
-            //登录状态中，清除 session_id 、 admin_name
-            if (sp.contains(BaseConstants.KEY_SESSION_ID)) {
-                editor.remove(BaseConstants.KEY_SESSION_ID).apply();
-            }
-            if (sp.contains(Constants.KEY_ADMIN_NAME)) {
-                editor.remove(Constants.KEY_ADMIN_NAME).apply();
-            }
-            if (sp.contains(BaseConstants.KEY_SHOP_SN)) {
-                editor.remove(BaseConstants.KEY_SHOP_SN).apply();
-            }
-            if (sp.contains(BaseConstants.KEY_TIME)) {
-                editor.remove(BaseConstants.KEY_TIME).apply();
-            }
-            if (sp.contains(Constants.KEY_HANDOVER_ID)) {
-                editor.remove(Constants.KEY_HANDOVER_ID).apply();
-            }
-            //跳转登录页
-//            ARouter.getInstance()
-//                    .create(ModulePath.login)
-//                    .withFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                    .withFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                    .navigation();
-
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
         }
 
         @Override
@@ -650,7 +602,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                 break;
             case Events.MEMBER_INFO://设置会员信息
                 MemberInfo info = (MemberInfo) event.getObject();
-                goodsFragment.updateMebmerInfo(info);
+                goodsFragment.updateMemberInfo(info);
                 break;
             case Events.QUICK_CHOOSE://快速选择
                 List<GoodsResponse> goodsResponses = (List<GoodsResponse>) event.getObject();

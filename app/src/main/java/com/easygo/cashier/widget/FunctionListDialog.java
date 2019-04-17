@@ -118,7 +118,7 @@ public class FunctionListDialog extends BaseDialog {
             hideList.add(3);
         }
 
-        hideList.add(5);
+//        hideList.add(5);
 
 //        if(Config.isOnlineMode()) {
         if(Configs.isOnlineMode()) {
@@ -156,9 +156,6 @@ public class FunctionListDialog extends BaseDialog {
                         switch (position) {
                             case R.string.text_function_history:
                                 orderHistory();
-                                break;
-                            case R.string.text_function_refund:
-                                refund();
                                 break;
                             case R.string.text_function_handover:
                                 handover();
@@ -236,12 +233,6 @@ public class FunctionListDialog extends BaseDialog {
         }
     }
 
-    public void refund() {
-        if (mListener != null) {
-            mListener.refund();
-        }
-    }
-
     public void handover() {
         if (mListener != null) {
             mListener.handover();
@@ -280,8 +271,6 @@ public class FunctionListDialog extends BaseDialog {
 
     public interface OnFunctionListItemListener {
         void orderHistory();
-
-        void refund();
 
         void handover();
 

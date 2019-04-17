@@ -22,8 +22,6 @@ public class GoodsContract {
         void getGoods(String shop_id, String barcode);
         void searchGoods(String shop_sn, String barcode);
 
-        void realMoney(String json);
-
         void popTill(String shop_sn, String printer_sn);
 
         /**商品促销*/
@@ -50,9 +48,6 @@ public class GoodsContract {
 
         void searchGoodsSuccess(List<GoodsResponse> result);
         void searchGoodsFailed(Map<String, Object> map);
-
-        void realMoneySuccess(RealMoneyResponse result);
-        void realMoneyFailed(Map<String, Object> map);
 
         void popTillSuccess();
         void popTillFailed(Map<String, Object> map);

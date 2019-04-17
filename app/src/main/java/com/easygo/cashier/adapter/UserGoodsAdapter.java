@@ -25,6 +25,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
 
     private DecimalFormat df = new DecimalFormat("0.00");
     private DecimalFormat df_int = new DecimalFormat("#");
+    private DecimalFormat df_weight = new DecimalFormat("0.000");
 
 
     public UserGoodsAdapter() {
@@ -66,7 +67,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
                 count.setCountChangeEnable(false);
                 break;
             case GoodsEntity.TYPE_WEIGHT://称重商品
-                helper.setText(R.id.tv_count, good_count + good.getG_u_symbol());
+                helper.setText(R.id.tv_count, df_weight.format(good_count) + good.getG_u_symbol());
                 break;
             case GoodsEntity.TYPE_ONLY_PROCESSING://纯加工方式
                 CountTextView view = (CountTextView) helper.getView(R.id.count_view);

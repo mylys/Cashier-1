@@ -71,12 +71,6 @@ public interface HttpService {
     Observable<HttpResult<LoginResponse>> login(@HeaderMap Map<String, String> header, @Field("shop_sn") String shop_sn,
                                                 @Field("admin_name") String admin_name, @Field("password") String password);
 
-    /**
-     * 获取商品列表信息总额及促销信息
-     */
-    @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("api/v1/cashier/weixin/minapp/eq_s/pay/order_info")
-    Observable<HttpResult<RealMoneyResponse>> getRealMoney(@Body RequestBody json);
 
     /**
      * 获取商品信息
@@ -143,22 +137,6 @@ public interface HttpService {
      */
     @GET("api/v1/cashier/pay/check_order")
     Observable<HttpResult<BankcardStatusResponse>> checkBankcardPayStatus(@HeaderMap Map<String, String> header, @Query("order_no") String order_no);
-
-    /**
-     * pos银联支付
-     */
-    @FormUrlEncoded
-    @POST("api/v1/cashier/weixin/minapp/eq_s/pay/pay_vip")
-    Observable<HttpResult<String>> unionPay(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
-
-    /**
-     * 检测银联支付状态
-     * method  = pay  支付 , method = query  查询 , method=cancel  撤销
-     */
-    @FormUrlEncoded
-    @POST("api/v1/cashier/pay/wechat")
-    Observable<HttpResult<String>> checkUnionPayStatus(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
-
 
     /**
      * 查询礼品卡

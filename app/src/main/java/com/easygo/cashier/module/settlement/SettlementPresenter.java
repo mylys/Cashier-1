@@ -343,47 +343,6 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
     }
 
     @Override
-    public void unionPay(String order_sn) {
-        Map<String, String> header = HttpClient.getInstance().getHeader();
-
-        Map<String, Object> requestMap = new HashMap<>();
-//        requestMap.put("shop_sn", shop_sn);
-        requestMap.put("order_sn", order_sn);
-
-        subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().unionPay(header, requestMap),
-                new BaseResultObserver<String>() {
-                    @Override
-                    protected void onSuccess(String result) {
-                        mView.unionPaySuccess(result);
-                    }
-
-                    @Override
-                    protected void onFailure(Map<String, Object> map) {
-                        mView.unionPayFailed(map);
-                    }
-                }
-        );
-
-//        HttpAPI.getInstance().httpService().unionPay(header, requestMap)
-//                .map(new Function<HttpResult<String>, String>() {
-//                    @Override
-//                    public String apply(HttpResult<String> stringHttpResult) throws Exception {
-//                        return stringHttpResult.getResult();
-//                    }
-//                })
-//                .map(new Function<String, Bitmap>() {
-//                    @Override
-//                    public Bitmap apply(String s) throws Exception {
-//                        return CodeUtils.createImage(s, );
-//                    }
-//                })
-
-
-
-    }
-
-    @Override
     public void closeOrder(String order_no) {
         mView.showLoading();
         Map<String, String> header = HttpClient.getInstance().getHeader();

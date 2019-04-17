@@ -180,7 +180,6 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             String barcode = goodsResponse.getBarcode();
 
             if (goodsResponse.getParent_id() == 0) {//主商品
-//                if (BarcodeUtils.isWeightCode(barcode)) {
                 if (goodsResponse.getIs_weigh() == 1) {
                     //重量商品
                     goodsResponse.setType(GoodsResponse.type_weight);
@@ -192,7 +191,6 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 }
             } else if (goodsResponse.getParent_id() != 0) {
                 //纯加工商品
-//                addOnlyPrcessingItem(goodsResponse, weight);
                 goodsResponse.setType(GoodsResponse.type_processing);
                 addOnlyPrcessingItem(goodsResponse, 1);
             }
@@ -667,7 +665,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
     }
 
-    public void setOrdersData(List<GoodsEntity<GoodsResponse>> list) {
+    public void addOrdersData(List<GoodsEntity<GoodsResponse>> list) {
         ensureNotNull();
         for (GoodsEntity<GoodsResponse> entity : list) {
             if(entity.getData().getType() == GoodsResponse.type_no_code) {
@@ -678,14 +676,9 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             }
             barcodeData.add(entity.getData().getBarcode());
         }
-        mData.addAll(list);
         notifyDataSetChanged();
-    }
 
-    public void setMemberData() {
-        if (data != null) {
-            notifyDataSetChanged();
-        }
+        refreshPrice();
     }
 
     public void refreshGoodsData(List<GoodsEntity<GoodsResponse>> list) {
@@ -789,7 +782,6 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         float temp_goods_discount;
         float goods_discount;
         float member_discount;
-        float coupon;
         float result = 0;
         GoodsResponse good;
         int exclude_size = excludeBarcodeList.size();
@@ -812,7 +804,6 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             if(exclude_size > 0) {
                 for (int i = 0; i < exclude_size; i++) {
                     if(excludeBarcodeList.contains(good.getBarcode())) {
-//                    if(good.getBarcode().equals(excludeBarcodeList.get(i))) {
                         //在排除商品列表里面
                         is_exclude = true;
                         entity.setExcludeInShopActivity(true);
@@ -838,44 +829,6 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
     }
 
-
-
-
-    public String getTotalPrice() {
-        float total_price = 0;
-        for (GoodsEntity<GoodsResponse> entity : mData) {
-            GoodsResponse good = entity.getData();
-            if (entity.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
-                total_price += Float.parseFloat(good.getProcess_price()) * entity.getCount();
-            } else {
-                total_price += Float.parseFloat(good.getPrice()) * entity.getCount();
-            }
-        }
-        return df.format(total_price);
-    }
-
-    public Float getFullTotalPrice(){
-        float total_price = 0;
-        for (GoodsEntity<GoodsResponse> entity : mData) {
-            GoodsResponse good = entity.getData();
-            if (!good.isMemberPrice()) {
-                if (entity.getItemType() == GoodsEntity.TYPE_ONLY_PROCESSING) {
-                    total_price += Float.parseFloat(good.getProcess_price()) * entity.getCount();
-                } else {
-                    total_price += Float.parseFloat(good.getPrice()) * entity.getCount();
-                }
-            }
-        }
-        return total_price;
-    }
-
-    public int getTotalCount() {
-        int count = 0;
-        for (GoodsEntity<GoodsResponse> entity : mData) {
-            count += entity.getCount();
-        }
-        return count;
-    }
 
     /**
      * 获取被选中的数据集合

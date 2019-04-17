@@ -30,10 +30,14 @@
         android:id="@+id/cl_subtitle"
         layout="@layout/include_subtitle_search_layout" />
 
-    <include
+    <com.easygo.cashier.widget.ExtraInfoView
         android:id="@+id/cl_extra_info"
-        layout="@layout/include_goods_extra_info"
-        android:visibility="gone" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_subtitle"/>
 
     <View
         android:id="@+id/line2"

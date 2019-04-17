@@ -212,13 +212,13 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
                             PayWayView.WAY_WECHAT,
                             PayWayView.WAY_MEMBER,
                             PayWayView.WAY_CASH,
-//                            PayWayView.WAY_BANK_CARD,
+                            PayWayView.WAY_BANK_CARD,
                     }
                     : new int[] {
                             PayWayView.WAY_ALIPAY,
                             PayWayView.WAY_WECHAT,
                             PayWayView.WAY_CASH,
-//                            PayWayView.WAY_BANK_CARD,
+                            PayWayView.WAY_BANK_CARD,
                     }
             );
         }
@@ -404,7 +404,7 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             }
         }
         if(mPayWay == PayWayView.WAY_BANK_CARD) {
-            if(!mOnlyGiftCardPay) {
+            if(GiftCardUtils.getInstance().getGiftCardInfo() != null && !mOnlyGiftCardPay) {
                 showToast("银联不能与礼品卡混合支付，请选择其他支付方式");
                 return;
             }
@@ -1154,30 +1154,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
             activitiesBeans.add(activitiesBean);
             all_activity_discount += ActivitiesUtils.getInstance().getShopPromotionMoney();
         }
-//        //会员
-//        else if(MemberUtils.isMember) {
-//            List<CreateOrderRequestBody.ActivitiesBean> activitiesBeans = new ArrayList<>();
-//
-//            //会员日
-//            if(MemberUtils.isMemberDay) {
-//                CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
-//                activitiesBean.setId(MemberUtils.day_rc_id);
-//                activitiesBean.setType("member_day");
-//                activitiesBean.setDiscount(Integer.valueOf(df.format((mCoupon*100))));
-//                activitiesBeans.add(activitiesBean);
-//            }
-//            //会员固定折扣
-//            else if(MemberUtils.isMemberDiscount){
-//                CreateOrderRequestBody.ActivitiesBean activitiesBean = new CreateOrderRequestBody.ActivitiesBean();
-//                activitiesBean.setId(MemberUtils.discount_rc_id);
-//                activitiesBean.setType("member_discount");
-//                activitiesBean.setDiscount(Integer.valueOf(df.format((mCoupon*100))));
-//                activitiesBeans.add(activitiesBean);
-//            }
-//            if(activitiesBeans.size() != 0) {
-//                requestBody1.setActivities(activitiesBeans);
-//            }
-//        }
 
         //优惠券
         CouponResponse couponInfo = CouponUtils.getInstance().getCouponInfo();
@@ -1659,26 +1635,6 @@ public class CashierActivity extends BaseMvpActivity<SettlementContract.IView, S
         showToast("会员钱包支付失败 - " + ((String) map.get(HttpExceptionEngine.ErrorMsg)));
         dismissScanDialog();
         mDuringPay = false;
-    }
-
-    @Override
-    public void unionPaySuccess(String result) {
-
-    }
-
-    @Override
-    public void unionPayFailed(Map<String, Object> map) {
-
-    }
-
-    @Override
-    public void checkUnionPaySuccess(String result) {
-
-    }
-
-    @Override
-    public void checkUnionPayFailed(Map<String, Object> map) {
-
     }
 
     @Override

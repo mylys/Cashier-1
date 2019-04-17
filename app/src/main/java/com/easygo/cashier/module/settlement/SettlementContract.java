@@ -37,8 +37,6 @@ public class SettlementContract {
 
         void memberWalletPay(String order_sn, String auth_code);
 
-        void unionPay(String order_sn);
-
         void closeOrder(String order_no);
     }
 
@@ -77,12 +75,6 @@ public class SettlementContract {
 
         void memberWalletSuccess(String result);
         void memberWalletFailed(Map<String, Object> map);
-
-        void unionPaySuccess(String result);
-        void unionPayFailed(Map<String, Object> map);
-
-        void checkUnionPaySuccess(String result);
-        void checkUnionPayFailed(Map<String, Object> map);
 
         void unlockCouponSuccess();
         void unlockCouponFailed(Map<String, Object> map);

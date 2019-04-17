@@ -76,27 +76,6 @@ public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implement
                 });
     }
 
-
-    @Override
-    public void realMoney(String json) {
-
-        RequestBody requestBody = HttpClient.getInstance().createRequestBody(json);
-        subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().getRealMoney(requestBody),
-                new BaseResultObserver<RealMoneyResponse>() {
-
-                    @Override
-                    protected void onSuccess(RealMoneyResponse result) {
-                        mView.realMoneySuccess(result);
-                    }
-
-                    @Override
-                    protected void onFailure(Map<String, Object> map) {
-                        mView.realMoneyFailed(map);
-                    }
-                });
-    }
-
     @Override
     public void popTill(String shop_sn, String printer_sn) {
         Map<String, String> header = HttpClient.getInstance().getHeader();

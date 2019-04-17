@@ -47,6 +47,7 @@
 
 
     <!--会员-->
+    <string name="text_member">会员</string>
     <string name="text_current_member">当前会员：</string>
     <string name="text_choose_member">选择会员</string>
     <string name="text_member_price">会员价</string>
