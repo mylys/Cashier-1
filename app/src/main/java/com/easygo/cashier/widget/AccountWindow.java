@@ -31,7 +31,7 @@ public class AccountWindow extends PopupWindow {
         setContentView(view);
 
 
-        mRecycleView = ((RecyclerView) view.findViewById(R.id.rv_search_result));
+        mRecycleView = view.findViewById(R.id.rv_search_result);
         mRecycleView.setVerticalScrollBarEnabled(true);
 
         accountAdapter = new AccountAdapter();

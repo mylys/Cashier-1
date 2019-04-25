@@ -64,7 +64,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
-    <com.easygo.cashier.widget.DialogKeyboard
+    <com.easygo.cashier.widget.view.DialogKeyboard
         android:id="@+id/key_board"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,6 +75,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_input">
 
-    </com.easygo.cashier.widget.DialogKeyboard>
+    </com.easygo.cashier.widget.view.DialogKeyboard>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

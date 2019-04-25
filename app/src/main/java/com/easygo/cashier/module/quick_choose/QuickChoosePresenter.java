@@ -1,14 +1,11 @@
 package com.easygo.cashier.module.quick_choose;
 
-import com.easygo.cashier.bean.GoodsResponse;
-import com.easygo.cashier.bean.QuickClassifyInfo;
 import com.easygo.cashier.bean.QuickInfo;
 import com.easygo.cashier.http.HttpAPI;
 import com.niubility.library.http.base.HttpClient;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
 
-import java.util.List;
 import java.util.Map;
 
 /**

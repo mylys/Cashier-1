@@ -37,6 +37,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+/**
+ * 历史订单详情页面
+ */
 public class OrderHistoryDetailFragment extends BaseFragment {
 
     @BindView(R.id.tv_order_no)
@@ -147,7 +150,6 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                     Bundle bundle = new Bundle();
                     ArrayList<OrderHistorysInfo.ListBean> data = (ArrayList<OrderHistorysInfo.ListBean>) orderHistoryGoodsAdapter.getData();
                     bundle.putParcelableArrayList("data", data);
-                    bundle.putParcelableArrayList("activities", (ArrayList<OrderHistorysInfo.ActivitiesBean>) mOrderHistorysInfo.getActivities());
                     bundle.putString("pay_type", payType);
                     bundle.putFloat("gift_card_pay", mOrderHistorysInfo.getGift_card_pay());
                     bundle.putInt("total_price", total_price);
@@ -157,12 +159,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                     bundle.putString("order_no_number",order_no_number);
                     bundle.putInt("refund_status", mOrderHistorysInfo.getRefund_status());
                     bundle.putInt("have_refund", mOrderHistorysInfo.getHave_refund());
-
-
-                    float cashier_discount = Float.valueOf(mOrderHistorysInfo.getCashier_discount());
-
                     bundle.putFloat("total_discount", getAllDiscount());
-                    bundle.putFloat("cashier_discount", cashier_discount);
                     ((OrderHistoryActivity) getActivity()).toOrderHistoryRefundFragment(bundle);
                 }
                 break;
@@ -198,13 +195,11 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         int count = 0;
         float total_discount = 0f;
         float discount = 0f;
-//        boolean isWeight = false;
         for (int i = 0; i < size; i++) {
             OrderHistorysInfo.ListBean listBean = data.get(i);
 
             int type = listBean.getType();
             count += listBean.getQuantity();
-//            isWeight = listBean.getCount().equals(listBean.getQuantity());
             discount = Float.valueOf(listBean.getDiscount());
             total_discount += discount;
 
@@ -228,7 +223,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 .append("实收：").append(mOrderHistorysInfo.getBuyer_pay()).append("元").append(PrintHelper.BR)
                 .append("找零：").append(mOrderHistorysInfo.getChange_money()).append("元").append(PrintHelper.BR)
                 .append("退款：").append(mOrderHistorysInfo.getRefund_fee() != null ?
-                ((String) mOrderHistorysInfo.getRefund_fee()) : "0.00").append("元").append(PrintHelper.BR);
+                mOrderHistorysInfo.getRefund_fee() : "0.00").append("元").append(PrintHelper.BR);
 
         Fragment parentFragment = getParentFragment();
         if (parentFragment != null) {
@@ -398,7 +393,6 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 }
                 break;
             case 3:
-//                has_refund(orderHistoryInfo, change_money, change_price);//3：状态为退款
                 break;
         }
 
@@ -413,15 +407,11 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         tvRefund.setVisibility(View.VISIBLE);
         line3.setVisibility(View.VISIBLE);
 
-//        if (!TextUtils.isEmpty(orderHistoryInfo.getRefund_fee())) {
-//            refund_price = Double.parseDouble(orderHistoryInfo.getRefund_fee());
-//        }
-//        String total_refund_str = df.format(refund_price + change_money);
-//        tvRefundText.setText(payType + getResources().getString(R.string.text_pay) + "：￥" + total_refund_str + " - 找零：￥" + change_price + " = ");
         tvRefund.setText("退款：￥" + orderHistoryInfo.getRefund_fee());
         tvReturnOfGoodsCount.setText("共退款" + orderHistoryGoodsAdapter.getRefundSize() + "件");
     }
 
+    /** 获取所有优惠金额总额 */
     private float getAllDiscount() {
         float coupon = 0f;
         List<OrderHistorysInfo.ListBean> list = mOrderHistorysInfo.getList();

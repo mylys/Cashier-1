@@ -19,11 +19,9 @@
     <color name="color_7e7e7e">#7E7E7E</color>
     <color name="color_d64444">#D64444</color>
     <color name="color_3899d9">#3899D9</color>
-    <color name="color_e84525">#E84525</color>
     <color name="color_4fbdae">#4FBDAE</color>
     <color name="color_61cbbd">#61CBBD</color>
     <color name="color_f0f3f7">#F0F3F7</color>
-    <color name="color_53c0b1">#53C0B1</color>
     <color name="color_51bfb0">#51BFB0</color>
     <color name="color_d4d3d3">#D4D3D3</color>
     <color name="color_ed2e2e">#ED2E2E</color>
@@ -35,6 +33,7 @@
     <color name="color_dddddd">#dddddd</color>
     <color name="color_203356">#203356</color>
     <color name="color_727272">#727272</color>
+    <color name="color_f95e39">#F95E39</color>
 
     <color name="color_goods_title">@color/color_333333</color>
 
@@ -46,22 +45,14 @@
     <color name="color_text_white">#ffffff</color>
     <color name="color_text_black">#000000</color>
     <color name="color_cc565a">#cc565a</color>
-    <color name="color_bg_detail">#455991</color>
     <color name="color_text_888888">#888888</color>
     <color name="color_text_ababab">#ababab</color>
     <color name="color_text_3899d9">#3899D9</color>
-    <color name="color_text_303030">#303030</color>
-
-    <color name="color_bg_btn_clear">#7f000000</color>
 
     <!--选中-->
-    <color name="color_bg_cc565a">#CC565A</color>
     <color name="color_text_70_alpha">#9e000000</color>
-    <color name="color_text_80_alpha">#cc101010</color>
 
 
     <!--数字键盘底色-->
-    <color name="color_bg_input_keyboard">#D0D5DB</color>
-    <color name="color_bg_d0d5db_47_alpha">#78D0D5DB</color>
 
 </resources>

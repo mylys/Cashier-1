@@ -1,8 +1,6 @@
 package com.easygo.cashier.adapter;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.easygo.cashier.module.promotion.base.IGoodsPromotion;
-import com.easygo.cashier.module.promotion.base.IPromotion;
 import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 
 import java.io.Serializable;

@@ -110,7 +110,7 @@ public class PrinterHelpter {
                     index += 1;
 
                     count = good.getCount();
-                    price = Float.valueOf(data.getProcess_price());
+                    price = Float.valueOf(data.getPrice());
                     discount = Float.valueOf(data.getDiscount_price());
                     subtotal = df.format(count * price - discount);
 

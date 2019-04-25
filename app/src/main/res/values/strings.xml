@@ -5,7 +5,6 @@
 
     <!--主页面-->
     <string name="text_no_barcode_goods">无码商品</string>
-    <string name="text_pop_money_box">弹出钱箱</string>
 
     <!-- 备用金 -->
     <string name="text_petty_cash">备用金</string>
@@ -29,7 +28,6 @@
     <string name="text_return_of_goods">退货</string>
     <string name="text_cancel">取消</string>
     <string name="text_confirm">确认</string>
-    <string name="text_pay">支付</string>
     <string name="text_is_processing">是否加工</string>
     <string name="text_invalid">作废</string>
     <string name="text_choose">选择</string>
@@ -51,9 +49,7 @@
     <string name="text_current_member">当前会员：</string>
     <string name="text_choose_member">选择会员</string>
     <string name="text_member_price">会员价</string>
-    <string name="text_balance">余额</string>
     <string name="text_balance_conlon">余额：</string>
-    <string name="text_integral">积分</string>
     <string name="text_integral_colon">积分：</string>
     <string name="text_integral_exchange">积分可兑换：</string>
     <string name="text_member_card">会员卡号</string>
@@ -86,23 +82,15 @@
     <string name="text_wechat">微信</string>
     <string name="text_alipay">支付宝</string>
     <string name="text_bank_card">银联</string>
-    <string name="text_other">八达通</string>
-    <string name="text_receivable">应收</string>
-    <string name="text_receipts">实收</string>
     <string name="text_print_paper">打印单据</string>
     <string name="text_print">打印</string>
-    <string name="text_change">找零</string>
     <string name="text_commit_order">提交交易</string>
     <string name="text_bankcard_pay">银联支付</string>
     <string name="text_bankcard_scan">请使用银联POS机扫码</string>
 
     <string name="text_receivable_colon">应收：</string>
-    <string name="text_receivable_refound">应退：</string>
     <string name="text_change_colon">找零：</string>
     <string name="text_receipts_colon">实收：</string>
-    <string name="text_receipts_refound">实退：</string>
-    <string name="text_coupon_colon">优惠:</string>
-    <string name="text_delete">删除</string>
     <string name="text_refund_orders">退款</string>
 
 
@@ -178,8 +166,6 @@
     <string name="device_state">设备状态</string>
     <string name="the_printer">小票机</string>
     <string name="local_printer">USB打印机</string>
-    <string name="the_code_gun">扫码枪</string>
-    <string name="the_till">钱柜</string>
     <string name="reconnection">请重新连接</string>
     <string name="device_normal">正常</string>
     <string name="device_abnormal">异常</string>
@@ -200,7 +186,6 @@
 
     <!-- 功能列表 -->
     <string name="text_function_history">历史订单</string>
-    <string name="text_function_refund">退款</string>
     <string name="text_function_handover">交接班</string>
     <string name="text_function_entry">挂单列表</string>
     <string name="text_function_language">语言设置</string>
@@ -252,24 +237,15 @@
 
     <!--打印机-->
     <string name="str_permission_deny">USB打印机不可用！ 权限被拒绝</string>
-    <string name="str_conn_state_disconnect">USB打印机：未连接</string>
-    <string name="str_conn_state_connecting">USB打印机：连接中</string>
-    <string name="str_connecting">连接中</string>
-    <string name="str_conn_state_connected">USB打印机：已连接</string>
-    <string name="str_conn_successful">USB打印机连接成功！</string>
     <string name="str_conn_fail">USB打印机连接失败！请重新拔插USB打印机</string>
     <string name="str_cann_printer">请先连接USB打印机</string>
     <string name="str_need_replugged">请插入USB打印机</string>
 
-    <string name="str_enter_print_counts">请输入打印次数：</string>
-    <string name="str_choice_printer_command">请选择正确的打印机指令</string>
     <string name="str_printer_conn_normal">打印机连接正常</string>
     <string name="str_printer_out_of_paper">打印机缺纸</string>
     <string name="str_printer_open_cover">打印机开盖</string>
     <string name="str_printer_error">打印机出错</string>
     <string name="str_state">状态：</string>
-    <string name="str_interface_undefine">接口：未设定</string>
-    <string name="str_select_printer_id">选中id为{0}的打印机</string>
 
     <string name="str_printer_printmode_esc">打印模式:ESC</string>
     <string name="str_printer_printmode_tsc">打印模式:TSC</string>

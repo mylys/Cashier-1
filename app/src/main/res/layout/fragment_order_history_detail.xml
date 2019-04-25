@@ -43,7 +43,6 @@
         app:layout_constraintTop_toTopOf="@id/tv_text_order_no" />
 
     <TextView
-        android:id="@+id/tv_text_cashier"
         style="@style/GoodsListStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

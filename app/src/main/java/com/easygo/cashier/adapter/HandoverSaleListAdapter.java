@@ -8,6 +8,9 @@ import com.easygo.cashier.bean.HandoverSaleResponse;
 
 import java.text.DecimalFormat;
 
+/**
+ * 销售列表 适配器
+ */
 public class HandoverSaleListAdapter extends BaseQuickAdapter<HandoverSaleResponse, BaseViewHolder> {
 
     private DecimalFormat df = new DecimalFormat("0.00");

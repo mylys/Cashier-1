@@ -30,6 +30,10 @@ public class CouponResponse {
     private long expired_at;
     private List<ShopListBean> shop_list;
     private List<GSkuListBean> gsku_list;
+    /**
+     * 实时判断此优惠券是否可用
+     */
+    private boolean isEnable;
 
     public String getName() {
         return name;
@@ -218,5 +222,13 @@ public class CouponResponse {
         public void setIs_mix_sku(int is_mix_sku) {
             this.is_mix_sku = is_mix_sku;
         }
+    }
+
+    public boolean isEnable() {
+        return isEnable;
+    }
+
+    public void setEnable(boolean enable) {
+        isEnable = enable;
     }
 }

@@ -1,7 +1,6 @@
 package com.easygo.cashier.module.order_history.order_history_refund;
 
 import com.easygo.cashier.bean.InitResponse;
-import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.http.HttpAPI;
 import com.easygo.cashier.printer.PrintHelper;
 import com.niubility.library.http.base.HttpClient;
@@ -9,7 +8,6 @@ import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;

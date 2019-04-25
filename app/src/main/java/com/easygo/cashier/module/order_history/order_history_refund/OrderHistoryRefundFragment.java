@@ -31,16 +31,16 @@ import com.easygo.cashier.adapter.OrderHistoryRefundAdapter;
 import com.easygo.cashier.base.BaseAppMvpFragment;
 import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
-import com.easygo.cashier.bean.RefundRequsetBody;
+import com.easygo.cashier.bean.request.RefundRequsetBody;
 import com.easygo.cashier.module.order_history.OrderHistoryActivity;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.printer.local.PrinterHelpter;
 import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.printer.local.obj.OrderHistoryRefundPrintObj;
-import com.easygo.cashier.widget.ConfirmDialog;
-import com.easygo.cashier.widget.GeneraEditDialog;
-import com.easygo.cashier.widget.MySearchView;
-import com.easygo.cashier.widget.PayWayView;
+import com.easygo.cashier.widget.dialog.ConfirmDialog;
+import com.easygo.cashier.widget.dialog.GeneraEditDialog;
+import com.easygo.cashier.widget.view.MySearchView;
+import com.easygo.cashier.widget.view.PayWayView;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.ToastUtils;
@@ -57,6 +57,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+/**
+ * 退款页
+ */
 public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryRefundContract.IView, OrderHistoryRefundPresenter> implements OrderHistoryRefundContract.IView {
 
     @BindView(R.id.search_view)
@@ -65,8 +68,6 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
     TextView tvOrderNumber;
     @BindView(R.id.tv_order_cashier)
     TextView tvOrderCashier;
-    @BindView(R.id.checkbox)
-    CheckBox checkbox;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.tv_pay_type)
@@ -99,11 +100,9 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
     private int refund_status = 0;
     private int have_refund = 0;
     private float total_discount = 0;
-    private float cashier_discount = 0;
     private float real_pay = 0;
     private int pay_way = PayWayView.WAY_CASH;
 
-    private List<OrderHistorysInfo.ActivitiesBean> activities;
     private GeneraEditDialog dialog;
 
     private DecimalFormat df = new DecimalFormat("#0.00");
@@ -136,7 +135,6 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         List<OrderHistorysInfo.ListBean> data = null;
         if (getArguments() != null) {
             data = getArguments().getParcelableArrayList("data");
-            activities = getArguments().getParcelableArrayList("activities");
             order_number = getArguments().getString("order_number");
             order_no_number = getArguments().getString("order_no_number");
             pay_type = getArguments().getString("pay_type");
@@ -146,7 +144,6 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
             refund_status = getArguments().getInt("refund_status");
             have_refund = getArguments().getInt("have_refund");
             total_discount = getArguments().getFloat("total_discount");
-            cashier_discount = getArguments().getFloat("cashier_discount");
             real_pay = getArguments().getFloat("real_pay");
         }
         Resources res = getResources();
@@ -201,7 +198,6 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         adapter = new OrderHistoryRefundAdapter();
         adapter.bindToRecyclerView(recyclerView);
-//        recyclerView.setAdapter(adapter);
         setEmpty();
 
         if (data != null) {
@@ -217,10 +213,6 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                 info.setS_sku_id(bean.getS_sku_id());
                 info.setRefund_num(bean.getQuantity() + "");
 
-//                double refund_subtotal = Double.parseDouble(bean.getSell_price());
-//                if(refund_subtotal > money) {
-//                    refund_subtotal = money;
-//                }
                 info.setRefund_subtotal(df.format(money));
                 info.setSelect(false);
                 info.setType(bean.getType());
@@ -257,38 +249,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
     }
 
     private void setListener() {
-        checkbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //如果点击checkbox，则全选，反之全否
-                boolean checked = checkbox.isChecked();
-                adapter.setClick(checked);
-                tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件，退款金额：￥");
-
-                if (!checked) {
-                    tvRefundcashPrice.setText("0.00");
-                } else {
-
-                    float refund = adapter.getRatioRefund(real_pay);
-
-                    if (refund < 0) {
-                        refund = 0;
-                    }
-
-                    if(refund > real_pay) {
-                        refund = real_pay;
-                    }
-                    tvRefundcashPrice.setText(df.format(refund));
-                }
-//                tvRefundcashPrice.setSelection(tvRefundcashPrice.getText().toString().length());
-            }
-        });
         adapter.setOnItemClickListener(new OrderHistoryRefundAdapter.OnItemClickListener() {
-            @Override
-            public void onClick(boolean isClick) {
-                //点击Item判断是否全选，反之checkbox关闭
-                checkbox.setChecked(isClick);
-            }
 
             @Override
             public void onListener() {
@@ -305,8 +266,6 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                     refund = real_pay;
                 }
                 tvRefundcashPrice.setText(df.format(refund));
-//                }
-//                tvRefundcashPrice.setSelection(tvRefundcashPrice.getText().toString().length());
             }
         });
 
@@ -477,7 +436,6 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
 
             mPresenter.popTill(Configs.shop_sn, Configs.printer_sn);
         }
-        checkbox.setChecked(false);
         adapter.setRefundInfo();
         if (adapter.getTotalRefund()) {
             btnRefund.setEnabled(false);

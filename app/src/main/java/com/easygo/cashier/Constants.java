@@ -2,6 +2,10 @@ package com.easygo.cashier;
 
 public class Constants {
 
+
+    /** 登录过的账号*/
+    public static final String KEY_ACCOUNTS = "key_accounts";
+
     /** 账号*/
     public static final String KEY_ACCOUNT = "account";
 

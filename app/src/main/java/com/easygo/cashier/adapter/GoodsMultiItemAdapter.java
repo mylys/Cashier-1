@@ -1,20 +1,18 @@
 package com.easygo.cashier.adapter;
 
 import android.support.v4.util.ArrayMap;
-import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.easygo.cashier.MemberUtils;
+import com.easygo.cashier.utils.MemberUtils;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
-import com.easygo.cashier.widget.CountTextView;
+import com.easygo.cashier.widget.view.CountTextView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -126,7 +124,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         for (int i = 0; i < size; i++) {
             GoodsResponse goodsResponse = list.get(i);
 
-            if (goodsResponse.getParent_id() == 0) {//主商品
+            if (goodsResponse.isMainGood()) {//主商品
                 code = goodsResponse.getBarcode();
                 goodsNum.setData(goodsResponse);
             } else {//附带加工方式 商品
@@ -147,16 +145,32 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
      */
     public boolean addItem(List<GoodsResponse> t, float weight) {
         int size = t.size();
+        String barcode;
+        GoodsResponse goodsResponse;
         for (int i = 0; i < size; i++) {
-            GoodsResponse goodsResponse = t.get(i);
-            if (limit.contains(goodsResponse.getBarcode())) {
+            goodsResponse = t.get(i);
+            if(!goodsResponse.isMainGood()|| goodsResponse.getIs_inventory_limit() == 0) {
+                //排除加工方式和 关闭了库存限制的商品
+                continue;
+            }
+            barcode = goodsResponse.getBarcode();
+            if (limit.contains(barcode)) {
                 return false;
+            } else {
+                if(data != null && data.containsKey(barcode)) {//已经被添加进来
+                    if (goodsResponse.getOn_sale_count() - data.get(barcode).getCount() - weight < 0) {
+                        //在售数量 - 已经添加数量 - 即将添加数量 < 0 说明库存不足
+                        limit.add(barcode);
+                        return false;
+                    }
+                }
             }
         }
+        //-------------- 有库存
 
         for (GoodsResponse info : t) {
             Double membership_price = Double.valueOf(info.getMembership_price());
-            if (membership_price > 0) {
+            if (membership_price > 0 && membership_price < Double.valueOf(info.getPrice())) {
                 info.setMemberPrice(true);
             } else {
                 info.setMemberPrice(false);
@@ -176,37 +190,34 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             t.get(i).setIdentity(String.valueOf(timeStamp));
         }
         if (size == 1) {//商品 （重量、普通、纯加工）
-            GoodsResponse goodsResponse = t.get(0);
-            String barcode = goodsResponse.getBarcode();
+            goodsResponse = t.get(0);
 
-            if (goodsResponse.getParent_id() == 0) {//主商品
+            if (goodsResponse.isMainGood()) {//主商品
                 if (goodsResponse.getIs_weigh() == 1) {
                     //重量商品
                     goodsResponse.setType(GoodsResponse.type_weight);
-                    addWeightItem(goodsResponse, goodsResponse.isJin()? weight / 1000f * 2: weight / 1000f);
+                    addWeightItem(goodsResponse, weight);
                 } else {
                     //普通商品
                     goodsResponse.setType(GoodsResponse.type_normal);
                     addItem(goodsResponse, weight);
                 }
-            } else if (goodsResponse.getParent_id() != 0) {
+            } else if (!goodsResponse.isMainGood()) {
                 //纯加工商品
                 goodsResponse.setType(GoodsResponse.type_processing);
                 addOnlyPrcessingItem(goodsResponse, 1);
             }
 
         } else {//加工商品
-            GoodsResponse goodsResponse;
             for (int i = 0; i < size; i++) {
                 goodsResponse = t.get(i);
-                if (goodsResponse.getParent_id() == 0) {//主商品
+                if (goodsResponse.isMainGood()) {//主商品
                     goodsResponse.setType(GoodsResponse.type_weight);
                 } else {//加工商品
                     goodsResponse.setType(GoodsResponse.type_processing);
                 }
             }
-            goodsResponse = t.get(0);
-            addPrcessingItem(t, goodsResponse.isJin()? weight / 1000f * 2: weight / 1000f);
+            addPrcessingItem(t, weight);
         }
         return true;
     }
@@ -256,18 +267,11 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             int count = 0;
             double coupon = 0;
             int size = mData.size();
-            boolean member;
             double p;
             for (int i = 0; i < size; i++) {
                 GoodsEntity<GoodsResponse> good = mData.get(i);
 
-                member = good.getData().isMemberPrice();
-
-//                if(good.getPromotion() == null && MemberUtils.isMember && member) {
-//                    p = Double.valueOf(good.getData().getMembership_price());
-//                } else {
-                    p = Double.valueOf(good.getData().getPrice());
-//                }
+                p = Double.valueOf(good.getData().getPrice());
 
                 coupon += Double.valueOf(good.getData().getDiscount_price());
                 price += p * good.getCount();
@@ -289,7 +293,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                         if (processing != null) {//此时 选择了加工
                             count += 1;
                             coupon += Double.valueOf(processing.getDiscount_price());
-                            p = Double.valueOf(processing.getProcess_price());
+                            p = Double.valueOf(processing.getPrice());
                             price += p * processing.getCount();
                         }
                         break;
@@ -317,7 +321,6 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
         BaseGoodsPromotion promotion = item.getPromotion();
 
-//        good.setDiscount_price("0.00");
         helper.getView(R.id.tv_member_price).setVisibility(MemberUtils.isMember ? View.VISIBLE : View.GONE);
         helper.setText(R.id.tv_barcode, barcode)
                 .setText(R.id.tv_goods_name, good.getG_sku_name())
@@ -330,7 +333,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         switch (helper.getItemViewType()) {
             case GoodsEntity.TYPE_GOODS://普通商品
             case GoodsEntity.TYPE_NO_CODE://无码商品
-                final CountTextView countTextView = ((CountTextView) helper.getView(R.id.count_view));
+                final CountTextView countTextView = helper.getView(R.id.count_view);
                 if(good.isCount_disable()) {//自编码按数量计的商品 不可加减
                     countTextView.setCountChangeEnable(false);
                 }
@@ -341,17 +344,6 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
                         if (count == 0) {
                             //清除当前商品
-//                            if (TextUtils.isEmpty(barcode)) {
-//                                //无码商品
-//                                barcodeData.remove(price);
-//                                data.remove(price);
-//                            } else {
-//                                barcodeData.remove(barcode);
-//                                data.remove(barcode);
-//                            }
-//                            mData.remove(item);
-//                            limit.remove(barcode);
-//                            notifyItemRemoved(position);
                             remove(position);
                             return;
 
@@ -398,13 +390,13 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 helper.setText(R.id.tv_count, df_weight.format(good_count) + good.getG_u_symbol());
                 break;
             case GoodsEntity.TYPE_ONLY_PROCESSING://纯加工方式
-                CountTextView view = (CountTextView) helper.getView(R.id.count_view);
+                CountTextView view = helper.getView(R.id.count_view);
                 view.setCountChangeEnable(false);
 
                 break;
             case GoodsEntity.TYPE_PROCESSING://加工方式
 
-                final CheckBox cb_processing = (CheckBox) helper.getView(R.id.cb_processing);
+                final CheckBox cb_processing = helper.getView(R.id.cb_processing);
 
                 GoodsResponse processing = item.getProcessing();
                 cb_processing.setOnCheckedChangeListener(null);
@@ -491,7 +483,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             promotion_name = promotion.getName();
         }
         final String final_promotion_name = promotion_name;
-        ((ImageView) helper.getView(R.id.iv_coupon)).setOnTouchListener(new View.OnTouchListener() {
+        helper.getView(R.id.iv_coupon).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(mListener != null) {
@@ -520,7 +512,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
      */
     private void refreshPrcessingData(BaseViewHolder helper, GoodsResponse processing) {
         DecimalFormat df = new DecimalFormat("#0.00");
-        float processing_subtotal = Float.valueOf(processing.getProcess_price()) * processing.getCount()
+        float processing_subtotal = Float.valueOf(processing.getPrice()) * processing.getCount()
                 - Float.valueOf(processing.getDiscount_price());
 
         if(processing_subtotal < 0) {
@@ -528,7 +520,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         }
 
         helper.setText(R.id.tv_processing_name, processing.getG_sku_name())
-                .setText(R.id.tv_processing_price, processing.getProcess_price())
+                .setText(R.id.tv_processing_price, processing.getPrice())
                 .setText(R.id.tv_processing_coupon, df.format(Float.valueOf(processing.getDiscount_price())))
                 .setText(R.id.tv_processing_subtotal, String.valueOf(df.format(processing_subtotal)))
                 .setText(R.id.tv_processing_count, String.valueOf(processing.getCount()));
@@ -702,11 +694,15 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         notifyDataSetChanged();
     }
 
+    /**
+     * 获取临时商品促销、商品促销、会员 全部优惠金额
+     * @return
+     */
     public String getTotalCoupon() {
         float coupon = 0;
         for (GoodsEntity<GoodsResponse> entity : mData) {
             GoodsResponse good = entity.getData();
-            coupon += Float.parseFloat(good.getDiscount_price());
+            coupon += good.getTemp_goods_discount() + good.getGoods_activity_discount() + good.getMember_discount();
         }
         return df.format(coupon);
     }

@@ -20,11 +20,12 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.easygo.cashier.ActivitiesUtils;
+import com.easygo.cashier.Msg;
+import com.easygo.cashier.utils.ActivitiesUtils;
 import com.easygo.cashier.BuildConfig;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.Constants;
-import com.easygo.cashier.MemberUtils;
+import com.easygo.cashier.utils.MemberUtils;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.TestUtils;
@@ -32,15 +33,16 @@ import com.easygo.cashier.base.BaseAppMvpActivity;
 import com.easygo.cashier.bean.AccountInfo;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
-import com.easygo.cashier.module.CouponUtils;
-import com.easygo.cashier.module.GiftCardUtils;
+import com.easygo.cashier.utils.CouponUtils;
+import com.easygo.cashier.utils.GiftCardUtils;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.widget.AccountWindow;
-import com.easygo.cashier.widget.ConfigDialog;
-import com.easygo.cashier.widget.MyTitleBar;
-import com.easygo.cashier.widget.PettyCashDialog;
+import com.easygo.cashier.widget.dialog.ConfigDialog;
+import com.easygo.cashier.widget.view.MyTitleBar;
+import com.easygo.cashier.widget.dialog.PettyCashDialog;
+import com.niubility.library.base.BaseHandler;
 import com.niubility.library.common.config.ConfigPreferenceActivity;
 import com.niubility.library.common.constants.BaseConstants;
 import com.niubility.library.http.exception.HttpExceptionEngine;
@@ -84,30 +86,32 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
     private UserGoodsScreen mUserGoodsScreen;
 
     private AccountInfo mAccountInfo;
-    private final String KEY_ACCOUNTS = "key_accounts";
     private AccountWindow mAccountWindow;
 
     private ConfigDialog mConfigDialog;
     private TestUtils textUtils = new TestUtils();
 
 
-    private static final int MSG_GET_SHOP = 0;
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
+    private MyHandler mHandler = new MyHandler(this);
+    private static class MyHandler extends BaseHandler<LoginActivity> {
 
+        public MyHandler(LoginActivity activity) {
+            super(activity);
+        }
+
+        @Override
+        public void onHandleMessage(Message msg, LoginActivity activity) {
             switch (msg.what) {
-                case MSG_GET_SHOP:
-                    removeMessages(MSG_GET_SHOP);
-                    mPresenter.init(DeviceUtils.getMacAddress());
+                case Msg.MSG_GET_SHOP:
+                    activity.mPresenter.init(DeviceUtils.getMacAddress());
 //                    mPresenter.init("08:ea:40:36:4f:3b");
 //                    mPresenter.init("10:d0:7a:02:b4:b4");
 
                     break;
             }
         }
-    };
+    }
+
     private SharedPreferences sp;
 
 
@@ -264,7 +268,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
      */
     public AccountInfo getSaveAccount() {
         SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(this);
-        String accounts_string = sp.getString(KEY_ACCOUNTS, "");
+        String accounts_string = sp.getString(Constants.KEY_ACCOUNTS, "");
 
         if (!TextUtils.isEmpty(accounts_string)) {
             return GsonUtils.getInstance().getGson().fromJson(accounts_string, AccountInfo.class);
@@ -298,7 +302,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
         //转化为json字符串保存
         String json = GsonUtils.getInstance().getGson().toJson(mAccountInfo);
-        edit.putString(KEY_ACCOUNTS, json).apply();
+        edit.putString(Constants.KEY_ACCOUNTS, json).apply();
 
     }
 
@@ -320,46 +324,6 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 //        mPresenter.init("10:d0:7a:02:b4:b4");
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (isShouldHideInput(v, ev)) {
-
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-                v.clearFocus();
-            }
-            return super.dispatchTouchEvent(ev);
-        }
-        // 必不可少，否则所有的组件都不会有TouchEvent了
-        if (getWindow().superDispatchTouchEvent(ev)) {
-            return true;
-        }
-        return onTouchEvent(ev);
-    }
-
-    public boolean isShouldHideInput(View v, MotionEvent event) {
-        if (v != null && (v instanceof EditText)) {
-            int[] leftTop = {0, 0};
-            //获取输入框当前的location位置
-            v.getLocationInWindow(leftTop);
-            int left = leftTop[0];
-            int top = leftTop[1];
-            int bottom = top + v.getHeight();
-            int right = left + v.getWidth();
-            if (event.getX() > left && event.getX() < right
-                    && event.getY() > top && event.getY() < bottom) {
-                // 点击的是输入框区域，保留点击EditText的事件
-                return false;
-            } else {
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -449,6 +413,9 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         }
         if (mAccountWindow != null && mAccountWindow.isShowing()) {
             mAccountWindow.dismiss();
+        }
+        if (mConfigDialog != null && mConfigDialog.getDialog() != null && mConfigDialog.getDialog().isShowing()) {
+            mConfigDialog.dismiss();
         }
     }
 

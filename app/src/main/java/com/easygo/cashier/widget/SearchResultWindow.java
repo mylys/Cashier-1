@@ -35,7 +35,7 @@ public class SearchResultWindow extends PopupWindow {
         setContentView(view);
 
 
-        rvSearchResult = ((RecyclerView) view.findViewById(R.id.rv_search_result));
+        rvSearchResult = view.findViewById(R.id.rv_search_result);
 
         searchResultAdapter = new GoodsResponseAdapter();
 
@@ -74,7 +74,6 @@ public class SearchResultWindow extends PopupWindow {
 
 
         searchResultAdapter.bindToRecyclerView(rvSearchResult);
-//        rvSearchResult.setAdapter(searchResultAdapter);
 
         DividerItemDecoration verticalDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         verticalDecoration.setDrawable(context.getResources().getDrawable(R.drawable.bg_item_decoration_vertical));
@@ -91,7 +90,7 @@ public class SearchResultWindow extends PopupWindow {
                     result.add(self);
 
                     GoodsResponse goodsResponse;
-                    if(self.getParent_id() == 0) {//加工商品
+                    if(self.isMainGood()) {//加工商品
                         //遍历寻找此商品的加工商品
                         int size = data.size();
                         for (int i = 0; i < size; i++) {
@@ -99,9 +98,8 @@ public class SearchResultWindow extends PopupWindow {
                                 continue;
 
                             goodsResponse = (GoodsResponse) data.get(i);
-                            if(goodsResponse.getParent_id() != 0
-                                    && goodsResponse.getG_sku_name().startsWith(self.getG_sku_name())) {
-                                //商品开头一样，则判断为 此商品的加工商品
+                            if(goodsResponse.isBelongTo(self.getG_sku_id())) {
+                                //判断为 此商品的加工商品
                                 result.add(goodsResponse);
                             }
                         }

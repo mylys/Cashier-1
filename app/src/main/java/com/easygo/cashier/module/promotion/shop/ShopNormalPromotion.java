@@ -3,7 +3,6 @@ package com.easygo.cashier.module.promotion.shop;
 import android.util.Log;
 
 import com.easygo.cashier.bean.ShopActivityResponse;
-import com.easygo.cashier.module.promotion.base.IPromotion;
 import com.easygo.cashier.module.promotion.base.IShopPromotion;
 
 import java.util.List;

@@ -1,15 +1,11 @@
 package com.easygo.cashier.module.order_history;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -17,10 +13,9 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
-import com.easygo.cashier.SoftKeyboardUtil;
-import com.easygo.cashier.base.BaseAppActivity;
+import com.easygo.cashier.utils.SoftKeyboardUtil;
 import com.easygo.cashier.module.order_history.order_history_refund.OrderHistoryRefundFragment;
-import com.easygo.cashier.widget.MyTitleBar;
+import com.easygo.cashier.widget.view.MyTitleBar;
 import com.niubility.library.utils.ScreenUtils;
 
 import butterknife.BindView;
@@ -72,6 +67,9 @@ public class OrderHistoryActivity extends AppCompatActivity {
         orderHistoryFragment.printRefundInfo(info);
     }
 
+    /**
+     * 跳转退款页
+     */
     public void toOrderHistoryRefundFragment(Bundle bundle) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_ORDER_HISTORY_REFUND);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

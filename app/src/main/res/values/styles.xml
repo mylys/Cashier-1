@@ -21,19 +21,6 @@
         <item name="android:textSize">@dimen/text_size_28</item>
     </style>
 
-    <style name="RedTextStyle" parent="TextStyle">
-        <item name="android:textColor">@color/color_cc565a</item>
-    </style>
-
-    <style name="WhiteTextStyle">
-        <item name="android:textColor">@color/color_text_white</item>
-        <item name="android:textSize">@dimen/text_size_28</item>
-    </style>
-
-    <style name="MiddleTextStyle">
-        <item name="android:textColor">@color/color_text</item>
-        <item name="android:textSize">@dimen/text_size_25</item>
-    </style>
     <!--旧设计稿-->
 
 
@@ -77,10 +64,6 @@
         <item name="android:textColor">@color/color_goods_title</item>
     </style>
     <!--商品标题列表名称-->
-    <style name="GoodsTitleStylelist">
-        <item name="android:textSize">@dimen/text_size_28</item>
-        <item name="android:textColor">@color/color_505050</item>
-    </style>
     <!--商品列表-->
     <style name="GoodsListStyle">
         <item name="android:textSize">@dimen/text_size_29</item>
@@ -103,12 +86,6 @@
     <style name="GoodsSettlementDetailStyle">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/text_size_42</item>
-        <item name="android:textColor">@color/color_505050</item>
-    </style>
-
-    <style name="GoodsSettlementDetailTextStyle">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/text_size_30</item>
         <item name="android:textColor">@color/color_505050</item>
     </style>
 

@@ -13,7 +13,7 @@
         android:id="@+id/cl_member"
         android:layout_width="@dimen/x959"
         android:layout_height="@dimen/y99"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -131,7 +131,7 @@
         android:id="@+id/cl_coupon"
         android:layout_width="@dimen/x960"
         android:layout_height="@dimen/y99"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/cl_member"
         app:layout_constraintStart_toEndOf="@id/cl_member"
         app:layout_constraintTop_toTopOf="@id/cl_member">
@@ -215,7 +215,7 @@
         android:id="@+id/cl_gift_card"
         android:layout_width="@dimen/x960"
         android:layout_height="@dimen/y99"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_member">

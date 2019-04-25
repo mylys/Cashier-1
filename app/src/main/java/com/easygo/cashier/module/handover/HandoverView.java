@@ -16,6 +16,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+/**
+ * 显示交接班信息View
+ */
 public class HandoverView extends FrameLayout {
 
     private static final String TAG = "HandoverView";

@@ -1,10 +1,8 @@
 package com.easygo.cashier.module.order_history.order_history_refund;
 
-import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.niubility.library.mvp.BaseContract;
 import com.niubility.library.mvp.BaseView;
 
-import java.util.List;
 import java.util.Map;
 
 /**

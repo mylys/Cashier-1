@@ -1,20 +1,14 @@
 package com.easygo.cashier;
 
-import android.app.Activity;
-import android.hardware.input.InputManager;
 import android.util.Log;
-import android.view.InputDevice;
 
 import com.easygo.cashier.bean.GoodsInfo;
-import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.OrderHistoryInfo;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.content.Context.INPUT_SERVICE;
 
 public class Test {
 

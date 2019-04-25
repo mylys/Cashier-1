@@ -19,7 +19,7 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.OrderHistoryAdapter;
 import com.easygo.cashier.base.BaseAppMvpFragment;
 import com.easygo.cashier.bean.OrderHistorysInfo;
-import com.easygo.cashier.widget.MySearchView;
+import com.easygo.cashier.widget.view.MySearchView;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.SharedPreferencesUtils;
 

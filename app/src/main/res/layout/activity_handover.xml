@@ -6,7 +6,7 @@
     android:background="@color/color_text_white">
 
     <!--标题栏-->
-    <com.easygo.cashier.widget.MyTitleBar
+    <com.easygo.cashier.widget.view.MyTitleBar
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
         android:id="@+id/cl_title"

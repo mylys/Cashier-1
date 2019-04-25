@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.TextView;
@@ -15,8 +14,8 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.adapter.UserGoodsAdapter;
 import com.easygo.cashier.bean.GoodsResponse;
-import com.easygo.cashier.widget.ActivitiesView;
-import com.easygo.cashier.widget.MyTitleBar;
+import com.easygo.cashier.widget.view.ActivitiesView;
+import com.easygo.cashier.widget.view.MyTitleBar;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -82,47 +81,6 @@ public class UserGoodsScreen extends Presentation {
 
     }
 
-    public void addItem(List<GoodsResponse> result, float weight) {
-        if(mUserGoodsAdapter != null)
-            this.mUserGoodsAdapter.addItem(result, weight);
-    }
-
-    public void addNoCodeItem(float price) {
-        if(mUserGoodsAdapter != null)
-            this.mUserGoodsAdapter.addNoCodeItem(price);
-    }
-
-    public void chooseProcessing(int position, GoodsResponse choice) {
-        if(mUserGoodsAdapter != null && choice != null)
-            this.mUserGoodsAdapter.chooseProcessing(position, choice);
-    }
-
-    public void onCountChanged(int position, int count) {
-        if(mUserGoodsAdapter == null) {
-            return;
-        }
-        if(count == 0) {
-
-
-            if(position >= 0)
-                onItemRemoved(position);
-        } else {
-            List<GoodsEntity<GoodsResponse>> data = mUserGoodsAdapter.getData();
-            if(position < 0 || position >= data.size()) {
-
-                Log.i("screen", "onCountChanged: position - " + position + ", count - " + count);
-                return;
-            }
-            GoodsEntity<GoodsResponse> goodsEntity = data.get(position);
-            goodsEntity.setCount(count);
-            mUserGoodsAdapter.notifyItemChanged(position);
-        }
-    }
-
-    public void onItemRemoved(int position) {
-        mUserGoodsAdapter.remove(position);
-    }
-
     public void refreshPrice(int goods_count, float total_money, float coupon, float real_pay) {
         DecimalFormat df = new DecimalFormat("#0.00");
 
@@ -143,11 +101,6 @@ public class UserGoodsScreen extends Presentation {
     public void toPosition() {
         if(recyclerView != null && mUserGoodsAdapter != null)
             recyclerView.smoothScrollToPosition(mUserGoodsAdapter.getData().size()-1);
-    }
-
-    public void setOrdersData(List<GoodsEntity<GoodsResponse>> goodsEntities) {
-        mUserGoodsAdapter.addData(goodsEntities);
-        toPosition();
     }
 
     public void notifyAdapter() {

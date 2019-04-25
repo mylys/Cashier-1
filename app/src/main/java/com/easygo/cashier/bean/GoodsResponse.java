@@ -298,6 +298,19 @@ public class GoodsResponse implements Serializable {
         this.parent_id = parent_id;
     }
 
+    /**
+     * 是否是主商品（加工方式不属于主商品）
+     *  <p>true: 主商品</p>
+     *  <p>false: 加工方式</p>
+     */
+    public boolean isMainGood() {
+        return parent_id == 0;
+    }
+    /** 是否是加工方式，并且是属于此商品的加工方式 */
+    public boolean isBelongTo(int g_sku_id) {
+        return !isMainGood() && this.parent_id == g_sku_id;
+    }
+
     public int getProcess_id() {
         return process_id;
     }
@@ -323,7 +336,7 @@ public class GoodsResponse implements Serializable {
     }
 
     public String getPrice() {
-        return price;
+        return isMainGood()? price: getProcess_price();
     }
 
     public void setPrice(String price) {

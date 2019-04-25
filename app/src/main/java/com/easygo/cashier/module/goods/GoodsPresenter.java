@@ -11,7 +11,6 @@ import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.MemberDayInfo;
 import com.easygo.cashier.bean.MemberDiscountInfo;
 import com.easygo.cashier.bean.MemberInfo;
-import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
 import com.easygo.cashier.http.HttpAPI;
 import com.easygo.cashier.printer.PrintHelper;
@@ -30,7 +29,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.RequestBody;
 
 public class GoodsPresenter extends BasePresenter<GoodsContract.IView> implements GoodsContract.IPresenter {
 

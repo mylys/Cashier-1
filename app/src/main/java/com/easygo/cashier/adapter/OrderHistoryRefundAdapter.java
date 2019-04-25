@@ -10,8 +10,8 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.GoodsResponse;
-import com.easygo.cashier.bean.RefundRequsetBody;
-import com.easygo.cashier.widget.CountTextView;
+import com.easygo.cashier.bean.request.RefundRequsetBody;
+import com.easygo.cashier.widget.view.CountTextView;
 import com.niubility.library.utils.ToastUtils;
 
 import java.text.DecimalFormat;
@@ -132,16 +132,6 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                     ToastUtils.showToast(mContext, "该商品已退款");
                     return;
                 }
-//                item.setSelect(!item.isSelect());
-//                listener.onListener();
-//                for (int i = 0; i < getData().size(); i++) {
-//                    if (!getData().get(i).isSelect()) {
-//                        listener.onClick(false);
-//                        break;
-//                    }
-//                }
-//                notifyItemChanged(helper.getLayoutPosition());
-
                 boolean selected = !item.isSelectReturnOfGoods();
                 CheckBox return_of_goods = helper.getView(R.id.cb_return_of_goods);
                 return_of_goods.setChecked(selected);
@@ -244,20 +234,6 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         }
     }
 
-    /** 设置全选按钮（true ： 全选 ； false : 全否） */
-    public void setClick(boolean click) {
-        for (GoodsRefundInfo goodsRefundInfo : getData()) {
-            if (goodsRefundInfo.getRefund() == 0) {
-                goodsRefundInfo.setSelect(click);
-                if (goodsRefundInfo.getType() != 1 || goodsRefundInfo.getType() != 3) {
-                    goodsRefundInfo.setRefund_num(goodsRefundInfo.getProduct_num() + "");
-                    goodsRefundInfo.setRefund_subtotal(goodsRefundInfo.getProduct_subtotal());
-                }
-            }
-        }
-        notifyDataSetChanged();
-    }
-
     public float getRatioRefund(float real_pay) {
         float refund_total = 0;
         float total = 0;
@@ -285,22 +261,11 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 //0:正常商品 --- 1:称重商品 --- 2:无码商品 --- 3:加工方式
                 int type = goodsRefundInfo.getType();
                 totalPrcie += Double.parseDouble(type == 1 || type == 3 ? goodsRefundInfo.getProduct_subtotal() : goodsRefundInfo.getRefund_subtotal());
-//                totalPrcie -= Double.parseDouble(goodsRefundInfo.getProduct_preferential());
             }
         }
         return df.format(totalPrcie);
     }
 
-    /** 获取商品总优惠 */
-//    public float getTotalCoupon() {
-//        double totalCoupon = 0f;
-//        for (GoodsRefundInfo goodsRefundInfo : getData()) {
-//            if (goodsRefundInfo.isSelect()) {
-//                totalCoupon += Double.parseDouble(goodsRefundInfo.getProduct_preferential());
-//            }
-//        }
-//        return (float) totalCoupon;
-//    }
 
     /** 获取商品退货总数量 */
     public int getTotalNum() {
@@ -340,8 +305,6 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
     }
 
     public interface OnItemClickListener {
-        void onClick(boolean click);
-
         void onListener();
     }
 

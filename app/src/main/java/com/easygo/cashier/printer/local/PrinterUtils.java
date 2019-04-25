@@ -283,20 +283,20 @@ public class PrinterUtils {
                 Vector<Byte> data = new Vector<>(esc.length);
                 if (isEscPrinterCommand()) {
                     Log.i(TAG, "getPrinterState: 打印机状态查询... ");
-                    for (int i = 0; i < esc.length; i++) {
-                        data.add(esc[i]);
+                    for (byte anEsc : esc) {
+                        data.add(anEsc);
                     }
                     DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].sendDataImmediately(data);
                 }else if (DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].getCurrentPrinterCommand() == PrinterCommand.TSC) {
                     PrinterLog.write("getPrinterState tsc模式");
-                    for (int i = 0; i < tsc.length; i++) {
-                        data.add(tsc[i]);
+                    for (byte aTsc : tsc) {
+                        data.add(aTsc);
                     }
                     DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].sendDataImmediately(data);
                 }else if (DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].getCurrentPrinterCommand() == PrinterCommand.CPCL) {
                     PrinterLog.write("getPrinterState tsc模式");
-                    for (int i = 0; i < cpcl.length; i++) {
-                        data.add(cpcl[i]);
+                    for (byte aCpcl : cpcl) {
+                        data.add(aCpcl);
                     }
                     DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].sendDataImmediately(data);
                 }

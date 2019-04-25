@@ -7,12 +7,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
-import com.easygo.cashier.widget.MyTitleBar;
+import com.easygo.cashier.widget.view.MyTitleBar;
 import com.niubility.library.base.BaseActivity;
 import com.niubility.library.utils.ScreenUtils;
 

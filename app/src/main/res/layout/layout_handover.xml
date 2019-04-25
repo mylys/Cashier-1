@@ -312,7 +312,6 @@
         app:layout_constraintEnd_toEndOf="@id/tv_total_order_count" />
 
     <View
-        android:id="@+id/left_line_2"
         android:layout_width="@dimen/x472"
         android:layout_height="@dimen/y1"
         android:background="@color/color_d3d3d3"
@@ -404,7 +403,6 @@
 
 
     <View
-        android:id="@+id/right_line_2"
         android:layout_width="0dp"
         android:layout_height="@dimen/y1"
         android:background="@color/color_d3d3d3"
@@ -448,7 +446,6 @@
 
     <!--备用金-->
     <TextView
-        android:id="@+id/tv_text_reserver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_reserver"

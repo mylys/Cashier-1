@@ -6,8 +6,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.EntryOrders;
-import com.easygo.cashier.bean.OrderHistorysInfo;
-import com.niubility.library.utils.TimeUtils;
 
 import java.text.DecimalFormat;
 

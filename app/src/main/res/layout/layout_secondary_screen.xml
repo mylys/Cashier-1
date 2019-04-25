@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_text_white">
 
-    <com.easygo.cashier.widget.MyTitleBar
+    <com.easygo.cashier.widget.view.MyTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

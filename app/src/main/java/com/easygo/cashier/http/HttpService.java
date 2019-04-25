@@ -16,7 +16,6 @@ import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.PrinterStatusResponse;
 import com.easygo.cashier.bean.QuickInfo;
-import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
 import com.niubility.library.http.base.HttpResult;
 

@@ -12,12 +12,12 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
+import com.easygo.cashier.widget.view.CountTextView;
 import com.niubility.library.utils.ScreenUtils;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -93,17 +93,17 @@ public class SetCountPopupWindow extends PopupWindow {
         mEditText = new EditText(this.getContentView().getContext());
         mEditText.setText(String.valueOf(mOriginCount));
 
-        mTv1 = (TextView) mView.findViewById(R.id.tv_1);
-        mTv2 = (TextView) mView.findViewById(R.id.tv_2);
-        mTv3 = (TextView) mView.findViewById(R.id.tv_3);
-        mTv4 = (TextView) mView.findViewById(R.id.tv_4);
-        mTv5 = (TextView) mView.findViewById(R.id.tv_5);
-        mTv6 = (TextView) mView.findViewById(R.id.tv_6);
-        mTv7 = (TextView) mView.findViewById(R.id.tv_7);
-        mTv8 = (TextView) mView.findViewById(R.id.tv_8);
-        mTv9 = (TextView) mView.findViewById(R.id.tv_9);
-        mTv00 = (TextView) mView.findViewById(R.id.tv_00);
-        mTv0 = (TextView) mView.findViewById(R.id.tv_0);
+        mTv1 = mView.findViewById(R.id.tv_1);
+        mTv2 = mView.findViewById(R.id.tv_2);
+        mTv3 = mView.findViewById(R.id.tv_3);
+        mTv4 = mView.findViewById(R.id.tv_4);
+        mTv5 = mView.findViewById(R.id.tv_5);
+        mTv6 = mView.findViewById(R.id.tv_6);
+        mTv7 = mView.findViewById(R.id.tv_7);
+        mTv8 = mView.findViewById(R.id.tv_8);
+        mTv9 = mView.findViewById(R.id.tv_9);
+        mTv00 = mView.findViewById(R.id.tv_00);
+        mTv0 = mView.findViewById(R.id.tv_0);
         mDelete = mView.findViewById(R.id.cl_delete);
 
         mTvs = new TextView[11];

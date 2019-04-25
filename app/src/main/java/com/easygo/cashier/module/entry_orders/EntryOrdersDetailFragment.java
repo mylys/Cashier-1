@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.EntryOrdersGoodsAdapter;
 import com.easygo.cashier.bean.EntryOrders;
-import com.easygo.cashier.widget.GeneraDialog;
+import com.easygo.cashier.widget.dialog.GeneraDialog;
 import com.niubility.library.base.BaseFragment;
 
 import java.text.DecimalFormat;

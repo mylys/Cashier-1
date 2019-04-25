@@ -17,7 +17,6 @@
       android:layout_marginTop="8dp" />
 
   <TextView
-      android:id="@+id/textView"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       tools:text="@tools:sample/full_names"
@@ -42,7 +41,6 @@
       app:layout_constraintHorizontal_bias="0.050" />
 
   <TextView
-      android:id="@+id/textView3"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       tools:text="@tools:sample/date/hhmm"

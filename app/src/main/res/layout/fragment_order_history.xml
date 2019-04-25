@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--搜索框-->
-        <com.easygo.cashier.widget.MySearchView
+        <com.easygo.cashier.widget.view.MySearchView
         android:id="@+id/cl_search"
         android:layout_width="@dimen/x590"
         android:layout_height="@dimen/y98"
@@ -45,7 +45,7 @@
         app:search_hint="@string/text_search_hint_order"
         app:search_text_padding_start="@dimen/x29">
 
-    </com.easygo.cashier.widget.MySearchView>
+    </com.easygo.cashier.widget.view.MySearchView>
 
     <View
         android:id="@+id/line3"

@@ -88,7 +88,7 @@
 
     <!--商品数量 可加减-->
 
-    <com.easygo.cashier.widget.CountTextView
+    <com.easygo.cashier.widget.view.CountTextView
         android:id="@+id/count_view"
         android:layout_width="@dimen/x240"
         android:layout_height="@dimen/y70"

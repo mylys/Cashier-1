@@ -25,6 +25,7 @@ public class SettlementContract {
         void cash(String shop_sn, String order_no, int buyer_pay, int change_money);
 
         void checkBankcardStatus(String order_no);
+        void setCheckBankcardStatus(boolean checkBankcardStatus);
 
         void giftCard(String card_no);
         void giftCardPay(String order_no);
@@ -58,8 +59,7 @@ public class SettlementContract {
         void cashSuccess(String result);
         void cashFailed(Map<String, Object> map);
 
-        void bankcardSuccess(BankcardStatusResponse result);
-        void bankcardFailed(Map<String, Object> map);
+        void bankcardSuccess();
 
         void giftCardSuccess(GiftCardResponse result);
         void giftCardFailed(Map<String, Object> map);

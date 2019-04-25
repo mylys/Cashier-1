@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.RequestBody;
-
 public class HandoverPresenter extends BasePresenter<HandoverContract.IView> implements HandoverContract.IPresenter {
 
 

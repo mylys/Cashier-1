@@ -6,7 +6,7 @@
     android:background="@color/color_f5f7fa">
 
     <!--标题栏-->
-    <com.easygo.cashier.widget.MyTitleBar
+    <com.easygo.cashier.widget.view.MyTitleBar
         android:id="@+id/cl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
@@ -17,7 +17,7 @@
         app:show_title="true"
         app:title_text="@string/text_quick_choose">
 
-    </com.easygo.cashier.widget.MyTitleBar>
+    </com.easygo.cashier.widget.view.MyTitleBar>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_classify_list"

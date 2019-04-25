@@ -100,7 +100,7 @@
         android:text="1"
         android:visibility="visible" />
 
-    <com.easygo.cashier.widget.CountTextView
+    <com.easygo.cashier.widget.view.CountTextView
         android:id="@+id/tv_refund_num"
         style="@style/RefundGoodsList"
         android:layout_width="@dimen/x240"

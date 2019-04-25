@@ -179,7 +179,7 @@
         <!--app:layout_constraintEnd_toStartOf="@+id/btn_settlement"-->
         <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <com.easygo.cashier.widget.GeneraButton
+    <com.easygo.cashier.widget.view.GeneraButton
         android:id="@+id/btn_temp_promotion"
         android:layout_width="@dimen/x180"
         android:layout_height="match_parent"
@@ -199,7 +199,7 @@
         app:layout_constraintEnd_toStartOf="@id/btn_temp_promotion"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.easygo.cashier.widget.GeneraButton
+    <com.easygo.cashier.widget.view.GeneraButton
         android:id="@+id/btn_orders"
         android:layout_width="@dimen/x180"
         android:layout_height="match_parent"
@@ -219,7 +219,7 @@
         app:layout_constraintEnd_toStartOf="@id/btn_orders"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.easygo.cashier.widget.GeneraButton
+    <com.easygo.cashier.widget.view.GeneraButton
         android:id="@+id/btn_clear"
         android:layout_width="@dimen/x180"
         android:layout_height="match_parent"

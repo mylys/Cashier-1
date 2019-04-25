@@ -7,7 +7,7 @@
 
 
     <!--标题栏-->
-    <com.easygo.cashier.widget.MyTitleBar
+    <com.easygo.cashier.widget.view.MyTitleBar
         android:id="@+id/cl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
@@ -18,10 +18,10 @@
         app:show_title="true"
         app:title_text="@string/text_settlement">
 
-    </com.easygo.cashier.widget.MyTitleBar>
+    </com.easygo.cashier.widget.view.MyTitleBar>
 
     <!--支付方式选择-->
-    <com.easygo.cashier.widget.PayWayView
+    <com.easygo.cashier.widget.view.PayWayView
         android:id="@+id/pay_way_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y135"
@@ -29,7 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_title">
 
-    </com.easygo.cashier.widget.PayWayView>
+    </com.easygo.cashier.widget.view.PayWayView>
 
 
     <View
@@ -86,7 +86,7 @@
         app:layout_constraintEnd_toStartOf="@id/btn_delete"
         app:layout_constraintTop_toTopOf="@id/btn_delete" />
 
-    <com.easygo.cashier.widget.Keyboard
+    <com.easygo.cashier.widget.view.Keyboard
         android:id="@+id/kb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
         app:layout_constraintStart_toStartOf="@id/et_money"
         app:layout_constraintTop_toBottomOf="@id/btn_delete">
 
-    </com.easygo.cashier.widget.Keyboard>
+    </com.easygo.cashier.widget.view.Keyboard>
 
     <Button
         android:id="@+id/btn_cancel_coupon"

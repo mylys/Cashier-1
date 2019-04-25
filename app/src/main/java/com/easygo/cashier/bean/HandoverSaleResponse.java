@@ -1,7 +1,6 @@
 package com.easygo.cashier.bean;
 
 import android.text.TextUtils;
-import android.view.TextureView;
 
 public class HandoverSaleResponse {
 

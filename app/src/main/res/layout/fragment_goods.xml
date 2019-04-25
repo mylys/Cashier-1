@@ -30,7 +30,7 @@
         android:id="@+id/cl_subtitle"
         layout="@layout/include_subtitle_search_layout" />
 
-    <com.easygo.cashier.widget.ExtraInfoView
+    <com.easygo.cashier.widget.view.ExtraInfoView
         android:id="@+id/cl_extra_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cl_extra_info" />
 
     <!--正在参与的活动-->
-    <com.easygo.cashier.widget.ActivitiesView
+    <com.easygo.cashier.widget.view.ActivitiesView
         android:id="@+id/activities_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

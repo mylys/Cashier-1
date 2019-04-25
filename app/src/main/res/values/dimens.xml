@@ -14,11 +14,9 @@
     <dimen name="text_size_25">@dimen/x25</dimen>
     <dimen name="text_size_28">@dimen/x28</dimen>
     <dimen name="text_size_29">@dimen/x29</dimen>
-    <dimen name="text_size_12">@dimen/x12</dimen>
     <dimen name="text_size_26">@dimen/x26</dimen>
     <dimen name="text_size_30">@dimen/x30</dimen>
     <dimen name="text_size_33">@dimen/x33</dimen>
-    <dimen name="text_size_34">@dimen/x34</dimen>
     <dimen name="text_size_35">@dimen/x35</dimen>
     <dimen name="text_size_37">@dimen/x37</dimen>
     <dimen name="text_size_38">@dimen/x38</dimen>
@@ -48,7 +46,6 @@
     <dimen name="margin_661">@dimen/x661</dimen>
     <dimen name="margin_1054">@dimen/x1054</dimen>
     <dimen name="margin_1291">@dimen/x1291</dimen>
-    <dimen name="margin_1528">@dimen/x1528</dimen>
     <dimen name="margin_1595">@dimen/x1595</dimen>
 
 
@@ -72,8 +69,6 @@
     <dimen name="genera_list_item_height">@dimen/y140</dimen>
 
     <!-- 通用文字框弹窗 -->
-    <dimen name="genera_edit_width">@dimen/x632</dimen>
-    <dimen name="genera_edit_hight">@dimen/y396</dimen>
 
     <!--确认弹窗-->
     <dimen name="dialog_width">@dimen/x600</dimen>
@@ -87,18 +82,12 @@
     <dimen name="line_height">@dimen/y1</dimen>
 
     <!--搜索框-->
-    <dimen name="search_drawable_width">@dimen/x35</dimen>
-    <dimen name="search_drawable_height">@dimen/y35</dimen>
-    <dimen name="clear_drawable_width">@dimen/x37</dimen>
-    <dimen name="clear_drawable_height">@dimen/y37</dimen>
 
     <!--扫码框宽高-->
     <dimen name="scan_dialog_width">@dimen/x370</dimen>
     <dimen name="scan_dialog_height">@dimen/y348</dimen>
 
     <!--扫码框宽高-->
-    <dimen name="keyboard_width">@dimen/x545</dimen>
-    <dimen name="keyboard_height">@dimen/y545</dimen>
 
     <!--现金结算 键盘key间距-->
     <dimen name="keyboard_key_margin">@dimen/x12</dimen>

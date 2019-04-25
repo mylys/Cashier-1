@@ -7,7 +7,6 @@ import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.bean.MemberDayInfo;
 import com.easygo.cashier.bean.MemberDiscountInfo;
 import com.easygo.cashier.bean.MemberInfo;
-import com.easygo.cashier.bean.RealMoneyResponse;
 import com.easygo.cashier.bean.ShopActivityResponse;
 import com.niubility.library.mvp.BaseContract;
 import com.niubility.library.mvp.BaseView;

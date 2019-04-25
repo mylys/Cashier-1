@@ -144,7 +144,7 @@ public class DeviceConnFactoryManager {
 
         private String name;
 
-        private CONN_METHOD(String name) {
+        CONN_METHOD(String name) {
             this.name = name;
         }
 
@@ -430,8 +430,8 @@ public class DeviceConnFactoryManager {
                 //发送ESC查询打印机状态指令
                 sendCommand = esc;
                 Vector<Byte> data = new Vector<>(esc.length);
-                for (int i = 0; i < esc.length; i++) {
-                    data.add(esc[i]);
+                for (byte anEsc : esc) {
+                    data.add(anEsc);
                 }
                 sendDataImmediately(data); //发送esc数据
                 //开启计时器，隔4000毫秒没有没返回值时停止读取打印机数据线程并且关闭端口

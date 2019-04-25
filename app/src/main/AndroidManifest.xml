@@ -42,13 +42,11 @@
             <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name=".base.BaseAppActivity" />
         <activity android:name=".module.settlement.CashierActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".module.order_history.OrderHistoryActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".module.refund.RefundActivity" />
         <activity android:name=".module.handover.HandoverActivity" />
         <activity android:name=".module.entry_orders.EntryOrdersActivity" />
         <activity android:name=".module.quick_choose.QuickChooseActivity" />

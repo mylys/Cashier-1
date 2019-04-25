@@ -28,9 +28,9 @@ import com.easygo.cashier.Configs;
 import com.easygo.cashier.Constants;
 import com.easygo.cashier.Events;
 import com.easygo.cashier.ModulePath;
+import com.easygo.cashier.Msg;
 import com.easygo.cashier.MyApplication;
 import com.easygo.cashier.R;
-import com.easygo.cashier.Test;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.base.BaseAppMvpActivity;
 import com.easygo.cashier.bean.EntryOrders;
@@ -43,12 +43,13 @@ import com.easygo.cashier.module.status.StatusContract;
 import com.easygo.cashier.module.status.StatusPresenter;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.printer.local.PrinterUtils;
-import com.easygo.cashier.widget.EquipmentstateDialog;
-import com.easygo.cashier.widget.FunctionListDialog;
-import com.easygo.cashier.widget.GeneraDialog;
-import com.easygo.cashier.widget.MyTitleBar;
+import com.easygo.cashier.widget.dialog.EquipmentstateDialog;
+import com.easygo.cashier.widget.dialog.FunctionListDialog;
+import com.easygo.cashier.widget.dialog.GeneraDialog;
+import com.easygo.cashier.widget.view.MyTitleBar;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseEvent;
+import com.niubility.library.base.BaseHandler;
 import com.niubility.library.utils.NetworkUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
@@ -88,7 +89,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     @BindView(R.id.framelayout)
     FrameLayout framelayout;
     private Fragment fragment;
-    private GoodsFragment goodsFragment;
+    public GoodsFragment goodsFragment;
     private EquipmentstateDialog dialog;
 
     @Autowired(name = "admin_name")
@@ -96,24 +97,25 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
     private ExecutorService cachedThreadPool;
 
-    public static final int MSG_NETWORK = 0;
-    public static final int MSG_RED_POINT = 1;
-    private Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            int what = msg.what;
-            removeMessages(what);
+    private MyHandler mHandler = new MyHandler(this);
+    private static class MyHandler extends BaseHandler<MainActivity> {
 
-            switch (what) {
-                case MSG_NETWORK:
-                    judgeNetworkAvalible();
+        public MyHandler(MainActivity activity) {
+            super(activity);
+        }
+
+        @Override
+        public void onHandleMessage(Message msg, MainActivity activity) {
+            switch (msg.what) {
+                case Msg.MSG_NETWORK:
+                    activity.judgeNetworkAvalible();
                     break;
-                case MSG_RED_POINT:
-                    myTitleBar.setRedPointVisibility(Beta.getUpgradeInfo() != null);
+                case Msg.MSG_RED_POINT:
+                    activity.myTitleBar.setRedPointVisibility(Beta.getUpgradeInfo() != null);
                     break;
             }
         }
-    };
+    }
 
     @Override
     protected StatusPresenter createPresenter() {
@@ -139,12 +141,11 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         }
         tvCashierAcount.setText("收银员: " + admin_name);
 
-        Test.detectInputDeviceWithShell();
         mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
 
 
         initReceiver();
-        mHandler.sendEmptyMessageDelayed(MSG_RED_POINT, 1000);
+        mHandler.sendEmptyMessageDelayed(Msg.MSG_RED_POINT, 1000);
 
         initLocalPrinter();
     }
@@ -166,7 +167,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             public void onConnected(boolean showTip) {
                 if(dialog != null && dialog.isShow()) {
                     dialog.setNewData(0, getString(R.string.local_printer), true);
-                    return;
+//                    return;
                 }
 //                if(showTip){
 //                    showToast(PrinterUtils.getInstance().getConnDeviceInfo() + " " + getString(R.string.str_conn_state_connected));
@@ -177,7 +178,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             public void onDisconnected() {
                 if(dialog != null && dialog.isShow()) {
                     dialog.setNewData(0, getString(R.string.local_printer), false);
-                    return;
+//                    return;
                 }
 //                showToast(getString(R.string.str_conn_state_disconnect));
             }
@@ -246,7 +247,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         public void onReceive(Context context, Intent intent) {
             if(ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
                 //ping
-                mHandler.sendEmptyMessageDelayed(MSG_NETWORK, 1000);
+                mHandler.sendEmptyMessageDelayed(Msg.MSG_NETWORK, 1000);
             }
         }
     };
@@ -274,7 +275,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                 @Override
                 public void run() {
                     myTitleBar.setOnline(networkOnline);
-                    mHandler.sendEmptyMessageDelayed(MSG_NETWORK, 60 * 1000);
+                    mHandler.sendEmptyMessageDelayed(Msg.MSG_NETWORK, 60 * 1000);
 //                    Configs.current_mode = networkOnline? Configs.mode_online: Configs.mode_offline;
                 }
             });
@@ -366,49 +367,6 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
     }
 
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (isShouldHideInput(v, ev)) {
-
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-                v.clearFocus();
-
-            }
-            return super.dispatchTouchEvent(ev);
-        }
-        // 必不可少，否则所有的组件都不会有TouchEvent了
-        if (getWindow().superDispatchTouchEvent(ev)) {
-            return true;
-        }
-        return onTouchEvent(ev);
-    }
-
-    public boolean isShouldHideInput(View v, MotionEvent event) {
-        if (v != null && (v instanceof EditText)) {
-            int[] leftTop = {0, 0};
-            //获取输入框当前的location位置
-            v.getLocationInWindow(leftTop);
-            int left = leftTop[0];
-            int top = leftTop[1];
-            int bottom = top + v.getHeight();
-            int right = left + v.getWidth();
-            if (event.getX() > left && event.getX() < right
-                    && event.getY() > top && event.getY() < bottom) {
-                // 点击的是输入框区域，保留点击EditText的事件
-                return false;
-            } else {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public FunctionListDialog.OnFunctionListItemListener mFunctionListItemListener = new FunctionListDialog.OnFunctionListItemListener() {
         @Override
         public void orderHistory() {
@@ -498,7 +456,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                     if (dialog != null && dialog.isShow()) {
                         dialog.setErrorData(0, getString(R.string.local_printer), getString(R.string.device_abnormal));
                     }
-                };
+                }
             }
         }, 500);
 
@@ -509,8 +467,8 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     private void checkUpdate() {
         Beta.checkUpgrade();
 
-        mHandler.removeMessages(MSG_RED_POINT);
-        mHandler.sendEmptyMessageDelayed(MSG_RED_POINT, 2000);
+        mHandler.removeMessages(Msg.MSG_RED_POINT);
+        mHandler.sendEmptyMessageDelayed(Msg.MSG_RED_POINT, 2000);
     }
 
 

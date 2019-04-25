@@ -29,7 +29,7 @@ import com.easygo.cashier.printer.local.PrinterHelpter;
 import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.printer.local.obj.HandoverInfoPrintObj;
 import com.easygo.cashier.printer.local.obj.HandoverSaleListPrintObj;
-import com.easygo.cashier.widget.MyTitleBar;
+import com.easygo.cashier.widget.view.MyTitleBar;
 import com.niubility.library.common.constants.BaseConstants;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.ScreenUtils;
@@ -113,16 +113,6 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
         handover_id = sp.getInt(Constants.KEY_HANDOVER_ID, -1);
 
         mPresenter.handover(handover_id);
-
-//        cbPrint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if(isChecked) {
-//                    printHandoverInfo();
-//                }
-//            }
-//        });
-
     }
 
     private void handoverPermission() {
@@ -210,12 +200,6 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
     @Override
     public void loginoutFailed(Map<String, Object> map) {
         during_handover = false;
-//        if (HttpExceptionEngine.isBussinessError(map)) {
-//
-//            String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
-//
-//            showToast("错误信息:" + err_msg);
-//        }
         String err_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
 
         showToast("错误信息:" + err_msg);
@@ -402,7 +386,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
         float total_money = 0;
         for (int i = 0; i < size; i++) {
             HandoverSaleResponse saleResponse = data.get(i);
-            count += Integer.valueOf(saleResponse.getQuantity());
+            count += saleResponse.getQuantity();
             total_money += saleResponse.getMoney();
 
             sb.append(i+1).append(".")

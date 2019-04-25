@@ -32,16 +32,6 @@
                 style="@style/RefundList"
                 android:layout_marginStart="@dimen/x30"/>
 
-            <CheckBox
-                android:id="@+id/checkbox"
-                android:layout_width="@dimen/x36"
-                android:layout_height="@dimen/y36"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/x30"
-                android:visibility="gone"
-                android:background="@drawable/selected_tab_bg"
-                android:button="@null" />
-
             <TextView
                 style="@style/RefundList"
                 android:layout_width="@dimen/x428"

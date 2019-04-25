@@ -14,7 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
-import com.easygo.cashier.widget.PayWayView;
+import com.easygo.cashier.widget.view.PayWayView;
 
 import java.text.DecimalFormat;
 

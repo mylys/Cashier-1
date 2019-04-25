@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_dialog">
+    android:background="@drawable/bg_dialog"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <!--获取扫码机条码-->
     <!--<EditText-->
@@ -57,7 +59,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.easygo.cashier.widget.DialogSearchView
+    <com.easygo.cashier.widget.view.DialogSearchView
         android:id="@+id/search_view"
         android:layout_width="@dimen/x550"
         android:layout_height="@dimen/y80"

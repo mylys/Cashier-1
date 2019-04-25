@@ -3,15 +3,12 @@ package com.easygo.cashier.adapter;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.easygo.cashier.Configs;
-import com.easygo.cashier.MemberUtils;
+import com.easygo.cashier.utils.MemberUtils;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.GoodsResponse;
-import com.easygo.cashier.widget.CountTextView;
+import com.easygo.cashier.widget.view.CountTextView;
 
 import java.text.DecimalFormat;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 /**
  * 用户购买的商品列表 适配器
@@ -62,7 +59,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
         switch (helper.getItemViewType()) {
             case GoodsEntity.TYPE_GOODS://普通商品
             case GoodsEntity.TYPE_NO_CODE://无码商品
-                CountTextView count = ((CountTextView) helper.getView(R.id.count_view));
+                CountTextView count = helper.getView(R.id.count_view);
                 count.setCount(df_int.format(good_count));
                 count.setCountChangeEnable(false);
                 break;
@@ -70,7 +67,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
                 helper.setText(R.id.tv_count, df_weight.format(good_count) + good.getG_u_symbol());
                 break;
             case GoodsEntity.TYPE_ONLY_PROCESSING://纯加工方式
-                CountTextView view = (CountTextView) helper.getView(R.id.count_view);
+                CountTextView view = helper.getView(R.id.count_view);
                 view.setCountChangeEnable(false);
                 break;
             case GoodsEntity.TYPE_PROCESSING://加工方式
@@ -115,7 +112,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
      */
     private void refreshPrcessingData(BaseViewHolder helper, GoodsResponse processing) {
         DecimalFormat df = new DecimalFormat("#0.00");
-        float processing_subtotal = Float.valueOf(processing.getProcess_price()) * processing.getCount()
+        float processing_subtotal = Float.valueOf(processing.getPrice()) * processing.getCount()
                 -  Float.valueOf(processing.getDiscount_price());
 
         if(processing_subtotal < 0) {
@@ -123,7 +120,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
         }
 
         helper.setText(R.id.tv_processing_name, processing.getG_sku_name())
-                .setText(R.id.tv_processing_price, processing.getProcess_price())
+                .setText(R.id.tv_processing_price, processing.getPrice())
                 .setText(R.id.tv_processing_coupon, processing.getDiscount_price())
                 .setText(R.id.tv_processing_subtotal, String.valueOf(df.format(processing_subtotal)))
                 .setText(R.id.tv_processing_count, String.valueOf(processing.getCount()));

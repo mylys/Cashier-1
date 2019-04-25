@@ -6,7 +6,7 @@ import android.view.Gravity;
 import android.view.Window;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.easygo.cashier.widget.LoadingDialog;
+import com.easygo.cashier.widget.dialog.LoadingDialog;
 import com.niubility.library.base.BaseMvpFragment;
 import com.niubility.library.mvp.BasePresenter;
 import com.niubility.library.mvp.BaseView;
