@@ -4,28 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.display.DisplayManager;
-import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.easygo.cashier.Msg;
-import com.easygo.cashier.utils.ActivitiesUtils;
 import com.easygo.cashier.BuildConfig;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.Constants;
-import com.easygo.cashier.utils.MemberUtils;
 import com.easygo.cashier.ModulePath;
 import com.easygo.cashier.R;
 import com.easygo.cashier.TestUtils;
@@ -33,16 +25,20 @@ import com.easygo.cashier.base.BaseAppMvpActivity;
 import com.easygo.cashier.bean.AccountInfo;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
-import com.easygo.cashier.utils.CouponUtils;
-import com.easygo.cashier.utils.GiftCardUtils;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.printer.local.PrinterUtils;
+import com.easygo.cashier.utils.ActivitiesUtils;
+import com.easygo.cashier.utils.CouponUtils;
+import com.easygo.cashier.utils.GiftCardUtils;
+import com.easygo.cashier.utils.MemberUtils;
 import com.easygo.cashier.widget.AccountWindow;
 import com.easygo.cashier.widget.dialog.ConfigDialog;
-import com.easygo.cashier.widget.view.MyTitleBar;
+import com.easygo.cashier.widget.dialog.GeneraDialog;
 import com.easygo.cashier.widget.dialog.PettyCashDialog;
+import com.easygo.cashier.widget.view.MyTitleBar;
 import com.niubility.library.base.BaseHandler;
+import com.niubility.library.common.config.BaseConfig;
 import com.niubility.library.common.config.ConfigPreferenceActivity;
 import com.niubility.library.common.constants.BaseConstants;
 import com.niubility.library.http.exception.HttpExceptionEngine;
@@ -81,7 +77,6 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
     Button btnLogin;
     @BindView(R.id.tv_system)
     TextView tvSystem;
-    private int is_reserve;
     private PettyCashDialog dialog;
     private UserGoodsScreen mUserGoodsScreen;
 
@@ -101,14 +96,10 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
         @Override
         public void onHandleMessage(Message msg, LoginActivity activity) {
-            switch (msg.what) {
-                case Msg.MSG_GET_SHOP:
-                    activity.mPresenter.init(DeviceUtils.getMacAddress());
-//                    mPresenter.init("08:ea:40:36:4f:3b");
-//                    mPresenter.init("10:d0:7a:02:b4:b4");
-
-                    break;
-            }
+//            switch (msg.what) {
+//                case Msg.MSG_GET_SHOP:
+//                    break;
+//            }
         }
     }
 
@@ -168,23 +159,47 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         GiftCardUtils.getInstance().reset();
 
 
-        if(BuildConfig.DEBUG) {
-            clTitle.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    startActivity(new Intent(LoginActivity.this, ConfigPreferenceActivity.class));
+        if(Configs.current_mode == Configs.mode_offline) {
+            btnLogin.setText("登录（离线）");
+        }
+
+        clTitle.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if("release".equals(BuildConfig.BUILD_TYPE)) {
+                    BaseConfig.hideKeys = new String[]{
+                            getString(R.string.key_environment)
+                    };
+                }
+                startActivity(new Intent(LoginActivity.this, ConfigPreferenceActivity.class));
+                return true;
+            }
+        });
+
+        btnLogin.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(TextUtils.isEmpty(getAccount()) || TextUtils.isEmpty(getPassword())) {
                     return true;
                 }
-            });
-        }
+                if(Configs.current_mode == Configs.mode_online) {
+                    Configs.current_mode = Configs.mode_offline;
+                    showToast("已切换到离线模式");
+                    btnLogin.setText("登录（离线）");
+                } else {
+                    Configs.current_mode = Configs.mode_online;
+                    showToast("已切换到在线模式");
+                    btnLogin.setText(R.string.text_login);
+                }
+                return true;
+            }
+        });
 
 
     }
 
     private void initAccount() {
-//        etAccount.setShowSoftInputOnFocus(false);
         mAccountInfo = getSaveAccount();
-
 
         etAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,11 +213,6 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
                 if (hasFocus) {
                     showAcccountWindow();
                 }
-//                else {
-//                    if(mAccountWindow != null && mAccountWindow.isShowing()) {
-//                        mAccountWindow.dismiss();
-//                    }
-//                }
             }
         });
     }
@@ -267,7 +277,6 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
      * 获取登录过的账号
      */
     public AccountInfo getSaveAccount() {
-        SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(this);
         String accounts_string = sp.getString(Constants.KEY_ACCOUNTS, "");
 
         if (!TextUtils.isEmpty(accounts_string)) {
@@ -298,7 +307,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         if (accounts.size() == 5) {
             accounts.remove(0);
         }
-        SharedPreferences.Editor edit = SharedPreferencesUtils.getInstance().getSharedPreferences(this).edit();
+        SharedPreferences.Editor edit = sp.edit();
 
         //转化为json字符串保存
         String json = GsonUtils.getInstance().getGson().toJson(mAccountInfo);
@@ -318,10 +327,30 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
             return;
         }
 
-        //获取初始化信息 收银机是否可用
-        mPresenter.init(DeviceUtils.getMacAddress());
-//        mPresenter.init("08:ea:40:36:4f:3b");
-//        mPresenter.init("10:d0:7a:02:b4:b4");
+        final String account = getAccount();
+        final String password = getPassword();
+
+        if(TextUtils.isEmpty(account)) {
+            showToast("账号不能为空！");
+        } else if(TextUtils.isEmpty(password)) {
+            showToast("密码不能为空！");
+        } else {
+
+             if(Configs.current_mode == Configs.mode_offline) {
+                GeneraDialog generaDialog = GeneraDialog.getInstance("登录离线模式？", "取消", "确定");
+                generaDialog.showCenter(this);
+                generaDialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
+                    @Override
+                    public void onSubmit() {
+                        //获取初始化信息 收银机是否可用
+                        mPresenter.login(DeviceUtils.getMacAddress(), account, password);
+                    }
+                });
+            } else {
+                 //获取初始化信息 收银机是否可用
+                 mPresenter.login(DeviceUtils.getMacAddress(), account, password);
+             }
+        }
     }
 
 
@@ -420,11 +449,26 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
     }
 
     @Override
+    public String getAccount() {
+        return etAccount.getText().toString().trim();
+    }
+
+    @Override
+    public String getPassword() {
+        return etPassword.getText().toString().trim();
+    }
+
+    @Override
+    public void setLoginButtonEnable(boolean buttonEnable) {
+        btnLogin.setEnabled(buttonEnable);
+    }
+
+    @Override
     public void loginSuccess(final LoginResponse result) {
         String account = etAccount.getText().toString().trim();
         saveAccount(account);
 
-        SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(this).edit();
+        SharedPreferences.Editor editor = sp.edit();
         editor.putString(Constants.KEY_ADMIN_NAME, result.getReal_name())
                 .putString(BaseConstants.KEY_SESSION_ID, result.getSession_id())
                 .putString(Constants.KEY_ACCOUNT, account)
@@ -436,37 +480,15 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         Configs.menuBeanList = result.getMenu();
 
 
-        if (is_reserve == 1) {
-
-            //弹出钱箱
-            mPresenter.pop_till(Configs.shop_sn, Configs.printer_sn);
-
-            initLocalPrinter();
-            PrinterUtils.getInstance().popTill();
-
-            if (dialog == null)
-                dialog = new PettyCashDialog();
-
-            dialog.showCenter(this);
-            dialog.setOnDialogClickListener(new PettyCashDialog.OnDialogClickListener() {
-                @Override
-                public void onClick(String content) {
-                    String price;
-                    if (!content.contains(".")) {
-                        price = content + "00";
-                    } else {
-                        price = content.replace(".", "");
-                    }
-                    mPresenter.resever_money(result.getSession_id(), Configs.shop_sn, result.getHandover_id(),
-                            Integer.parseInt(price));
-                }
-            });
+        if (Configs.is_reserve == 1) {
+            reserveMoney(result);
         } else {
             login();
         }
     }
 
-    private void login() {
+    @Override
+    public void login() {
         //跳转首页
         ARouter.getInstance().build(ModulePath.goods)
                 .withString("admin_name", String.valueOf(Configs.cashier_id))
@@ -476,12 +498,37 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
     }
 
     @Override
+    public void reserveMoney(final LoginResponse result) {
+        //弹出钱箱
+        mPresenter.pop_till(Configs.shop_sn, Configs.printer_sn);
+
+        initLocalPrinter();
+        PrinterUtils.getInstance().popTill();
+
+        if (dialog == null)
+            dialog = new PettyCashDialog();
+
+        dialog.showCenter(this);
+        dialog.setOnDialogClickListener(new PettyCashDialog.OnDialogClickListener() {
+            @Override
+            public void onClick(String content) {
+                String price;
+                if (!content.contains(".")) {
+                    price = content + "00";
+                } else {
+                    price = content.replace(".", "");
+                }
+                mPresenter.resever_money(result.getSession_id(), Configs.shop_sn, result.getHandover_id(),
+                        Integer.parseInt(price));
+            }
+        });
+    }
+
+    @Override
     public void loginFailed(Map<String, Object> map) {
         btnLogin.setEnabled(true);
-//        if (HttpExceptionEngine.isBussinessError(map)) {
         String error_msg = (String) map.get(HttpExceptionEngine.ErrorMsg);
         showToast(error_msg);
-//        }
 
         int errorType = (int) map.get(HttpExceptionEngine.ErrorType);
         int errorCode = (int) map.get(HttpExceptionEngine.ErrorCode);
@@ -492,23 +539,21 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
     }
 
+
     @Override
-    public void initSuccess(InitResponse result) {
-
-        String shop_sn = result.getShop().getShop_sn();
-        String shop_name = result.getShop().getShop_name();
-        is_reserve = result.getShop().getIs_reserve();
-
-        SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(this).edit();
-        editor.putString(BaseConstants.KEY_SHOP_SN, shop_sn)
-                .putString(BaseConstants.KEY_SHOP_NAME, shop_name)
-                .apply();
-
-        Configs.shop_name = shop_name;
-        Configs.shop_sn = shop_sn;
+    public void save(InitResponse result) {
+        Configs.shop_sn = result.getShop().getShop_sn();
+        Configs.shop_name = result.getShop().getShop_name();
+        Configs.is_reserve = result.getShop().getIs_reserve();
         Configs.refund_auth = result.getShop().getRefund_auth();
         Configs.till_auth = result.getShop().getTill_auth();
         Configs.lock_auth = result.getShop().getLock_auth();
+
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(BaseConstants.KEY_SHOP_SN, Configs.shop_sn)
+                .putString(BaseConstants.KEY_SHOP_NAME, Configs.shop_name)
+                .apply();
+
 
         List<InitResponse.PrintersBean> printers = result.getPrinters();
         PrintHelper.printers_count = printers.size();
@@ -516,50 +561,10 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
             Configs.printer_sn = printers.get(0).getDevice_sn();
         }
         PrintHelper.printersBeans = printers;
-
-
-
-        //判断是否禁止登录
-        if("yes".equals(result.getIs_disabled())) {
-            hideLoading();
-            showToast("设备已停用");
-            return;
-        }
-
-        String account = etAccount.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
-
-        if (TextUtils.isEmpty(account)) {
-            hideLoading();
-            showToast("账号不能为空！");
-        } else if (TextUtils.isEmpty(password)) {
-            hideLoading();
-            showToast("密码不能为空！");
-        } else {
-            //登录
-            mPresenter.login(Configs.shop_sn, account, password);
-            btnLogin.setEnabled(false);
-        }
-
-    }
-
-    @Override
-    public void initFailed(Map<String, Object> map) {
-        int errorType = (int) map.get(HttpExceptionEngine.ErrorType);
-        int errorCode = (int) map.get(HttpExceptionEngine.ErrorCode);
-        String errorMsg = (String) map.get(HttpExceptionEngine.ErrorMsg);
-        Log.i(TAG, "loginFailed: map --> errorType:" + errorType
-                + ", errorCode: " + errorCode
-                + ", errorMsg: " + errorMsg);
-        showToast(errorMsg);
-
-//        mHandler.sendEmptyMessageDelayed(MSG_GET_SHOP, 2000);
-
     }
 
     @Override
     public void reseverMoneySuccess() {
-//        showToast("备用金 成功");
         if (dialog != null && dialog.isShow()) {
             dialog.dismiss();
         }
@@ -582,18 +587,4 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        Log.i(TAG, "onActivityResult: ");
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        Log.i(TAG, "onRequestPermissionsResult: ");
-
-    }
 }

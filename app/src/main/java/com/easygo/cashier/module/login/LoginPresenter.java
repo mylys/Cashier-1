@@ -11,6 +11,8 @@ import com.niubility.library.http.base.HttpClient;
 import com.niubility.library.http.base.HttpResult;
 import com.niubility.library.http.rx.BaseErrorObserver;
 import com.niubility.library.http.rx.BaseResultObserver;
+import com.niubility.library.http.rx.Threadscheduler;
+import com.niubility.library.http.rx.TransformToResult;
 import com.niubility.library.mvp.BasePresenter;
 
 import java.util.HashMap;
@@ -19,53 +21,85 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 public class LoginPresenter extends BasePresenter<LoginContract.IView> implements LoginContract.IPresenter{
 
 
     @Override
-    public void login(String shop_sn, String account, String password) {
+    public void login(final String mac_adr, final String account, final String password) {
+        final Map<String, String> header = HttpClient.getInstance().getLoginSignHeader();
 
-//        Map<String, String> header = HttpClient.getInstance().getLoginHeader();
-        Map<String, String> header = HttpClient.getInstance().getLoginSignHeader();
-        subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().login(header, shop_sn, account, password),
-                new BaseResultObserver<LoginResponse>() {
+        BaseResultObserver<LoginResponse> observer = new BaseResultObserver<LoginResponse>(){
+
             @Override
             protected void onSuccess(LoginResponse result) {
+                mView.setLoginButtonEnable(true);
                 mView.hideLoading();
                 mView.loginSuccess(result);
             }
 
             @Override
             protected void onFailure(Map<String, Object> map) {
+                mView.setLoginButtonEnable(true);
                 mView.hideLoading();
                 mView.loginFailed(map);
             }
-        });
-    }
-
-    @Override
-    public void init(String mac_adr) {
+        };
         mView.showLoading();
-        Map<String, String> header = HttpClient.getInstance().getLoginSignHeader();
-        subscribeAsyncToResult(
-                HttpAPI.getInstance().httpService().init(header, mac_adr),
-                new BaseResultObserver<InitResponse>() {
+        HttpAPI.getInstance().httpService().init(header, "")
+                .compose(new Threadscheduler<HttpResult<InitResponse>>())
+                .map(new TransformToResult<InitResponse>())
+                .filter(new Predicate<InitResponse>() {
+                            @Override
+                            public boolean test(InitResponse initResponse) throws Exception {
+                                //判断是否禁止登录
+                                boolean disable = "yes".equals(initResponse.getIs_disabled());
+                                if(disable) {
+                                    mView.hideLoading();
+                                    mView.showToast("设备已停用");
+                                    return false;
+                                } else {
+                                    mView.setLoginButtonEnable(false);
+                                    return true;
+                                }
+                            }
+                        }
+                )
+                .observeOn(Schedulers.io())
+                .flatMap(new Function<InitResponse, ObservableSource<HttpResult<LoginResponse>>>() {
                     @Override
-                    protected void onSuccess(InitResponse result) {
-                        mView.initSuccess(result);
+                    public ObservableSource<HttpResult<LoginResponse>> apply(InitResponse initResponse) throws Exception {
+                        mView.save(initResponse);
+                        return HttpAPI.getInstance().httpService().login(header, Configs.shop_sn, account, password);
                     }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new TransformToResult<LoginResponse>())
+                .subscribe(observer);
+
+        mCompositeDisposable.add(observer);
 
 
-                    @Override
-                    protected void onFailure(Map<String, Object> map) {
-                        mView.hideLoading();
-                        mView.initFailed(map);
-                    }
-                });
+
+//        subscribeAsyncToResult(
+//                HttpAPI.getInstance().httpService().login(header, shop_sn, account, password),
+//                new BaseResultObserver<LoginResponse>() {
+//            @Override
+//            protected void onSuccess(LoginResponse result) {
+//                mView.hideLoading();
+//                mView.loginSuccess(result);
+//            }
+//
+//            @Override
+//            protected void onFailure(Map<String, Object> map) {
+//                mView.hideLoading();
+//                mView.loginFailed(map);
+//            }
+//        });
     }
 
     @Override

@@ -58,6 +58,7 @@ public class Configs extends BaseConfig {
     public static int refund_auth;
     public static int till_auth;
     public static int lock_auth;
+    public static int is_reserve;
 
     /* 登录获取权限列表 --- 全局控制 */
     public static List<LoginResponse.MenuBean> menuBeanList;
@@ -75,6 +76,7 @@ public class Configs extends BaseConfig {
             310                 //无码商品id
     };
     public static Long interval = 60L;
+
 
     /* 判断权限id是否存在于权限列表中 并获取role权限是否显示 (0:无权限，1:有权限，-1:权限不存在) */
     public static int getRole(int permissionId) {

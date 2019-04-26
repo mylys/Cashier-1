@@ -9,15 +9,8 @@ import java.util.Map;
 
 public class LoginContract {
 
-//    public interface IModel extends BaseModel {
-//        void login(String account, String password, RequestListener<LoginResponse> listener);
-//        void init(String mac_adr, RequestListener<InitResponse> listener);
-//    }
-
     public interface IPresenter extends BaseContract.Presenter {
-         void login(String shop_sn, String account, String password);
-         void init(String mac_adr);
-
+         void login(String mac_address, String account, String password);
 
          void resever_money(String session_id, String shop_sn, int handover_id, int resever_money);
          void pop_till(String shop_sn, String printer_sn);
@@ -26,11 +19,16 @@ public class LoginContract {
     }
 
     interface IView extends BaseView {
+
+        String getAccount();
+        String getPassword();
+        void login();
+        void save(InitResponse result);
+        void reserveMoney(LoginResponse result);
+
+        void setLoginButtonEnable(boolean buttonEnable);
         void loginSuccess(LoginResponse result);
         void loginFailed(Map<String, Object> map);
-
-        void initSuccess(InitResponse result);
-        void initFailed(Map<String, Object> map);
 
         void reseverMoneySuccess();
         void reseverMoneyFailed(Map<String, Object> map);
