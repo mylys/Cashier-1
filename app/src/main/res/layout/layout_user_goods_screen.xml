@@ -28,30 +28,6 @@
         app:layout_constraintTop_toBottomOf="@id/title_bar"
         />
 
-
-    <!--<TextView-->
-        <!--android:id="@+id/tv_text_current_promotion"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/text_current_promotion"-->
-        <!--style="@style/GoodsListStyle"-->
-        <!--android:layout_marginTop="@dimen/y35"-->
-        <!--app:layout_constraintStart_toStartOf="@id/cl_goods_title"-->
-        <!--app:layout_constraintTop_toBottomOf="@id/title_bar"-->
-        <!--app:layout_constraintBottom_toTopOf="@id/cl_goods_title"/>-->
-
-    <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/rv_promotion"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_marginStart="@dimen/x10"-->
-        <!--app:layout_constraintStart_toEndOf="@id/tv_text_current_promotion"-->
-        <!--app:layout_constraintTop_toTopOf="@id/tv_text_current_promotion"-->
-        <!--app:layout_constraintBottom_toBottomOf="@id/tv_text_current_promotion">-->
-
-    <!--</android.support.v7.widget.RecyclerView>-->
-
-
     <include
         layout="@layout/include_secondary_screen_layout"
         android:layout_width="@dimen/x1832"
@@ -78,5 +54,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    <!--支付成功提示弹窗-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_pay_successful"
+        android:layout_width="@dimen/scan_dialog_width"
+        android:layout_height="@dimen/scan_dialog_height"
+        android:background="@drawable/bg_scan_dialog"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_bar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="@dimen/x150"
+            android:layout_height="@dimen/y150"
+            android:layout_marginTop="@dimen/y78"
+            android:src="@drawable/ic_scan_tick"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_pay_successful"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_33"
+            android:textColor="@color/color_text_white"
+            android:layout_marginBottom="@dimen/y54"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

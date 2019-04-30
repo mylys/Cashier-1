@@ -1,13 +1,12 @@
 package com.easygo.cashier.widget.dialog;
 
-import android.app.Dialog;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
+import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,10 +15,12 @@ import android.widget.TextView;
 
 import com.easygo.cashier.R;
 
+import java.util.LinkedList;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 
-public class ScanCodeDialog extends Dialog {
+public class ScanCodeDialog extends MyBaseDialog {
 
     protected ImageView mLogo;
     protected ProgressBar mLoading;
@@ -35,25 +36,21 @@ public class ScanCodeDialog extends Dialog {
 
     protected Handler mHandler = new Handler();
 
-    public ScanCodeDialog(@NonNull Context context) {
-        super(context);
-    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    public ScanCodeDialog(@NonNull Context context, int themeResId) {
-        super(context, themeResId);
+        setStyle(STYLE_NO_FRAME, R.style.DialogStyle);
+        setCancelable(false);
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.layout_scan_dialog);
-
-        mLogo = findViewById(R.id.iv_logo);
-        mLoading = findViewById(R.id.loading);
-        mTextView = findViewById(R.id.tv_description);
-        mClose = findViewById(R.id.cl_close);
-        etBarcode = findViewById(R.id.editText_barcode);
+    protected void initView(View rootView) {
+        mLogo = rootView.findViewById(R.id.iv_logo);
+        mLoading = rootView.findViewById(R.id.loading);
+        mTextView = rootView.findViewById(R.id.tv_description);
+        mClose = rootView.findViewById(R.id.cl_close);
+        etBarcode = rootView.findViewById(R.id.editText_barcode);
 
         mClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +59,7 @@ public class ScanCodeDialog extends Dialog {
             }
         });
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         etBarcode.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -83,8 +80,34 @@ public class ScanCodeDialog extends Dialog {
         etBarcode.setFocusableInTouchMode(true);
         etBarcode.setShowSoftInputOnFocus(false);
         etBarcode.requestFocus();
+    }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.layout_scan_dialog;
+    }
 
+    @Override
+    protected int getLayoutWidth() {
+        return getResources().getDimensionPixelSize(R.dimen.scan_dialog_width);
+    }
+
+    @Override
+    protected int getLayoutHeight() {
+        return getResources().getDimensionPixelSize(R.dimen.scan_dialog_height);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Window window = getDialog().getWindow();
+        if(window != null) {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+            lp.y = getResources().getDimensionPixelSize(R.dimen.y411);
+            window.setAttributes(lp);
+        }
     }
 
     public static final int STATUS_SCAN = 0;
@@ -171,20 +194,6 @@ public class ScanCodeDialog extends Dialog {
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(@NonNull MotionEvent event) {
-
-//        if(event.getAction() == MotionEvent.ACTION_DOWN) {
-//            mStatus++;
-//            if(mStatus > 2) {
-//                mStatus = 0;
-//            }
-//
-//            setStatus(mStatus);
-//        }
-        return super.onTouchEvent(event);
     }
 
     private OnScanCodeListener mListener;

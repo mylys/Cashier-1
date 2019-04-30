@@ -11,20 +11,43 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.easygo.cashier.utils.SoftKeyBoardListener;
 import com.easygo.cashier.widget.dialog.LoadingDialog;
 import com.niubility.library.base.BaseMvpActivity;
 import com.niubility.library.mvp.BasePresenter;
 import com.niubility.library.mvp.BaseView;
+import com.niubility.library.utils.ScreenUtils;
 
 public abstract class BaseAppMvpActivity<V extends BaseView, P extends BasePresenter<V>> extends BaseMvpActivity<V,P> {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         initLoadingDialog();
+        ScreenUtils.hideNavigationBar(this);
         super.onCreate(savedInstanceState);
 
         ARouter.getInstance().inject(this);
 
+        SoftKeyBoardListener.setListener(this, new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
+            @Override
+            public void keyBoardShow(int height) {
+
+            }
+
+            @Override
+            public void keyBoardHide(int height) {
+                ScreenUtils.hideNavigationBar(BaseAppMvpActivity.this);
+            }
+        });
+
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+
+        ScreenUtils.hideNavigationBar(this);
     }
 
     private void initLoadingDialog() {

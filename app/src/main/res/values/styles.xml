@@ -10,6 +10,8 @@
 
     <style name="MyAppTheme" parent="AppTheme">
         <item name="windowNoTitle">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:screenOrientation">landscape</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowSoftInputMode">adjustUnspecified|stateHidden</item>

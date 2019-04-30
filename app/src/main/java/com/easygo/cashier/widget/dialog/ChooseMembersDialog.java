@@ -5,8 +5,10 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,15 +26,17 @@ import com.niubility.library.utils.EventUtils;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 /**
  * @Describe：选择会员
  * @date：2019-01-08
  */
-public class ChooseMembersDialog extends BaseDialog {
+public class ChooseMembersDialog extends MyBaseDialog {
     private RecyclerView recyclerView;
     private TextView dialog_title;
     private DialogSearchView searchView;
-    private ImageView ivCancel;
+    private ConstraintLayout clCancel;
 
     private String title = "";
     private BaseQuickAdapter<MemberInfo, BaseViewHolder> adapter;
@@ -52,8 +56,18 @@ public class ChooseMembersDialog extends BaseDialog {
     }
 
     @Override
-    protected int getAnimation() {
-        return R.style.CustomDialogStyle;
+    protected int getLayoutWidth() {
+        return 0;
+    }
+
+    @Override
+    protected int getLayoutHeight() {
+        return 0;
+    }
+
+    @Override
+    protected boolean isHideNavigationBar() {
+        return false;
     }
 
     @Override
@@ -61,7 +75,7 @@ public class ChooseMembersDialog extends BaseDialog {
         dialog_title = rootView.findViewById(R.id.tv_name);
         recyclerView = rootView.findViewById(R.id.recycler_view);
         searchView = rootView.findViewById(R.id.search_view);
-        ivCancel = rootView.findViewById(R.id.iv_cancel);
+        clCancel = rootView.findViewById(R.id.cl_cancel);
 
         if (!TextUtils.isEmpty(title)) {
             dialog_title.setText(title);
@@ -107,7 +121,7 @@ public class ChooseMembersDialog extends BaseDialog {
 
 
     private void setListener() {
-        ivCancel.setOnClickListener(new View.OnClickListener() {
+        clCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogDismiss();
@@ -129,20 +143,24 @@ public class ChooseMembersDialog extends BaseDialog {
     public void onResume() {
         super.onResume();
 
-        if(searchView != null)
+        if(searchView != null) {
             searchView.setContent("");
-    }
-
-    public boolean isShow() {
-        return isShowing();
+        }
     }
 
     private void dialogDismiss() {
         if (searchView.getEditText() != null) {
             SoftKeyboardUtil.hideSoftKeyboard(getActivity(), searchView.getEditText());
+
+            searchView.getEditText().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    dismiss();
+                }
+            }, 100);
         }
         recyclerView.setVisibility(View.INVISIBLE);
-        dismiss();
+
     }
 
     /* 设置adapter空数据 */
@@ -164,21 +182,6 @@ public class ChooseMembersDialog extends BaseDialog {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    @Override
-    protected boolean shouldHideBackground() {
-        return false;
-    }
-
-    @Override
-    protected boolean canCanceledOnTouchOutside() {
-        return false;
-    }
-
-    @Override
-    protected boolean isWindowWidthMatchParent() {
-        return false;
     }
 
     public void showCenter(FragmentActivity activity) {

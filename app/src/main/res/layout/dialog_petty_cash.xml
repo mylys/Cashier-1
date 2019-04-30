@@ -27,18 +27,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/dialog_cancel"
-            android:layout_width="@dimen/x35"
-            android:layout_height="@dimen/y35"
-            android:layout_marginTop="@dimen/y29"
-            android:layout_marginEnd="@dimen/x36"
-            android:layout_marginBottom="@dimen/y23"
-            android:src="@drawable/ic_close_function_list"
-            android:visibility="visible"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_cancel"
+            android:layout_width="@dimen/x84"
+            android:layout_height="@dimen/y84"
+            android:layout_marginEnd="@dimen/x11"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/dialog_cancel"
+                android:layout_width="@dimen/x35"
+                android:layout_height="@dimen/y35"
+                android:src="@drawable/ic_close_function_list"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -40,6 +40,7 @@ public class MyTitleBar extends ConstraintLayout {
     private boolean mShowLogo;
     private boolean mShowTitle;
     private boolean mShowAccount;
+    private boolean mShowExit;
     private boolean mShowRightIcon;
     private boolean mShowRightAccount;
 
@@ -79,7 +80,7 @@ public class MyTitleBar extends ConstraintLayout {
         mLogo.setVisibility(mShowLogo ? VISIBLE: GONE);
         setVisibility(mTitleView, mShowTitle);
         mCashierAccount.setVisibility(mShowAccount ? VISIBLE: GONE);
-        mExit.setVisibility(mShowAccount ? VISIBLE: GONE);
+        mExit.setVisibility(mShowExit ? VISIBLE: GONE);
 //        mExit.setVisibility(GONE);
         mLine.setVisibility(mShowAccount ? VISIBLE: GONE);
         setVisibility(mRightIconView, mShowRightIcon);
@@ -137,6 +138,7 @@ public class MyTitleBar extends ConstraintLayout {
             mShowLogo = ta.getBoolean(R.styleable.MyTitleBar_show_logo, true);
             mShowTitle = ta.getBoolean(R.styleable.MyTitleBar_show_title, false);
             mShowAccount = ta.getBoolean(R.styleable.MyTitleBar_show_account, false);
+            mShowExit = ta.getBoolean(R.styleable.MyTitleBar_show_exit, false);
             mShowRightAccount = ta.getBoolean(R.styleable.MyTitleBar_show_right_account, false);
             mShowRightIcon = ta.getBoolean(R.styleable.MyTitleBar_show_right_icon, false);
 

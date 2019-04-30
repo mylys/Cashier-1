@@ -36,16 +36,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 /**
  * @Describe：选择优惠券
  * @date：2019-01-08
  */
-public class ChooseCouponsDialog extends BaseDialog {
+public class ChooseCouponsDialog extends MyBaseDialog {
     private RecyclerView recyclerView;
     private DialogSearchView searchView;
     private TextView dialog_title;
-    private ImageView dialog_cancel;
-    private EditText etBarcode;
+    private ConstraintLayout clCancel;
 
     private String title;
     private BaseQuickAdapter<CouponResponse, BaseViewHolder> adapter;
@@ -59,8 +60,18 @@ public class ChooseCouponsDialog extends BaseDialog {
     }
 
     @Override
-    protected int getAnimation() {
-        return R.style.CustomDialogStyle;
+    protected int getLayoutWidth() {
+        return 0;
+    }
+
+    @Override
+    protected int getLayoutHeight() {
+        return 0;
+    }
+
+    @Override
+    protected boolean isHideNavigationBar() {
+        return false;
     }
 
     @Override
@@ -68,7 +79,7 @@ public class ChooseCouponsDialog extends BaseDialog {
         recyclerView = rootView.findViewById(R.id.recycler_view);
         searchView = rootView.findViewById(R.id.search_view);
         dialog_title = rootView.findViewById(R.id.tv_name);
-        dialog_cancel = rootView.findViewById(R.id.iv_cancel);
+        clCancel = rootView.findViewById(R.id.cl_cancel);
 //        etBarcode = rootView.findViewById(R.id.et_barcode);
 
         searchView.setHint(getResources().getString(R.string.text_input_coupon));
@@ -183,9 +194,7 @@ public class ChooseCouponsDialog extends BaseDialog {
                 recyclerView.scrollToPosition(0);
                 recyclerView.setVisibility(View.VISIBLE);
             } else {
-                if (searchView.getEditText() != null) {
-                    searchView.getEditText().requestFocus();
-                }
+                SoftKeyboardUtil.showSoftKeyboard(searchView.getEditText());
             }
         } else {
             adapter.setNewData(null);
@@ -205,7 +214,7 @@ public class ChooseCouponsDialog extends BaseDialog {
     }
 
     private void setListener() {
-        dialog_cancel.setOnClickListener(new View.OnClickListener() {
+        clCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (searchView.getEditText() != null) {
@@ -230,10 +239,16 @@ public class ChooseCouponsDialog extends BaseDialog {
     private void dialogDismiss() {
         if (searchView.getEditText() != null) {
             SoftKeyboardUtil.hideSoftKeyboard(getActivity(), searchView.getEditText());
+
+            searchView.getEditText().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    dismiss();
+                }
+            }, 100);
         }
         recyclerView.setVisibility(View.INVISIBLE);
         goodsData = null;
-        dismiss();
     }
 
     public DialogSearchView getSearchView() {
@@ -285,21 +300,6 @@ public class ChooseCouponsDialog extends BaseDialog {
         TextView view = emptyView.findViewById(R.id.text);
         view.setText(getResources().getString(R.string.text_no_search_coupon));
         adapter.setEmptyView(emptyView);
-    }
-
-    @Override
-    protected boolean shouldHideBackground() {
-        return false;
-    }
-
-    @Override
-    protected boolean canCanceledOnTouchOutside() {
-        return false;
-    }
-
-    @Override
-    protected boolean isWindowWidthMatchParent() {
-        return false;
     }
 
     public void showCenter(FragmentActivity activity) {

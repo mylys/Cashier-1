@@ -7,22 +7,6 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <!--获取扫码机条码-->
-    <!--<EditText-->
-        <!--android:id="@+id/et_barcode"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="#00FFFFFF"-->
-        <!--android:focusable="true"-->
-        <!--android:focusableInTouchMode="true"-->
-        <!--android:inputType="text"-->
-        <!--android:nextFocusDown="@id/et_barcode"-->
-        <!--android:text=""-->
-        <!--android:textColor="#00FFFFFF"-->
-        <!--android:visibility="visible"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/title"
@@ -44,18 +28,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_cancel"
+            android:layout_width="@dimen/x84"
+            android:layout_height="@dimen/y84"
+            android:layout_marginEnd="@dimen/x20"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
         <ImageView
             android:id="@+id/iv_cancel"
             android:layout_width="@dimen/x35"
             android:layout_height="@dimen/y35"
-            android:layout_marginTop="@dimen/y29"
-            android:layout_marginEnd="@dimen/x36"
-            android:layout_marginBottom="@dimen/y23"
             android:src="@drawable/ic_close_function_list"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

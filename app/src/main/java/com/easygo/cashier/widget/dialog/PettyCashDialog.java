@@ -2,25 +2,23 @@ package com.easygo.cashier.widget.dialog;
 
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
 import com.easygo.cashier.widget.view.DialogKeyboard;
-import com.niubility.library.base.BaseDialog;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 /**
  * @Describe：
  * @author：hgeson
  * @date：2018-12-27
  */
-public class PettyCashDialog extends BaseDialog {
+public class PettyCashDialog extends MyBaseDialog {
     private TextView tvTitle;
     private EditText editText;
-    private ImageView tvCancel;
+    private ConstraintLayout clCancel;
     private DialogKeyboard key_board;
 
     private int mTitleResId = -1;
@@ -35,8 +33,13 @@ public class PettyCashDialog extends BaseDialog {
     }
 
     @Override
-    protected int getAnimation() {
-        return R.style.CustomDialogStyle;
+    protected int getLayoutWidth() {
+        return 0;
+    }
+
+    @Override
+    protected int getLayoutHeight() {
+        return 0;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class PettyCashDialog extends BaseDialog {
 
         tvTitle = rootView.findViewById(R.id.tv_title);
         editText = rootView.findViewById(R.id.edit_input);
-        tvCancel = rootView.findViewById(R.id.dialog_cancel);
+        clCancel = rootView.findViewById(R.id.cl_cancel);
         key_board = rootView.findViewById(R.id.key_board);
 
         key_board.setCanInputDecimal(canInputDecimal);
@@ -59,7 +62,7 @@ public class PettyCashDialog extends BaseDialog {
             }
         });
 
-        tvCancel.setOnClickListener(new View.OnClickListener() {
+        clCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
@@ -72,7 +75,7 @@ public class PettyCashDialog extends BaseDialog {
             setCancelable(true);
         }
 
-        tvCancel.setVisibility(mTvCancelVisibility ? View.VISIBLE : View.GONE);
+        clCancel.setVisibility(mTvCancelVisibility ? View.VISIBLE : View.GONE);
 
     }
 
@@ -86,24 +89,6 @@ public class PettyCashDialog extends BaseDialog {
         this.canInputDecimal = canInputDecimal;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Window window = getDialog().getWindow();
-        if (window != null) {
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
-            window.getDecorView().setSystemUiVisibility(uiOptions);
-        }
-    }
-
     private OnDialogClickListener listener;
 
     public interface OnDialogClickListener {
@@ -112,25 +97,6 @@ public class PettyCashDialog extends BaseDialog {
 
     public void setOnDialogClickListener(OnDialogClickListener listener) {
         this.listener = listener;
-    }
-
-    public boolean isShow() {
-        return isShowing();
-    }
-
-    @Override
-    protected boolean shouldHideBackground() {
-        return false;
-    }
-
-    @Override
-    protected boolean canCanceledOnTouchOutside() {
-        return true;
-    }
-
-    @Override
-    protected boolean isWindowWidthMatchParent() {
-        return false;
     }
 
     public void showCenter(FragmentActivity activity) {

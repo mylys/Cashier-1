@@ -15,7 +15,7 @@ import com.niubility.library.base.BaseDialog;
  * @author：hgeson
  * @date：2018-12-29
  */
-public class GeneraDialog extends BaseDialog implements View.OnClickListener {
+public class GeneraDialog extends MyBaseDialog implements View.OnClickListener {
     private TextView cancel;
     private TextView submit;
     private TextView title;
@@ -40,8 +40,13 @@ public class GeneraDialog extends BaseDialog implements View.OnClickListener {
     }
 
     @Override
-    protected int getAnimation() {
-        return R.style.CustomDialogStyle;
+    protected int getLayoutWidth() {
+        return 0;
+    }
+
+    @Override
+    protected int getLayoutHeight() {
+        return 0;
     }
 
     @Override
@@ -64,36 +69,8 @@ public class GeneraDialog extends BaseDialog implements View.OnClickListener {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Window window = getDialog().getWindow();
-        if (window != null) {
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
-            window.getDecorView().setSystemUiVisibility(uiOptions);
-        }
-    }
-
-    @Override
-    protected boolean shouldHideBackground() {
-        return false;
-    }
-
-    @Override
     protected boolean canCanceledOnTouchOutside() {
         return true;
-    }
-
-    @Override
-    protected boolean isWindowWidthMatchParent() {
-        return false;
     }
 
     @Override

@@ -5,6 +5,7 @@
         <attr name="show_logo" format="boolean"/>
         <attr name="show_title" format="boolean"/>
         <attr name="show_account" format="boolean"/>
+        <attr name="show_exit" format="boolean"/>
         <attr name="show_right_icon" format="boolean"/>
         <attr name="show_right_account" format="boolean"/>
     </declare-styleable>

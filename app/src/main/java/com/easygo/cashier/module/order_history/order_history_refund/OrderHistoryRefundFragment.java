@@ -382,7 +382,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                 onCommitOrder();
             }
         });
-        confirmDialog.show(getActivity().getSupportFragmentManager(), "tag_tip_dialog");
+        confirmDialog.showCenter(getActivity());
     }
 
     public void onCommitOrder() {
@@ -425,7 +425,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
 
     @Override
     public void getHistoryRefundSuccess(String message) {
-        if (dialog != null && dialog.isShow()) {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
         btnRefund.setEnabled(true);

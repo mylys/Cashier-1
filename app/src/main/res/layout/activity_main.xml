@@ -10,6 +10,7 @@
         android:layout_height="@dimen/title_bar_height"
         android:id="@+id/cl_title"
         app:show_account="true"
+        app:show_exit="true"
         app:show_right_icon="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

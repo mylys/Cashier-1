@@ -1,13 +1,12 @@
 package com.easygo.cashier.widget.dialog;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.easygo.cashier.R;
@@ -16,29 +15,21 @@ import com.easygo.cashier.bean.GoodsResponse;
 
 import java.util.List;
 
-public class ProcessingChoiceDialog extends Dialog {
+public class ProcessingChoiceDialog extends MyBaseDialog {
 
     private RecyclerView rvProcessingChoice;
     private GoodsResponseAdapter adapter;
 
-    public ProcessingChoiceDialog(@NonNull Context context) {
-        super(context, R.style.CustomDialogStyle);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setStyle(STYLE_NO_FRAME, R.style.CustomDialogStyle);
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        init();
-    }
-
-
-    private void init() {
-        setContentView(R.layout.layout_processing_choice);
-
-
-
-        rvProcessingChoice = findViewById(R.id.rv_processing_choice);
+    protected void initView(View rootView) {
+        rvProcessingChoice = rootView.findViewById(R.id.rv_processing_choice);
 
         adapter = new GoodsResponseAdapter(R.layout.item_processing_choice);
 
@@ -62,7 +53,21 @@ public class ProcessingChoiceDialog extends Dialog {
                 }
             }
         });
+    }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.layout_processing_choice;
+    }
+
+    @Override
+    protected int getLayoutWidth() {
+        return getResources().getDimensionPixelSize(R.dimen.x600);
+    }
+
+    @Override
+    protected int getLayoutHeight() {
+        return WindowManager.LayoutParams.WRAP_CONTENT;
     }
 
     public void setData(List<GoodsResponse> data) {
@@ -78,5 +83,13 @@ public class ProcessingChoiceDialog extends Dialog {
         void onItemClicked(GoodsResponse result);
     }
 
+    @Override
+    protected boolean canCanceledOnTouchOutside() {
+        return true;
+    }
+
+    public void showCenter(FragmentActivity activity) {
+        showCenter(activity, "TAG_PROCESSING_CHOICE");
+    }
 
 }

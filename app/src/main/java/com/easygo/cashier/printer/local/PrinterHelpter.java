@@ -334,7 +334,7 @@ public class PrinterHelpter {
             esc.addText("  ");
             esc.addText(data.getProduct_preferential());
             esc.addText("   ");
-            esc.addText(GoodsResponse.isWeightGood(data.getType())? df_weight.format(data.getRefund_num()) + data.getG_u_symbol()
+            esc.addText(GoodsResponse.isWeightGood(data.getType())? df_weight.format(Float.valueOf(data.getRefund_num())) + data.getG_u_symbol()
                     : data.getRefund_num());
             esc.addText("  ");
             esc.addText(data.getRefund_subtotal());

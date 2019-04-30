@@ -164,6 +164,9 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 }
                 break;
             case R.id.btn_print:
+                if(mOrderHistorysInfo == null) {
+                    return;
+                }
                 printOrderHistoryDetail();
                 printOrderHistoryDetailLocal();
 

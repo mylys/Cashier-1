@@ -20,33 +20,28 @@
     <FrameLayout
         android:id="@+id/framelayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/line1"
+        android:layout_height="@dimen/y826"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_title"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@id/cl_title" />
 
     <View
         android:id="@+id/line1"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y1"
         android:background="@color/color_d3d3d3"
-        android:layout_marginBottom="@dimen/y154"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/framelayout"
         />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_bottom_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/y154"
         android:background="@color/color_f5f7fa"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line1">
 
         <TextView

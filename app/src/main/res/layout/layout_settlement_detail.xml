@@ -372,7 +372,7 @@
         android:layout_height="@dimen/y92"
         android:text="@string/text_cancel_coupon"
         style="@style/DetailTextStyle"
-        android:layout_marginStart="@dimen/y42"
+        android:layout_marginStart="@dimen/x42"
         android:layout_marginBottom="@dimen/y40"
         android:background="@drawable/bg_keyboard_key"
         app:layout_constraintBottom_toBottomOf="parent"

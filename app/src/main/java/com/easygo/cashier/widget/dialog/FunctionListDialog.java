@@ -4,16 +4,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.FunctionListAdapter;
 import com.easygo.cashier.bean.FunctionListBean;
-import com.niubility.library.base.BaseDialog;
 
 import java.util.ArrayList;
 
@@ -22,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class FunctionListDialog extends BaseDialog {
+public class FunctionListDialog extends MyBaseDialog {
 
     private Unbinder unbinder;
 
@@ -70,34 +66,6 @@ public class FunctionListDialog extends BaseDialog {
     };
     private ArrayList<Integer> hideList;
     private FunctionListAdapter functionListAdapter;
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Window window = getDialog().getWindow();
-        boolean singleLine = functionListAdapter.getItemCount() <= 4;
-        if (window != null) {
-            window.setLayout(getResources().getDimensionPixelSize(R.dimen.function_list_width),
-                    getResources().getDimensionPixelSize(singleLine ? R.dimen.y359 : R.dimen.function_list_height));
-//                    getResources().getDimensionPixelSize(R.dimen.y359));
-//                    getResources().getDimensionPixelSize(R.dimen.function_list_height));
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
-
-            window.setGravity(Gravity.CENTER);
-
-            window.getDecorView().setSystemUiVisibility(uiOptions);
-        }
-        getDialog().setCanceledOnTouchOutside(false);
-    }
 
     public void init() {
 
@@ -313,23 +281,14 @@ public class FunctionListDialog extends BaseDialog {
     }
 
     @Override
-    protected int getAnimation() {
-        return R.style.CustomDialogStyle;
+    protected int getLayoutWidth() {
+        return getResources().getDimensionPixelSize(R.dimen.function_list_width);
     }
 
     @Override
-    protected boolean shouldHideBackground() {
-        return false;
-    }
-
-    @Override
-    protected boolean canCanceledOnTouchOutside() {
-        return false;
-    }
-
-    @Override
-    protected boolean isWindowWidthMatchParent() {
-        return false;
+    protected int getLayoutHeight() {
+        boolean singleLine = functionListAdapter.getItemCount() <= 4;
+        return getResources().getDimensionPixelSize(singleLine ? R.dimen.y359 : R.dimen.function_list_height);
     }
 
     public void showCenter(FragmentActivity activity) {

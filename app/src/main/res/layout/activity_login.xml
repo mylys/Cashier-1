@@ -27,10 +27,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_frame"
-            android:layout_width="@dimen/x773"
-            android:layout_height="@dimen/y665"
-            android:layout_marginTop="@dimen/y122"
-            android:background="@drawable/bg_login_frame"
+            android:layout_width="@dimen/x803"
+            android:layout_height="@dimen/y695"
+            android:layout_marginTop="@dimen/y92"
+            android:elevation="@dimen/x5"
+            android:background="@drawable/bg_shadow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">

@@ -50,7 +50,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.IView> implement
             }
         };
         mView.showLoading();
-        HttpAPI.getInstance().httpService().init(header, "")
+        HttpAPI.getInstance().httpService().init(header, mac_adr)
                 .compose(new Threadscheduler<HttpResult<InitResponse>>())
                 .map(new TransformToResult<InitResponse>())
                 .filter(new Predicate<InitResponse>() {

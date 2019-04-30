@@ -711,13 +711,10 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     /**
      * 显示加工方式选择框
      */
-    private void showProcessingDialog(final int position, final GoodsResponse current, List<GoodsResponse> processing_list) {
+    private void showProcessingDialog(final int position, final GoodsResponse current,
+                                      final List<GoodsResponse> processing_list) {
         if (mProcessingChoiceDialog == null) {
-            mProcessingChoiceDialog = new ProcessingChoiceDialog(getContext());
-            mProcessingChoiceDialog.getWindow().setGravity(Gravity.CENTER);
-            mProcessingChoiceDialog.setCanceledOnTouchOutside(true);
-
-            mProcessingChoiceDialog.create();
+            mProcessingChoiceDialog = new ProcessingChoiceDialog();
         }
         mProcessingChoiceDialog.setOnItemClickListener(new ProcessingChoiceDialog.OnItemClickListener() {
             @Override
@@ -725,8 +722,13 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 mGoodsMultiItemAdapter.chooseProcessing(position, current, result);
             }
         });
-        mProcessingChoiceDialog.setData(processing_list);
-        mProcessingChoiceDialog.show();
+        mProcessingChoiceDialog.showCenter(getActivity());
+        mProcessingChoiceDialog.addTask(new Runnable() {
+            @Override
+            public void run() {
+                mProcessingChoiceDialog.setData(processing_list);
+            }
+        });
 
     }
 
@@ -1320,7 +1322,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
     @Override
     public void getMemberSuccess(MemberInfo memberInfo, String barcode, String phone) {
-        if (membersDialog != null && membersDialog.isShow()) {
+        if (membersDialog != null && membersDialog.isShowing()) {
             List<MemberInfo> infos = new ArrayList<>();
             infos.add(memberInfo);
             membersDialog.setNewData(infos);
@@ -1337,7 +1339,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             showScanCodeDialog();
             setScanCodeDialogStatus(ScanCodeDialog.STATUS_MEMBER_NULL);
         } else if (!TextUtils.isEmpty(phone)) {
-            if (membersDialog != null && membersDialog.isShow()) {
+            if (membersDialog != null && membersDialog.isShowing()) {
                 membersDialog.setNewData(new ArrayList<MemberInfo>());
             }
         }
@@ -1428,7 +1430,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     @Override
     public void getTillAuthSuccess(String result) {
         Log.i(TAG, "getTillAuthSuccess :校验钱箱权限成功");
-        if (editDialog != null && editDialog.isShow()){
+        if (editDialog != null && editDialog.isShowing()){
             editDialog.dismiss();
         }
         realPopTill();
@@ -1442,7 +1444,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
     @Override
     public void getLockSuccess(String result) {
-        if (editDialog != null && editDialog.isShow()){
+        if (editDialog != null && editDialog.isShowing()){
             editDialog.dismiss();
         }
     }
@@ -1482,12 +1484,14 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         mGoodsMultiItemAdapter.addOrdersData(goodsEntityList);
     }
 
-    // 退款或收银 清除界面
+    // 收银 清除界面数据
     public void clearInfo() {
         if (mGoodsMultiItemAdapter != null)
             mGoodsMultiItemAdapter.clear();
-        if (mUserGoodsScreen != null)
+        if (mUserGoodsScreen != null) {
             mUserGoodsScreen.clear();
+            mUserGoodsScreen.showPaySuccessful();
+        }
         //清除临时促销
         ActivitiesUtils.getInstance().clearTempPromotion();
         //隐藏 清空会员及 优惠券
@@ -1498,20 +1502,16 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     }
 
     public void showScanCodeDialog() {
-        scanCodeDialog = new ScanCodeDialog(getActivity(), R.style.DialogStyle);
-        WindowManager.LayoutParams lp = scanCodeDialog.getWindow().getAttributes();
-        lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-        lp.y = getResources().getDimensionPixelSize(R.dimen.y411);
-        scanCodeDialog.getWindow().setAttributes(lp);
-        scanCodeDialog.setCanceledOnTouchOutside(false);
-        scanCodeDialog.setCancelable(false);
-        scanCodeDialog.show();
+        scanCodeDialog = new ScanCodeDialog();
+        scanCodeDialog.showCenter(getActivity(), "TAG_SCAN_CODE");
     }
-    public void setScanCodeDialogStatus(int status) {
-
-        if(scanCodeDialog != null && scanCodeDialog.isShowing()) {
-            scanCodeDialog.setStatus(status);
-        }
+    public void setScanCodeDialogStatus(final int status) {
+        scanCodeDialog.addTask(new Runnable() {
+            @Override
+            public void run() {
+                scanCodeDialog.setStatus(status);
+            }
+        });
     }
 
     public void updateMemberInfo(MemberInfo info) {

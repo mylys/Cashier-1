@@ -1,5 +1,6 @@
 package com.easygo.cashier.module.secondary_sreen;
 
+import android.animation.ObjectAnimator;
 import android.app.Presentation;
 import android.content.Context;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.easygo.cashier.widget.view.MyTitleBar;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -46,6 +48,8 @@ public class UserGoodsScreen extends Presentation {
     TextView tvTotalPrice;
     @BindView(R.id.tv_text_member_price)
     TextView tvTextMember;
+    @BindView(R.id.cl_pay_successful)
+    ConstraintLayout clPaySuccessful;
     private UserGoodsAdapter mUserGoodsAdapter;
     private String admin_name;
 
@@ -66,6 +70,10 @@ public class UserGoodsScreen extends Presentation {
 
     private void init() {
         titleBar.setCashierAccount(admin_name);
+
+        ObjectAnimator.ofFloat(clPaySuccessful, "alpha", 0f)
+                .setDuration(0)
+                .start();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
@@ -123,5 +131,11 @@ public class UserGoodsScreen extends Presentation {
     public void refreshGoodsData(List<GoodsEntity<GoodsResponse>> data) {
         mUserGoodsAdapter.refreshGoodsData(data);
         toPosition();
+    }
+
+    public void showPaySuccessful() {
+        ObjectAnimator.ofFloat(clPaySuccessful, "alpha", 0f, 1f, 1f, 1f, 0f)
+                .setDuration(2500)
+                .start();
     }
 }

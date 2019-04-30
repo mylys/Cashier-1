@@ -18,7 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 /**
  * 银联支付弹窗
  */
-public class BankcardDialog extends BaseDialog implements View.OnClickListener {
+public class BankcardDialog extends MyBaseDialog implements View.OnClickListener {
     private ConstraintLayout clClose;
     private TextView tvMoney;
     private ImageView ivQrcode;
@@ -41,11 +41,6 @@ public class BankcardDialog extends BaseDialog implements View.OnClickListener {
     }
 
     @Override
-    protected int getAnimation() {
-        return R.style.CustomDialogStyle;
-    }
-
-    @Override
     protected void initView(View rootView) {
         if (getArguments() != null) {
             dialog_money = getArguments().getString("DIALOG_MONEY");
@@ -65,41 +60,15 @@ public class BankcardDialog extends BaseDialog implements View.OnClickListener {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Window window = getDialog().getWindow();
-        if (window != null) {
-            window.setLayout(getResources().getDimensionPixelSize(R.dimen.x526),
-                    getResources().getDimensionPixelSize(R.dimen.y610));
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
-            window.getDecorView().setSystemUiVisibility(uiOptions);
-        }
-
-
+    protected int getLayoutWidth() {
+        return getResources().getDimensionPixelSize(R.dimen.x526);
     }
 
     @Override
-    protected boolean shouldHideBackground() {
-        return false;
+    protected int getLayoutHeight() {
+        return getResources().getDimensionPixelSize(R.dimen.y610);
     }
 
-    @Override
-    protected boolean canCanceledOnTouchOutside() {
-        return false;
-    }
-
-    @Override
-    protected boolean isWindowWidthMatchParent() {
-        return false;
-    }
 
     @Override
     public void onClick(View v) {

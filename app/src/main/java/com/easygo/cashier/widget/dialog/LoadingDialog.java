@@ -3,6 +3,7 @@ package com.easygo.cashier.widget.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -35,7 +36,16 @@ public class LoadingDialog extends Dialog {
             tvDescription.setText(loadingText);
         }
 
+        Window window = getWindow();
+        if(window != null) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        }
         super.show();
+        if(window != null) {
+            int ui_options = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            window.getDecorView().setSystemUiVisibility(ui_options);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        }
     }
 
 

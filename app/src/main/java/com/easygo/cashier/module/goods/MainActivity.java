@@ -165,7 +165,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
             @Override
             public void onConnected(boolean showTip) {
-                if(dialog != null && dialog.isShow()) {
+                if(dialog != null && dialog.isShowing()) {
                     dialog.setNewData(0, getString(R.string.local_printer), true);
 //                    return;
                 }
@@ -176,7 +176,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
             @Override
             public void onDisconnected() {
-                if(dialog != null && dialog.isShow()) {
+                if(dialog != null && dialog.isShowing()) {
                     dialog.setNewData(0, getString(R.string.local_printer), false);
 //                    return;
                 }
@@ -185,22 +185,22 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
             @Override
             public void onPleaseConnectPrinter() {
-                if(dialog != null && dialog.isShow()) {
+                if(dialog != null && dialog.isShowing()) {
                     showToast(getString(R.string.str_cann_printer));
                 }
             }
 
             @Override
             public void onConnectFailed() {
-                if(dialog != null && dialog.isShow()) {
+                if(dialog != null && dialog.isShowing()) {
                     showToast(getString(R.string.str_conn_fail));
                 }
             }
 
             @Override
             public void onConnectError(int error, String content) {
-                if(dialog != null && dialog.isShow()) {
-                    if (dialog != null && dialog.isShow()) {
+                if(dialog != null && dialog.isShowing()) {
+                    if (dialog != null && dialog.isShowing()) {
                         dialog.setErrorData(0, getResources().getString(R.string.local_printer), getString(R.string.device_abnormal));
                     }
                 }
@@ -219,7 +219,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
             @Override
             public void onNeedReplugged() {
-                if(dialog != null && dialog.isShow()) {
+                if(dialog != null && dialog.isShowing()) {
                     showToast(getString(R.string.str_need_replugged));
                 }
             }
@@ -280,13 +280,6 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                 }
             });
         }
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-
-        ScreenUtils.hideNavigationBar(this);
     }
 
     @Override
@@ -453,7 +446,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             @Override
             public void run() {
                 if(PrinterUtils.STATE_DISCONNECTED == PrinterUtils.getInstance().getPrinterState()) {
-                    if (dialog != null && dialog.isShow()) {
+                    if (dialog != null && dialog.isShowing()) {
                         dialog.setErrorData(0, getString(R.string.local_printer), getString(R.string.device_abnormal));
                     }
                 }
@@ -509,7 +502,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     @Override
     public void printerStatusSuccess(PrinterStatusResponse result) {
         boolean is_printer_normal = result.getOnline() == 1;
-        if (dialog != null && dialog.isShow()) {
+        if (dialog != null && dialog.isShowing()) {
             dialog.setNewData(getString(R.string.the_printer), is_printer_normal);
             return;
         }
@@ -518,7 +511,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
     @Override
     public void printerStatusFailed(Map<String, Object> map) {
-        if (dialog != null && dialog.isShow()) {
+        if (dialog != null && dialog.isShowing()) {
 //            dialog.setNewData(1, Configs.printer_sn, false);
             dialog.setNewData(1, getString(R.string.the_printer), false);
         }
@@ -528,7 +521,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     protected void onDestroy() {
         super.onDestroy();
 
-        if (dialog != null && dialog.isShow()) {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
 

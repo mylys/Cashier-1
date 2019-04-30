@@ -25,7 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 /**
  * 临时折扣、改价对话框
  */
-public class TempPromotionDialog extends BaseDialog {
+public class TempPromotionDialog extends MyBaseDialog {
     private TextView tvTitle;
     private TextView tvChooseGoodsCount;
 
@@ -48,7 +48,7 @@ public class TempPromotionDialog extends BaseDialog {
 
     //改价
     private TextView tvChangePriceFreeOrder;
-    private ImageView tvCancel;
+    private ConstraintLayout clCancel;
     private DialogKeyboard key_board;
 
     private int mTitleResId = -1;
@@ -66,16 +66,19 @@ public class TempPromotionDialog extends BaseDialog {
 
     private List<GoodsEntity<GoodsResponse>> selectGoods;
 
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.layout_dialog_temp_promotion;
     }
 
     @Override
-    protected int getAnimation() {
-        return R.style.CustomDialogStyle;
+    protected int getLayoutWidth() {
+        return 0;
+    }
+
+    @Override
+    protected int getLayoutHeight() {
+        return 0;
     }
 
     @Override
@@ -103,21 +106,13 @@ public class TempPromotionDialog extends BaseDialog {
         tvDiscountFreeOrder = rootView.findViewById(R.id.tv_discount_free_order);
         tvChangePriceFreeOrder = rootView.findViewById(R.id.tv_change_price_free_order);
 
-        tvCancel = rootView.findViewById(R.id.dialog_cancel);
+        clCancel = rootView.findViewById(R.id.cl_cancel);
         key_board = rootView.findViewById(R.id.key_board);
 
         key_board.setCanInputDecimal(canInputDecimal);
         key_board.attachEditText(etDiscount);
-//        key_board.setOnSureClickListener(new DialogKeyboard.OnSureClickListener() {
-//            @Override
-//            public void onContent(String string) {
-//                if (listener != null) {
-//                    listener.onClick(string);
-//                }
-//            }
-//        });
 
-        tvCancel.setOnClickListener(new View.OnClickListener() {
+        clCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
@@ -136,7 +131,7 @@ public class TempPromotionDialog extends BaseDialog {
         }
 
 
-        tvCancel.setVisibility(mTvCancelVisibility ? View.VISIBLE : View.GONE);
+        clCancel.setVisibility(mTvCancelVisibility ? View.VISIBLE : View.GONE);
 
 
         setListener();
@@ -365,24 +360,6 @@ public class TempPromotionDialog extends BaseDialog {
         this.canInputDecimal = canInputDecimal;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Window window = getDialog().getWindow();
-        if (window != null) {
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
-            window.getDecorView().setSystemUiVisibility(uiOptions);
-        }
-    }
-
     private OnDialogClickListener listener;
     public interface OnDialogClickListener {
 
@@ -393,23 +370,9 @@ public class TempPromotionDialog extends BaseDialog {
         this.listener = listener;
     }
 
-    public boolean isShow() {
-        return isShowing();
-    }
-
-    @Override
-    protected boolean shouldHideBackground() {
-        return false;
-    }
-
     @Override
     protected boolean canCanceledOnTouchOutside() {
         return true;
-    }
-
-    @Override
-    protected boolean isWindowWidthMatchParent() {
-        return false;
     }
 
     public void showCenter(FragmentActivity activity) {

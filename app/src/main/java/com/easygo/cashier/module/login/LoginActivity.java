@@ -44,7 +44,6 @@ import com.niubility.library.common.constants.BaseConstants;
 import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.utils.DeviceUtils;
 import com.niubility.library.utils.GsonUtils;
-import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
@@ -353,15 +352,6 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         }
     }
 
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-
-        ScreenUtils.hideNavigationBar(this);
-    }
-
-
     private void initLocalPrinter() {
         PrinterUtils.getInstance().setOnPrinterListener(new PrinterUtils.OnPrinterListener() {
             @Override
@@ -565,7 +555,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
     @Override
     public void reseverMoneySuccess() {
-        if (dialog != null && dialog.isShow()) {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
         login();

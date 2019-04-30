@@ -23,7 +23,7 @@ import com.niubility.library.utils.ToastUtils;
 /**
  * 配置 appkey、secret弹窗
  */
-public class ConfigDialog extends BaseDialog {
+public class ConfigDialog extends MyBaseDialog {
 
     private EditText etPassword;
     private EditText etId;
@@ -139,24 +139,6 @@ public class ConfigDialog extends BaseDialog {
         showUI(isPassed);
         readAndSetConfig();
 
-        Window window = getDialog().getWindow();
-        if (window != null) {
-
-            int width = getResources().getDimensionPixelSize(R.dimen.login_btn_width);
-            int padding = getResources().getDimensionPixelSize(R.dimen.x100);
-            int final_width = width + 2 * padding;
-            window.setLayout(final_width, -2);
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
-            window.getDecorView().setSystemUiVisibility(uiOptions);
-        }
     }
 
     @Override
@@ -165,23 +147,20 @@ public class ConfigDialog extends BaseDialog {
     }
 
     @Override
-    protected int getAnimation() {
-        return R.style.CustomDialogStyle;
+    protected int getLayoutWidth() {
+        int width = getResources().getDimensionPixelSize(R.dimen.login_btn_width);
+        int padding = getResources().getDimensionPixelSize(R.dimen.x100);
+        return width + 2 * padding;
     }
 
     @Override
-    protected boolean shouldHideBackground() {
-        return false;
+    protected int getLayoutHeight() {
+        return WindowManager.LayoutParams.WRAP_CONTENT;
     }
 
     @Override
     protected boolean canCanceledOnTouchOutside() {
         return true;
-    }
-
-    @Override
-    protected boolean isWindowWidthMatchParent() {
-        return false;
     }
 
     public void showCenter(FragmentActivity activity) {

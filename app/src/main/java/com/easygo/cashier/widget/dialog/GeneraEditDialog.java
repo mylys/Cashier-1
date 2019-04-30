@@ -20,11 +20,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
  * @Describe：通用输入框弹窗
  * @date：2019-01-03
  */
-public class GeneraEditDialog extends BaseDialog {
+public class GeneraEditDialog extends MyBaseDialog {
     private TextView dialog_title;
     private TextView dialog_cancel;
     private TextView dialog_submit;
-    private ImageView iv_cancel;
+    private ConstraintLayout cl_cancel;
     private EditText editInput;
 
     private ConstraintLayout constraintLayout;
@@ -61,8 +61,13 @@ public class GeneraEditDialog extends BaseDialog {
     }
 
     @Override
-    protected int getAnimation() {
-        return R.style.CustomDialogStyle;
+    protected int getLayoutWidth() {
+        return 0;
+    }
+
+    @Override
+    protected int getLayoutHeight() {
+        return 0;
     }
 
     @Override
@@ -71,7 +76,7 @@ public class GeneraEditDialog extends BaseDialog {
         dialog_title = rootView.findViewById(R.id.tv_name);
         dialog_cancel = rootView.findViewById(R.id.dialog_cancel);
         dialog_submit = rootView.findViewById(R.id.dialog_submit);
-        iv_cancel = rootView.findViewById(R.id.iv_cancel);
+        cl_cancel = rootView.findViewById(R.id.cl_cancel);
 
         constraintLayout = rootView.findViewById(R.id.constraint_center);
         tvAccount = rootView.findViewById(R.id.user_account);
@@ -83,12 +88,12 @@ public class GeneraEditDialog extends BaseDialog {
             dialog_title.setText(title);
         }
         if (!visiable) {
-            iv_cancel.setVisibility(View.GONE);
+            cl_cancel.setVisibility(View.GONE);
             dialog_cancel.setVisibility(View.GONE);
         }
         setStyle(type);
 
-        iv_cancel.setOnClickListener(new View.OnClickListener() {
+        cl_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogDismiss();
@@ -170,27 +175,8 @@ public class GeneraEditDialog extends BaseDialog {
         this.title = title;
     }
 
-    @Override
-    protected boolean shouldHideBackground() {
-        return false;
-    }
-
-    @Override
-    protected boolean canCanceledOnTouchOutside() {
-        return false;
-    }
-
-    @Override
-    protected boolean isWindowWidthMatchParent() {
-        return false;
-    }
-
     public void showCenter(FragmentActivity activity) {
         showCenter(activity, "DIALOG_GENERA_EDIT");
-    }
-
-    public boolean isShow(){
-        return isShowing();
     }
 
     @Override

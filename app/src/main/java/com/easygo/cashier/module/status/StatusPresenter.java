@@ -1,5 +1,7 @@
 package com.easygo.cashier.module.status;
 
+import android.text.TextUtils;
+
 import com.easygo.cashier.bean.PrinterStatusResponse;
 import com.easygo.cashier.http.HttpAPI;
 import com.niubility.library.http.base.HttpClient;
@@ -12,6 +14,10 @@ public class StatusPresenter extends BasePresenter<StatusContract.IView> impleme
 
     @Override
     public void printerStatus(String shop_sn, final String printer_sn) {
+        if(TextUtils.isEmpty(printer_sn)) {
+            mView.printerStatusFailed(null);
+            return;
+        }
 
         Map<String, String> header = HttpClient.getInstance().getHeader();
         subscribeAsyncToResult(
