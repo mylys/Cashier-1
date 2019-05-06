@@ -8,15 +8,11 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,7 +47,6 @@ import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseEvent;
 import com.niubility.library.base.BaseHandler;
 import com.niubility.library.utils.NetworkUtils;
-import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
 import com.tencent.bugly.beta.Beta;
 
@@ -239,15 +234,27 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        intentFilter.addAction(Events.CLEAR_GOODS_INFO);
         registerReceiver(connReceiver, intentFilter);
     }
 
     private BroadcastReceiver connReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
-                //ping
-                mHandler.sendEmptyMessageDelayed(Msg.MSG_NETWORK, 1000);
+
+            String action = intent.getAction();
+            if (action != null) {
+                switch (action) {
+                    case ConnectivityManager.CONNECTIVITY_ACTION:
+                        //ping
+                        mHandler.sendEmptyMessageDelayed(Msg.MSG_NETWORK, 1000);
+                        break;
+                    case Events.CLEAR_GOODS_INFO://清除商品数据
+                        if (goodsFragment != null) {
+                            goodsFragment.clearInfo();
+                        }
+                        break;
+                }
             }
         }
     };

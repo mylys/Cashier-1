@@ -398,12 +398,12 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
             @Override
             protected void onSuccess(String result) {
                 mView.hideLoading();
-                mView.unlockCouponSuccess();
+                mView.closeOrderSuccess();
             }
 
             @Override
             protected void onFailure(Map<String, Object> map) {
-                mView.unlockCouponFailed(map);
+                mView.closeOrderFailed(map);
             }
         });
 

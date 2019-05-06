@@ -76,7 +76,7 @@ public class SettlementContract {
         void memberWalletSuccess(String result);
         void memberWalletFailed(Map<String, Object> map);
 
-        void unlockCouponSuccess();
-        void unlockCouponFailed(Map<String, Object> map);
+        void closeOrderSuccess();
+        void closeOrderFailed(Map<String, Object> map);
     }
 }
