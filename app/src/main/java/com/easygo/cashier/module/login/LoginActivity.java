@@ -166,6 +166,9 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
             @Override
             public boolean onLongClick(View v) {
                 if("release".equals(BuildConfig.BUILD_TYPE)) {
+                    if(!Configs.open_offline) {
+                        return true;
+                    }
                     BaseConfig.hideKeys = new String[]{
                             getString(R.string.key_environment)
                     };
@@ -175,24 +178,26 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
             }
         });
 
-        btnLogin.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if(TextUtils.isEmpty(getAccount()) || TextUtils.isEmpty(getPassword())) {
+        if(Configs.open_offline) {
+            btnLogin.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (TextUtils.isEmpty(getAccount()) || TextUtils.isEmpty(getPassword())) {
+                        return true;
+                    }
+                    if (Configs.current_mode == Configs.mode_online) {
+                        Configs.current_mode = Configs.mode_offline;
+                        showToast("已切换到离线模式");
+                        btnLogin.setText("登录（离线）");
+                    } else {
+                        Configs.current_mode = Configs.mode_online;
+                        showToast("已切换到在线模式");
+                        btnLogin.setText(R.string.text_login);
+                    }
                     return true;
                 }
-                if(Configs.current_mode == Configs.mode_online) {
-                    Configs.current_mode = Configs.mode_offline;
-                    showToast("已切换到离线模式");
-                    btnLogin.setText("登录（离线）");
-                } else {
-                    Configs.current_mode = Configs.mode_online;
-                    showToast("已切换到在线模式");
-                    btnLogin.setText(R.string.text_login);
-                }
-                return true;
-            }
-        });
+            });
+        }
 
 
     }

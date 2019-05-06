@@ -432,6 +432,9 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
             @Override
             public void onItemRemoved(int position) {
+                if(position < 0 || position > mData.size() - 1) {
+                    return;
+                }
                 GoodsEntity<GoodsResponse> goodsEntity = mData.get(position);
                 BaseGoodsPromotion promotion = goodsEntity.getPromotion();
                 if(promotion != null && promotion.isTempGoodsPromotion()) {
@@ -1147,26 +1150,40 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         int size = result.size();
 
         if (mIsSelfEncode) {//自编码
-            if (mGoodWeight == 0) {//以个为单位的商品
-                for (int i = 0; i < size; i++) {
-
-                    GoodsResponse goodsResponse = result.get(i);
-                    goodsResponse.setCount_disable(true);
-                    price = Float.valueOf(goodsResponse.getPrice());
-
-                    count = (mGoodMoney / 100f) / price;
-                }
-            } else {
+//            if (mGoodWeight == 0) {//以个为单位的商品
+//                for (int i = 0; i < size; i++) {
+//
+//                    GoodsResponse goodsResponse = result.get(i);
+//                    goodsResponse.setCount_disable(true);
+//                    if (goodsResponse.has_single_sale_price()) {//有促销价
+//                        price = goodsResponse.getSingle_sale_price();
+//                    } else {
+//                        price = Float.valueOf(goodsResponse.getPrice());
+//                    }
+//
+//                    count = (mGoodMoney / 100f) / price;
+//                }
+//            } else {
                 count = mGoodWeight;
                 for (int i = 0; i < size; i++) {
 
                     GoodsResponse goodsResponse = result.get(i);
+                    goodsResponse.setCount_disable(true);
                     if(goodsResponse.getIs_weigh() == 1 && goodsResponse.isMainGood()){
                         //根据重量单位 进行重量换算
                         count = goodsResponse.isJin()? mGoodWeight / 1000f * 2: mGoodWeight / 1000f;
+                    } else if(goodsResponse.getIs_weigh() == 0 && goodsResponse.isMainGood()) {
+                        //根据数量单位
+                        if (goodsResponse.has_single_sale_price()) {//有促销价
+                            price = goodsResponse.getSingle_sale_price();
+                        } else {
+                            price = Float.valueOf(goodsResponse.getPrice());
+                        }
+
+                        count = (mGoodMoney / 100f) / price;
                     }
                 }
-            }
+//            }
         }
 
         boolean add_success = mGoodsMultiItemAdapter.addItem(result, count);
@@ -1280,13 +1297,18 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         Log.i(TAG, "goodsActivityFailed: 商品促销失败");
         Log.i(TAG, "goodsActivityFailed: " + map.get(HttpExceptionEngine.ErrorMsg));
 
+        if (!isForeground) {
+            Log.i(TAG, "goodsActivityFailed: 取消请求商品促销");
+            return;
+        }
+
         goods_promotion_success = false;
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mPresenter.goods_activity(Configs.shop_sn);
             }
-        }, 1000);
+        }, 2000);
 
     }
 
@@ -1311,13 +1333,18 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         Log.i(TAG, "shopActivityFailed: 店铺促销失败");
         Log.i(TAG, "shopActivityFailed: " + map.get(HttpExceptionEngine.ErrorMsg));
 
+        if (!isForeground) {
+            Log.i(TAG, "shopActivityFailed: 取消请求店铺促销");
+            return;
+        }
+
         shop_promotion_success = false;
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mPresenter.shop_activity(Configs.shop_sn);
             }
-        }, 1000);
+        }, 2000);
     }
 
     @Override

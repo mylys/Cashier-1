@@ -217,10 +217,7 @@ public class ChooseCouponsDialog extends MyBaseDialog {
         clCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (searchView.getEditText() != null) {
-                    SoftKeyboardUtil.hideSoftKeyboard(getActivity(), searchView.getEditText());
-                }
-                dismiss();
+                dialogDismiss();
             }
         });
         searchView.setOnSearchChangeListener(new DialogSearchView.OnSearchChangeListener() {

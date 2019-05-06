@@ -13,6 +13,8 @@ import java.util.List;
 
 public class Configs extends BaseConfig {
 
+    public static boolean open_offline = false;
+    public static boolean open_bankcard = false;
 
     public static final int mode_online = 0;
     public static final int mode_offline = 1;

@@ -74,7 +74,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             mData.add(goodsNum);
             notifyItemInserted(mData.size() - 1);
         } else {
-            data.get(code).setCount((data.get(code).getCount()) + 1);
+            data.get(code).setCount((data.get(code).getCount()) + count);
             notifyItemChanged(barcodeData.indexOf(code));
         }
         refreshPrice();
@@ -338,53 +338,55 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                     countTextView.setCountChangeEnable(false);
                 }
                 countTextView.setCount(df_int.format(good_count));
-                countTextView.setOnCountListener(new CountTextView.OnCountListener() {
-                    @Override
-                    public void onCountChanged(int count) {
+                if(!good.isCount_disable()) {
+                    countTextView.setOnCountListener(new CountTextView.OnCountListener() {
+                        @Override
+                        public void onCountChanged(int count) {
 
-                        if (count == 0) {
-                            //清除当前商品
-                            remove(position);
-                            return;
+                            if (count == 0) {
+                                //清除当前商品
+                                remove(position);
+                                return;
 
-                        } else {
-                            float on_sale_count = good.getOn_sale_count();
-                            if (good.getIs_inventory_limit() == 1 && helper.getItemViewType() == GoodsEntity.TYPE_GOODS
-                                    && count > on_sale_count) {
-                                //数量大于在售数量了
-                                count--;
-                                countTextView.setCount(count + "");
-
-                                if (mListener != null) {
-                                    mListener.onSaleCountNotEnough();
-                                }
-                                //添加到限制集合
-                                limit.add(barcode);
-
-                            }
-                            if(count < on_sale_count) {
-                                //移除出 限制集合
-                                limit.remove(barcode);
                             } else {
-                                //添加到 限制集合
-                                limit.add(barcode);
+                                float on_sale_count = good.getOn_sale_count();
+                                if (good.getIs_inventory_limit() == 1 && helper.getItemViewType() == GoodsEntity.TYPE_GOODS
+                                        && count > on_sale_count) {
+                                    //数量大于在售数量了
+                                    count--;
+                                    countTextView.setCount(count + "");
+
+                                    if (mListener != null) {
+                                        mListener.onSaleCountNotEnough();
+                                    }
+                                    //添加到限制集合
+                                    limit.add(barcode);
+
+                                }
+                                if (count < on_sale_count) {
+                                    //移除出 限制集合
+                                    limit.remove(barcode);
+                                } else {
+                                    //添加到 限制集合
+                                    limit.add(barcode);
+                                }
+
+                                item.setCount(count);
+                                notifyItemChanged(position);
                             }
+                            //刷新价格
+                            refreshPrice();
 
-                            item.setCount(count);
-                            notifyItemChanged(position);
                         }
-                        //刷新价格
-                        refreshPrice();
 
-                    }
-
-                    @Override
-                    public void onCountClick() {
-                        if(mListener != null) {
-                            mListener.onCountClick(countTextView, position, countTextView.getCount());
+                        @Override
+                        public void onCountClick() {
+                            if (mListener != null) {
+                                mListener.onCountClick(countTextView, position, countTextView.getCount());
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 break;
             case GoodsEntity.TYPE_WEIGHT://称重商品
                 helper.setText(R.id.tv_count, df_weight.format(good_count) + good.getG_u_symbol());
@@ -457,7 +459,12 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
 
         switch (helper.getItemViewType()) {
-            case GoodsEntity.TYPE_WEIGHT://普通商品
+            case GoodsEntity.TYPE_GOODS://普通商品
+                if(!good.isCount_disable()) {//没有禁止加减按钮 即普通非称重商品
+                    break;
+                }
+                //普通下发至称重机 按数量计的商品，禁止加减，显示移除按钮
+            case GoodsEntity.TYPE_WEIGHT://称重商品
             case GoodsEntity.TYPE_PROCESSING://加工商品
             case GoodsEntity.TYPE_ONLY_PROCESSING://加工商品
                 View view = helper.getView(R.id.cl_remove);

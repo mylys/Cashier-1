@@ -243,7 +243,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
 
                 product_subtotal = Float.parseFloat(goodsRefundInfo.getProduct_subtotal());
                 if(GoodsResponse.isWeightGood(goodsRefundInfo.getType())) {
-                    refund_total = product_subtotal;
+                    refund_total += product_subtotal;
                 } else {
                     refund_total += (Integer.parseInt(goodsRefundInfo.getRefund_num()) * (product_subtotal / goodsRefundInfo.getProduct_num()));
                 }

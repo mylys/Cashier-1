@@ -35,6 +35,8 @@ public class GoodsResponse implements Serializable {
      * sell_status : 1
      * status : 1
      * is_weigh : 0
+     * has_single_sale_price : 0
+     * single_sale_price : 0
      */
 
     private int g_sku_id;
@@ -63,6 +65,8 @@ public class GoodsResponse implements Serializable {
     private int sell_status;
     private int status;
     private int is_weigh;
+    private int has_single_sale_price;
+    private Object single_sale_price;
     private String g_u_symbol;
 
     private boolean select;
@@ -461,6 +465,26 @@ public class GoodsResponse implements Serializable {
 
     public void setIs_weigh(int is_weigh) {
         this.is_weigh = is_weigh;
+    }
+
+    public boolean has_single_sale_price() {
+        return has_single_sale_price == 1;
+    }
+
+    public void setHas_single_sale_price(int has_single_sale_price) {
+        this.has_single_sale_price = has_single_sale_price;
+    }
+
+    public float getSingle_sale_price() {
+        if(single_sale_price instanceof String) {
+            return TextUtils.isEmpty((String) single_sale_price)? 0: Float.parseFloat((String) single_sale_price);
+        } else {
+            return 0f;
+        }
+    }
+
+    public void setSingle_sale_price(Object single_sale_price) {
+        this.single_sale_price = single_sale_price;
     }
 
     public String getG_u_symbol() {

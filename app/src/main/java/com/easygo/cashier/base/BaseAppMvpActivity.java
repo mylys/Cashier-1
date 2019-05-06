@@ -36,7 +36,13 @@ public abstract class BaseAppMvpActivity<V extends BaseView, P extends BasePrese
 
             @Override
             public void keyBoardHide(int height) {
-                ScreenUtils.hideNavigationBar(BaseAppMvpActivity.this);
+                View decorView = getWindow().getDecorView();
+                decorView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ScreenUtils.hideNavigationBar(BaseAppMvpActivity.this);
+                    }
+                }, 200);
             }
         });
 
