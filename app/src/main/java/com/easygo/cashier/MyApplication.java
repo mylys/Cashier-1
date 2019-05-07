@@ -38,6 +38,7 @@ public class MyApplication extends BaseApplication {
         ToastUtils.text_size_times = 1.5f;
 
         BaseConfig.readConfig(this);
+        BaseConfig.setEnvironmentIndex(this, String.valueOf(Configs.environment_index));
     }
 
     private void initBugly() {
@@ -76,6 +77,10 @@ public class MyApplication extends BaseApplication {
          * 当后台配置的banner拉取失败时显示此banner，默认不设置则展示“loading“;
          */
         Beta.defaultBannerId = R.drawable.ic_launcher_background;
+        /**
+         * 设置自定义升级对话框UI布局
+         */
+        Beta.upgradeDialogLayoutId = R.layout.layout_bugly_upgrade_dialog;
         /**
          * 设置sd卡的Download为更新资源保存目录;
          * 后续更新资源会保存在此目录，需要在manifest中添加WRITE_EXTERNAL_STORAGE权限;

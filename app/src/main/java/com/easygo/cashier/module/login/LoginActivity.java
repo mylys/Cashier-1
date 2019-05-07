@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.display.DisplayManager;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -104,6 +105,8 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
     private SharedPreferences sp;
 
+    private final int REQUEST_CODE_CONFIG = 0;
+
 
     @Override
     protected LoginPresenter createPresenter() {
@@ -173,7 +176,8 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
                             getString(R.string.key_environment)
                     };
                 }
-                startActivity(new Intent(LoginActivity.this, ConfigPreferenceActivity.class));
+                startActivityForResult(new Intent(LoginActivity.this, ConfigPreferenceActivity.class)
+                        , REQUEST_CODE_CONFIG);
                 return true;
             }
         });
@@ -582,4 +586,14 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         showToast((String) map.get(HttpExceptionEngine.ErrorMsg));
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(REQUEST_CODE_CONFIG == requestCode) {
+            String cur_environment = getResources().getStringArray(R.array.attr_environment)[BaseConfig.environment_index];
+            showToast("环境： " + cur_environment + ", \n"
+                            + "ip/port： " + BaseConfig.environment_ip);
+        }
+    }
 }
