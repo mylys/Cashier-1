@@ -103,6 +103,8 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
     @BindView(R.id.cl_member)
     ConstraintLayout clMember;
+    @BindView(R.id.btn_gift_card)
+    GeneraButton btnGiftCard;
     @BindView(R.id.tv_goods_count)
     TextView tvGoodsCount;
     @BindView(R.id.tv_total_money)
@@ -282,6 +284,9 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         }
         if (Configs.getRole(Configs.menus[21]) == 0) {
             clNoBarcode.setVisibility(View.GONE);
+        }
+        if(!Configs.isOnlineMode()) {
+            btnGiftCard.setVisibility(View.GONE);
         }
     }
 
