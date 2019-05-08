@@ -32,20 +32,20 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "API_URL", "\"https://api.pos.esgao.cn/\"")
-        }
-        dev.initWith(buildTypes.debug)
-        dev {
-//            buildConfigField("String", "API_URL", "\"https://api.pos.esgao.cn/\"")//正式
-            buildConfigField("String", "API_URL", "\"http://api.dev.pos.esgao.cn/\"")//开发
-        }
-        T.initWith(buildTypes.debug)
-        T {
-            buildConfigField("String", "API_URL", "\"http://api.staging.pos.esgao.cn/\"")//预发布
+            minifyEnabled true
+            //Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../../BaseLibrary/niubilitylibrary/proguard-rules-common.pro'
         }
         debug {
+            minifyEnabled true
+            //Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../../BaseLibrary/niubilitylibrary/proguard-rules-common.pro'
             signingConfig signingConfigs.config
         }
     }
