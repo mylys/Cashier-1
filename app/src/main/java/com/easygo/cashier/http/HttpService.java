@@ -17,7 +17,7 @@ import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.PrinterStatusResponse;
 import com.easygo.cashier.bean.QuickInfo;
 import com.easygo.cashier.bean.ShopActivityResponse;
-import com.niubility.library.http.base.HttpResult;
+import com.niubility.library.http.result.HttpResult;
 
 import java.util.List;
 import java.util.Map;

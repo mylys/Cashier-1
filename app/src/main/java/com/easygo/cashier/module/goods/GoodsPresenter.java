@@ -15,7 +15,7 @@ import com.easygo.cashier.bean.ShopActivityResponse;
 import com.easygo.cashier.http.HttpAPI;
 import com.easygo.cashier.printer.PrintHelper;
 import com.niubility.library.http.base.HttpClient;
-import com.niubility.library.http.base.HttpResult;
+import com.niubility.library.http.result.HttpResult;
 import com.niubility.library.http.rx.BaseErrorObserver;
 import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
