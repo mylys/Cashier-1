@@ -1170,6 +1170,10 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 //                }
 //            } else {
                 count = mGoodWeight;
+
+                if(mGoodsCount == 0) {
+                    count = 1;
+                }
                 for (int i = 0; i < size; i++) {
 
                     GoodsResponse goodsResponse = result.get(i);
@@ -1177,16 +1181,17 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                     if(goodsResponse.getIs_weigh() == 1 && goodsResponse.isMainGood()){
                         //根据重量单位 进行重量换算
                         count = goodsResponse.isJin()? mGoodWeight / 1000f * 2: mGoodWeight / 1000f;
-                    } else if(goodsResponse.getIs_weigh() == 0 && goodsResponse.isMainGood()) {
-                        //根据数量单位
-                        if (goodsResponse.has_single_sale_price()) {//有促销价
-                            price = goodsResponse.getSingle_sale_price();
-                        } else {
-                            price = Float.valueOf(goodsResponse.getPrice());
-                        }
-
-                        count = (mGoodMoney / 100f) / price;
                     }
+//                    else if(goodsResponse.getIs_weigh() == 0 && goodsResponse.isMainGood()) {
+                        //根据数量单位
+//                        if (goodsResponse.has_single_sale_price()) {//有促销价
+//                            price = goodsResponse.getSingle_sale_price();
+//                        } else {
+//                            price = Float.valueOf(goodsResponse.getPrice());
+//                        }
+//
+//                        count = (mGoodMoney / 100f) / price;
+//                    }
                 }
 //            }
         }

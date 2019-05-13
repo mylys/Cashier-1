@@ -257,5 +257,39 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!--测试-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btn_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y20"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_search_gift_card">
+
+        <ImageView
+            android:layout_width="@dimen/x96"
+            android:layout_height="@dimen/y120"
+            android:src="@drawable/bg_promotion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="创建订单"
+            android:ems="1"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_26"
+            android:textColor="@color/color_text_white"
+            android:layout_marginStart="@dimen/x28"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

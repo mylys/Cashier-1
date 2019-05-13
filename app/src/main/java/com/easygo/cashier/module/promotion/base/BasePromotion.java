@@ -118,4 +118,8 @@ public class BasePromotion implements IPromotion, Serializable {
     public void setWith_coupon(int with_coupon) {
         this.with_coupon = with_coupon;
     }
+
+    public boolean equals(BasePromotion obj) {
+        return super.equals(obj) || id == obj.getId();
+    }
 }

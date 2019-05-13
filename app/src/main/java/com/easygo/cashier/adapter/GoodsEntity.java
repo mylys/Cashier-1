@@ -95,4 +95,23 @@ public class GoodsEntity<T> implements MultiItemEntity, Serializable {
     public void setExcludeInShopActivity(boolean excludeInShopActivity) {
         isExcludeInShopActivity = excludeInShopActivity;
     }
+
+    public boolean equals(GoodsEntity<T> obj) {
+        if(super.equals(obj)) {
+            return true;
+        }
+        boolean count_equal = count == obj.getCount();
+        boolean data_equal = data.equals(obj.getData());
+        boolean processing_equal;
+        if(processing != null && obj.getProcessing() != null) {
+            processing_equal = processing.equals(obj.getProcessing());
+        } else if(processing == null && obj.getProcessing() == null) {
+            processing_equal = true;
+        } else {
+            processing_equal = false;
+        }
+
+        return super.equals(obj) ||
+                (count_equal && data_equal && processing_equal);
+    }
 }

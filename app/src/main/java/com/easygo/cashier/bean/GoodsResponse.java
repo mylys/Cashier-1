@@ -494,4 +494,18 @@ public class GoodsResponse implements Serializable {
     public void setG_u_symbol(String g_u_symbol) {
         this.g_u_symbol = g_u_symbol;
     }
+
+    public boolean equals(GoodsResponse obj) {
+        return super.equals(obj) ||
+                (g_sku_id == obj.g_sku_id
+                && getDiscount_price().equals(obj.getDiscount_price())
+                && price.equals(obj.price)
+                && temp_goods_discount == obj.temp_goods_discount
+                && temp_order_discount == obj.temp_order_discount
+                && goods_activity_discount == obj.goods_activity_discount
+                && shop_activity_discount == obj.shop_activity_discount
+                && member_discount == obj.member_discount
+                && coupon_discount == obj.coupon_discount
+                );
+    }
 }

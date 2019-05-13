@@ -208,4 +208,8 @@ public class ScanCodeDialog extends MyBaseDialog {
         this.mStopScan = stopScan;
     }
 
+    public void showCloseIcon() {
+        mClose.setVisibility(View.VISIBLE);
+    }
+
 }

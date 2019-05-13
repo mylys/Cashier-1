@@ -224,7 +224,7 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
                         return observable;
                     }
                 })
-                .retry()
+//                .retry()
                 .subscribe(observer);
 
 
