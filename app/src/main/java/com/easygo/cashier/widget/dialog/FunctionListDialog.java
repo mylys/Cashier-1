@@ -86,7 +86,7 @@ public class FunctionListDialog extends MyBaseDialog {
             hideList.add(3);
         }
 
-        if(!Configs.open_bankcard) {
+        if(!Configs.open_offline) {
             hideList.add(5);
         }
 
