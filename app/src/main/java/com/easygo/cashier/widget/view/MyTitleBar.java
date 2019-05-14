@@ -19,6 +19,7 @@ public class MyTitleBar extends ConstraintLayout {
     private ImageView mLogo;
     private View mLine;
     private TextView mCashierAccount;
+    private TextView mMode;
     private ConstraintLayout mExit;
     private ImageView mPopTill;
     private ImageView mSetting;
@@ -101,6 +102,7 @@ public class MyTitleBar extends ConstraintLayout {
         mLogo = mView.findViewById(R.id.iv);
         mLine = mView.findViewById(R.id.line);
         mCashierAccount = mView.findViewById(R.id.tv_cashier_account);
+        mMode = mView.findViewById(R.id.tv_mode);
         mExit = mView.findViewById(R.id.cl_exit);
 
         mPopTill = mView.findViewById(R.id.pop_till);
@@ -180,6 +182,10 @@ public class MyTitleBar extends ConstraintLayout {
     public void setRedPointVisibility(boolean visibility) {
         mCanUpdate = visibility;
         mRedPoint.setVisibility(mCanUpdate? VISIBLE: GONE);
+    }
+
+    public void setOfflineModeVisibility(boolean visibility) {
+        mMode.setVisibility(visibility? VISIBLE: GONE);
     }
 
 

@@ -44,12 +44,26 @@
         app:layout_constraintLeft_toRightOf="@id/line"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x10"
+        android:text="（离线）"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/text_size_33"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/tv_cashier_account"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_exit"
         android:layout_width="@dimen/x74"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/x19"
-        app:layout_constraintStart_toEndOf="@id/tv_cashier_account"
+        android:layout_marginStart="@dimen/x10"
+        app:layout_constraintStart_toEndOf="@id/tv_mode"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 

@@ -26,6 +26,7 @@ import com.easygo.cashier.base.BaseAppMvpActivity;
 import com.easygo.cashier.bean.AccountInfo;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.bean.LoginResponse;
+import com.easygo.cashier.http.HttpAPI;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.printer.local.PrinterUtils;
@@ -88,6 +89,8 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
 
     private MyHandler mHandler = new MyHandler(this);
+    private String mLastIpPort;
+
     private static class MyHandler extends BaseHandler<LoginActivity> {
 
         public MyHandler(LoginActivity activity) {
@@ -176,6 +179,9 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
                             getString(R.string.key_environment)
                     };
                 }
+                SharedPreferences sp = getSharedPreferences(BaseConfig.sp_config, Context.MODE_PRIVATE);
+                mLastIpPort = sp.getString(getString(R.string.key_ip_port), "192.168.1.1:8080");
+
                 startActivityForResult(new Intent(LoginActivity.this, ConfigPreferenceActivity.class)
                         , REQUEST_CODE_CONFIG);
                 return true;
@@ -591,6 +597,15 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         super.onActivityResult(requestCode, resultCode, data);
 
         if(REQUEST_CODE_CONFIG == requestCode) {
+            SharedPreferences sp = getSharedPreferences(BaseConfig.sp_config, Context.MODE_PRIVATE);
+            String newIpPort = sp.getString(getString(R.string.key_ip_port), "192.168.1.1:8080");
+
+            if(!mLastIpPort.equals(newIpPort)) {
+                Log.i(TAG, "onActivityResult: ip、port变化，重置HttpApi");
+                HttpAPI.getInstance().reset();
+            }
+
+
             String cur_environment = getResources().getStringArray(R.array.attr_environment)[BaseConfig.environment_index];
             showToast("环境： " + cur_environment + ", \n"
                             + "ip/port： " + BaseConfig.environment_ip);

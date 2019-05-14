@@ -134,6 +134,9 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         if (Configs.getRole(Configs.menus[13]) == 0) {
             myTitleBar.setPopTillVisibility(false);
         }
+        if(!Configs.isOnlineMode()) {
+            myTitleBar.setOfflineModeVisibility(true);
+        }
         tvCashierAcount.setText("收银员: " + admin_name);
 
         mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);

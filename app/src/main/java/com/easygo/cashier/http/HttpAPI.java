@@ -1,5 +1,7 @@
 package com.easygo.cashier.http;
 
+import android.util.Log;
+
 import com.easygo.cashier.Configs;
 import com.niubility.library.common.config.BaseConfig;
 import com.niubility.library.http.base.BaseHttpAPI;
@@ -18,6 +20,18 @@ public class HttpAPI extends BaseHttpAPI {
         static final HttpAPI sInstance = new HttpAPI();
     }
 
+    public void reset() {
+        init();
+        if (httpServiceCashierList != null) {
+            httpServiceCashierList.clear();
+            httpServiceCashierList = null;
+        }
+        if (httpServiceOfflineList != null) {
+            httpServiceOfflineList.clear();
+            httpServiceOfflineList = null;
+        }
+    }
+
 
     private List<HttpService> httpServiceCashierList;
     private List<HttpService> httpServiceOfflineList;
@@ -33,6 +47,7 @@ public class HttpAPI extends BaseHttpAPI {
                 }
             }
             httpService = httpServiceCashierList.get(BaseConfig.environment_index);
+            Log.i("test", "httpService: 在线模式- " + httpService);
             if (httpService == null) {
                 httpService = BaseRetrofit.getInstance()
                         .getCurrentEnvRetrofit(array_key_url[0])
@@ -49,6 +64,7 @@ public class HttpAPI extends BaseHttpAPI {
                 }
             }
             httpService = httpServiceOfflineList.get(BaseConfig.environment_index);
+            Log.i("test", "httpService: 离线模式- " + httpService);
             if (httpService == null) {
                 httpService = BaseRetrofit.getInstance()
                         .getCurrentEnvRetrofit(array_key_url[1])
@@ -80,11 +96,6 @@ public class HttpAPI extends BaseHttpAPI {
                 "http://api.dev.pos.esgao.cn/", //测试
         };
 
-//        String[] array_url_offline = new String[] {
-//                "http://192.168.31.74:8071/",
-//                "http://192.168.31.74:8071/",
-//                "http://192.168.31.74:8071/",
-//        };
         String[] array_url_offline = new String[] {
                 "http://" + BaseConfig.environment_ip + "/",
                 "http://" + BaseConfig.environment_ip + "/",
