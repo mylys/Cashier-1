@@ -16,6 +16,7 @@ import com.easygo.cashier.widget.view.CountTextView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -45,7 +46,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
     protected ArrayMap<String, GoodsEntity<GoodsResponse>> data;
     protected ArrayList<String> barcodeData = new ArrayList<>();
-    protected List<String> limit = new ArrayList<>();
+    protected HashSet<String> limit = new HashSet<>();
 
 
     /**
@@ -149,17 +150,28 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
         GoodsResponse goodsResponse;
         for (int i = 0; i < size; i++) {
             goodsResponse = t.get(i);
-            if(!goodsResponse.isMainGood()|| goodsResponse.getIs_inventory_limit() == 0) {
-                //排除加工方式和 关闭了库存限制的商品
+            barcode = goodsResponse.getBarcode();
+            if(goodsResponse.getIs_inventory_limit() == 0) {//关闭了库存限制
+                limit.remove(barcode);
                 continue;
             }
-            barcode = goodsResponse.getBarcode();
+            if(!goodsResponse.isMainGood()) {
+                //排除加工方式
+                continue;
+            }
+
             if (limit.contains(barcode)) {
                 return false;
             } else {
                 if(data != null && data.containsKey(barcode)) {//已经被添加进来
                     if (goodsResponse.getOn_sale_count() - data.get(barcode).getCount() - weight < 0) {
                         //在售数量 - 已经添加数量 - 即将添加数量 < 0 说明库存不足
+                        limit.add(barcode);
+                        return false;
+                    }
+                } else {//还没被添加进来
+                    if(goodsResponse.getOn_sale_count() - weight < 0) {
+                        //在售数量 - 即将添加数量 < 0 说明库存不足
                         limit.add(barcode);
                         return false;
                     }
@@ -336,6 +348,8 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 final CountTextView countTextView = helper.getView(R.id.count_view);
                 if(good.isCount_disable()) {//自编码按数量计的商品 不可加减
                     countTextView.setCountChangeEnable(false);
+                } else {
+                    countTextView.setCountChangeEnable(true);
                 }
                 countTextView.setCount(df_int.format(good_count));
                 if(!good.isCount_disable()) {
@@ -351,7 +365,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                             } else {
                                 float on_sale_count = good.getOn_sale_count();
                                 if (good.getIs_inventory_limit() == 1 && helper.getItemViewType() == GoodsEntity.TYPE_GOODS
-                                        && count > on_sale_count) {
+                                        && on_sale_count - count < 0) {
                                     //数量大于在售数量了
                                     count--;
                                     countTextView.setCount(count + "");
@@ -363,7 +377,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                                     limit.add(barcode);
 
                                 }
-                                if (count < on_sale_count) {
+                                if (on_sale_count - count > 0) {
                                     //移除出 限制集合
                                     limit.remove(barcode);
                                 } else {
@@ -457,17 +471,18 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
                 break;
         }
 
-
+        View view = helper.getView(R.id.cl_remove);
         switch (helper.getItemViewType()) {
             case GoodsEntity.TYPE_GOODS://普通商品
                 if(!good.isCount_disable()) {//没有禁止加减按钮 即普通非称重商品
+                    view.setVisibility(View.GONE);
                     break;
                 }
                 //普通下发至称重机 按数量计的商品，禁止加减，显示移除按钮
             case GoodsEntity.TYPE_WEIGHT://称重商品
             case GoodsEntity.TYPE_PROCESSING://加工商品
             case GoodsEntity.TYPE_ONLY_PROCESSING://加工商品
-                View view = helper.getView(R.id.cl_remove);
+//                View view = helper.getView(R.id.cl_remove);
                 view.setVisibility(View.VISIBLE);
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override

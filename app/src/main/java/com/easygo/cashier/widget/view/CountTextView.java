@@ -23,6 +23,8 @@ public class CountTextView extends ConstraintLayout {
      */
     private int mCount;
 
+    private boolean mCountChangeEnable;
+
     public CountTextView(Context context) {
         super(context);
         init(context, null);
@@ -39,6 +41,8 @@ public class CountTextView extends ConstraintLayout {
 
         initAttr(context, attrs);
 
+
+        mCountChangeEnable = true;
 
         mSubtractBtn.setOnClickListener(new OnClickListener() {
             @Override
@@ -75,7 +79,7 @@ public class CountTextView extends ConstraintLayout {
         mCountTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mListener != null) {
+                if(mCountChangeEnable && mListener != null) {
                     mListener.onCountClick();
                 }
             }
@@ -110,6 +114,7 @@ public class CountTextView extends ConstraintLayout {
      * @param enable
      */
     public void setCountChangeEnable(boolean enable) {
+        mCountChangeEnable = enable;
         mAddBtn.setVisibility(enable? VISIBLE: GONE);
         mSubtractBtn.setVisibility(enable? VISIBLE: GONE);
         if(enable) {

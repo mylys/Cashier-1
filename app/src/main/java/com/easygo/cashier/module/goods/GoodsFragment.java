@@ -324,7 +324,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
      */
     private void onScanCode(String barcode) {
         Log.i(TAG, "onScanCode: barcode --> " + barcode);
-
+        mIsSelfEncode = false;
         if (TextUtils.isEmpty(barcode)) {
 //            showToast("barcode = null");
         } else if (BarcodeUtils.isWeightCode(barcode)) {//自编码
