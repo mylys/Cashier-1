@@ -9,13 +9,27 @@ import com.niubility.library.http.rx.BaseResultObserver;
 import com.niubility.library.mvp.BasePresenter;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 public class StatusPresenter extends BasePresenter<StatusContract.IView> implements StatusContract.IPresenter{
 
     @Override
     public void printerStatus(String shop_sn, final String printer_sn) {
         if(TextUtils.isEmpty(printer_sn)) {
-            mView.printerStatusFailed(null);
+            Disposable disposable = Observable.timer(500, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<Long>() {
+                        @Override
+                        public void accept(Long aLong) throws Exception {
+                            mView.printerStatusFailed(null);
+                        }
+                    });
+            mCompositeDisposable.add(disposable);
             return;
         }
 

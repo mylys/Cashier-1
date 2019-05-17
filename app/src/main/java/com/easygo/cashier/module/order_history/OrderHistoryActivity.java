@@ -55,7 +55,8 @@ public class OrderHistoryActivity extends AppCompatActivity {
         fragment = getSupportFragmentManager().findFragmentByTag(TAG_ORDER_HISTORY);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (fragment != null) {
-            transaction.show(orderHistoryFragment);
+            transaction.show(fragment);
+            orderHistoryFragment = (OrderHistoryFragment) fragment;
         } else {
             orderHistoryFragment = OrderHistoryFragment.newInstance();
             transaction.replace(R.id.framelayout, orderHistoryFragment, TAG_ORDER_HISTORY);
@@ -77,7 +78,8 @@ public class OrderHistoryActivity extends AppCompatActivity {
             orderHistoryRefundFragment = OrderHistoryRefundFragment.getInstance(bundle);
             transaction.add(R.id.framelayout, orderHistoryRefundFragment, TAG_ORDER_HISTORY_REFUND);
         } else {
-            transaction.show(orderHistoryRefundFragment);
+            transaction.show(fragment);
+            orderHistoryRefundFragment = (OrderHistoryRefundFragment) fragment;
         }
         transaction.hide(orderHistoryFragment);
         transaction.addToBackStack(TAG_ORDER_HISTORY_REFUND);

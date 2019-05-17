@@ -276,19 +276,24 @@ public class DeviceConnFactoryManager {
     /**
      * 关闭端口
      */
-    public void closePort(int id) {
-        if (this.mPort != null) {
-            System.out.println("id -> " + id);
-            reader.cancel();
-           boolean b= this.mPort.closePort();
-            if(b) {
-                this.mPort=null;
-                isOpenPort = false;
-                currentPrinterCommand = null;
+    public synchronized void closePort(int id) {
+        try {
+            if (this.mPort != null) {
+                System.out.println("id -> " + id);
+                reader.cancel();
+                boolean b = this.mPort.closePort();
+                if (b) {
+                    this.mPort = null;
+                    isOpenPort = false;
+                    currentPrinterCommand = null;
+                }
+                Log.i(TAG, "closePort: 关闭端口 -> " + b);
             }
-            Log.i(TAG, "closePort: 关闭端口 -> " + b);
+            sendStateBroadcast(CONN_STATE_DISCONNECT);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i(TAG, "closePort: 关闭端口过程中 出现异常");
         }
-        sendStateBroadcast(CONN_STATE_DISCONNECT);
     }
 
     /**
@@ -312,9 +317,9 @@ public class DeviceConnFactoryManager {
     public static void closeAllPort() {
         for (DeviceConnFactoryManager deviceConnFactoryManager : deviceConnFactoryManagers) {
             if (deviceConnFactoryManager != null) {
-                Log.e(TAG, "cloaseAllPort() id -> " + deviceConnFactoryManager.id);
-                deviceConnFactoryManager.closePort(deviceConnFactoryManager.id);
+                Log.e(TAG, "closeAllPort() id -> " + deviceConnFactoryManager.id);
                 deviceConnFactoryManagers[deviceConnFactoryManager.id] = null;
+                deviceConnFactoryManager.closePort(deviceConnFactoryManager.id);
             }
         }
     }

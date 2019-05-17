@@ -41,7 +41,7 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
 
     private OrderHistoryDetailFragment orderHistoryDetailFragment;
     private OrderHistoryAdapter adapter = new OrderHistoryAdapter();
-    SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getActivity());
+    private SharedPreferences sp;
     int handover_id = -1;
 
     private int page = 1;
@@ -76,7 +76,7 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             transaction.replace(R.id.framelayout, orderHistoryDetailFragment, "tag_order_history").commit();
         }
-
+        sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getActivity());
         handover_id = sp.getInt(Constants.KEY_HANDOVER_ID, -1);
 
         rvOrderHistory.setLayoutManager(new LinearLayoutManager(getActivity()));

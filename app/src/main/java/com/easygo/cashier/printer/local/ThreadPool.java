@@ -2,6 +2,7 @@ package com.easygo.cashier.printer.local;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -24,12 +25,12 @@ public class ThreadPool {
     /**
      * 最大线程数
      */
-    private final static int MAX_POOL_COUNTS = 20;
+    private final static int MAX_POOL_COUNTS = 50;
 
     /**
      * 线程存活时间
      */
-    private final static long ALIVETIME = 200L;
+    private final static long ALIVETIME = 0L;
 
     /**
      * 核心线程数
@@ -44,8 +45,10 @@ public class ThreadPool {
     private ThreadFactory threadFactory = new ThreadFactoryBuilder("ThreadPool");
 
     private ThreadPool() {
-        //初始化线程池 核心线程数为20，最大线程数30，线程存活200L，线程队列mWorkQueue,
-        threadPoolExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_COUNTS, ALIVETIME, TimeUnit.SECONDS, mWorkQueue, threadFactory);
+        //初始化线程池 核心线程数为20，最大线程数30，线程存活0s，线程队列mWorkQueue,
+        threadPoolExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_COUNTS,
+                ALIVETIME, TimeUnit.SECONDS, mWorkQueue,
+                threadFactory, new ThreadPoolExecutor.DiscardOldestPolicy());
     }
 
     public static ThreadPool getInstantiation() {
@@ -64,7 +67,8 @@ public class ThreadPool {
             threadPoolExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_COUNTS, ALIVETIME, TimeUnit.SECONDS, mWorkQueue, threadFactory);
         }
 
-        if (threadPoolExecutor != null && threadPoolExecutor.getActiveCount() < MAX_POOL_COUNTS) {
+        if (threadPoolExecutor != null && threadPoolExecutor.getActiveCount() < MAX_POOL_COUNTS
+                && !threadPoolExecutor.isShutdown()) {
             threadPoolExecutor.execute(runnable);
         } else {
             PrinterLog.write("线程池异常:" + threadPoolExecutor.getActiveCount());

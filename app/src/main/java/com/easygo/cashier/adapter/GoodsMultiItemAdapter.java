@@ -893,6 +893,9 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
     }
 
     public void setGoodsCount(int position, int count) {
+        if(position < 0 || position >= mData.size()) {
+            return;
+        }
         CountTextView countTextView = (CountTextView) getViewByPosition(position, R.id.count_view);
 
         GoodsEntity<GoodsResponse> goodsEntity = mData.get(position);

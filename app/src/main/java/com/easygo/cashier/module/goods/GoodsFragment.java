@@ -329,8 +329,12 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 //            showToast("barcode = null");
         } else if (BarcodeUtils.isWeightCode(barcode)) {//自编码
 
-            mIsSelfEncode = true;
             String weight_barcode = BarcodeUtils.getProductCode(barcode);
+            if(TextUtils.isEmpty(weight_barcode)) {
+                showToast("商品不存在");
+                return;
+            }
+            mIsSelfEncode = true;
             mGoodMoney = BarcodeUtils.getProductTotalMoney(barcode);
             mGoodWeight = BarcodeUtils.getProductWeight(barcode);
 
@@ -455,6 +459,10 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 List data = adapter.getData();
+                int size = data.size();
+                if(position < 0 || position >= size) {
+                    return;
+                }
                 GoodsEntity goodsEntity = (GoodsEntity) data.get(position);
                 goodsEntity.setSelected(!goodsEntity.isSelected());
 
@@ -462,7 +470,6 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
                 //判断选中的条目是否有临时促销， 更新取消按钮UI
                 boolean enable = false;
-                int size = data.size();
                 for (int i = 0; i < size; i++) {
                     goodsEntity = (GoodsEntity) data.get(i);
                     if (!goodsEntity.isSelected()) {

@@ -12,6 +12,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -295,10 +296,12 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i(TAG, "onStart: goodFragment - " + goodsFragment);
         fragment = getSupportFragmentManager().findFragmentByTag(TAG_MAIN);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (fragment != null) {
             transaction.show(fragment);
+            goodsFragment = (GoodsFragment) fragment;
         } else {
             Bundle bundle = new Bundle();
             bundle.putString(Constants.KEY_ADMIN_NAME, admin_name);
@@ -448,8 +451,8 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
      * 检查打印机在线状态
      */
     private void checkPrinterStatus() {
-        mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
         getPrinterstateShowLoading();
+        mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
 
         //本地打印机
         mHandler.postDelayed(new Runnable() {
@@ -541,12 +544,12 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         mHandler.removeCallbacksAndMessages(null);
         PrinterUtils.getInstance().setOnPrinterListener(null);
         PrinterUtils.getInstance().unregisterReceiver(this);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                PrinterUtils.getInstance().release();
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                PrinterUtils.getInstance().release();
+//            }
+//        }).start();
 
     }
 

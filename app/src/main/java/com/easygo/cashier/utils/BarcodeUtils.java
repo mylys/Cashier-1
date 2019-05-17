@@ -14,7 +14,9 @@ public class BarcodeUtils {
     }
 
     public static String getProductCode(String code) {
-//        return code.subSequence(0, 7).toString();
+        if(code.length() < 7) {
+            return "";
+        }
         return code.subSequence(2, 7).toString();
     }
 
@@ -24,6 +26,9 @@ public class BarcodeUtils {
      * @return
      */
     public static int getProductTotalMoney(String code) {
+        if(code.length() < 12) {
+            return 0;
+        }
         String weight = code.subSequence(7, 12).toString();
         return Integer.valueOf(weight);
     }
