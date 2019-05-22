@@ -167,14 +167,15 @@ public class MemberUtils {
                     currentNames.add("会员日");
                 }
                 Log.i(TAG, "getCoupon: 会员日 优惠 -> " + coupon);
-            } else if(MemberUtils.isMemberDiscount){
+            } else if(MemberUtils.isMemberDiscount && good.isUseMemberDiscount()){
                 coupon = (float) (price - (MemberUtils.discount * price)) * good_count;
                 if(!currentNames.contains("会员固定折扣")) {
                     currentNames.add("会员固定折扣");
                 }
                 Log.i(TAG, "getCoupon: 会员固定折扣 优惠 -> " + coupon);
             }
-        } else if (!good.isMemberPrice() && !MemberUtils.isMemberDay && MemberUtils.isMemberDiscount) {   //会员固定折扣计算
+        } else if (!good.isMemberPrice() && !MemberUtils.isMemberDay
+                && MemberUtils.isMemberDiscount && good.isUseMemberDiscount()) {   //会员固定折扣计算
             coupon = (float) (price - (MemberUtils.discount * price)) * good_count;
             if(!currentNames.contains("会员固定折扣")) {
                 currentNames.add("会员固定折扣");

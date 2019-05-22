@@ -37,6 +37,7 @@ public class GoodsResponse implements Serializable {
      * is_weigh : 0
      * has_single_sale_price : 0
      * single_sale_price : 0
+     * is_use_member_discount : 1
      */
 
     private int g_sku_id;
@@ -67,6 +68,7 @@ public class GoodsResponse implements Serializable {
     private int is_weigh;
     private int has_single_sale_price;
     private Object single_sale_price;
+    private int is_use_member_discount;
     private String g_u_symbol;
 
     private boolean select;
@@ -485,6 +487,19 @@ public class GoodsResponse implements Serializable {
 
     public void setSingle_sale_price(Object single_sale_price) {
         this.single_sale_price = single_sale_price;
+    }
+
+    public int getIs_use_member_discount() {
+        return is_use_member_discount;
+    }
+
+    public void setIs_use_member_discount(int is_use_member_discount) {
+        this.is_use_member_discount = is_use_member_discount;
+    }
+
+    /** 是否可用会员折扣 */
+    public boolean isUseMemberDiscount() {
+        return is_use_member_discount == 1 || type == type_no_code;
     }
 
     public String getG_u_symbol() {
