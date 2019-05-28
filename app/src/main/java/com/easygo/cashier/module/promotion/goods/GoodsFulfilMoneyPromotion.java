@@ -7,7 +7,9 @@ import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.module.promotion.base.IGoodsPromotion;
 import com.easygo.cashier.module.promotion.base.PromotionGoods;
+import com.easygo.cashier.utils.BigDecimalUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -27,7 +29,29 @@ public class GoodsFulfilMoneyPromotion extends BaseGoodsPromotion implements IGo
         Log.i(TAG, "computePromotionMoney: 满额促销");
         if(isInGoodsEffectedTime()) {
 
-            float total_money = promotionGoods.getTotal_money();
+//            float total_money = promotionGoods.getTotal_money();
+
+            int data_size = data.size();
+            double total_money = 0D;
+            for (int i = 0; i < data_size; i++) {
+                GoodsResponse good = data.get(i).getData();
+
+                //减去临时商品折扣后的订单额
+                total_money += (BigDecimalUtils
+                        .mul(Double.valueOf(good.getPrice()), data.get(i).getCount())
+                        .subtract(new BigDecimal(Float.toString(good.getTemp_goods_discount()))))
+                        .doubleValue();
+
+                if(GoodsEntity.TYPE_PROCESSING == data.get(i).getItemType()) {
+                    GoodsResponse processing = data.get(i).getProcessing();
+                    if(processing != null) {
+//                        total_money += Float.valueOf(processing.getPrice()) * processing.getCount();
+                        total_money += BigDecimalUtils
+                                .mul(Float.valueOf(processing.getPrice()), processing.getCount())
+                                .doubleValue();
+                    }
+                }
+            }
 
             if(total_money < getCondition_value()) {
                 //不满足满额促销条件  直接返回
@@ -52,8 +76,10 @@ public class GoodsFulfilMoneyPromotion extends BaseGoodsPromotion implements IGo
                     //找到对应商品
                     if(listBean.getBarcode().equals(goodsBean.getBarcode())) {
 
-                        if (goodsBean.getCount() == 0) {
-                            return;
+                        //排除参与了临时商品促销的商品
+                        if (goodsBean.getCount() == 0
+                                || Float.valueOf(data.get(goodsBean.getIndex()).getData().getDiscount_price()) > 0) {
+                            continue;
                         }
 
                         //计算差价
