@@ -318,6 +318,9 @@ public class CouponUtils {
 
             GoodsEntity<GoodsResponse> goodsEntity;
             GoodsResponse good;
+            float sum_coupon_discount = 0f;
+            float coupon_money = 0f;
+
             //分摊优惠金额
             if(goods_need_compute) {
                 List<PromotionGoods.GoodsBean> goodsBeans = promotionGoods.getGoodsBeans();
@@ -326,11 +329,15 @@ public class CouponUtils {
                     PromotionGoods.GoodsBean goodsBean = goodsBeans.get(i);
                     int index = goodsBean.getIndex();
                     good = mGoodsData.get(index).getData();
-                    good.setCoupon_discount(
-                            coupon_discount * (goodsBean.getSubtotal()/promotionGoods.getTotal_money()));
-//                    good.setDiscount_price(
-//                            String.valueOf(Float.parseFloat(good.getDiscount_price())
-//                                    + good.getCoupon_discount()));
+                    coupon_money = BigDecimalUtils.round(
+                            coupon_discount * (goodsBean.getSubtotal()/promotionGoods.getTotal_money()))
+                            .floatValue();
+                    if(i == size - 1) {
+                        coupon_money = coupon_discount - sum_coupon_discount;
+                    } else {
+                        sum_coupon_discount += coupon_money;
+                    }
+                    good.setCoupon_discount(coupon_money);
 
                 }
             } else if(shop_need_compute || all_need_compute) {
@@ -340,11 +347,13 @@ public class CouponUtils {
                     good = goodsEntity.getData();
                     subtotal = Float.parseFloat(good.getPrice()) * goodsEntity.getCount()
                             - Float.parseFloat(good.getDiscount_price());
-                    good.setCoupon_discount(
-                            coupon_discount * (subtotal / price));
-//                    good.setDiscount_price(
-//                            String.valueOf(Float.parseFloat(good.getDiscount_price())
-//                                    + good.getCoupon_discount()));
+                    coupon_money = BigDecimalUtils.round(coupon_discount * (subtotal / price)).floatValue();
+                    if(i == goods_size - 1) {
+                        coupon_money = coupon_discount - sum_coupon_discount;
+                    } else {
+                        sum_coupon_discount += coupon_money;
+                    }
+                    good.setCoupon_discount(coupon_money);
                 }
             }
 

@@ -35,7 +35,8 @@ public class OrderHistoryGoodsAdapter extends BaseQuickAdapter<OrderHistorysInfo
         }
 //        String sell_price = item.getSell_price();
         String discount = item.getDiscount();
-        float subtotal = Float.valueOf(unit_price) * count - Float.valueOf(discount);
+//        float subtotal = Float.valueOf(unit_price) * count - Float.valueOf(discount);
+        float subtotal = (float) item.getMoney();
 
         helper.getView(R.id.tv_refund).setVisibility(item.getRefund() > 0 ? View.VISIBLE : View.GONE);
         helper.setText(R.id.tv_text_goods_name, item.getG_sku_name())

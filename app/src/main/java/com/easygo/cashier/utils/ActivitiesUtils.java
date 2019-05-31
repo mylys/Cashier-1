@@ -210,12 +210,18 @@ public class ActivitiesUtils {
             int data_size = data.size();
             float temp_order_discount;
             float subtotal;
+            float sum_temp_order_discount = 0f;
             for (int i = 0; i < data_size; i++) {
                 GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
                 GoodsResponse good = goodsEntity.getData();
                 subtotal = Float.parseFloat(good.getPrice()) * goodsEntity.getCount()
                         - Float.parseFloat(good.getDiscount_price());
-                temp_order_discount = mTempOrderPromotionMoney * (subtotal / money);
+                temp_order_discount = BigDecimalUtils.round(mTempOrderPromotionMoney * (subtotal / money)).floatValue();
+                if(i == data_size - 1) {
+                    temp_order_discount = mTempOrderPromotionMoney - sum_temp_order_discount;
+                } else {
+                    sum_temp_order_discount += temp_order_discount;
+                }
                 //设置临时整单促销分摊优惠金额
                 good.setTemp_order_discount(temp_order_discount);
             }
@@ -586,14 +592,18 @@ public class ActivitiesUtils {
         //有店铺促销时
         if(currentShopPromotion != null && mShopPromotionMoney != 0) {
             int data_size = data.size();
-            float discount_price;
+            float discount_price = 0f;
             float goods_discount;
             float temp_goods_discount;
             float member_discount;
             float subtotal;
+            float sum_discount = 0f;
+            GoodsEntity<GoodsResponse> goodsEntity;
+            GoodsResponse good = null;
+
             for (int i = 0; i < data_size; i++) {
-                GoodsEntity<GoodsResponse> goodsEntity = data.get(i);
-                GoodsResponse good = goodsEntity.getData();
+                goodsEntity = data.get(i);
+                good = goodsEntity.getData();
                 temp_goods_discount = good.getTemp_goods_discount();
                 goods_discount = good.getGoods_activity_discount();
                 member_discount = good.getMember_discount();
@@ -604,10 +614,19 @@ public class ActivitiesUtils {
                     continue;
                 }
                 subtotal = Float.parseFloat(good.getPrice()) * goodsEntity.getCount();
-                discount_price = mShopPromotionMoney * (subtotal / total_money);
+                discount_price = BigDecimalUtils.round(mShopPromotionMoney * (subtotal / total_money)).floatValue();
 //                good.setDiscount_price(String.valueOf(discount_price));
+
+                sum_discount += discount_price;
                 good.setShop_activity_discount(discount_price);
             }
+            if(good != null) {
+                if (sum_discount != mShopPromotionMoney) {
+                    // 最后一个商品的分摊金额需要重新计算
+                    good.setShop_activity_discount(mShopPromotionMoney - (sum_discount - discount_price));
+                }
+            }
+
             return mShopPromotionMoney;
         } else {
             return 0f;

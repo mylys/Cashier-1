@@ -422,8 +422,8 @@ public class OrderHistorysInfo {
         }
 
         public double getMoney() {
-            return Double.valueOf(unit_price) * count - Double.valueOf(discount);
-//            return money;
+//            return Double.valueOf(unit_price) * count - Double.valueOf(discount);
+            return money;
         }
 
         public void setMoney(double money) {

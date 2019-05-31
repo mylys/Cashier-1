@@ -34,4 +34,9 @@ public class BigDecimalUtils {
         BigDecimal b2 = new BigDecimal(Double.toString(v2));
         return b1.divide(b2, 2, BigDecimal.ROUND_HALF_UP); // 四舍五入，保留2位小数
     }
+
+    // 保留两位小数
+    public static BigDecimal round(double v) {
+        return new BigDecimal(v).setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
 }
