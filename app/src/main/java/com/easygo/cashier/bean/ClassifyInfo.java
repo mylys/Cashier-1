@@ -6,12 +6,21 @@ import java.util.List;
  * @Describe：
  * @Date：2019-01-15
  */
-public class QuickClassifyInfo {
+public class ClassifyInfo {
 
     private int class_id;
     private String class_name;
     private List<GoodsResponse> goods;
     private boolean select;
+
+    public ClassifyInfo() {
+
+    }
+
+    public ClassifyInfo(String class_name, boolean select) {
+        this.class_name = class_name;
+        this.select = select;
+    }
 
     public boolean isSelect() {
         return select;

@@ -29,9 +29,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_cancel"
-            android:layout_width="@dimen/x84"
-            android:layout_height="@dimen/y84"
-            android:layout_marginEnd="@dimen/x11"
+            android:layout_width="@dimen/x106"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_btn_press"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -58,20 +58,42 @@
         android:background="@color/color_d3d3d3"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <EditText
-        android:id="@+id/edit_input"
-        style="@style/GoodsListStyle"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_input"
         android:layout_width="@dimen/x548"
         android:layout_height="@dimen/y84"
         android:layout_marginTop="@dimen/y96"
         android:background="@drawable/bg_input"
-        android:hint="@string/hint_petty_cash"
-        android:inputType="number|numberDecimal"
-        android:paddingLeft="@dimen/x30"
-        android:paddingRight="@dimen/x30"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        app:layout_constraintTop_toBottomOf="@+id/view">
+
+        <EditText
+            android:id="@+id/edit_input"
+            style="@style/GoodsListStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="@string/hint_petty_cash"
+            android:inputType="number|numberDecimal"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x30"
+            android:singleLine="true"
+            app:layout_constraintEnd_toStartOf="@+id/text_unit"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/text_unit"
+            style="@style/GoodsListStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x26"
+            android:text="@string/weight_kg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.easygo.cashier.widget.view.DialogKeyboard
         android:id="@+id/key_board"
@@ -82,7 +104,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_input">
+        app:layout_constraintTop_toBottomOf="@+id/constraint_input">
 
     </com.easygo.cashier.widget.view.DialogKeyboard>
 

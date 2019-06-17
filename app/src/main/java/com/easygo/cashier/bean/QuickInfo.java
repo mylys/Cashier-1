@@ -9,7 +9,7 @@ import java.util.List;
 public class QuickInfo {
 
     public List<GoodsResponse> header;
-    public List<QuickClassifyInfo> list;
+    public List<ClassifyInfo> list;
 
     public List<GoodsResponse> getHeader() {
         return header;
@@ -19,11 +19,11 @@ public class QuickInfo {
         this.header = header;
     }
 
-    public List<QuickClassifyInfo> getList() {
+    public List<ClassifyInfo> getList() {
         return list;
     }
 
-    public void setList(List<QuickClassifyInfo> list) {
+    public void setList(List<ClassifyInfo> list) {
         this.list = list;
     }
 }

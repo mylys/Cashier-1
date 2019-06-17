@@ -2,13 +2,17 @@ package com.easygo.cashier.widget.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
+import com.easygo.cashier.widget.dialog.ChooseMembersDialog;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -35,8 +39,12 @@ public class MyTitleBar extends ConstraintLayout {
 
     //后退 页面描述 工号
     private ConstraintLayout mBack;
+    private ConstraintLayout mSearch;
     private TextView mTitle;
     private TextView mCashierAccountRight;
+
+    private ImageView mClear;
+    private EditText mEtSearch;
 
     private boolean mShowLogo;
     private boolean mShowTitle;
@@ -44,6 +52,7 @@ public class MyTitleBar extends ConstraintLayout {
     private boolean mShowExit;
     private boolean mShowRightIcon;
     private boolean mShowRightAccount;
+    private boolean mShowSearch;
 
     /**
      * 是否在线
@@ -78,16 +87,17 @@ public class MyTitleBar extends ConstraintLayout {
 
     //设置图标可见性
     private void showUI() {
-        mLogo.setVisibility(mShowLogo ? VISIBLE: GONE);
+        mLogo.setVisibility(mShowLogo ? VISIBLE : GONE);
         setVisibility(mTitleView, mShowTitle);
-        mCashierAccount.setVisibility(mShowAccount ? VISIBLE: GONE);
-        mExit.setVisibility(mShowExit ? VISIBLE: GONE);
+        mCashierAccount.setVisibility(mShowAccount ? VISIBLE : GONE);
+        mExit.setVisibility(mShowExit ? VISIBLE : GONE);
 //        mExit.setVisibility(GONE);
-        mLine.setVisibility(mShowAccount ? VISIBLE: GONE);
+        mLine.setVisibility(mShowAccount ? VISIBLE : GONE);
         setVisibility(mRightIconView, mShowRightIcon);
-        mCashierAccountRight.setVisibility(mShowRightAccount ? VISIBLE: GONE);
+        mCashierAccountRight.setVisibility(mShowRightAccount ? VISIBLE : GONE);
 
-        mNetwork.setImageResource(mIsOnline? R.drawable.ic_main_online: R.drawable.ic_main_offline);
+        mNetwork.setImageResource(mIsOnline ? R.drawable.ic_main_online : R.drawable.ic_main_offline);
+        mSearch.setVisibility(mShowSearch ? VISIBLE : GONE);
     }
 
     private void setVisibility(View[] views, boolean visible) {
@@ -111,6 +121,9 @@ public class MyTitleBar extends ConstraintLayout {
         mRedPoint = mView.findViewById(R.id.red_point);
         mNetwork = mView.findViewById(R.id.network);
         mMenu = mView.findViewById(R.id.menu);
+        mSearch = mView.findViewById(R.id.constraint_search);
+        mEtSearch = mView.findViewById(R.id.et_search);
+        mClear = mView.findViewById(R.id.iv_clear);
 
         mBack = mView.findViewById(R.id.cl_back);
         mTitle = mView.findViewById(R.id.tv_title);
@@ -123,19 +136,18 @@ public class MyTitleBar extends ConstraintLayout {
                 mMenu,
                 mUpdate,
         };
-        mTitleView = new View[] {
+        mTitleView = new View[]{
                 mBack,
                 mTitle,
         };
-
     }
 
     private void initAttr(Context context, AttributeSet attrs) {
-        if(attrs == null) {
+        if (attrs == null) {
             return;
         }
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MyTitleBar);
-        if(ta != null) {
+        if (ta != null) {
             mTitleText = ta.getString(R.styleable.MyTitleBar_title_text);
             mShowLogo = ta.getBoolean(R.styleable.MyTitleBar_show_logo, true);
             mShowTitle = ta.getBoolean(R.styleable.MyTitleBar_show_title, false);
@@ -143,8 +155,9 @@ public class MyTitleBar extends ConstraintLayout {
             mShowExit = ta.getBoolean(R.styleable.MyTitleBar_show_exit, false);
             mShowRightAccount = ta.getBoolean(R.styleable.MyTitleBar_show_right_account, false);
             mShowRightIcon = ta.getBoolean(R.styleable.MyTitleBar_show_right_icon, false);
+            mShowSearch = ta.getBoolean(R.styleable.MyTitleBar_show_search, false);
 
-            if(mShowTitle)
+            if (mShowTitle)
                 mShowLogo = false;
 
 
@@ -167,27 +180,24 @@ public class MyTitleBar extends ConstraintLayout {
 
     public void showRightAccount(boolean isShow) {
         mShowRightAccount = isShow;
-        mCashierAccountRight.setVisibility(mShowRightAccount? VISIBLE: GONE);
+        mCashierAccountRight.setVisibility(mShowRightAccount ? VISIBLE : GONE);
     }
 
     public void setOnline(boolean isOnline) {
         mIsOnline = isOnline;
-        mNetwork.setImageResource(mIsOnline? R.drawable.ic_main_online: R.drawable.ic_main_offline);
+        mNetwork.setImageResource(mIsOnline ? R.drawable.ic_main_online : R.drawable.ic_main_offline);
     }
 
     public void setPopTillVisibility(boolean visibility) {
-        mPopTill.setVisibility(visibility? VISIBLE: GONE);
+        mPopTill.setVisibility(visibility ? VISIBLE : GONE);
     }
 
     public void setRedPointVisibility(boolean visibility) {
         mCanUpdate = visibility;
-        mRedPoint.setVisibility(mCanUpdate? VISIBLE: GONE);
+        mRedPoint.setVisibility(mCanUpdate ? VISIBLE : GONE);
     }
 
     public void setOfflineModeVisibility(boolean visibility) {
-        mMode.setVisibility(visibility? VISIBLE: GONE);
+        mMode.setVisibility(visibility ? VISIBLE : GONE);
     }
-
-
-
 }

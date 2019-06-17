@@ -27,6 +27,8 @@ import com.easygo.cashier.bean.HandoverResponse;
 import com.easygo.cashier.bean.HandoverSaleResponse;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.printer.PrintHelper;
+import com.easygo.cashier.printer.ZQPrint.printObject.PrintHandover;
+import com.easygo.cashier.printer.ZQPrint.printObject.PrintHistory;
 import com.easygo.cashier.printer.local.PrinterHelpter;
 import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.printer.local.obj.HandoverInfoPrintObj;
@@ -79,7 +81,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
     private int handover_id;
 
     private boolean during_handover;
-
+    private PrintHandover printHandover;
 
     @Override
     protected HandoverPresenter createPresenter() {
@@ -118,10 +120,10 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
     }
 
     private void handoverPermission() {
-        if (Configs.getRole(Configs.menus[8]) == 0){
+        if (Configs.getRole(Configs.menus[8]) == 0) {
             btnHandover.setVisibility(View.GONE);
         }
-        if (Configs.getRole(Configs.menus[9]) == 0){
+        if (Configs.getRole(Configs.menus[9]) == 0) {
             btnSalesList.setVisibility(View.GONE);
         }
     }
@@ -239,7 +241,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
         switch (view.getId()) {
             case R.id.btn_handover:
 
-                if(cbPrint.isChecked()) {
+                if (cbPrint.isChecked()) {
                     printHandoverInfo();
                     printHandoverInfoLocal();
                 }
@@ -279,53 +281,52 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
 
-
         sb.append(PrintHelper.CB_left).append("交接班单据").append(PrintHelper.CB_right).append(PrintHelper.BR)
                 .append("收银员：").append(Configs.cashier_id).append(PrintHelper.BR)
                 .append("登录时间：").append(tvLoginTime.getText().toString()).append(PrintHelper.BR)
                 .append("登出时间：").append(sdf.format(new Date())).append(PrintHelper.BR)
                 .append("--------------------------------").append(PrintHelper.BR)
                 .append("总单据数：")
-                    .append(mHandoverView.tvTotalOrderCount.getText())
-                    .append(PrintHelper.BR)
+                .append(mHandoverView.tvTotalOrderCount.getText())
+                .append(PrintHelper.BR)
                 .append("销售单：")
-                    .append(mHandoverView.tvSaleCount.getText())
-                    .append(PrintHelper.BR)
+                .append(mHandoverView.tvSaleCount.getText())
+                .append(PrintHelper.BR)
                 .append("退货单：")
-                    .append(mHandoverView.tvRefundCount.getText())
-                    .append(PrintHelper.BR)
+                .append(mHandoverView.tvRefundCount.getText())
+                .append(PrintHelper.BR)
                 .append("--------------------------------").append(PrintHelper.BR)
                 .append("总销售额：")
-                    .append(mHandoverView.tvTotalSales.getText())
-                    .append(PrintHelper.BR)
+                .append(mHandoverView.tvTotalSales.getText())
+                .append(PrintHelper.BR)
                 .append("现金：")
-                    .append(mHandoverView.tvCash.getText())
-                    .append(PrintHelper.BR)
+                .append(mHandoverView.tvCash.getText())
+                .append(PrintHelper.BR)
                 .append("支付宝：")
-                    .append(mHandoverView.tvAlipay.getText())
-                    .append(PrintHelper.BR)
+                .append(mHandoverView.tvAlipay.getText())
+                .append(PrintHelper.BR)
                 .append("微信：")
-                    .append(mHandoverView.tvWechat.getText())
-                    .append(PrintHelper.BR)
+                .append(mHandoverView.tvWechat.getText())
+                .append(PrintHelper.BR)
                 .append("总退款金额：")
-                    .append(mHandoverView.tvAllRefund.getText())
-                    .append(PrintHelper.BR)
+                .append(mHandoverView.tvAllRefund.getText())
+                .append(PrintHelper.BR)
                 .append("--------------------------------").append(PrintHelper.BR)
                 .append("总现金数：")
-                    .append(mHandoverView.tvTotalCash.getText())
-                    .append(PrintHelper.BR)
+                .append(mHandoverView.tvTotalCash.getText())
+                .append(PrintHelper.BR)
                 .append("现金收入：")
-                    .append(mHandoverView.tvCashIncome.getText())
-                    .append(PrintHelper.BR)
+                .append(mHandoverView.tvCashIncome.getText())
+                .append(PrintHelper.BR)
                 .append("实收金额：")
-                    .append(mHandoverView.tvReceipts.getText())
-                    .append(PrintHelper.BR)
+                .append(mHandoverView.tvReceipts.getText())
+                .append(PrintHelper.BR)
                 .append("找零金额：")
-                    .append(mHandoverView.tvChange.getText())
-                    .append(PrintHelper.BR)
+                .append(mHandoverView.tvChange.getText())
+                .append(PrintHelper.BR)
                 .append("退款现金：")
-                    .append(mHandoverView.tvCashRefund.getText())
-                    .append(PrintHelper.BR);
+                .append(mHandoverView.tvCashRefund.getText())
+                .append(PrintHelper.BR);
 
 
         Log.i(TAG, "printHandoverInfo: sb -> " + sb.toString());
@@ -358,6 +359,10 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
         handoverInfoPrintObj.cash_refund = mHandoverView.tvCashRefund.getText().toString();
 
         PrinterUtils.getInstance().print(PrinterHelpter.handoverInfoDatas(handoverInfoPrintObj));
+        if (printHandover == null) {
+            printHandover = new PrintHandover();
+        }
+        printHandover.printInfo(handoverInfoPrintObj);
     }
 
 
@@ -367,7 +372,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
         if (mHandoverSaleListView != null) {
             data = mHandoverSaleListView.getData();
         }
-        if(data == null || data.size() == 0) {
+        if (data == null || data.size() == 0) {
             Log.i(TAG, "printHandoverSaleList: data = null || size() = 0");
             return;
         }
@@ -391,17 +396,17 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
             count += saleResponse.getQuantity();
             total_money += saleResponse.getMoney();
 
-            sb.append(i+1).append(".")
-            .append(saleResponse.getG_sku_name()).append("   ").append(PrintHelper.BR)
-            .append(saleResponse.getG_c_name()).append("   ").append(PrintHelper.BR)
-            .append("            ")
-            .append(saleResponse.getUnit_price()).append("   ")
-            .append(saleResponse.getCount()).append(GoodsResponse.isWeightGood(saleResponse.getType())? saleResponse.getG_u_symbol(): "").append("   ")
-            .append(df.format(saleResponse.getMoney())).append(PrintHelper.BR);
+            sb.append(i + 1).append(".")
+                    .append(saleResponse.getG_sku_name()).append("   ").append(PrintHelper.BR)
+                    .append(saleResponse.getG_c_name()).append("   ").append(PrintHelper.BR)
+                    .append("            ")
+                    .append(saleResponse.getUnit_price()).append("   ")
+                    .append(saleResponse.getCount()).append(GoodsResponse.isWeightGood(saleResponse.getType()) ? saleResponse.getG_u_symbol() : "").append("   ")
+                    .append(df.format(saleResponse.getMoney())).append(PrintHelper.BR);
         }
         sb.append("--------------------------------").append(PrintHelper.BR)
-        .append("总数量：").append(count).append(PrintHelper.BR)
-        .append("总金额：").append(df.format(total_money)).append(PrintHelper.BR);
+                .append("总数量：").append(count).append(PrintHelper.BR)
+                .append("总金额：").append(df.format(total_money)).append(PrintHelper.BR);
 
 
         Log.i(TAG, "printHandoverSaleList: sb -> " + sb.toString());
@@ -410,13 +415,14 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
 
 
     }
+
     private void printHandoverSaleListLocal() {
 
         List<HandoverSaleResponse> data = null;
         if (mHandoverSaleListView != null) {
             data = mHandoverSaleListView.getData();
         }
-        if(data == null || data.size() == 0) {
+        if (data == null || data.size() == 0) {
             Log.i(TAG, "printHandoverSaleList: data = null || size() = 0");
             return;
         }
@@ -429,8 +435,11 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
         obj.data = data;
 
         PrinterUtils.getInstance().print(PrinterHelpter.handoverSaleListDatas(obj));
+        if (printHandover == null){
+            printHandover = new PrintHandover();
+        }
+        printHandover.printSaleList(obj);
     }
-
 
 
     @Override
@@ -489,7 +498,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if(during_handover) {
+        if (during_handover) {
             showToast("交接中...");
             return true;
         }

@@ -42,7 +42,8 @@
             <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name=".module.settlement.CashierActivity"
+        <activity
+            android:name=".module.settlement.CashierActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".module.order_history.OrderHistoryActivity"
@@ -50,6 +51,7 @@
         <activity android:name=".module.handover.HandoverActivity" />
         <activity android:name=".module.entry_orders.EntryOrdersActivity" />
         <activity android:name=".module.quick_choose.QuickChooseActivity" />
+        <activity android:name=".module.weighing.WeighingActivity" />
         <activity
             android:name=".module.permission.PermissionActivity"
             android:screenOrientation="landscape">
@@ -73,7 +75,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
     </application>

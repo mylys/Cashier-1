@@ -11,6 +11,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.easygo.cashier.module.goods.MainActivity;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.permission.PermissionActivity;
+import com.easygo.cashier.printer.ZQPrint.ZQPrinterUtil;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.common.config.BaseConfig;
 import com.niubility.library.utils.ToastUtils;
@@ -31,6 +32,7 @@ public class MyApplication extends BaseApplication {
 
         initBugly();
 
+        ZQPrinterUtil.getInstance().init(this);//初始化中崎打印机
         ARouter.openLog();     // 打印日志
         ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
         ARouter.init(this);

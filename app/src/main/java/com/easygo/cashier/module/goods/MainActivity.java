@@ -39,6 +39,7 @@ import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.status.StatusContract;
 import com.easygo.cashier.module.status.StatusPresenter;
 import com.easygo.cashier.printer.PrintHelper;
+import com.easygo.cashier.printer.ZQPrint.ZQEBUtil;
 import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.widget.dialog.EquipmentstateDialog;
 import com.easygo.cashier.widget.dialog.FunctionListDialog;
@@ -94,6 +95,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     private ExecutorService cachedThreadPool;
 
     private MyHandler mHandler = new MyHandler(this);
+
     private static class MyHandler extends BaseHandler<MainActivity> {
 
         public MyHandler(MainActivity activity) {
@@ -135,7 +137,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         if (Configs.getRole(Configs.menus[13]) == 0) {
             myTitleBar.setPopTillVisibility(false);
         }
-        if(!Configs.isOnlineMode()) {
+        if (!Configs.isOnlineMode()) {
             myTitleBar.setOfflineModeVisibility(true);
         }
         tvCashierAcount.setText("收银员: " + admin_name);
@@ -164,7 +166,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
             @Override
             public void onConnected(boolean showTip) {
-                if(dialog != null && dialog.isShowing()) {
+                if (dialog != null && dialog.isShowing()) {
                     dialog.setNewData(0, getString(R.string.local_printer), true);
 //                    return;
                 }
@@ -175,7 +177,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
             @Override
             public void onDisconnected() {
-                if(dialog != null && dialog.isShowing()) {
+                if (dialog != null && dialog.isShowing()) {
                     dialog.setNewData(0, getString(R.string.local_printer), false);
 //                    return;
                 }
@@ -184,21 +186,21 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
             @Override
             public void onPleaseConnectPrinter() {
-                if(dialog != null && dialog.isShowing()) {
+                if (dialog != null && dialog.isShowing()) {
                     showToast(getString(R.string.str_cann_printer));
                 }
             }
 
             @Override
             public void onConnectFailed() {
-                if(dialog != null && dialog.isShowing()) {
+                if (dialog != null && dialog.isShowing()) {
                     showToast(getString(R.string.str_conn_fail));
                 }
             }
 
             @Override
             public void onConnectError(int error, String content) {
-                if(dialog != null && dialog.isShowing()) {
+                if (dialog != null && dialog.isShowing()) {
                     if (dialog != null && dialog.isShowing()) {
                         dialog.setErrorData(0, getResources().getString(R.string.local_printer), getString(R.string.device_abnormal));
                     }
@@ -218,7 +220,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
             @Override
             public void onNeedReplugged() {
-                if(dialog != null && dialog.isShowing()) {
+                if (dialog != null && dialog.isShowing()) {
                     showToast(getString(R.string.str_need_replugged));
                 }
             }
@@ -297,6 +299,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "onStart: goodFragment - " + goodsFragment);
+        ZQEBUtil.getInstance().zqebDisconnect();
         fragment = getSupportFragmentManager().findFragmentByTag(TAG_MAIN);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (fragment != null) {
@@ -353,22 +356,21 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         GeneraDialog generaDialog = GeneraDialog.getInstance("确认退出到登录页面？", "取消", "确定");
         generaDialog.showCenter(MainActivity.this);
         generaDialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
-                @Override
-                public void onSubmit() {
-                    //弹出钱箱
-                    goodsFragment.realPopTill();
+            @Override
+            public void onSubmit() {
+                //弹出钱箱
+                goodsFragment.realPopTill();
 
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                        }
-                    }, 500);
-                }
-            });
-
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
+                }, 500);
+            }
+        });
 
 
     }
@@ -458,7 +460,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(PrinterUtils.STATE_DISCONNECTED == PrinterUtils.getInstance().getPrinterState()) {
+                if (PrinterUtils.STATE_DISCONNECTED == PrinterUtils.getInstance().getPrinterState()) {
                     if (dialog != null && dialog.isShowing()) {
                         dialog.setErrorData(0, getString(R.string.local_printer), getString(R.string.device_abnormal));
                     }
@@ -467,6 +469,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         }, 500);
 
     }
+
     /**
      * 检查更新
      */
@@ -476,7 +479,6 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         mHandler.removeMessages(Msg.MSG_RED_POINT);
         mHandler.sendEmptyMessageDelayed(Msg.MSG_RED_POINT, 2000);
     }
-
 
 
     private void getPrinterstateShowLoading() {
@@ -495,7 +497,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 //        for (int i = 0; i < feie_printer_count; i++) {
 //            InitResponse.PrintersBean printersBean = PrintHelper.printersBeans.get(i);
 
-            arrayList.add(new EquipmentState(getString(R.string.the_printer), true, true, null));
+        arrayList.add(new EquipmentState(getString(R.string.the_printer), true, true, null));
 
 //        }
 //        arrayList.add(new EquipmentState(getResources().getString(R.string.the_code_gun), true, true));
@@ -519,7 +521,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             dialog.setNewData(getString(R.string.the_printer), is_printer_normal);
             return;
         }
-        showToast("打印机: " + (is_printer_normal?"在线":"离线"));
+        showToast("打印机: " + (is_printer_normal ? "在线" : "离线"));
     }
 
     @Override
@@ -538,7 +540,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             dialog.dismiss();
         }
 
-        if(connReceiver != null) {
+        if (connReceiver != null) {
             unregisterReceiver(connReceiver);
         }
         mHandler.removeCallbacksAndMessages(null);

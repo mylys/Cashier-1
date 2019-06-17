@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--标题栏-->
+    <com.easygo.cashier.widget.view.MyTitleBar
+        android:id="@+id/cl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:show_search="true"
+        app:show_title="true"
+        app:title_text="@string/text_weight" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_classify_list"
+        android:layout_width="@dimen/x316"
+        android:layout_height="0dp"
+        android:background="@color/color_text_white"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toTopOf="@+id/cl_bottom_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_title" />
+
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/color_f5f7fa"
+        app:layout_constraintBottom_toTopOf="@+id/cl_bottom_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/line"
+        app:layout_constraintTop_toBottomOf="@+id/cl_title" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="@dimen/x1"
+        android:layout_height="0dp"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintBottom_toTopOf="@+id/cl_bottom_layout"
+        app:layout_constraintStart_toEndOf="@+id/rv_classify_list"
+        app:layout_constraintTop_toBottomOf="@+id/cl_title" />
+
+    <!--底部清单-->
+    <include
+        android:id="@+id/cl_bottom_layout"
+        layout="@layout/include_weight_bottom_layout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

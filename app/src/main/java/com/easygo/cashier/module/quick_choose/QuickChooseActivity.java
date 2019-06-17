@@ -20,7 +20,7 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.QuickGoodsAdapter;
 import com.easygo.cashier.base.BaseAppMvpActivity;
 import com.easygo.cashier.bean.GoodsResponse;
-import com.easygo.cashier.bean.QuickClassifyInfo;
+import com.easygo.cashier.bean.ClassifyInfo;
 import com.easygo.cashier.bean.QuickInfo;
 import com.easygo.cashier.widget.view.MyTitleBar;
 import com.niubility.library.http.exception.HttpExceptionEngine;
@@ -51,9 +51,9 @@ public class QuickChooseActivity extends BaseAppMvpActivity<QuickChooseContract.
     @BindView(R.id.cl_title)
     MyTitleBar clTitle;
 
-    private List<QuickClassifyInfo> info;
+    private List<ClassifyInfo> info;
     private List<GoodsResponse> selectBean = new ArrayList<>();
-    private BaseQuickAdapter<QuickClassifyInfo, BaseViewHolder> classifyAdapter;
+    private BaseQuickAdapter<ClassifyInfo, BaseViewHolder> classifyAdapter;
     private QuickGoodsAdapter goodsAdapter;
 
     /* 获取父级选择的位置 */
@@ -81,7 +81,6 @@ public class QuickChooseActivity extends BaseAppMvpActivity<QuickChooseContract.
         initRvClassify();
         initRvGoodsList();
         setListener();
-        setEmpty();
     }
 
     private void initRvGoodsList() {
@@ -89,8 +88,6 @@ public class QuickChooseActivity extends BaseAppMvpActivity<QuickChooseContract.
 
         rvGoodsList.setLayoutManager(new GridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false));
         rvGoodsList.setAdapter(goodsAdapter);
-
-        rvGoodsList.setVisibility(View.INVISIBLE);
     }
 
     private void initRvClassify() {
@@ -100,9 +97,9 @@ public class QuickChooseActivity extends BaseAppMvpActivity<QuickChooseContract.
         rvClassifyList.setLayoutManager(new LinearLayoutManager(this));
         rvClassifyList.addItemDecoration(verticalDecoration);
 
-        rvClassifyList.setAdapter(classifyAdapter = new BaseQuickAdapter<QuickClassifyInfo, BaseViewHolder>(R.layout.item_quick_classify) {
+        rvClassifyList.setAdapter(classifyAdapter = new BaseQuickAdapter<ClassifyInfo, BaseViewHolder>(R.layout.item_quick_classify) {
             @Override
-            protected void convert(final BaseViewHolder helper, final QuickClassifyInfo item) {
+            protected void convert(final BaseViewHolder helper, final ClassifyInfo item) {
                 int black = getResources().getColor(R.color.color_505050);
                 int white = getResources().getColor(R.color.color_text_white);
                 int backcolor = getResources().getColor(R.color.color_51beaf);
@@ -115,7 +112,7 @@ public class QuickChooseActivity extends BaseAppMvpActivity<QuickChooseContract.
                     @Override
                     public void onClick(View v) {
                         if (!item.isSelect()) {
-                            for (QuickClassifyInfo info : getData()) {
+                            for (ClassifyInfo info : getData()) {
                                 info.setSelect(false);
                             }
                             item.setSelect(true);
@@ -142,7 +139,7 @@ public class QuickChooseActivity extends BaseAppMvpActivity<QuickChooseContract.
                         btnSure.setText(getResources().getString(R.string.text_dialog_submit) + "(" + selectBean.size() + ")");
                     }
                 }
-                Log.i("选择商品列表信息 === ",GsonUtils.getInstance().getGson().toJson(selectBean));
+                Log.i("选择商品列表信息 === ", GsonUtils.getInstance().getGson().toJson(selectBean));
             }
         });
     }
@@ -161,14 +158,19 @@ public class QuickChooseActivity extends BaseAppMvpActivity<QuickChooseContract.
     @Override
     public void showGoodsListSuccess(QuickInfo quickInfo) {
         if (quickInfo != null) {
-            if (quickInfo.getList() != null && quickInfo.getList().size() > 0) {
-                info = quickInfo.list;
-                quickInfo.list.get(0).setSelect(true);
-                classifyAdapter.setNewData(quickInfo.list);
-                goodsAdapter.setNewData(quickInfo.list.get(0).getGoods());
+            if (quickInfo.getList() != null) {
+                if (quickInfo.getList().size() > 0) {
+                    rvClassifyList.setVisibility(View.VISIBLE);
+                    info = quickInfo.list;
+                    quickInfo.list.get(0).setSelect(true);
+                    classifyAdapter.setNewData(quickInfo.list);
+                    goodsAdapter.setNewData(quickInfo.list.get(0).getGoods());
+                }else{
+                    setEmpty();
+                    rvClassifyList.setVisibility(View.GONE);
+                }
             }
         }
-        rvGoodsList.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -204,7 +206,7 @@ public class QuickChooseActivity extends BaseAppMvpActivity<QuickChooseContract.
         if (info != null) {
             if (info.size() > 0) {
                 List<GoodsResponse> list = new ArrayList<>();
-                for (QuickClassifyInfo item : info) {
+                for (ClassifyInfo item : info) {
                     for (GoodsResponse response : item.getGoods()) {
                         if (response.isSelect()) {
                             list.add(response);

@@ -251,6 +251,19 @@
     <string name="str_printer_printmode_esc">打印模式:ESC</string>
     <string name="str_printer_printmode_tsc">打印模式:TSC</string>
     <string name="str_printer_printmode_cpcl">打印模式:CPCL</string>
+    <string name="text_weight">称重</string>
+    <string name="hint_title_search">输入条形码或商品名称</string>
+    <string name="text_goods_weight">重量</string>
+    <string name="text_goods_total">合计</string>
+    <string name="text_set_zero">置零</string>
+    <string name="text_sure">确定</string>
+    <string name="text_set_tare">置皮</string>
+    <string name="text_clear_tare">清皮</string>
+    <string name="text_net_weight">去皮</string>
+    <string name="input_set_tare">请输入皮重</string>
+    <string name="weight_kg">kg</string>
+    <string name="input_cash">请输入金额</string>
+    <string name="text_cash_not_zero">金额不能等于0</string>
 
 
 </resources>

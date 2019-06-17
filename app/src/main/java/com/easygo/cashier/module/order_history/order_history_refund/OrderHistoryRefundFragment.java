@@ -34,6 +34,7 @@ import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.request.RefundRequsetBody;
 import com.easygo.cashier.module.order_history.OrderHistoryActivity;
 import com.easygo.cashier.printer.PrintHelper;
+import com.easygo.cashier.printer.ZQPrint.printObject.PrintHistory;
 import com.easygo.cashier.printer.local.PrinterHelpter;
 import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.printer.local.obj.OrderHistoryRefundPrintObj;
@@ -103,6 +104,8 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
     private float real_pay = 0;
     private int pay_way = PayWayView.WAY_CASH;
 
+    private PrintHistory printHistory;
+
     private GeneraEditDialog dialog;
 
     private DecimalFormat df = new DecimalFormat("#0.00");
@@ -148,22 +151,22 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         }
         Resources res = getResources();
         String text = "";
-        if(pay_type.equals(res.getString(R.string.pay_wechat_gift_card))) {
+        if (pay_type.equals(res.getString(R.string.pay_wechat_gift_card))) {
             text = res.getString(R.string.text_pay_type)
                     + res.getString(R.string.pay_wechat) + "￥" + df.format(real_pay - gift_card_pay)
                     + " + "
                     + res.getString(R.string.pay_gift_card) + "￥" + df.format(gift_card_pay);
-        } else if(pay_type.equals(res.getString(R.string.pay_alipay_gift_card))) {
+        } else if (pay_type.equals(res.getString(R.string.pay_alipay_gift_card))) {
             text = res.getString(R.string.text_pay_type)
                     + res.getString(R.string.pay_alipay) + "￥" + df.format(real_pay - gift_card_pay)
                     + " + "
                     + res.getString(R.string.pay_gift_card) + "￥" + df.format(gift_card_pay);
-        } else if(pay_type.equals(res.getString(R.string.pay_wallet_gift_card))) {
+        } else if (pay_type.equals(res.getString(R.string.pay_wallet_gift_card))) {
             text = res.getString(R.string.text_pay_type)
                     + res.getString(R.string.pay_wallet) + "￥" + df.format(real_pay - gift_card_pay)
                     + " + "
                     + res.getString(R.string.pay_gift_card) + "￥" + df.format(gift_card_pay);
-        } else if(pay_type.equals(res.getString(R.string.pay_cash_gift_card))) {
+        } else if (pay_type.equals(res.getString(R.string.pay_cash_gift_card))) {
             text = res.getString(R.string.text_pay_type)
                     + res.getString(R.string.pay_cash) + "￥" + df.format(real_pay - gift_card_pay)
                     + " + "
@@ -203,7 +206,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         if (data != null) {
             for (OrderHistorysInfo.ListBean bean : data) {
                 GoodsRefundInfo info = new GoodsRefundInfo();
-                info.setIs_weigh(bean.isWeightGood()? 1: 0);
+                info.setIs_weigh(bean.isWeightGood() ? 1 : 0);
                 info.setProduct_name(bean.getG_sku_name());
                 info.setProduct_price(bean.getUnit_price());
                 double money = bean.getMoney();
@@ -262,7 +265,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
                     refund = 0;
                 }
 
-                if(refund > real_pay) {
+                if (refund > real_pay) {
                     refund = real_pay;
                 }
                 tvRefundcashPrice.setText(df.format(refund));
@@ -368,8 +371,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         if (edit_price > real_pay) {
             showToast("输入金额不能大于订单实收金额");
             return;
-        }
-        else if(edit_price > Float.valueOf(adapter.getTotalPrice())) {
+        } else if (edit_price > Float.valueOf(adapter.getTotalPrice())) {
             showToast("输入金额不能大于所选商品总额");
             return;
         }
@@ -500,6 +502,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
             orderHistoryActivity.printRefundInfo(sb.toString());
         }
     }
+
     /**
      * 打印退款单
      */
@@ -520,6 +523,10 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         obj.pop_till = pay_type.equals(getString(R.string.pay_cash));
 
         PrinterUtils.getInstance().print(PrinterHelpter.orderHistroyRefund(obj));
+        if (printHistory == null) {
+            printHistory = new PrintHistory();
+        }
+        printHistory.printRefund(obj);
     }
 
     @Override

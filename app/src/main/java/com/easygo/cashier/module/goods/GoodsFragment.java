@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.display.DisplayManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.easygo.cashier.Msg;
+import com.easygo.cashier.printer.ZQPrint.ZQEBUtil;
 import com.easygo.cashier.utils.ActivitiesUtils;
 import com.easygo.cashier.utils.BarcodeUtils;
 import com.easygo.cashier.Configs;
@@ -60,7 +61,7 @@ import com.easygo.cashier.widget.view.GeneraButton;
 import com.easygo.cashier.widget.dialog.GeneraDialog;
 import com.easygo.cashier.widget.dialog.GeneraEditDialog;
 import com.easygo.cashier.widget.view.MySearchView;
-import com.easygo.cashier.widget.dialog.PettyCashDialog;
+import com.easygo.cashier.widget.dialog.GeneraCashDialog;
 import com.easygo.cashier.widget.dialog.ProcessingChoiceDialog;
 import com.easygo.cashier.widget.dialog.ScanCodeDialog;
 import com.easygo.cashier.widget.SearchResultWindow;
@@ -201,6 +202,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
 
     private MyHandler mHandler;
+
     private static class MyHandler extends BaseHandler<GoodsFragment> {
 
         public MyHandler(GoodsFragment activity) {
@@ -285,7 +287,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         if (Configs.getRole(Configs.menus[21]) == 0) {
             clNoBarcode.setVisibility(View.GONE);
         }
-        if(!Configs.isOnlineMode()) {
+        if (!Configs.isOnlineMode()) {
             btnGiftCard.setVisibility(View.GONE);
         }
     }
@@ -330,7 +332,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         } else if (BarcodeUtils.isWeightCode(barcode)) {//自编码
 
             String weight_barcode = BarcodeUtils.getProductCode(barcode);
-            if(TextUtils.isEmpty(weight_barcode)) {
+            if (TextUtils.isEmpty(weight_barcode)) {
                 showToast("商品不存在");
                 return;
             }
@@ -385,7 +387,9 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         });
     }
 
-    /** 初始化商品列表 RecycleView */
+    /**
+     * 初始化商品列表 RecycleView
+     */
     private void initRv() {
         rvGoods.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
@@ -441,12 +445,12 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
             @Override
             public void onItemRemoved(int position) {
-                if(position < 0 || position > mData.size() - 1) {
+                if (position < 0 || position > mData.size() - 1) {
                     return;
                 }
                 GoodsEntity<GoodsResponse> goodsEntity = mData.get(position);
                 BaseGoodsPromotion promotion = goodsEntity.getPromotion();
-                if(promotion != null && promotion.isTempGoodsPromotion()) {
+                if (promotion != null && promotion.isTempGoodsPromotion()) {
                     //取消临时促销
                     ActivitiesUtils.getInstance().cancelTempGoodsPromotion(
                             goodsEntity.getData().getBarcode() + "_" + goodsEntity.getData().getPrice());
@@ -460,7 +464,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 List data = adapter.getData();
                 int size = data.size();
-                if(position < 0 || position >= size) {
+                if (position < 0 || position >= size) {
                     return;
                 }
                 GoodsEntity goodsEntity = (GoodsEntity) data.get(position);
@@ -476,7 +480,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                         continue;
                     }
                     BaseGoodsPromotion promotion = goodsEntity.getPromotion();
-                    if(promotion != null && promotion.isTempGoodsPromotion()) {
+                    if (promotion != null && promotion.isTempGoodsPromotion()) {
                         enable = true;
                         break;
                     }
@@ -526,13 +530,13 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             showCurrentActivities(null);
 
             //取消优惠券
-            if(CouponUtils.getInstance().getCouponInfo() != null) {
+            if (CouponUtils.getInstance().getCouponInfo() != null) {
                 clExtraInfo.setCouponData(null);
                 CouponUtils.getInstance().setCouponInfo(null);
                 mCouponMoney = 0f;
             }
 
-            if(mUserGoodsScreen != null) {
+            if (mUserGoodsScreen != null) {
                 mUserGoodsScreen.clear();
             }
             return;
@@ -594,18 +598,18 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             isCouponEnable = mCouponMoney > 0;
 
         }
-        if(!isCouponEnable) {
+        if (!isCouponEnable) {
             //取消优惠券
             cancelCoupon();
         }
 
         //判断是否有礼品卡
-        if(GiftCardUtils.getInstance().getGiftCardInfo() == null) {
+        if (GiftCardUtils.getInstance().getGiftCardInfo() == null) {
             cancelGiftCard();
         }
 
         //判断是否有临时订单促销
-        if(ActivitiesUtils.getInstance().hasTempOrderPromotion()) {
+        if (ActivitiesUtils.getInstance().hasTempOrderPromotion()) {
             float tempOrderPromotionMoney = ActivitiesUtils.getInstance().getTempOrderPromotionMoney();
             coupon += tempOrderPromotionMoney;
         }
@@ -640,7 +644,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         }
 
         //刷新用户副屏商品优惠显示
-        if(mUserGoodsScreen != null) {
+        if (mUserGoodsScreen != null) {
             Log.i(TAG, "computePrice: 刷新用户副屏");
             mUserGoodsScreen.refreshGoodsData(mData);
         }
@@ -659,14 +663,14 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             mUserGoodsScreen.showCurrentActivities(data);
         }
 
-        if(ActivitiesUtils.getInstance().hasTempGoodsPromotion()) {
+        if (ActivitiesUtils.getInstance().hasTempGoodsPromotion()) {
             activitiesView.showCancelTempPromotionButton(true);
         } else {
             activitiesView.showCancelTempPromotionButton(false);
         }
 
         //设置数量的弹窗如果弹出时 更新位置
-        if(mSetCountPopupWindow != null && mSetCountPopupWindow.isShowing()) {
+        if (mSetCountPopupWindow != null && mSetCountPopupWindow.isShowing()) {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -706,7 +710,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     public void onResume() {
         super.onResume();
 
-        if(mHandler == null) {
+        if (mHandler == null) {
             mHandler = new MyHandler(this);
         }
 
@@ -770,7 +774,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         } else {
             if (GiftCardUtils.getInstance().getGiftCardInfo() != null) {
                 float giftCardBalance = GiftCardUtils.getInstance().getGiftCardInfo().getBalance_amount();
-                if(giftCardBalance >= real_pay) {
+                if (giftCardBalance >= real_pay) {
                     real_pay = 0f;
                 } else {
                     real_pay -= giftCardBalance;
@@ -801,21 +805,26 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             R.id.btn_gift_card,
             R.id.btn_choose_member,
             R.id.btn_choose_coupon,
-            R.id.btn_quick_choose})
+            R.id.btn_quick_choose,
+            R.id.btn_weight})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_no_barcode://无码商品
 
-                final PettyCashDialog dialog = new PettyCashDialog();
+                final GeneraCashDialog dialog = new GeneraCashDialog();
                 dialog.showCenter(getActivity());
                 dialog.setNoCode();
                 dialog.setCanInputDecimal(true);
-                dialog.setOnDialogClickListener(new PettyCashDialog.OnDialogClickListener() {
+                dialog.setOnDialogClickListener(new GeneraCashDialog.OnDialogClickListener() {
                     @Override
                     public void onClick(String content) {
+                        if (content.length() == 0) {
+                            showToast(getResources().getString(R.string.input_cash));
+                            return;
+                        }
                         float price = Float.valueOf(content);
                         if (price == 0) {
-                            showToast("金额不能等于0");
+                            showToast(getResources().getString(R.string.text_cash_not_zero));
                             return;
                         }
                         dialog.dismiss();
@@ -935,7 +944,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 break;
             case R.id.btn_temp_promotion:
                 List<GoodsEntity<GoodsResponse>> selected = mGoodsMultiItemAdapter.getSelected();
-                if(selected == null) {
+                if (selected == null) {
                     showToast("请选择商品");
                     return;
                 }
@@ -947,7 +956,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                     public void onClick(List<GoodsEntity<GoodsResponse>> selectGoods, int mode, boolean isFreeOrder, float value) {
                         tempPromotionDialog.dismiss();
 
-                        if(isFreeOrder) {
+                        if (isFreeOrder) {
                             cancelCoupon();
                             cancelGiftCard();
                         }
@@ -964,7 +973,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 break;
             case R.id.btn_cancel_temp_promotion:
                 List<GoodsEntity<GoodsResponse>> cancelSelected = mGoodsMultiItemAdapter.getSelected();
-                if(cancelSelected == null) {
+                if (cancelSelected == null) {
                     showToast("请选择商品");
                     return;
                 }
@@ -974,7 +983,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                     GoodsEntity<GoodsResponse> goodsEntity = cancelSelected.get(i);
                     BaseGoodsPromotion promotion = goodsEntity.getPromotion();
 
-                    if(promotion == null || !promotion.isTempGoodsPromotion()) {
+                    if (promotion == null || !promotion.isTempGoodsPromotion()) {
                         continue;
                     }
 
@@ -991,12 +1000,12 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
                 break;
             case R.id.btn_gift_card://礼品卡
-                if(mRealPay <= 0 && mGoodsCount > 0) {
+                if (mRealPay <= 0 && mGoodsCount > 0) {
                     return;
                 }
 
                 showScanCodeDialog();
-                if(scanCodeDialog != null) {
+                if (scanCodeDialog != null) {
                     scanCodeDialog.setOnScanCodeListener(new ScanCodeDialog.OnScanCodeListener() {
                         @Override
                         public void onScanCode(String barcode) {
@@ -1033,10 +1042,10 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 break;
             case R.id.btn_choose_coupon://优惠券
 
-                if(mRealPay <= 0 && mGoodsCount > 0) {
+                if (mRealPay <= 0 && mGoodsCount > 0) {
                     return;
                 }
-                if(mGoodsCount == 0) {
+                if (mGoodsCount == 0) {
                     showToast("请先扫描商品");
                     return;
                 }
@@ -1044,8 +1053,8 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 if (ActivitiesUtils.getInstance().hasGoodsPromotion() || ActivitiesUtils.getInstance().hasShopPromotion()) {
 
                     if (!ActivitiesUtils.getInstance().isWith_coupon()) {
-                            showToast("参与的促销活动不可与优惠券共用");
-                            return;
+                        showToast("参与的促销活动不可与优惠券共用");
+                        return;
                     }
                 }
 
@@ -1080,6 +1089,19 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 break;
             case R.id.btn_quick_choose://快速选择
                 ARouter.getInstance().build(ModulePath.quick).navigation();
+                break;
+            case R.id.btn_weight://称重
+                ZQEBUtil.getInstance().init(getActivity());
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (ZQEBUtil.getInstance().isConnect()) {
+                            ARouter.getInstance().build(ModulePath.weight).navigation();
+                        } else {
+                            showToast(ZQEBUtil.getInstance().Error_msg());
+                        }
+                    }
+                }, 200);
                 break;
         }
     }
@@ -1131,6 +1153,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         mCouponMoney = 0f;
 
     }
+
     /**
      * 取消优惠券并刷新数据源
      */
@@ -1142,7 +1165,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     }
 
     /**
-     *  取消礼品卡
+     * 取消礼品卡
      */
     private void cancelGiftCard() {
         GiftCardUtils.getInstance().setGiftCardInfo(null);
@@ -1176,21 +1199,21 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 //                    count = (mGoodMoney / 100f) / price;
 //                }
 //            } else {
-                count = mGoodWeight;
+            count = mGoodWeight;
 
-                if(mGoodWeight == 0) {
-                    count = 1;
+            if (mGoodWeight == 0) {
+                count = 1;
+            }
+            for (int i = 0; i < size; i++) {
+
+                GoodsResponse goodsResponse = result.get(i);
+                goodsResponse.setCount_disable(true);
+                if (goodsResponse.getIs_weigh() == 1 && goodsResponse.isMainGood()) {
+                    //根据重量单位 进行重量换算
+                    count = goodsResponse.isJin() ? mGoodWeight / 1000f * 2 : mGoodWeight / 1000f;
                 }
-                for (int i = 0; i < size; i++) {
-
-                    GoodsResponse goodsResponse = result.get(i);
-                    goodsResponse.setCount_disable(true);
-                    if(goodsResponse.getIs_weigh() == 1 && goodsResponse.isMainGood()){
-                        //根据重量单位 进行重量换算
-                        count = goodsResponse.isJin()? mGoodWeight / 1000f * 2: mGoodWeight / 1000f;
-                    }
 //                    else if(goodsResponse.getIs_weigh() == 0 && goodsResponse.isMainGood()) {
-                        //根据数量单位
+                //根据数量单位
 //                        if (goodsResponse.has_single_sale_price()) {//有促销价
 //                            price = goodsResponse.getSingle_sale_price();
 //                        } else {
@@ -1199,7 +1222,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 //
 //                        count = (mGoodMoney / 100f) / price;
 //                    }
-                }
+            }
 //            }
         }
 
@@ -1448,13 +1471,13 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
     @Override
     public void giftCardSuccess(GiftCardResponse result) {
-        if(result.getBalance_amount() <= 0) {
-            if(scanCodeDialog != null && scanCodeDialog.isShowing()) {
+        if (result.getBalance_amount() <= 0) {
+            if (scanCodeDialog != null && scanCodeDialog.isShowing()) {
                 scanCodeDialog.setStatus(ScanCodeDialog.STATUS_GIFT_CARD_NULL);
             }
             return;
         }
-        if(scanCodeDialog != null && scanCodeDialog.isShowing()) {
+        if (scanCodeDialog != null && scanCodeDialog.isShowing()) {
             scanCodeDialog.dismiss();
         }
 
@@ -1466,7 +1489,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
     @Override
     public void giftCardFailed(Map<String, Object> map) {
-        if(scanCodeDialog != null && scanCodeDialog.isShowing()) {
+        if (scanCodeDialog != null && scanCodeDialog.isShowing()) {
             scanCodeDialog.setStatus(ScanCodeDialog.STATUS_GIFT_CARD_NULL);
         }
     }
@@ -1474,7 +1497,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     @Override
     public void getTillAuthSuccess(String result) {
         Log.i(TAG, "getTillAuthSuccess :校验钱箱权限成功");
-        if (editDialog != null && editDialog.isShowing()){
+        if (editDialog != null && editDialog.isShowing()) {
             editDialog.dismiss();
         }
         realPopTill();
@@ -1488,7 +1511,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
     @Override
     public void getLockSuccess(String result) {
-        if (editDialog != null && editDialog.isShowing()){
+        if (editDialog != null && editDialog.isShowing()) {
             editDialog.dismiss();
         }
     }
@@ -1549,6 +1572,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         scanCodeDialog = new ScanCodeDialog();
         scanCodeDialog.showCenter(getActivity(), "TAG_SCAN_CODE");
     }
+
     public void setScanCodeDialogStatus(final int status) {
         scanCodeDialog.addTask(new Runnable() {
             @Override
@@ -1567,6 +1591,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
     /**
      * 设置会员价一列是否显示
+     *
      * @param visiable
      */
     public void setMemberVisiable(boolean visiable) {
@@ -1579,6 +1604,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
     /**
      * 快速选择
+     *
      * @param goodsResponses
      */
     public void addChooseInfo(List<GoodsResponse> goodsResponses) {
@@ -1612,13 +1638,13 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
         //更新优惠券信息
         CouponResponse couponInfo = CouponUtils.getInstance().getCouponInfo();
-        if(couponInfo != null) {
+        if (couponInfo != null) {
             clExtraInfo.setCouponData(couponInfo);
         }
 
         //更新礼品卡信息
         GiftCardResponse giftCardInfo = GiftCardUtils.getInstance().getGiftCardInfo();
-        if(giftCardInfo != null) {
+        if (giftCardInfo != null) {
             clExtraInfo.setGiftCardData(giftCardInfo);
         }
 
@@ -1665,7 +1691,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
     public void switchMode(final int mode) {
 
-        String text = getString(Configs.mode_offline == mode? R.string.text_switch_mode_offline: R.string.text_switch_mode_online);
+        String text = getString(Configs.mode_offline == mode ? R.string.text_switch_mode_offline : R.string.text_switch_mode_online);
 
         GeneraDialog generaDialog = GeneraDialog.getInstance(text + ", 需要\n重新登录？", "取消", "确定");
         generaDialog.showCenter(getActivity());
@@ -1678,7 +1704,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     }
 
     public void realSwitchMode(int mode) {
-        switch(mode) {
+        switch (mode) {
             case Configs.mode_offline:
                 Configs.current_mode = Configs.mode_offline;
                 showToast("已切换到离线模式");

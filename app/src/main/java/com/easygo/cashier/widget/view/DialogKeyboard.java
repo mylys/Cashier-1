@@ -39,6 +39,7 @@ public class DialogKeyboard extends ConstraintLayout {
     private TextView[] mTvs;
     private EditText mEditText;
     private DecimalFormat df = new DecimalFormat("0.00");
+    private int limit;
 
     public DialogKeyboard(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -88,12 +89,10 @@ public class DialogKeyboard extends ConstraintLayout {
             @Override
             public void onClick(View v) {
                 if (mEditText != null && listener != null) {
-                    if (mEditText.getText().toString().length() == 0) {
-                        ToastUtils.showToast(getContext(), "请输入金额");
-                        return;
+                    String format = "";
+                    if (mEditText.getText().toString().length() != 0) {
+                        format = df.format(Float.parseFloat(mEditText.getText().toString().trim()));
                     }
-                    double price = Double.parseDouble(mEditText.getText().toString().trim());
-                    String format = df.format(price);
                     listener.onContent(format);
                 }
             }
@@ -109,7 +108,7 @@ public class DialogKeyboard extends ConstraintLayout {
                     }
                     editable.delete(editable.length() - 1, editable.length());
 
-                    if(onKeyboardClickListener != null) {
+                    if (onKeyboardClickListener != null) {
                         onKeyboardClickListener.onDeleteClickAfter(editable);
                     }
                 }
@@ -122,7 +121,7 @@ public class DialogKeyboard extends ConstraintLayout {
                 @Override
                 public void onClick(View v) {
 
-                    if(onKeyboardClickListener != null) {
+                    if (onKeyboardClickListener != null) {
                         onKeyboardClickListener.onClickBefore();
                     }
 
@@ -133,7 +132,7 @@ public class DialogKeyboard extends ConstraintLayout {
                         String price = mEditText.getText().toString();//获取输入框内容
                         String text = textView.getText().toString();//获取点击内容
                         if (price.contains(".")) {//如果存在“.”,则不能重复添加，并且小数点后只能2位
-                            if (price.substring(price.indexOf(".") + 1).length() == 2) {
+                            if (price.substring(price.indexOf(".") + 1).length() == limit) {
                                 return;
                             }
                             if (text.equals(".")) {
@@ -146,7 +145,7 @@ public class DialogKeyboard extends ConstraintLayout {
                             }
                         }
                         editable.append(textView.getText());
-                        if(onKeyboardClickListener != null) {
+                        if (onKeyboardClickListener != null) {
                             onKeyboardClickListener.onTextChangedAfter(editable);
                         }
 
@@ -155,6 +154,10 @@ public class DialogKeyboard extends ConstraintLayout {
             });
         }
 
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 
     private boolean canInputDecimal = false;
@@ -194,11 +197,15 @@ public class DialogKeyboard extends ConstraintLayout {
     }
 
     private OnKeyboardClickListener onKeyboardClickListener;
+
     public interface OnKeyboardClickListener {
         void onClickBefore();
+
         void onDeleteClickAfter(Editable editable);
+
         void onTextChangedAfter(Editable editable);
     }
+
     public void setOnKeyboardClickListener(OnKeyboardClickListener listener) {
         this.onKeyboardClickListener = listener;
     }

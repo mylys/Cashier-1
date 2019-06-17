@@ -12,4 +12,5 @@ public class ModulePath {
     public static final String settlement = "/module/settlement";
     public static final String handover = "/module/handover";
     public static final String quick = "/module/quick";
+    public static final String weight = "/module/weight";
 }

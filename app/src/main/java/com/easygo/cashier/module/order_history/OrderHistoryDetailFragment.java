@@ -20,6 +20,7 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.OrderHistoryGoodsAdapter;
 import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.printer.PrintHelper;
+import com.easygo.cashier.printer.ZQPrint.printObject.PrintHistory;
 import com.easygo.cashier.printer.local.PrinterHelpter;
 import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.printer.local.obj.OrderHistoryGoodsListPrintObj;
@@ -95,6 +96,8 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     private OrderHistoryGoodsAdapter orderHistoryGoodsAdapter;
     private OrderHistorysInfo mOrderHistorysInfo;
 
+    private PrintHistory printHistory;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -132,15 +135,15 @@ public class OrderHistoryDetailFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_refund:
-                if (orderHistoryGoodsAdapter.getItemCount() == 0){
+                if (orderHistoryGoodsAdapter.getItemCount() == 0) {
                     showToast("订单没有商品");
                     return;
-                } else if(mOrderHistorysInfo.getRefund_status() == 1
+                } else if (mOrderHistorysInfo.getRefund_status() == 1
                         && mOrderHistorysInfo.getHave_refund() == 0) {//订单有退过款，商品没有退过款
                     //无退货 退过款
                     showToast("此订单已退过款");
                     return;
-                } else if(orderHistoryGoodsAdapter.getRefundSize() == orderHistoryGoodsAdapter.getItemCount()) {
+                } else if (orderHistoryGoodsAdapter.getRefundSize() == orderHistoryGoodsAdapter.getItemCount()) {
                     //所有商品都退过款
                     showToast("此订单中所有商品已退过款");
                     return;
@@ -156,7 +159,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                     bundle.putFloat("real_pay", real_pay);
                     bundle.putString("order_number", order_number);
                     bundle.putString("real_name", order_real_name);
-                    bundle.putString("order_no_number",order_no_number);
+                    bundle.putString("order_no_number", order_no_number);
                     bundle.putInt("refund_status", mOrderHistorysInfo.getRefund_status());
                     bundle.putInt("have_refund", mOrderHistorysInfo.getHave_refund());
                     bundle.putFloat("total_discount", getAllDiscount());
@@ -164,7 +167,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 }
                 break;
             case R.id.btn_print:
-                if(mOrderHistorysInfo == null) {
+                if (mOrderHistorysInfo == null) {
                     return;
                 }
                 printOrderHistoryDetail();
@@ -257,6 +260,10 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         obj.pay_type = payType;
 
         PrinterUtils.getInstance().print(PrinterHelpter.orderHistroyGoodsList(obj));
+        if (printHistory == null) {
+            printHistory = new PrintHistory();
+        }
+        printHistory.print(obj);
     }
 
     public void showOrderHistory(OrderHistorysInfo orderHistoryInfo) {
@@ -269,7 +276,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         orderHistoryGoodsAdapter.setHavePromotion(have_shop_promotion);
         orderHistoryGoodsAdapter.setNewData(orderHistoryInfo.getList());
         tvOrderNo.setText(orderHistoryInfo.getTrade_no());
-        tvCashierAcount.setText(orderHistoryInfo.getCashier_id() == 0? "": String.valueOf(orderHistoryInfo.getCashier_id()));
+        tvCashierAcount.setText(orderHistoryInfo.getCashier_id() == 0 ? "" : String.valueOf(orderHistoryInfo.getCashier_id()));
         int size = orderHistoryInfo.getList().size();
         int count = 0;
         for (int i = 0; i < size; i++) {
@@ -283,19 +290,19 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         //临时整单促销
         String cashier_discount = mOrderHistorysInfo.getCashier_discount();
         boolean has_temp_order_promotion = !TextUtils.isEmpty(cashier_discount) && Float.parseFloat(cashier_discount) > 0;
-        if(has_temp_order_promotion) {
+        if (has_temp_order_promotion) {
             orderHistoryGoodsAdapter.setHavePromotion(true);
         }
 
         float allDiscount = getAllDiscount();
-        if(allDiscount > 0) {
+        if (allDiscount > 0) {
             tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money()
                     + " - 优惠：￥" + df.format(allDiscount) + " = ");
         } else {
             tvReceivableText.setText("");
         }
 
-        order_real_name = orderHistoryInfo.getCashier_id() == 0? "": String.valueOf(orderHistoryInfo.getCashier_id());
+        order_real_name = orderHistoryInfo.getCashier_id() == 0 ? "" : String.valueOf(orderHistoryInfo.getCashier_id());
         order_number = orderHistoryInfo.getTrade_num();
         order_no_number = orderHistoryInfo.getTrade_no();
         total_price = Integer.parseInt(orderHistoryInfo.getTotal_money().replace(".", ""));
@@ -366,7 +373,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
 
         }
 
-        if(gift_card_pay > 0) {
+        if (gift_card_pay > 0) {
             tvReceiptsText.setText(pay_text + " - 找零：￥" + change_price + " = ");
         } else {
             tvReceiptsText.setText(payType + "：￥" + total_buyer_price + " - 找零：￥" + change_price + " = ");
@@ -384,7 +391,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
             case 1:
                 break;
             case 2://状态为已付款
-                if(getString(R.string.pay_gift_card).equals(payType)) {//礼品卡支付时
+                if (getString(R.string.pay_gift_card).equals(payType)) {//礼品卡支付时
                     tvBuyer.setVisibility(View.VISIBLE);
                     tvBuyer.setText(getResources().getString(R.string.text_gift_card_colon) + orderHistoryInfo.getGift_card_no());
                     return;
@@ -399,7 +406,7 @@ public class OrderHistoryDetailFragment extends BaseFragment {
                 break;
         }
 
-        if (orderHistoryInfo.getRefund_status() != 0){
+        if (orderHistoryInfo.getRefund_status() != 0) {
             has_refund(orderHistoryInfo, change_money, change_price);
         }
     }
@@ -414,7 +421,9 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         tvReturnOfGoodsCount.setText("共退款" + orderHistoryGoodsAdapter.getRefundSize() + "件");
     }
 
-    /** 获取所有优惠金额总额 */
+    /**
+     * 获取所有优惠金额总额
+     */
     private float getAllDiscount() {
         float coupon = 0f;
         List<OrderHistorysInfo.ListBean> list = mOrderHistorysInfo.getList();

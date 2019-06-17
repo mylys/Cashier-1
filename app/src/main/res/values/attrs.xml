@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="MyTitleBar">
-        <attr name="title_text" format="integer"/>
-        <attr name="show_logo" format="boolean"/>
-        <attr name="show_title" format="boolean"/>
-        <attr name="show_account" format="boolean"/>
-        <attr name="show_exit" format="boolean"/>
-        <attr name="show_right_icon" format="boolean"/>
-        <attr name="show_right_account" format="boolean"/>
+        <attr name="title_text" format="integer" />
+        <attr name="show_logo" format="boolean" />
+        <attr name="show_title" format="boolean" />
+        <attr name="show_account" format="boolean" />
+        <attr name="show_exit" format="boolean" />
+        <attr name="show_right_icon" format="boolean" />
+        <attr name="show_right_account" format="boolean" />
+        <attr name="show_search" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="MySearchView">
 
-        <attr name="search_hint" format="string"/>
-        <attr name="search_text_padding_start" format="dimension"/>
-        <attr name="search_btn_text_size" format="dimension"/>
-        <attr name="search_btn_width" format="dimension"/>
-        <attr name="search_btn_height" format="dimension"/>
+        <attr name="search_hint" format="string" />
+        <attr name="search_text_padding_start" format="dimension" />
+        <attr name="search_btn_text_size" format="dimension" />
+        <attr name="search_btn_width" format="dimension" />
+        <attr name="search_btn_height" format="dimension" />
 
     </declare-styleable>
 
     <declare-styleable name="GeneraButton">
-        <attr name="image" format="integer"/>
-        <attr name="text" format="string"/>
-        <attr name="margin_top" format="integer"/>
-        <attr name="image_size" format="dimension"/>
-        <attr name="text_size" format="dimension"/>
+        <attr name="image" format="integer" />
+        <attr name="text" format="string" />
+        <attr name="margin_top" format="integer" />
+        <attr name="image_size" format="dimension" />
+        <attr name="text_size" format="dimension" />
     </declare-styleable>
 
 </resources>

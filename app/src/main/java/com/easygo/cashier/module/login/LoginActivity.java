@@ -37,7 +37,7 @@ import com.easygo.cashier.utils.MemberUtils;
 import com.easygo.cashier.widget.AccountWindow;
 import com.easygo.cashier.widget.dialog.ConfigDialog;
 import com.easygo.cashier.widget.dialog.GeneraDialog;
-import com.easygo.cashier.widget.dialog.PettyCashDialog;
+import com.easygo.cashier.widget.dialog.GeneraCashDialog;
 import com.easygo.cashier.widget.view.MyTitleBar;
 import com.niubility.library.base.BaseHandler;
 import com.niubility.library.common.config.BaseConfig;
@@ -78,7 +78,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
     Button btnLogin;
     @BindView(R.id.tv_system)
     TextView tvSystem;
-    private PettyCashDialog dialog;
+    private GeneraCashDialog dialog;
     private UserGoodsScreen mUserGoodsScreen;
 
     private AccountInfo mAccountInfo;
@@ -141,7 +141,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
         initUserGoodsScreen();
 
-        if(TextUtils.isEmpty(appkey) || TextUtils.isEmpty(secret)) {
+        if (TextUtils.isEmpty(appkey) || TextUtils.isEmpty(secret)) {
             showConfigDialog();
         } else {
             //发送心跳
@@ -164,15 +164,15 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         GiftCardUtils.getInstance().reset();
 
 
-        if(Configs.current_mode == Configs.mode_offline) {
+        if (Configs.current_mode == Configs.mode_offline) {
             btnLogin.setText("登录（离线）");
         }
 
         clTitle.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if("release".equals(BuildConfig.BUILD_TYPE)) {
-                    if(!Configs.open_offline) {
+                if ("release".equals(BuildConfig.BUILD_TYPE)) {
+                    if (!Configs.open_offline) {
                         return true;
                     }
                     BaseConfig.hideKeys = new String[]{
@@ -188,7 +188,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
             }
         });
 
-        if(Configs.open_offline) {
+        if (Configs.open_offline) {
             btnLogin.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -336,7 +336,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         String appkey = sp.getString(BaseConstants.KEY_APPKEY, "");
         String secret = sp.getString(BaseConstants.KEY_SECRET, "");
 
-        if(TextUtils.isEmpty(appkey) || TextUtils.isEmpty(secret)) {
+        if (TextUtils.isEmpty(appkey) || TextUtils.isEmpty(secret)) {
             showToast("请先配置id、secret");
             return;
         }
@@ -344,13 +344,13 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         final String account = getAccount();
         final String password = getPassword();
 
-        if(TextUtils.isEmpty(account)) {
+        if (TextUtils.isEmpty(account)) {
             showToast("账号不能为空！");
-        } else if(TextUtils.isEmpty(password)) {
+        } else if (TextUtils.isEmpty(password)) {
             showToast("密码不能为空！");
         } else {
 
-             if(Configs.current_mode == Configs.mode_offline) {
+            if (Configs.current_mode == Configs.mode_offline) {
                 GeneraDialog generaDialog = GeneraDialog.getInstance("登录离线模式？", "取消", "确定");
                 generaDialog.showCenter(this);
                 generaDialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
@@ -361,9 +361,9 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
                     }
                 });
             } else {
-                 //获取初始化信息 收银机是否可用
-                 mPresenter.login(DeviceUtils.getMacAddress(), account, password);
-             }
+                //获取初始化信息 收银机是否可用
+                mPresenter.login(DeviceUtils.getMacAddress(), account, password);
+            }
         }
     }
 
@@ -511,12 +511,16 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         PrinterUtils.getInstance().popTill();
 
         if (dialog == null)
-            dialog = new PettyCashDialog();
+            dialog = new GeneraCashDialog();
 
         dialog.showCenter(this);
-        dialog.setOnDialogClickListener(new PettyCashDialog.OnDialogClickListener() {
+        dialog.setOnDialogClickListener(new GeneraCashDialog.OnDialogClickListener() {
             @Override
             public void onClick(String content) {
+                if (content.length() == 0) {
+                    showToast(getResources().getString(R.string.input_cash));
+                    return;
+                }
                 String price;
                 if (!content.contains(".")) {
                     price = content + "00";
@@ -562,7 +566,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
         List<InitResponse.PrintersBean> printers = result.getPrinters();
         PrintHelper.printers_count = printers.size();
-        if(PrintHelper.printers_count != 0) {
+        if (PrintHelper.printers_count != 0) {
             Configs.printer_sn = printers.get(0).getDevice_sn();
         }
         PrintHelper.printersBeans = printers;
@@ -596,11 +600,11 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(REQUEST_CODE_CONFIG == requestCode) {
+        if (REQUEST_CODE_CONFIG == requestCode) {
             SharedPreferences sp = getSharedPreferences(BaseConfig.sp_config, Context.MODE_PRIVATE);
             String newIpPort = sp.getString(getString(R.string.key_ip_port), "192.168.1.1:8080");
 
-            if(!mLastIpPort.equals(newIpPort)) {
+            if (!mLastIpPort.equals(newIpPort)) {
                 Log.i(TAG, "onActivityResult: ip、port变化，重置HttpApi");
                 HttpAPI.getInstance().reset();
             }
@@ -608,7 +612,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
             String cur_environment = getResources().getStringArray(R.array.attr_environment)[BaseConfig.environment_index];
             showToast("环境： " + cur_environment + ", \n"
-                            + "ip/port： " + BaseConfig.environment_ip);
+                    + "ip/port： " + BaseConfig.environment_ip);
         }
     }
 }

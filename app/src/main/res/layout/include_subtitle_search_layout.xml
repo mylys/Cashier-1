@@ -45,6 +45,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--称重-->
+    <com.easygo.cashier.widget.view.GeneraButton
+        android:id="@+id/btn_weight"
+        android:layout_width="@dimen/x160"
+        android:layout_height="@dimen/y118"
+        android:background="@drawable/bg_ripple_btn"
+        app:image="@drawable/ic_main_weight"
+        app:text="@string/text_weight"
+        app:text_size="@dimen/text_size_23"
+        app:layout_constraintStart_toEndOf="@+id/btn_quick_choose"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <!--优惠券-->
     <com.easygo.cashier.widget.view.GeneraButton
         android:id="@+id/btn_gift_card"
