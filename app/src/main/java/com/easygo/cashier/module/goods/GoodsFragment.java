@@ -1092,16 +1092,11 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 break;
             case R.id.btn_weight://称重
                 ZQEBUtil.getInstance().init(getActivity());
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (ZQEBUtil.getInstance().isConnect()) {
-                            ARouter.getInstance().build(ModulePath.weight).navigation();
-                        } else {
-                            showToast(ZQEBUtil.getInstance().Error_msg());
-                        }
-                    }
-                }, 200);
+                if (ZQEBUtil.getInstance().isConnect()) {
+                    ARouter.getInstance().build(ModulePath.weight).navigation();
+                } else {
+                    showToast(ZQEBUtil.getInstance().Error_msg());
+                }
                 break;
         }
     }
@@ -1549,6 +1544,13 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         List<GoodsEntity<GoodsResponse>> goodsEntityList = entryOrders.getGoodsEntityList();
         mData.addAll(goodsEntityList);
         mGoodsMultiItemAdapter.addOrdersData(goodsEntityList);
+    }
+
+    //添加称重商品
+    public void addGoods(int weight, String barcode) {
+        mGoodWeight = weight;
+        mIsSelfEncode = true;
+        mPresenter.getGoods(Configs.shop_sn, barcode);
     }
 
     // 收银 清除界面数据

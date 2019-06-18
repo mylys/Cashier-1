@@ -14,10 +14,10 @@ public class ClassifyInfo {
     private boolean select;
 
     public ClassifyInfo() {
-
     }
 
-    public ClassifyInfo(String class_name, boolean select) {
+    public ClassifyInfo(int class_id, String class_name, boolean select) {
+        this.class_id = class_id;
         this.class_name = class_name;
         this.select = select;
     }

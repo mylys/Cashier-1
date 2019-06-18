@@ -17,6 +17,7 @@ import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.PrinterStatusResponse;
 import com.easygo.cashier.bean.QuickInfo;
 import com.easygo.cashier.bean.ShopActivityResponse;
+import com.easygo.cashier.bean.WeightBean;
 import com.niubility.library.http.result.HttpResult;
 
 import java.util.List;
@@ -148,7 +149,7 @@ public interface HttpService {
      */
     @FormUrlEncoded
     @POST("api/v1/cashier/pay/gift_card_pay")
-    Observable<HttpResult<String>> gift_card_pay(@HeaderMap Map<String, String> header,  @FieldMap Map<String, Object> map);
+    Observable<HttpResult<String>> gift_card_pay(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
 
 
     /**
@@ -228,6 +229,7 @@ public interface HttpService {
 
     /**
      * 退款
+     *
      * @param header
      * @param json
      * @return
@@ -317,4 +319,10 @@ public interface HttpService {
                                               @Field("refund_password") String refund_password,
                                               @Field("admin_name") String admin_name,
                                               @Field("password") String password);
+
+    /**
+     * 获取称重商品
+     */
+    @GET("api/v1/cashier/pay/get_all_weight_sku")
+    Observable<HttpResult<WeightBean>> weightSku(@HeaderMap Map<String, String> header);
 }

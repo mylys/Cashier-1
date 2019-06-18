@@ -241,6 +241,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         intentFilter.addAction(Events.CLEAR_GOODS_INFO);
+        intentFilter.addAction(Events.ADD_GOODS);
         registerReceiver(connReceiver, intentFilter);
     }
 
@@ -258,6 +259,15 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                     case Events.CLEAR_GOODS_INFO://清除商品数据
                         if (goodsFragment != null) {
                             goodsFragment.clearInfo();
+                        }
+                        break;
+                    case Events.ADD_GOODS://添加称重商品
+                        if (intent.getExtras() != null) {
+                            int weight = intent.getExtras().getInt("WEIGHT");
+                            String barcode = intent.getExtras().getString("BARCODE");
+                            if (goodsFragment != null) {
+                                goodsFragment.addGoods(weight, barcode);
+                            }
                         }
                         break;
                 }

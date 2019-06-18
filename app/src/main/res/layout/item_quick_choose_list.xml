@@ -14,7 +14,7 @@
         android:layout_height="@dimen/y104"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/x21"
-        android:src="@drawable/icon_kong" />
+        android:src="@drawable/ic_pic_null" />
 
     <TextView
         android:id="@+id/tv_good_name"

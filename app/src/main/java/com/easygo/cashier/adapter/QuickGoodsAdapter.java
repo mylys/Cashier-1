@@ -30,7 +30,7 @@ public class QuickGoodsAdapter extends BaseQuickAdapter<GoodsResponse, BaseViewH
 
     public QuickGoodsAdapter() {
         super(R.layout.item_quick_choose_list);
-        options = new RequestOptions().centerCrop().placeholder(R.drawable.icon_kong).error(R.drawable.icon_kong);
+        options = new RequestOptions().centerCrop().placeholder(R.drawable.ic_pic_null).error(R.drawable.ic_pic_null);
     }
 
     @Override
