@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -39,6 +40,7 @@ import com.easygo.cashier.widget.dialog.ConfigDialog;
 import com.easygo.cashier.widget.dialog.GeneraDialog;
 import com.easygo.cashier.widget.dialog.GeneraCashDialog;
 import com.easygo.cashier.widget.view.MyTitleBar;
+import com.google.gson.Gson;
 import com.niubility.library.base.BaseHandler;
 import com.niubility.library.common.config.BaseConfig;
 import com.niubility.library.common.config.ConfigPreferenceActivity;
@@ -48,6 +50,7 @@ import com.niubility.library.utils.DeviceUtils;
 import com.niubility.library.utils.GsonUtils;
 import com.niubility.library.utils.SharedPreferencesUtils;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -521,14 +524,8 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
                     showToast(getResources().getString(R.string.input_cash));
                     return;
                 }
-                String price;
-                if (!content.contains(".")) {
-                    price = content + "00";
-                } else {
-                    price = content.replace(".", "");
-                }
-                mPresenter.resever_money(result.getSession_id(), Configs.shop_sn, result.getHandover_id(),
-                        Integer.parseInt(price));
+                int price = Integer.parseInt(new DecimalFormat("#").format(Float.parseFloat(content) * 100));
+                mPresenter.resever_money(result.getSession_id(), Configs.shop_sn, result.getHandover_id(), price);
             }
         });
     }
@@ -551,6 +548,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
     @Override
     public void save(InitResponse result) {
+        Log.i("TAG", GsonUtils.getInstance().getGson().toJson(result));
         Configs.shop_sn = result.getShop().getShop_sn();
         Configs.shop_name = result.getShop().getShop_name();
         Configs.is_reserve = result.getShop().getIs_reserve();

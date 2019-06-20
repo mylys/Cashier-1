@@ -17,6 +17,7 @@ public class ZQEBUtil {
     private zqebsdk zqeb = null;
     private boolean isConnect;      //是否连接
     private String error_msg;
+    private String[] strings;
 
     public static ZQEBUtil getInstance() {
         if (instance == null) {
@@ -104,6 +105,7 @@ public class ZQEBUtil {
 
     /**
      * 连接错误提示
+     *
      * @return
      */
     public String Error_msg() {
@@ -115,38 +117,39 @@ public class ZQEBUtil {
      *
      * @return
      */
-    public String ReadData() {
+    public String[] ReadData() {
         String[] strRet = zqeb.EB_GetWeightTare();
         Log.i("电子秤输出信息===", String.format("%s,%s", strRet[0], strRet[1]));
-        if (strRet != null) {
-            String strState = "";//状态
-            String strWeight = "";//重量
-            switch (Integer.valueOf(strRet[0])) {
-                case -3:
-                    strState = "数据异常";
-                    break;
-                case -2:
-                    strState = "读取数据失败";
-                    break;
-                case -1:
-                    strState = "端口错误";
-                    break;
-                case 0:
-//                    strState = "稳定";
-                    strWeight = strRet[1];
-                    break;
-                case 1:
-//                    strState = "不稳定";
-                    strWeight = strRet[1];
-                    break;
-                case 2:
-//                    strState = "重量移除或不为零";
-                    strWeight = strRet[1];
-                    break;
-            }
-            final String newState = strState;
-            return strWeight;
+        String strState = "";//状态
+        String strWeight = "";//重量
+        switch (Integer.valueOf(strRet[0])) {
+            case -3:
+                strState = "数据异常";
+                break;
+            case -2:
+                strState = "读取数据失败";
+                break;
+            case -1:
+                strState = "端口错误";
+                break;
+            case 0:
+                strState = "稳定";
+                strWeight = strRet[1];
+                break;
+            case 1:
+                strState = "不稳定";
+                strWeight = strRet[1];
+                break;
+            case 2:
+                strState = "重量移除或不为零";
+                strWeight = strRet[1];
+                break;
         }
-        return "";
+        if (strings == null) {
+            strings = new String[2];
+        }
+        strings[0] = strWeight;
+        strings[1] = strState;
+        return strings;
     }
 }

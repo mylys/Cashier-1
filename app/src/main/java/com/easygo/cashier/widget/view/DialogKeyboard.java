@@ -38,7 +38,6 @@ public class DialogKeyboard extends ConstraintLayout {
 
     private TextView[] mTvs;
     private EditText mEditText;
-    private DecimalFormat df = new DecimalFormat("0.00");
     private int limit;
 
     public DialogKeyboard(Context context, AttributeSet attrs) {
@@ -91,7 +90,7 @@ public class DialogKeyboard extends ConstraintLayout {
                 if (mEditText != null && listener != null) {
                     String format = "";
                     if (mEditText.getText().toString().length() != 0) {
-                        format = df.format(Float.parseFloat(mEditText.getText().toString().trim()));
+                        format = mEditText.getText().toString().trim();
                     }
                     listener.onContent(format);
                 }

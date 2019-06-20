@@ -266,6 +266,7 @@
     <string name="text_cash_not_zero">金额不能等于0</string>
     <string name="text_choose_goods">请选择商品</string>
     <string name="text_weight_smaller_zero">重量不能小于0</string>
+    <string name="text_no_stable">数值不稳定</string>
 
 
 </resources>

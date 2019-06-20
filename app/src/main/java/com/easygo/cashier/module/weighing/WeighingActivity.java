@@ -76,6 +76,7 @@ public class WeighingActivity extends BaseAppMvpActivity<WeighingContract.View, 
     private String oldWeight = "";
     private String oldUnit = "";
     private String barcode = "";
+    private boolean stable = false;
 
     @Override
     protected WeighingPresenter createPresenter() {
@@ -150,6 +151,9 @@ public class WeighingActivity extends BaseAppMvpActivity<WeighingContract.View, 
                     tvPrice.setText("0/kg");
                     tvTotal.setText("￥0.00");
                     barcode = "";
+                    oldPrice = "";
+                    oldUnit = "";
+                    oldWeight = "";
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -166,8 +170,10 @@ public class WeighingActivity extends BaseAppMvpActivity<WeighingContract.View, 
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                String newWeight = ZQEBUtil.getInstance().ReadData();
-                                tvGoodsWeight.setText(ZQEBUtil.getInstance().ReadData());
+                                String[] strings = ZQEBUtil.getInstance().ReadData();
+                                stable = strings[1].equals("稳定");
+                                String newWeight = strings[0];
+                                tvGoodsWeight.setText(newWeight);
                                 if (!newWeight.equals(oldWeight)) {
                                     oldWeight = newWeight;
                                     setData(oldPrice, oldUnit);
@@ -228,6 +234,10 @@ public class WeighingActivity extends BaseAppMvpActivity<WeighingContract.View, 
                     showToast(getResources().getString(R.string.text_weight_smaller_zero));
                     return;
                 }
+                if (!stable) {
+                    showToast(getResources().getString(R.string.text_no_stable));
+                    return;
+                }
                 readThread = false;
                 Intent intent = new Intent(Events.ADD_GOODS);
                 intent.putExtra("WEIGHT", (int) weight);
@@ -264,6 +274,7 @@ public class WeighingActivity extends BaseAppMvpActivity<WeighingContract.View, 
             }
             ivClear.setVisibility(s.toString().length() > 0 ? View.VISIBLE : View.GONE);
         }
+
     }
 
     private int getPosition() {
