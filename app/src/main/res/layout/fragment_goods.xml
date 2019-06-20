@@ -8,14 +8,14 @@
     android:orientation="vertical">
 
     <!--获取扫码机条码-->
-    <EditText
+    <View
         android:id="@+id/et_barcode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#00FFFFFF"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:inputType="text"
+        android:inputType="none"
         android:cursorVisible="false"
         android:nextFocusDown="@id/et_barcode"
         android:text=""
