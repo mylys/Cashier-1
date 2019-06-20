@@ -51,6 +51,7 @@ import com.easygo.cashier.module.login.LoginActivity;
 import com.easygo.cashier.module.promotion.goods.BaseGoodsPromotion;
 import com.easygo.cashier.module.secondary_sreen.UserGoodsScreen;
 import com.easygo.cashier.printer.local.PrinterUtils;
+import com.easygo.cashier.utils.ScanGunKeyEventHelper;
 import com.easygo.cashier.widget.view.ActivitiesView;
 import com.easygo.cashier.widget.dialog.ChooseCouponsDialog;
 import com.easygo.cashier.widget.dialog.ChooseMembersDialog;
@@ -120,7 +121,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     @BindView(R.id.btn_no_barcode)
     GeneraButton clNoBarcode;
     @BindView(R.id.et_barcode)
-    EditText etBarcode;//监听扫码机
+    View etBarcode;//监听扫码机
 
     private String admin_name;
     private GoodsMultiItemAdapter mGoodsMultiItemAdapter;
@@ -128,7 +129,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     private GeneraEditDialog editDialog;
     private ChooseMembersDialog membersDialog;
     private ChooseCouponsDialog couponsDialog;
-    private ScanCodeDialog scanCodeDialog;
+    ScanCodeDialog scanCodeDialog;
 
     DecimalFormat df = new DecimalFormat("0.00");
 
@@ -297,10 +298,18 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
-                    onScanCode(etBarcode.getText().toString().trim());
-                    etBarcode.setText("");
+                ScanGunKeyEventHelper helper = ((ScanGunKeyEventHelper) etBarcode.getTag());
+                if(helper == null) {
+                    helper = new ScanGunKeyEventHelper();
+                    helper.setOnBarCodeCatchListener(new ScanGunKeyEventHelper.OnScanSuccessListener() {
+                        @Override
+                        public void onScanSuccess(String barcode) {
+                            onScanCode(barcode);
+                        }
+                    });
+                    etBarcode.setTag(helper);
                 }
+                helper.analysisKeyEvent(event);
 
                 return false;
             }
@@ -322,7 +331,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     /**
      * 扫描到的条码 回调
      */
-    private void onScanCode(String barcode) {
+    public void onScanCode(String barcode) {
         Log.i(TAG, "onScanCode: barcode --> " + barcode);
         mIsSelfEncode = false;
         if (TextUtils.isEmpty(barcode)) {

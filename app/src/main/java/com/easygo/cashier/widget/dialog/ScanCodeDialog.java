@@ -1,6 +1,5 @@
 package com.easygo.cashier.widget.dialog;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -8,14 +7,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
-
-import java.util.LinkedList;
+import com.easygo.cashier.utils.ScanGunKeyEventHelper;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -26,7 +23,7 @@ public class ScanCodeDialog extends MyBaseDialog {
     protected ProgressBar mLoading;
     protected TextView mTextView;
     protected ConstraintLayout mClose;
-    protected EditText etBarcode;
+    protected View etBarcode;
     protected String mText;
 
     /**
@@ -50,7 +47,7 @@ public class ScanCodeDialog extends MyBaseDialog {
         mLoading = rootView.findViewById(R.id.loading);
         mTextView = rootView.findViewById(R.id.tv_description);
         mClose = rootView.findViewById(R.id.cl_close);
-        etBarcode = rootView.findViewById(R.id.editText_barcode);
+        etBarcode = rootView.findViewById(R.id.et_barcode);
 
         mClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,12 +62,21 @@ public class ScanCodeDialog extends MyBaseDialog {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
-                    if (!mStopScan && mListener != null) {
-                        mListener.onScanCode(etBarcode.getText().toString().trim());
-                    }
-                    etBarcode.setText("");
+                ScanGunKeyEventHelper helper = ((ScanGunKeyEventHelper) etBarcode.getTag());
+                if (helper == null) {
+                    helper = new ScanGunKeyEventHelper();
+                    helper.setOnBarCodeCatchListener(new ScanGunKeyEventHelper.OnScanSuccessListener() {
+                        @Override
+                        public void onScanSuccess(String barcode) {
+                            if (!mStopScan && mListener != null) {
+                                mListener.onScanCode(barcode);
+                            }
+                        }
+                    });
+                    etBarcode.setTag(helper);
+
                 }
+                helper.analysisKeyEvent(event);
 
                 return false;
             }
@@ -78,7 +84,6 @@ public class ScanCodeDialog extends MyBaseDialog {
 
         etBarcode.setFocusable(true);
         etBarcode.setFocusableInTouchMode(true);
-        etBarcode.setShowSoftInputOnFocus(false);
         etBarcode.requestFocus();
     }
 

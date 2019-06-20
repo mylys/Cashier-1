@@ -6,12 +6,12 @@
     android:background="@drawable/bg_scan_dialog">
 
     <!--获取扫码机条码-->
-    <EditText
-        android:id="@+id/editText_barcode"
+    <View
+        android:id="@+id/et_barcode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:inputType="text"
+        android:inputType="none"
         android:textColor="#00ffffff"
         android:cursorVisible="false"
         android:focusable="true"
