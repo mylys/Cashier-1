@@ -168,7 +168,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
 
 
         if (Configs.current_mode == Configs.mode_offline) {
-            btnLogin.setText("登录（离线）");
+            btnLogin.setText(getString(R.string.text_login_offline));
         }
 
         clTitle.setOnLongClickListener(new View.OnLongClickListener() {
@@ -200,11 +200,11 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
                     }
                     if (Configs.current_mode == Configs.mode_online) {
                         Configs.current_mode = Configs.mode_offline;
-                        showToast("已切换到离线模式");
-                        btnLogin.setText("登录（离线）");
+                        showToast(getString(R.string.text_already_switch_mode_offline));
+                        btnLogin.setText(getString(R.string.text_login_offline));
                     } else {
                         Configs.current_mode = Configs.mode_online;
-                        showToast("已切换到在线模式");
+                        showToast(getString(R.string.text_already_switch_mode_online));
                         btnLogin.setText(R.string.text_login);
                     }
                     return true;
@@ -348,13 +348,13 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         final String password = getPassword();
 
         if (TextUtils.isEmpty(account)) {
-            showToast("账号不能为空！");
+            showToast(getString(R.string.text_username_empty));
         } else if (TextUtils.isEmpty(password)) {
-            showToast("密码不能为空！");
+            showToast(getString(R.string.text_password_empty));
         } else {
 
             if (Configs.current_mode == Configs.mode_offline) {
-                GeneraDialog generaDialog = GeneraDialog.getInstance("登录离线模式？", "取消", "确定");
+                GeneraDialog generaDialog = GeneraDialog.getInstance(getString(R.string.text_login_offline_mode), getString(R.string.text_cancel), getString(R.string.text_sure));
                 generaDialog.showCenter(this);
                 generaDialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
                     @Override
@@ -501,7 +501,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         ARouter.getInstance().build(ModulePath.goods)
                 .withString("admin_name", String.valueOf(Configs.cashier_id))
                 .navigation();
-        showToast("登录成功：" + Configs.admin_name);
+        showToast(getString(R.string.text_login_success) + Configs.admin_name);
         finish();
     }
 

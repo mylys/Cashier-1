@@ -11,6 +11,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.easygo.cashier.Events;
+import com.easygo.cashier.MyConextWrapper;
 import com.easygo.cashier.utils.SoftKeyBoardListener;
 import com.easygo.cashier.widget.dialog.LoadingDialog;
 import com.niubility.library.base.BaseMvpActivity;
@@ -18,7 +20,9 @@ import com.niubility.library.mvp.BasePresenter;
 import com.niubility.library.mvp.BaseView;
 import com.niubility.library.utils.ScreenUtils;
 
-public abstract class BaseAppMvpActivity<V extends BaseView, P extends BasePresenter<V>> extends BaseMvpActivity<V,P> {
+import java.util.Locale;
+
+public abstract class BaseAppMvpActivity<V extends BaseView, P extends BasePresenter<V>> extends BaseMvpActivity<V, P> {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +64,7 @@ public abstract class BaseAppMvpActivity<V extends BaseView, P extends BasePrese
         mLoadingDialog = new LoadingDialog(BaseAppMvpActivity.this);
         mLoadingDialog.setCanceledOnTouchOutside(true);
         Window window = mLoadingDialog.getWindow();
-        if(window != null) {
+        if (window != null) {
             window.setGravity(Gravity.CENTER);
         }
     }
@@ -126,5 +130,22 @@ public abstract class BaseAppMvpActivity<V extends BaseView, P extends BasePrese
                     || !(event.getY() > top) || !(event.getY() < bottom);
         }
         return false;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        Context context = null;
+        switch (Events.LANGUAGE) {
+            case "zh":
+                context = MyConextWrapper.wrapper(newBase, Locale.SIMPLIFIED_CHINESE);
+                break;
+            case "zh-tw":
+                context = MyConextWrapper.wrapper(newBase, Locale.TAIWAN);
+                break;
+            case "en":
+                context = MyConextWrapper.wrapper(newBase, Locale.US);
+                break;
+        }
+        super.attachBaseContext(context);
     }
 }

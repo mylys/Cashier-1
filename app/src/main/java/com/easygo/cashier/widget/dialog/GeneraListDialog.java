@@ -34,6 +34,7 @@ public class GeneraListDialog extends MyBaseDialog {
     public static final int RECEIPTS_PRINT_NUMBER = 1003;       //小票机打印数量
     public static final int RECEIPTS_PRINT_WIDTH = 1004;        //小票机打印宽度
     public static final int PHOTO_INTERVAL_TIME = 1005;         //图片切换时间
+    public static final int LANGUAGE_SETTING = 10006;           //语言设置
 
     private TextView dialog_title;
     private ImageView dialog_cancel;
@@ -46,7 +47,7 @@ public class GeneraListDialog extends MyBaseDialog {
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(String content);
+        void onItemClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -104,7 +105,7 @@ public class GeneraListDialog extends MyBaseDialog {
                     @Override
                     public void onClick(View v) {
 //                        setItemChecked(helper.getLayoutPosition());
-                        listener.onItemClick(item);
+                        listener.onItemClick(helper.getLayoutPosition());
                         dismiss();
                     }
                 });
@@ -152,6 +153,9 @@ public class GeneraListDialog extends MyBaseDialog {
                 break;
             case PHOTO_INTERVAL_TIME:
                 type_list = new String[]{getString(R.string.text_genera_seconds_5), getString(R.string.text_genera_seconds_10), getString(R.string.text_genera_seconds_15), getString(R.string.text_genera_seconds_30), getString(R.string.text_genera_seconds_60)};
+                break;
+            case LANGUAGE_SETTING:
+                type_list = new String[]{getString(R.string.text_simplified), getString(R.string.text_traditional), getString(R.string.text_english)};
                 break;
         }
         Collections.addAll(list, type_list);

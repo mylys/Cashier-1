@@ -1,5 +1,6 @@
 package com.easygo.cashier.module.order_history.order_history_refund;
 
+import com.easygo.cashier.R;
 import com.easygo.cashier.bean.InitResponse;
 import com.easygo.cashier.http.HttpAPI;
 import com.easygo.cashier.printer.PrintHelper;
@@ -29,7 +30,7 @@ public class OrderHistoryRefundPresenter extends BasePresenter<OrderHistoryRefun
                     @Override
                     protected void onSuccess(String result) {
                         mView.hideLoading();
-                        mView.getHistoryRefundSuccess("退款成功");
+                        mView.getHistoryRefundSuccess(result);
                     }
 
                     @Override

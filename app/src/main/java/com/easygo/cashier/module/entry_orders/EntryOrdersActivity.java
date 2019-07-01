@@ -1,5 +1,6 @@
 package com.easygo.cashier.module.entry_orders;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,11 +10,15 @@ import android.widget.FrameLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.easygo.cashier.Configs;
+import com.easygo.cashier.Events;
 import com.easygo.cashier.ModulePath;
+import com.easygo.cashier.MyConextWrapper;
 import com.easygo.cashier.R;
 import com.easygo.cashier.widget.view.MyTitleBar;
 import com.niubility.library.base.BaseActivity;
 import com.niubility.library.utils.ScreenUtils;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,5 +87,22 @@ public class EntryOrdersActivity extends BaseActivity {
 
     public void toChoose() {
         entryOrdersFragment.toChoose();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        Context context = null;
+        switch (Events.LANGUAGE) {
+            case "zh":
+                context = MyConextWrapper.wrapper(newBase, Locale.SIMPLIFIED_CHINESE);
+                break;
+            case "zh-tw":
+                context = MyConextWrapper.wrapper(newBase, Locale.TAIWAN);
+                break;
+            case "en":
+                context = MyConextWrapper.wrapper(newBase, Locale.US);
+                break;
+        }
+        super.attachBaseContext(context);
     }
 }

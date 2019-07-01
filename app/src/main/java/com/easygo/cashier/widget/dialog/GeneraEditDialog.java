@@ -115,15 +115,15 @@ public class GeneraEditDialog extends MyBaseDialog {
                         listener.onContent(type, editInput.getText().toString().trim(), "");
                         break;
                     case USER_ACCOUNT:
-                        if (TextUtils.isEmpty(editAccount.getText().toString().trim()) || TextUtils.isEmpty(editPassword.getText().toString().trim())){
-                            ToastUtils.showToast(getActivity(),"账号密码不能为空");
+                        if (TextUtils.isEmpty(editAccount.getText().toString().trim()) || TextUtils.isEmpty(editPassword.getText().toString().trim())) {
+                            ToastUtils.showToast(getActivity(), R.string.text_cannot_empty);
                             return;
                         }
                         listener.onContent(type, editAccount.getText().toString().trim(), editPassword.getText().toString().trim());
                         break;
                     case USER_ACCREDIT:
-                        if (TextUtils.isEmpty(editAccount.getText().toString().trim())){
-                            ToastUtils.showToast(getActivity(),"请输入授权密码");
+                        if (TextUtils.isEmpty(editAccount.getText().toString().trim())) {
+                            ToastUtils.showToast(getActivity(), R.string.text_input_authorization_password);
                             return;
                         }
                         listener.onContent(type, editAccount.getText().toString().trim(), "");

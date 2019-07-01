@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Environment;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -25,6 +26,7 @@ public class MyApplication extends BaseApplication {
     public static final String APP_ID = "72898efe19"; // TODO 替换成bugly上注册的appid
     public static final String APP_CHANNEL = "DEBUG"; // TODO 自定义渠道
 
+    public static SharedPreferences sp;
 
     @Override
     public void onCreate() {
@@ -38,6 +40,8 @@ public class MyApplication extends BaseApplication {
         ARouter.init(this);
 
         ToastUtils.text_size_times = 1.5f;
+        sp = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        Events.LANGUAGE = sp.getString("Language", "zh");
 
         BaseConfig.readConfig(this);
         BaseConfig.setEnvironmentIndex(this, String.valueOf(Configs.environment_index));
@@ -55,7 +59,7 @@ public class MyApplication extends BaseApplication {
         /**
          * true表示初始化时自动检查升级; false表示不会自动检查升级,需要手动调用Beta.checkUpgrade()方法;
          */
-		Beta.autoCheckUpgrade = true;
+        Beta.autoCheckUpgrade = true;
 //        Beta.autoCheckUpgrade = false;
 
         /**
@@ -108,6 +112,10 @@ public class MyApplication extends BaseApplication {
 
         /***** 统一初始化Bugly产品，包含Beta *****/
         Bugly.init(this, APP_ID, true, strategy);
+    }
+
+    public static SharedPreferences getSp() {
+        return sp;
     }
 
     @Override

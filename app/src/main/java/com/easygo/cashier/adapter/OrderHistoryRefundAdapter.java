@@ -68,13 +68,13 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
 //        helper.setImageResource(R.id.image_select, item.isSelect() ? R.drawable.icon_select : R.drawable.icon_no_select);
 
         //设置数据
-        String tv_total_num = type == 1 ? df_weight.format(item.getProduct_num()) + item.getG_u_symbol(): df_int.format(item.getProduct_num());
+        String tv_total_num = type == 1 ? df_weight.format(item.getProduct_num()) + item.getG_u_symbol() : df_int.format(item.getProduct_num());
 
         double product_subtotal = Double.parseDouble(item.getProduct_subtotal());//小计
         double refund_subtotal = Double.parseDouble(item.getRefund_subtotal());//退货小计
         String tv_subtotal = df.format(product_subtotal);
         String tv_refund_subtotal = df.format(refund_subtotal);
-        if(refund_subtotal > product_subtotal) {//退货小计不能大于小计
+        if (refund_subtotal > product_subtotal) {//退货小计不能大于小计
             tv_refund_subtotal = df.format(product_subtotal);
         }
 
@@ -84,7 +84,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 .setText(R.id.tv_product_subtotal, tv_subtotal)
                 .setText(R.id.tv_product_total_num, tv_total_num)
                 .setText(R.id.tv_refund_subtotal, type == 1 || type == 3 ? tv_subtotal : tv_refund_subtotal)
-                .setText(R.id.tv_refund_num_no, type == 1 ? item.getProduct_num() + "": df_int.format(item.getProduct_num()));
+                .setText(R.id.tv_refund_num_no, type == 1 ? item.getProduct_num() + "" : df_int.format(item.getProduct_num()));
 
         if (type == 1) {
             helper.setText(R.id.tv_refund, "全退");
@@ -98,19 +98,19 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
             @Override
             public void onCountChanged(int count) {
                 if (count > item.getProduct_num()) {
-                    ToastUtils.showToast(mContext, "退款数量不能大于商品数量");
+                    ToastUtils.showToast(mContext, R.string.text_refund_cannot_more_than_goods_num);
                     countTextView.setCount(item.getRefund_num() + "");
                     return;
                 }
                 if (count == 0) {
-                    ToastUtils.showToast(mContext, "商品数量不能小于1件");
+                    ToastUtils.showToast(mContext, R.string.text_goods_num_cannot_less_than_one);
                     countTextView.setCount("1");
                     return;
                 }
                 item.setRefund_num(count + "");
                 double subtotal = (count * (Double.parseDouble(item.getProduct_subtotal()) / item.getProduct_num()));
                 double money = Double.parseDouble(item.getProduct_subtotal());//小计
-                if(subtotal > money) {
+                if (subtotal > money) {
                     subtotal = money;
                 }
                 item.setRefund_subtotal(df.format(subtotal));
@@ -129,7 +129,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
             @Override
             public void onClick(View v) {
                 if (item.getRefund() > 0) {
-                    ToastUtils.showToast(mContext, "该商品已退款");
+                    ToastUtils.showToast(mContext, R.string.text_goods_already_refund);
                     return;
                 }
                 boolean selected = !item.isSelectReturnOfGoods();
@@ -143,12 +143,12 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         cb_refund.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (item.getRefund() > 0) {
-                        ToastUtils.showToast(mContext, "该商品已退款");
+                        ToastUtils.showToast(mContext, R.string.text_goods_already_refund);
                         return true;
                     }
-                    if(((CheckBox) helper.getView(R.id.cb_return_of_goods)).isChecked()) {//选择退货 不能取消退款
+                    if (((CheckBox) helper.getView(R.id.cb_return_of_goods)).isChecked()) {//选择退货 不能取消退款
                         return true;
                     }
                 }
@@ -158,9 +158,9 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         cb_return_of_goods.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (item.getRefund() > 0) {
-                        ToastUtils.showToast(mContext, "该商品已退款");
+                        ToastUtils.showToast(mContext, R.string.text_goods_already_refund);
                         return true;
                     }
                 }
@@ -181,8 +181,8 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 item.setSelectReturnOfGoods(isChecked);
                 CheckBox refund = helper.getView(R.id.cb_refund);
-                if(isChecked) {//选中了退货，此时退款已经被选中时 刷新
-                    if(refund.isChecked()) {
+                if (isChecked) {//选中了退货，此时退款已经被选中时 刷新
+                    if (refund.isChecked()) {
                         item.setSelectRefund(true);
                         listener.onListener();
                         notifyItemChanged(helper.getLayoutPosition());
@@ -213,7 +213,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 } else {
                     list.setCount(Integer.parseInt(item.getRefund_num()));
                 }
-                if(isSelectRefund && !isSelectReturnOfGoods) {//退款 不退货
+                if (isSelectRefund && !isSelectReturnOfGoods) {//退款 不退货
                     list.setType(1);
                 } else { //退款 退货
                     list.setType(2);
@@ -224,11 +224,13 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         return goodsLists;
     }
 
-    /**判断是否需要默认选中退款*/
+    /**
+     * 判断是否需要默认选中退款
+     */
     public void judgeNeedSelectRefund() {
-        if(mData.size() == 1) {
+        if (mData.size() == 1) {
             CheckBox refund = (CheckBox) getViewByPosition(0, R.id.cb_refund);
-            if(refund != null) {
+            if (refund != null) {
                 refund.setChecked(true);
             }
         }
@@ -242,7 +244,7 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
             if (goodsRefundInfo.isSelectRefund()) {
 
                 product_subtotal = Float.parseFloat(goodsRefundInfo.getProduct_subtotal());
-                if(GoodsResponse.isWeightGood(goodsRefundInfo.getType())) {
+                if (GoodsResponse.isWeightGood(goodsRefundInfo.getType())) {
                     refund_total += product_subtotal;
                 } else {
                     refund_total += (Integer.parseInt(goodsRefundInfo.getRefund_num()) * (product_subtotal / goodsRefundInfo.getProduct_num()));
@@ -253,7 +255,9 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         return real_pay * (refund_total / total);
     }
 
-    /** 获取商品选择总额 */
+    /**
+     * 获取商品选择总额
+     */
     public String getTotalPrice() {
         double totalPrcie = 0;
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
@@ -267,7 +271,9 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
     }
 
 
-    /** 获取商品退货总数量 */
+    /**
+     * 获取商品退货总数量
+     */
     public int getTotalNum() {
         int totalPrcie = 0;
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
@@ -278,7 +284,9 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         return totalPrcie;
     }
 
-    /** 获取商品已退货数量 */
+    /**
+     * 获取商品已退货数量
+     */
     public boolean getTotalRefund() {
         int num = 0;
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
@@ -289,7 +297,9 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
         return num == getData().size();
     }
 
-    /** 退款成功时，模拟退款信息详情 */
+    /**
+     * 退款成功时，模拟退款信息详情
+     */
     public void setRefundInfo() {
         for (GoodsRefundInfo goodsRefundInfo : getData()) {
             if (goodsRefundInfo.isSelectRefund()) {

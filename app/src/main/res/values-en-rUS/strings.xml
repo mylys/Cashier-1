@@ -1,0 +1,278 @@
+<resources>
+    <string name="app_name">EG收银系统</string>
+
+    <string name="text_login">Login</string>
+
+    <!--主页面-->
+    <string name="text_no_barcode_goods">Uncoded goods</string>
+
+    <!-- 备用金 -->
+    <string name="text_petty_cash">Reserve fund</string>
+    <string name="hint_petty_cash">Please enter the amount of the reserve</string>
+
+    <string name="text_barcode">barcode</string>
+    <string name="text_goods_name">product name</string>
+    <string name="text_price">unit price</string>
+    <string name="text_coupon">offer</string>
+    <string name="text_subtotal">subtotal</string>
+    <string name="text_count">quantity</string>
+    <string name="text_count_weight">quantity</string>
+    <string name="text_refund_num">return quantity</string>
+    <string name="text_refund_subtotal">return subtotal</string>
+    <string name="text_total">total: </string>
+    <string name="text_goods_count">number</string>
+    <string name="text_total_money">lump sum</string>
+    <string name="text_clear">Empty</string>
+    <string name="text_settlement">Cash register</string>
+    <string name="text_refund">Reimburse</string>
+    <string name="text_return_of_goods">Return of goods</string>
+    <string name="text_cancel">cancel</string>
+    <string name="text_confirm">confirm</string>
+    <string name="text_is_processing">whether processing</string>
+    <string name="text_invalid">invalid</string>
+    <string name="text_choose">select</string>
+
+    <!--促销-->
+    <string name="text_current_promotion">Participating in the event：</string>
+
+    <string name="text_promotion_settiong">Discount setting</string>
+    <string name="text_discount">discount</string>
+    <string name="text_change_price">change price</string>
+    <string name="hint_discount">Please enter a discount percentage</string>
+    <string name="hint_change_price">Please enter the replacement price</string>
+    <string name="text_free_order">free</string>
+    <string name="text_cancel_temp_promotion">Cancel temporary discount</string>
+
+
+    <!--会员-->
+    <string name="text_member">member</string>
+    <string name="text_current_member">Current member：</string>
+    <string name="text_choose_member">Select member</string>
+    <string name="text_member_price">member price</string>
+    <string name="text_balance_conlon">Balance：</string>
+    <string name="text_integral_colon">Integral：</string>
+    <string name="text_integral_exchange">Points can be redeemed：</string>
+    <string name="text_member_card">member card number</string>
+    <string name="text_package_balance">Wallet balance</string>
+    <string name="text_integral_balance">Point balance</string>
+    <string name="text_nick">nick</string>
+    <string name="text_telphone">phone</string>
+    <string name="text_process">operating</string>
+    <string name="text_input_member_tel_or_card">Please enter the member mobile phone number / membership card number</string>
+    <string name="text_no_telphone">Can\'t find the phone number/member card number</string>
+    <string name="text_no_member">No such member</string>
+    <string name="text_member_card_wallet">Member card</string>
+
+    <!--优惠券-->
+    <string name="text_coupon_coupon">coupons</string>
+    <string name="text_coupon_coupon_colon">coupons：</string>
+    <string name="text_input_coupon">Please enter the coupon number</string>
+    <string name="text_no_search_coupon">Can\'t find the coupon</string>
+    <string name="text_no_coupon">No such coupons</string>
+
+    <!--礼品卡-->
+    <string name="text_gift_card">gift card</string>
+    <string name="text_gift_card_colon">gift card：</string>
+    <string name="text_scan_gift_card_code">Please scan the gift card QR code</string>
+    <string name="text_no_gift_card">No such gift card</string>
+
+    <!--结算页面-->
+    <string name="text_combined_payment">组合支付</string>
+    <string name="text_cash">Cash</string>
+    <string name="text_wechat">WeChat</string>
+    <string name="text_alipay">Alipay</string>
+    <string name="text_bank_card">UnionPay</string>
+    <string name="text_print_paper">Print document</string>
+    <string name="text_print">print</string>
+    <string name="text_commit_order">Submit a transaction</string>
+    <string name="text_bankcard_pay">UnionPay</string>
+    <string name="text_bankcard_scan">Please use the UnionPay POS machine to scan the code</string>
+
+    <string name="text_receivable_colon">Receivable：</string>
+    <string name="text_change_colon">Change：</string>
+    <string name="text_receipts_colon">Actual harvest：</string>
+    <string name="text_refund_orders">Refund</string>
+
+
+    <string name="text_scan_code">Please scan the receipt code</string>
+    <string name="text_scanning_code">Identifying QR code</string>
+    <string name="text_successful_receipt">Successful payment</string>
+    <string name="text_already_receive">Paid for</string>
+    <string name="text_pay_successful">Payment successful</string>
+
+    <string name="text_cancel_coupon">Cancel coupon</string>
+    <string name="text_cancel_promotion">Cancel discount</string>
+    <string name="text_cancel_gift_card">Cancel gift card</string>
+
+    <!--历史订单详情-->
+    <string name="text_order_history">Historical order</string>
+    <string name="text_has_already_refund">Refunded</string>
+    <string name="text_order_no">Order number：</string>
+    <string name="text_cashier">Cashier：</string>
+    <string name="text_function_list">function list</string>
+    <string name="text_buyer">Payer：</string>
+    <string name="text_pay_type">Payment method：</string>
+    <string name="text_order_number">Order number：</string>
+    <string name="text_no_order">No order information</string>
+
+    <!--快速选择-->
+    <string name="text_quick_choose">quick selection</string>
+
+    <!-- 挂单详情 -->
+    <string name="text_entry_orders">Pending order</string>
+    <string name="text_entry_orders_list">List of pending orders</string>
+    <string name="text_entry_orders_time">Pending time：</string>
+    <string name="text_note">Remarks：</string>
+    <string name="hint_entry_orders">Please enter the pending order note (not required)</string>
+
+    <!-- 退款 -->
+    <string name="text_total_refund_product">共退货</string>
+    <string name="text_total_refund_price">件，退款金额：￥ </string>
+
+    <!--搜索框-->
+    <string name="text_digits">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
+    <string name="text_search_hint_barcode">Enter a barcode or product name</string>
+    <string name="text_search_hint_order">Enter the order number</string>
+    <string name="text_search_hint_product_name">Enter the product name</string>
+    <string name="text_search">search</string>
+    <string name="search_null">Can\'t find this item</string>
+
+    <!-- dialog -->
+    <string name="no_goods_text">Uncoded goods</string>
+    <string name="input_price">Please enter the amount of the item</string>
+
+    <string name="text_confirm_commit_order">Confirm submit transaction?</string>
+    <string name="text_confirm_refund">Confirm submit a refund?</string>
+
+    <!--交接班详情-->
+    <string name="text_handover">Handover</string>
+    <string name="text_login_time">This login time：</string>
+    <string name="text_handover_and_login_out">Hand over and log out</string>
+    <string name="text_sales_list">Sales list</string>
+    <string name="text_total_sales">Total sales</string>
+    <string name="text_total_order_count">Total number of documents</string>
+    <string name="text_total_cash">Total cash</string>
+    <string name="text_sale_count">Sales Order</string>
+    <string name="text_refund_count">Return form</string>
+    <string name="text_cash_income">Cash income</string>
+    <string name="text_member_package">Member wallet</string>
+    <string name="text_all_refund">Total refund amount</string>
+    <string name="text_reserver">Reserve fund</string>
+    <string name="text_receipts_money">Paid amount</string>
+    <string name="text_cash_change">Change amount</string>
+    <string name="text_cash_refund">Refund cash</string>
+    <string name="text_classification">Classification</string>
+
+    <!-- 设备状态 -->
+    <string name="device_state">Equipment status</string>
+    <string name="the_printer">Ticket machine</string>
+    <string name="local_printer">USB printer</string>
+    <string name="reconnection">Please reconnect</string>
+    <string name="device_normal">normal</string>
+    <string name="device_abnormal">abnormal</string>
+
+    <!-- 支付方式 -->
+    <string name="pay_alipay">Alipay</string>
+    <string name="pay_wechat">WeChat</string>
+    <string name="pay_wechat_cash">微信 + 现金</string>
+    <string name="pay_wechat_wallet">微信 + 企业钱包</string>
+    <string name="pay_cash">Cash</string>
+    <string name="pay_wallet">Enterprise wallet</string>
+    <string name="pay_bank_card">UnionPay</string>
+    <string name="pay_gift_card">Gift card</string>
+    <string name="pay_wechat_gift_card">微信 + 礼品卡</string>
+    <string name="pay_alipay_gift_card">支付宝 + 礼品卡</string>
+    <string name="pay_wallet_gift_card">企业钱包 + 礼品卡</string>
+    <string name="pay_cash_gift_card">现金 + 礼品卡</string>
+
+    <!-- 功能列表 -->
+    <string name="text_function_history">Historical Orders</string>
+    <string name="text_function_handover">Handover</string>
+    <string name="text_function_entry">Pending Orders</string>
+    <string name="text_function_language">Language Settings</string>
+    <string name="text_function_device">Equipment status</string>
+    <string name="text_function_setting">System settings</string>
+    <string name="text_function_system">Enter the system</string>
+    <string name="text_function_lock">Lock the cash register</string>
+    <string name="text_switch_mode_offline">Switch to offline mode</string>
+    <string name="text_switch_mode_online">Switch to online mode</string>
+
+    <!-- 通用dialog -->
+    <string name="text_dialog_title_clear">Confirm empty item？</string>
+    <string name="text_dialog_cancel">cancel</string>
+    <string name="text_dialog_submit">determine</string>
+
+    <!-- 通用列表dialog -->
+    <!-- 货币符号item-->
+    <string name="text_genera_list_follow_system">Follow system</string>
+    <string name="text_genera_money">￥</string>
+    <string name="text_genera_nt">NT$</string>
+    <string name="text_genera_hk">HK$</string>
+    <string name="text_genera_pat">PAT.</string>
+    <!-- 网络类型 -->
+    <string name="text_genera_wifi">WIFI</string>
+    <string name="text_genera_3g_mobile">3G mobile</string>
+    <string name="text_genera_3g_unicom_telecom">3G Unicom/Telecom</string>
+    <string name="text_genera_4g">4G network</string>
+    <!-- 图片间隔时间 -->
+    <string name="text_genera_seconds_5">5秒</string>
+    <string name="text_genera_seconds_10">10秒</string>
+    <string name="text_genera_seconds_15">15秒</string>
+    <string name="text_genera_seconds_30">30秒</string>
+    <string name="text_genera_seconds_60">60秒</string>
+    <!-- 打印数量 -->
+    <string name="text_genera_number_1">1</string>
+    <string name="text_genera_number_2">2</string>
+    <string name="text_genera_number_3">3</string>
+    <!-- 打印宽度 -->
+    <string name="text_genera_width_58">58mm</string>
+    <string name="text_genera_width_88">88mm</string>
+    <string name="text_product_name">Number of Products：</string>
+
+    <string name="hint_user_account">Please enter an employee account</string>
+    <string name="hint_user_password">Please enter employee password</string>
+    <string name="text_cashbox_accredit">Pop up cash box authorization</string>
+    <string name="text_refund_accedit">Refund authorization</string>
+    <string name="text_lock">Enter the authorization password to unlock</string>
+    <string name="text_lock_user">Enter account password to unlock</string>
+
+    <!--打印机-->
+    <string name="str_permission_deny">Permission denied,USB printer is not available!</string>
+    <string name="str_conn_fail">Please re-plug the USB printer,USB printer connection failed!</string>
+    <string name="str_cann_printer">Please connect the USB printer first.</string>
+    <string name="str_need_replugged">Please insert a USB printer</string>
+
+    <string name="str_printer_conn_normal">The printer is connected properly</string>
+    <string name="str_printer_out_of_paper">The printer is out of paper</string>
+    <string name="str_printer_open_cover">Printer cover</string>
+    <string name="str_printer_error">Printer error</string>
+    <string name="str_state">Status：</string>
+
+    <string name="str_printer_printmode_esc">Print mode:ESC</string>
+    <string name="str_printer_printmode_tsc">Print mode:TSC</string>
+    <string name="str_printer_printmode_cpcl">Print mode:CPCL</string>
+    <string name="text_weight">weighing</string>
+    <string name="hint_title_search">Enter a barcode or product name</string>
+    <string name="text_goods_weight">weight</string>
+    <string name="text_goods_total">total</string>
+    <string name="text_set_zero">Zero</string>
+    <string name="text_sure">determine</string>
+    <string name="text_set_tare">Set tare</string>
+    <string name="text_clear_tare">Clear tare</string>
+    <string name="text_net_weight">Peeled</string>
+    <string name="input_set_tare">Please enter the tare weight</string>
+    <string name="weight_kg">kg</string>
+    <string name="input_cash">Please enter the amount</string>
+    <string name="text_cash_not_zero">The amount cannot be equal to 0</string>
+    <string name="text_choose_goods">Please select a product</string>
+    <string name="text_weight_smaller_zero">Weight cannot be less than 0</string>
+    <string name="text_no_stable">Weighing value is unstable</string>
+    <string name="text_simplified">简体中文</string>
+    <string name="text_traditional">繁体中文</string>
+    <string name="text_english">English</string>
+    <string name="text_clear_goods">Please clear the item first</string>
+    <string name="text_password_error">The password is incorrect!</string>
+    <string name="text_cannot_empty">Account password cannot be empty</string>
+
+
+</resources>

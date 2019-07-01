@@ -445,7 +445,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
             tvRefundcashPrice.setInputType(InputType.TYPE_NULL);
         }
         tvRefundcashPrice.setText("0.00");
-        ToastUtils.showToast(getActivity(), message);
+        ToastUtils.showToast(getActivity(), R.string.text_refund_success);
         if (getActivity() != null) {
             ((OrderHistoryActivity) getActivity()).toRefresh();
             ((OrderHistoryActivity) getActivity()).back();

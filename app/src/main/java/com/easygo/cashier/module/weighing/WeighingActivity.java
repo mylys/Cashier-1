@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,6 +34,7 @@ import com.niubility.library.http.exception.HttpExceptionEngine;
 import com.niubility.library.mvp.BasePresenter;
 import com.niubility.library.mvp.BaseView;
 import com.niubility.library.utils.EventUtils;
+import com.niubility.library.utils.GsonUtils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -146,7 +148,11 @@ public class WeighingActivity extends BaseAppMvpActivity<WeighingContract.View, 
                     }
                     item.setSelect(true);
                     if (weighingFragment != null) {
-                        weighingFragment.putData(position, item.getClass_id());
+                        if (item.getClass_id() == 0) {
+                            weighingFragment.putData(position, item.getClass_id(), adapter.getData());
+                        } else {
+                            weighingFragment.putData(position, item.getClass_id(), null);
+                        }
                     }
                     tvPrice.setText("0/kg");
                     tvTotal.setText("￥0.00");
@@ -316,16 +322,26 @@ public class WeighingActivity extends BaseAppMvpActivity<WeighingContract.View, 
 
     @Override
     public void getWeightSkuSuccess(WeightBean bean) {
+        Log.i("TAGGGGG", GsonUtils.getInstance().getGson().toJson(bean));
         if (bean != null) {
+            boolean qitaClassify = false;
             if (bean.getCate_list().size() > 0) {
                 List<ClassifyInfo> list = new ArrayList<>();
                 ClassifyInfo info;
                 for (WeightBean.CateListBean item : bean.getCate_list()) {
+                    if (item.getG_c_id() == 0) {
+                        qitaClassify = true;
+                        continue;
+                    }
                     info = new ClassifyInfo(item.getG_c_id(), item.getG_c_name(), false);
                     list.add(info);
                 }
-                info = new ClassifyInfo(0, "全部", true);
+                info = new ClassifyInfo(1, "全部", true);
                 list.add(0, info);
+                if (qitaClassify) {
+                    info = new ClassifyInfo(0, "其他", false);
+                }
+                list.add(info);
                 adapter.setNewData(list);
                 rvClassifyList.setVisibility(View.VISIBLE);
             } else {

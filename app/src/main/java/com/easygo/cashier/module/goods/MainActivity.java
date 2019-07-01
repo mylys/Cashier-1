@@ -44,6 +44,7 @@ import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.widget.dialog.EquipmentstateDialog;
 import com.easygo.cashier.widget.dialog.FunctionListDialog;
 import com.easygo.cashier.widget.dialog.GeneraDialog;
+import com.easygo.cashier.widget.dialog.GeneraListDialog;
 import com.easygo.cashier.widget.view.MyTitleBar;
 import com.niubility.library.base.BaseApplication;
 import com.niubility.library.base.BaseEvent;
@@ -88,6 +89,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     private Fragment fragment;
     public GoodsFragment goodsFragment;
     private EquipmentstateDialog dialog;
+    private GeneraListDialog listDialog;
 
     @Autowired(name = "admin_name")
     String admin_name;
@@ -140,7 +142,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         if (!Configs.isOnlineMode()) {
             myTitleBar.setOfflineModeVisibility(true);
         }
-        tvCashierAcount.setText("收银员: " + admin_name);
+        tvCashierAcount.setText(getString(R.string.text_cashier) + admin_name);
 
         mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
 
@@ -212,7 +214,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        showToast("USB打印异常");
+                        showToast(getString(R.string.text_usb_print_abnormal));
 //                        showToast(getString(R.string.str_choice_printer_command));
                     }
                 });
@@ -363,7 +365,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
      */
     private void exit() {
 
-        GeneraDialog generaDialog = GeneraDialog.getInstance("确认退出到登录页面？", "取消", "确定");
+        GeneraDialog generaDialog = GeneraDialog.getInstance(getString(R.string.text_out_to_login), getString(R.string.text_cancel), getString(R.string.text_sure));
         generaDialog.showCenter(MainActivity.this);
         generaDialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
             @Override
@@ -413,7 +415,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         public void entryOrders() {
             SharedPreferences sp = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication);
             if (TextUtils.isEmpty(sp.getString(Constants.KEY_ENTRY_ORDERS_LIST, ""))) {
-                showToast("暂无挂单信息");
+                showToast(getString(R.string.text_no_entry_info));
                 return;
             }
 //            SharedPreferences.Editor editor = SharedPreferencesUtils.getInstance().getSharedPreferences(BaseApplication.sApplication).edit();
@@ -425,7 +427,47 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
 
         @Override
         public void languageSetting() {
-
+            if (goodsFragment != null) {
+                if (goodsFragment.getSize() > 0) {
+                    showToast(getResources().getString(R.string.text_clear_goods));
+                    return;
+                }
+            }
+            if (listDialog == null) {
+                listDialog = new GeneraListDialog();
+            }
+            listDialog.showCenter(MainActivity.this);
+            String name = "";
+            switch (Events.LANGUAGE) {
+                case "zh":
+                    name = getResources().getString(R.string.text_simplified);
+                    break;
+                case "11":
+                    break;
+                case "en":
+                    name = getResources().getString(R.string.text_english);
+                    break;
+            }
+            listDialog.setType(GeneraListDialog.LANGUAGE_SETTING, name, getResources().getString(R.string.text_function_language));
+            listDialog.setOnItemClickListener(new GeneraListDialog.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    switch (position) {
+                        case 0:
+                            refresh("zh");
+                            break;
+                        case 1:
+                            refresh("zh-tw");
+                            break;
+                        case 2:
+                            refresh("en");
+                            break;
+                    }
+                    if (goodsFragment != null) {
+                        goodsFragment.recreate();
+                    }
+                }
+            });
         }
 
         @Override
@@ -460,6 +502,19 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
     };
 
     /**
+     * 切换语言并刷新此页面
+     *
+     * @param language
+     */
+    private void refresh(String language) {
+        MyApplication.getSp().edit().putString("Language", language).apply();
+        Events.LANGUAGE = language;
+        startActivity(new Intent(MainActivity.this, MainActivity.class));
+        overridePendingTransition(R.anim.start_anim, R.anim.out_anim);
+        finish();
+    }
+
+    /**
      * 检查打印机在线状态
      */
     private void checkPrinterStatus() {
@@ -477,7 +532,6 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                 }
             }
         }, 500);
-
     }
 
     /**
@@ -531,7 +585,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             dialog.setNewData(getString(R.string.the_printer), is_printer_normal);
             return;
         }
-        showToast("打印机: " + (is_printer_normal ? "在线" : "离线"));
+        showToast(getString(R.string.text_print_status) + (is_printer_normal ? getString(R.string.text_online) : getString(R.string.text_offline)));
     }
 
     @Override

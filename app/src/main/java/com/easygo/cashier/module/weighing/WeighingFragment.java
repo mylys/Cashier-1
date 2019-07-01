@@ -16,6 +16,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.WeightAdapter;
 import com.easygo.cashier.base.BaseAppFragment;
+import com.easygo.cashier.bean.ClassifyInfo;
 import com.easygo.cashier.bean.WeightBean;
 import com.easygo.cashier.module.order_history.OrderHistoryActivity;
 import com.easygo.cashier.widget.dialog.LoadingDialog;
@@ -81,12 +82,23 @@ public class WeighingFragment extends BaseAppFragment {
      * @param position
      * @param id
      */
-    public void putData(int position, int id) {
+    public void putData(int position, int id, List<ClassifyInfo> classifyList) {
         if (!map.keySet().contains(position)) {
             List<WeightBean.SkuListBean> list = new ArrayList<>(beans);
-            for (Iterator<WeightBean.SkuListBean> it = list.iterator(); it.hasNext(); ) {
-                if (it.next().getG_c_id() != id) {
-                    it.remove();
+            if (classifyList != null) {
+                for (int i = list.size() - 1; i >= 0; i--) {
+                    for (ClassifyInfo info : classifyList) {
+                        if (list.get(i).getG_c_id() == info.getClass_id()) {
+                            list.remove(i);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                for (Iterator<WeightBean.SkuListBean> it = list.iterator(); it.hasNext(); ) {
+                    if (it.next().getG_c_id() != id) {
+                        it.remove();
+                    }
                 }
             }
             map.put(position, list);

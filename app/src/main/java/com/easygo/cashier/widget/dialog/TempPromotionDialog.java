@@ -124,7 +124,7 @@ public class TempPromotionDialog extends MyBaseDialog {
             etDiscount.setHint(mHintResId);
         }
 
-        if(selectGoods != null) {
+        if (selectGoods != null) {
             tvChooseGoodsCount.setText("（已选" + selectGoods.size() + "件商品）");
         } else {
             tvChooseGoodsCount.setText("");
@@ -155,7 +155,7 @@ public class TempPromotionDialog extends MyBaseDialog {
         tv90.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!tv90.isSelected()) {
+                if (!tv90.isSelected()) {
                     reset();
                     etDiscount.getText().append("90");
                     tv90.setSelected(true);
@@ -168,7 +168,7 @@ public class TempPromotionDialog extends MyBaseDialog {
         tv80.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!tv80.isSelected()) {
+                if (!tv80.isSelected()) {
                     reset();
                     etDiscount.getText().append("80");
                     tv80.setSelected(true);
@@ -181,7 +181,7 @@ public class TempPromotionDialog extends MyBaseDialog {
         tv70.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!tv70.isSelected()) {
+                if (!tv70.isSelected()) {
                     reset();
                     etDiscount.getText().append("70");
                     tv70.setSelected(true);
@@ -194,7 +194,7 @@ public class TempPromotionDialog extends MyBaseDialog {
         tv60.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!tv60.isSelected()) {
+                if (!tv60.isSelected()) {
                     reset();
                     etDiscount.getText().append("60");
                     tv60.setSelected(true);
@@ -207,7 +207,7 @@ public class TempPromotionDialog extends MyBaseDialog {
         tvDiscountFreeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!tvDiscountFreeOrder.isSelected()) {
+                if (!tvDiscountFreeOrder.isSelected()) {
                     reset();
                     tvDiscountFreeOrder.setSelected(true);
                     selected = tvDiscountFreeOrder;
@@ -220,7 +220,7 @@ public class TempPromotionDialog extends MyBaseDialog {
         tvChangePriceFreeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!tvChangePriceFreeOrder.isSelected()) {
+                if (!tvChangePriceFreeOrder.isSelected()) {
                     reset();
                     tvChangePriceFreeOrder.setSelected(true);
                     selected = tvChangePriceFreeOrder;
@@ -234,7 +234,7 @@ public class TempPromotionDialog extends MyBaseDialog {
         key_board.setOnKeyboardClickListener(new DialogKeyboard.OnKeyboardClickListener() {
             @Override
             public void onClickBefore() {
-                if(selected != null) {
+                if (selected != null) {
                     selected.setSelected(false);
                     etDiscount.setText("");
                     etChangePrice.setText("");
@@ -245,7 +245,7 @@ public class TempPromotionDialog extends MyBaseDialog {
 
             @Override
             public void onDeleteClickAfter(Editable editable) {
-                if(selected != null) {
+                if (selected != null) {
                     selected.setSelected(false);
                     selected = null;
                 }
@@ -258,13 +258,13 @@ public class TempPromotionDialog extends MyBaseDialog {
                 String s = editable.toString();
                 float discount = Float.valueOf(s);
 
-                if(mode == MODE_DISCOUNT) {
-                    if(discount > 100) {
+                if (mode == MODE_DISCOUNT) {
+                    if (discount > 100) {
                         editable.delete(editable.length() - 1, editable.length());
-                        ToastUtils.showToast(getContext(), "折扣不能大于100%");
-                    } else if(discount < 0.01f) {
+                        ToastUtils.showToast(getContext(), R.string.text_cannot_more_than_100);
+                    } else if (discount < 0.01f) {
                         editable.delete(editable.length() - 1, editable.length());
-                        ToastUtils.showToast(getContext(), "折扣不能小于0.01%");
+                        ToastUtils.showToast(getContext(), R.string.text_cannot_less_than_01);
                     }
                 }
             }
@@ -274,31 +274,31 @@ public class TempPromotionDialog extends MyBaseDialog {
             @Override
             public void onClick(View v) {
                 float value = 0f;
-                if(mode == MODE_DISCOUNT) {
-                    if(isFreeOrder) {
+                if (mode == MODE_DISCOUNT) {
+                    if (isFreeOrder) {
                         value = 0f;
                     } else {
                         String discount = etDiscount.getText().toString();
-                        if(TextUtils.isEmpty(discount)) {
-                            ToastUtils.showToast(getContext(), "折扣不能为空");
+                        if (TextUtils.isEmpty(discount)) {
+                            ToastUtils.showToast(getContext(), R.string.text_discount_cannot_empty);
                             return;
                         }
                         value = Float.valueOf(discount);
                     }
                 } else {
-                    if(isFreeOrder) {
+                    if (isFreeOrder) {
                         value = 0f;
                     } else {
                         String changePrice = etChangePrice.getText().toString();
-                        if(TextUtils.isEmpty(changePrice)) {
-                            ToastUtils.showToast(getContext(), "改价金额不能为空");
+                        if (TextUtils.isEmpty(changePrice)) {
+                            ToastUtils.showToast(getContext(), R.string.text_change_price_cannot_empty);
                             return;
                         }
                         value = Float.valueOf(changePrice);
                     }
                 }
 
-                if(listener != null) {
+                if (listener != null) {
                     listener.onClick(selectGoods, mode, isFreeOrder, value);
                 }
             }
@@ -307,12 +307,12 @@ public class TempPromotionDialog extends MyBaseDialog {
     }
 
     private void reset() {
-        if(mode == MODE_DISCOUNT) {
+        if (mode == MODE_DISCOUNT) {
             etDiscount.getText().clear();
         } else {
             etChangePrice.getText().clear();
         }
-        if(selected != null) {
+        if (selected != null) {
             selected.setSelected(false);
             selected = null;
         }
@@ -361,6 +361,7 @@ public class TempPromotionDialog extends MyBaseDialog {
     }
 
     private OnDialogClickListener listener;
+
     public interface OnDialogClickListener {
 
         void onClick(List<GoodsEntity<GoodsResponse>> selectGoods, int mode, boolean isFreeOrder, float value);

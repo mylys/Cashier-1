@@ -57,7 +57,7 @@ public class ConfigDialog extends MyBaseDialog {
                         showUI(isPassed);
                         etPassword.setText("");
                     } else {
-                        ToastUtils.showToast(getContext(), "密码不正确！");
+                        ToastUtils.showToast(getContext(), R.string.text_password_error);
                     }
                 } else {//已经验证通过
                     SharedPreferences.Editor edit = sp.edit();

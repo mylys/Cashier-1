@@ -43,6 +43,7 @@ public class FunctionListDialog extends MyBaseDialog {
             R.string.text_function_lock,
             R.string.text_function_handover,
             R.string.text_switch_mode_offline,
+            R.string.text_function_language
     };
 
 //    private int[] res = new int[]{
@@ -63,6 +64,7 @@ public class FunctionListDialog extends MyBaseDialog {
             R.drawable.ic_lock,
             R.drawable.ic_shift,
             R.drawable.ic_switch_mode,
+            R.drawable.ic_language
     };
     private ArrayList<Integer> hideList;
     private FunctionListAdapter functionListAdapter;
@@ -86,12 +88,12 @@ public class FunctionListDialog extends MyBaseDialog {
             hideList.add(3);
         }
 
-        if(!Configs.open_offline) {
+        if (!Configs.open_offline) {
             hideList.add(5);
         }
 
 //        if(Config.isOnlineMode()) {
-        if(Configs.isOnlineMode()) {
+        if (Configs.isOnlineMode()) {
             functions[5] = R.string.text_switch_mode_offline;
         } else {
             functions[5] = R.string.text_switch_mode_online;
@@ -175,12 +177,13 @@ public class FunctionListDialog extends MyBaseDialog {
     }
 
     private void switchOnline() {
-        if(mListener != null) {
+        if (mListener != null) {
             mListener.switchMode(Configs.mode_online);
         }
     }
+
     private void switchOffline() {
-        if(mListener != null) {
+        if (mListener != null) {
             mListener.switchMode(Configs.mode_offline);
         }
     }

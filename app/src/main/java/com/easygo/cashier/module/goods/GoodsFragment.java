@@ -301,7 +301,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 ScanGunKeyEventHelper helper = ((ScanGunKeyEventHelper) etBarcode.getTag());
-                if(helper == null) {
+                if (helper == null) {
                     helper = new ScanGunKeyEventHelper();
                     helper.setOnBarCodeCatchListener(new ScanGunKeyEventHelper.OnScanSuccessListener() {
                         @Override
@@ -342,7 +342,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
             String weight_barcode = BarcodeUtils.getProductCode(barcode);
             if (TextUtils.isEmpty(weight_barcode)) {
-                showToast("商品不存在");
+                showToast(getString(R.string.text_goods_not_exist));
                 return;
             }
             mIsSelfEncode = true;
@@ -423,7 +423,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
             @Override
             public void onSaleCountNotEnough() {
-                showToast("商品库存不足");
+                showToast(getString(R.string.text_goods_no_inventory));
             }
 
             @Override
@@ -663,7 +663,6 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         computePrice(mTotalMoney, mGoodsCount);
     }
 
-
     private void showCurrentActivities(List<String> data) {
         activitiesView.setVisibility(data != null && data.size() > 0 ? View.VISIBLE : View.GONE);
         activitiesView.setData(data);
@@ -687,7 +686,6 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 }
             }, 500);
         }
-
     }
 
     public void initUserGoodsScreen() {
@@ -704,6 +702,12 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                     displays[displays.length - 1], String.valueOf(Configs.cashier_id));// displays[1]是副屏
             mUserGoodsScreen.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             mUserGoodsScreen.show();
+        }
+    }
+
+    public void recreate() {
+        if (mUserGoodsScreen != null) {
+//            mUserGoodsScreen
         }
     }
 
@@ -765,7 +769,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         if (data != null) {
             admin_name = data.getString(Constants.KEY_ADMIN_NAME);
         }
-        btnSettlement.setText(" 收银：  ￥0.00 ");
+        btnSettlement.setText(getString(R.string.text_cash_register) + " ￥0.00 ");
 
     }
 
@@ -794,7 +798,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
         tvTotalMoney.setText("￥" + df.format(price));
         tvCoupon.setText("￥" + df.format(coupon));
-        btnSettlement.setText(" 收银：  ￥" + df.format(real_pay) + " ");
+        btnSettlement.setText(getString(R.string.text_cash_register) + " ￥" + df.format(real_pay) + " ");
         tvGoodsCount.setText(String.valueOf(count));
 
 
@@ -849,7 +853,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 if (mGoodsMultiItemAdapter.getItemCount() <= 0) {
                     return;
                 }
-                GeneraDialog generaDialog = GeneraDialog.getInstance("确认清空商品？", "取消", "确定");
+                GeneraDialog generaDialog = GeneraDialog.getInstance(getString(R.string.text_dialog_title_clear), getString(R.string.text_cancel), getString(R.string.text_sure));
                 generaDialog.showCenter(getActivity());
                 generaDialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
                     @Override
@@ -875,7 +879,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 }
 
                 if (mTotalMoney <= 0 && mData.size() == 0) {
-                    showToast("订单金额不能小于0！");
+                    showToast(getString(R.string.text_order_price_cannot_less_than_0));
                     return;
                 }
 
@@ -892,11 +896,11 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 break;
             case R.id.btn_orders:
                 if (mGoodsMultiItemAdapter.getItemCount() <= 0) {
-                    showToast("请先扫描商品");
+                    showToast(getString(R.string.text_scan_goods));
                     return;
                 }
                 if (MemberUtils.isMember) {
-                    showToast("当前存在会员，请先删除会员信息");
+                    showToast(getString(R.string.text_already_exist_member_info));
                     return;
                 }
                 if (editDialog == null) {
@@ -954,7 +958,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             case R.id.btn_temp_promotion:
                 List<GoodsEntity<GoodsResponse>> selected = mGoodsMultiItemAdapter.getSelected();
                 if (selected == null) {
-                    showToast("请选择商品");
+                    showToast(getString(R.string.text_choose_goods));
                     return;
                 }
 
@@ -983,7 +987,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             case R.id.btn_cancel_temp_promotion:
                 List<GoodsEntity<GoodsResponse>> cancelSelected = mGoodsMultiItemAdapter.getSelected();
                 if (cancelSelected == null) {
-                    showToast("请选择商品");
+                    showToast(getString(R.string.text_choose_goods));
                     return;
                 }
 
@@ -1055,14 +1059,14 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                     return;
                 }
                 if (mGoodsCount == 0) {
-                    showToast("请先扫描商品");
+                    showToast(getString(R.string.text_scan_goods));
                     return;
                 }
                 //判断是否有促销
                 if (ActivitiesUtils.getInstance().hasGoodsPromotion() || ActivitiesUtils.getInstance().hasShopPromotion()) {
 
                     if (!ActivitiesUtils.getInstance().isWith_coupon()) {
-                        showToast("参与的促销活动不可与优惠券共用");
+                        showToast(getString(R.string.text_promption_offer_not_shared));
                         return;
                     }
                 }
@@ -1077,7 +1081,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                     @Override
                     public void onSearch(String content) {
                         if (content.length() < 32) {
-                            showToast("优惠券编号至少32位");
+                            showToast(getString(R.string.text_coupon_num_at_last_32));
                             return;
                         }
                         mPresenter.get_coupon(content);
@@ -1108,6 +1112,10 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                 }
                 break;
         }
+    }
+
+    public int getSize() {
+        return mGoodsMultiItemAdapter.getItemCount();
     }
 
     /**
@@ -1180,7 +1188,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     @Override
     public void getGoodsSuccess(List<GoodsResponse> result) {
         if (result == null || result.size() == 0) {
-            showToast("商品不存在");
+            showToast(getString(R.string.text_goods_not_exist));
             return;
         }
 
@@ -1232,7 +1240,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
         boolean add_success = mGoodsMultiItemAdapter.addItem(result, count);
         if (!add_success) {
-            showToast("商品库存不足");
+            showToast(getString(R.string.text_goods_no_inventory));
             return;
         }
         rvGoods.smoothScrollToPosition(mGoodsMultiItemAdapter.getData().size() - 1);
@@ -1289,7 +1297,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                     //添加
                     boolean add_success = mGoodsMultiItemAdapter.addItem(list, 1);
                     if (!add_success) {
-                        showToast("商品库存不足");
+                        showToast(getString(R.string.text_goods_no_inventory));
                     } else {
                         rvGoods.smoothScrollToPosition(mGoodsMultiItemAdapter.getData().size() - 1);
                     }
@@ -1624,7 +1632,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             infos.add(info);
             boolean add_success = mGoodsMultiItemAdapter.addItem(infos, 1);
             if (!add_success) {
-                showToast("商品库存不足");
+                showToast(getString(R.string.text_goods_no_inventory));
                 continue;
             }
             rvGoods.smoothScrollToPosition(mGoodsMultiItemAdapter.getData().size() - 1);
@@ -1662,7 +1670,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     }
 
     public void lockCashier() {
-        GeneraDialog generaDialog = GeneraDialog.getInstance("确认锁定收银机？", "取消", "确定");
+        GeneraDialog generaDialog = GeneraDialog.getInstance(getString(R.string.text_is_lock_cashier), getString(R.string.text_cancel), getString(R.string.text_sure));
         generaDialog.showCenter(getActivity());
         generaDialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
             @Override
@@ -1704,7 +1712,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
         String text = getString(Configs.mode_offline == mode ? R.string.text_switch_mode_offline : R.string.text_switch_mode_online);
 
-        GeneraDialog generaDialog = GeneraDialog.getInstance(text + ", 需要\n重新登录？", "取消", "确定");
+        GeneraDialog generaDialog = GeneraDialog.getInstance(text + getString(R.string.text_is_need) + "\n" + getString(R.string.text_afresh_login), getString(R.string.text_cancel), getString(R.string.text_sure));
         generaDialog.showCenter(getActivity());
         generaDialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
             @Override
@@ -1718,11 +1726,11 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         switch (mode) {
             case Configs.mode_offline:
                 Configs.current_mode = Configs.mode_offline;
-                showToast("已切换到离线模式");
+                showToast(getString(R.string.text_already_switch_mode_offline));
                 break;
             case Configs.mode_online:
                 Configs.current_mode = Configs.mode_online;
-                showToast("已切换到在线模式");
+                showToast(getString(R.string.text_already_switch_mode_online));
                 break;
         }
 

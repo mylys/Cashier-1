@@ -198,7 +198,7 @@
     <string name="text_switch_mode_online">切换为在线模式</string>
 
     <!-- 通用dialog -->
-    <string name="text_dialog_title_clear">确认情况商品？</string>
+    <string name="text_dialog_title_clear">确认清空商品？</string>
     <string name="text_dialog_cancel">取消</string>
     <string name="text_dialog_submit">确定</string>
 
@@ -266,7 +266,74 @@
     <string name="text_cash_not_zero">金额不能等于0</string>
     <string name="text_choose_goods">请选择商品</string>
     <string name="text_weight_smaller_zero">重量不能小于0</string>
-    <string name="text_no_stable">数值不稳定</string>
-
+    <string name="text_no_stable">称重数值不稳定</string>
+    <string name="text_simplified">简体中文</string>
+    <string name="text_traditional">繁体中文</string>
+    <string name="text_english">English</string>
+    <string name="text_clear_goods">请先清除商品</string>
+    <string name="text_password_error">密码不正确!</string>
+    <string name="text_cannot_empty">账号密码不能为空</string>
+    <string name="text_input_authorization_password">请输入授权密码</string>
+    <string name="text_refund_cannot_more_than_goods_num">退款数量不能大于商品数量</string>
+    <string name="text_goods_num_cannot_less_than_one">商品数量不能小于1件</string>
+    <string name="text_goods_already_refund">该商品已退款</string>
+    <string name="text_cannot_more_than_100">折扣不能大于100%</string>
+    <string name="text_cannot_less_than_01">折扣不能小于0.01%</string>
+    <string name="text_discount_cannot_empty">折扣不能为空</string>
+    <string name="text_change_price_cannot_empty">改价金额不能为空</string>
+    <string name="text_refund_success">退款成功</string>
+    <string name="text_change_cannot_less_than_01">找零不能小于0.01元</string>
+    <string name="text_wait">请稍候</string>
+    <string name="text_change_less_than_0">找零金额小于0</string>
+    <string name="text_wallet_balance_no_pay">会员钱包余额不足，不能进行支付</string>
+    <string name="text_select_other_pay_type">银联不能与礼品卡混合支付，请选择其他支付方式</string>
+    <string name="text_order_not_create">订单未创建， 请点击提交交易按钮</string>
+    <string name="text_pay_success">支付成功！！！</string>
+    <string name="text_promption_offer_not_shared">参与的促销活动不可与优惠券共用</string>
+    <string name="text_already_setting_discount">已设置折扣</string>
+    <string name="text_already_setting_gift_card">已设置礼品卡</string>
+    <string name="text_alipay_success">支付宝支付成功</string>
+    <string name="text_alipay_query_payment_status">支付宝： 开始查询订单支付状态</string>
+    <string name="text_alipay_query_order_pay_success">支付宝： 查询订单 - 支付成功</string>
+    <string name="text_alipay_keep_on_query_order_payment_status">支付宝： 继续查询订单支付状态</string>
+    <string name="text_wechat_pay_success">微信支付成功</string>
+    <string name="text_wechat_query_payment_status">微信： 开始查询订单支付状态</string>
+    <string name="text_wechat_query_order_pay_success">微信： 查询订单 - 支付成功</string>
+    <string name="text_wechat_keep_on_query_order_payment_status">微信： 继续查询订单支付状态</string>
+    <string name="text_cash_pay_success">现金支付成功</string>
+    <string name="text_cash_pay_failed">现金支付失败 -</string>
+    <string name="text_unionpay_success">银联支付成功</string>
+    <string name="text_gift_card_pay_success">礼品卡支付成功</string>
+    <string name="text_gift_card_pay_failed">礼品卡支付失败 -</string>
+    <string name="text_member_wallet_pay_success">会员钱包支付成功</string>
+    <string name="text_member_wallet_pay_failed">会员钱包支付失败 -</string>
+    <string name="text_out_to_login">确认退出到登录页面？</string>
+    <string name="text_no_entry_info">暂无挂单信息</string>
+    <string name="text_print_status">打印机：</string>
+    <string name="text_online">在线</string>
+    <string name="text_offline">离线</string>
+    <string name="text_usb_print_abnormal">USB打印异常</string>
+    <string name="text_goods_not_exist">商品不存在</string>
+    <string name="text_goods_no_inventory">商品库存不足</string>
+    <string name="text_order_price_cannot_less_than_0">订单金额不能小于0！</string>
+    <string name="text_scan_goods">请先扫描商品</string>
+    <string name="text_already_exist_member_info">当前存在会员，请先删除会员信息</string>
+    <string name="text_coupon_num_at_last_32">优惠券编号至少32位</string>
+    <string name="text_is_lock_cashier">确认锁定收银机？</string>
+    <string name="text_is_need">, 需要</string>
+    <string name="text_afresh_login">重新登录</string>
+    <string name="text_already_switch_mode_offline">已切换到离线模式</string>
+    <string name="text_already_switch_mode_online">已切换到在线模式</string>
+    <string name="text_cash_register"> 收银：</string>
+    <string name="text_is_Obsolete_order">确认作废该笔订单？</string>
+    <string name="text_total_gong">共</string>
+    <string name="text_piece">件</string>
+    <string name="text_handover_success">交接成功</string>
+    <string name="text_handovering">交接中...</string>
+    <string name="text_login_offline">登录（离线）</string>
+    <string name="text_login_success">登录成功：</string>
+    <string name="text_login_offline_mode">登录离线模式？</string>
+    <string name="text_username_empty">账号不能为空！</string>
+    <string name="text_password_empty">密码不能为空！</string>
 
 </resources>

@@ -166,7 +166,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
             @Override
             public void run() {
                 clearLoginInfo();
-                showToast("交接成功");
+                showToast(getString(R.string.text_handover_success));
                 during_handover = false;
                 Intent intent = new Intent(HandoverActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -499,7 +499,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (during_handover) {
-            showToast("交接中...");
+            showToast(getString(R.string.text_handovering));
             return true;
         }
         return super.dispatchTouchEvent(ev);

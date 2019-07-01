@@ -80,7 +80,7 @@ public class EntryOrdersDetailFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_invaild:
-                GeneraDialog dialog = GeneraDialog.getInstance("确认作废该笔订单？", "取消", "确定");
+                GeneraDialog dialog = GeneraDialog.getInstance(getString(R.string.text_is_Obsolete_order), getString(R.string.text_cancel), getString(R.string.text_sure));
                 dialog.showCenter(getActivity());
                 dialog.setOnDialogClickListener(new GeneraDialog.OnDialogClickListener() {
                     @Override
@@ -90,7 +90,7 @@ public class EntryOrdersDetailFragment extends BaseFragment {
                 });
                 break;
             case R.id.btn_choose:
-                ((EntryOrdersActivity)getActivity()).toChoose();
+                ((EntryOrdersActivity) getActivity()).toChoose();
                 break;
         }
     }
@@ -98,8 +98,8 @@ public class EntryOrdersDetailFragment extends BaseFragment {
     public void showEntryOrders(EntryOrders orders) {
         tvNote.setText(getActivity().getResources().getString(R.string.text_note) + orders.getEntry_orders_note());
         tvEntryOrdersTime.setText(orders.getEntry_orders_time());
-        tvGoodsCount.setText("共" + orders.getEntry_orders_total_number() + "件");
-        tvTotalPrice.setText("总额：" + df.format(Float.valueOf(orders.getEntry_orders_total_price())));
+        tvGoodsCount.setText(getString(R.string.text_total_gong) + orders.getEntry_orders_total_number() + getString(R.string.text_piece));
+        tvTotalPrice.setText(getString(R.string.text_total_money) + "：" + df.format(Float.valueOf(orders.getEntry_orders_total_price())));
 
         if (adapter != null) {
             adapter.setNewData(orders.getGoodsEntityList());
