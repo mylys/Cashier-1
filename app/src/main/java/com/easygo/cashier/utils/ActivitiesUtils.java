@@ -1,8 +1,11 @@
 package com.easygo.cashier.utils;
 
+import android.app.Activity;
 import android.util.ArrayMap;
 import android.util.Log;
 
+import com.easygo.cashier.MyApplication;
+import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsActivityResponse;
 import com.easygo.cashier.bean.GoodsResponse;
@@ -72,7 +75,8 @@ public class ActivitiesUtils {
     private boolean hasTempGoodsPromotion;
 
 
-    private ActivitiesUtils() {}
+    private ActivitiesUtils() {
+    }
 
     public static ActivitiesUtils getInstance() {
         return Holder.sInstance;
@@ -91,15 +95,16 @@ public class ActivitiesUtils {
 
     /**
      * 创建临时商品促销
+     *
      * @param selecteds
      * @param mode
      * @param isFreeOrder
      * @param value
      */
-    public void createTempGoodsPromotion(List<GoodsEntity<GoodsResponse>> selecteds, int mode, boolean isFreeOrder, float value) {
+    public void createTempGoodsPromotion(Activity activity, List<GoodsEntity<GoodsResponse>> selecteds, int mode, boolean isFreeOrder, float value) {
 
         int size = selecteds.size();
-        if(size == 0) {
+        if (size == 0) {
             return;
         }
 
@@ -110,17 +115,17 @@ public class ActivitiesUtils {
 
             TempGoodsPromotion promotion = new TempGoodsPromotion();
             promotion.setId(-promotion.hashCode());
-            promotion.setName("临时商品促销");
+            promotion.setName(activity.getString(R.string.text_temporary_promotion));
             promotion.setType(IPromotion.TYPE_TEMP);
             promotion.setWith_coupon(1);
             promotion.setOffer_type(mode);
-            if(mode == IPromotion.OFFER_TYPE_RATIO) {
+            if (mode == IPromotion.OFFER_TYPE_RATIO) {
                 if (isFreeOrder) {
                     promotion.setOffer_value(0);
                 } else {
                     promotion.setOffer_value(value);
                 }
-            } else if(mode == IPromotion.OFFER_TYPE_MONEY) {
+            } else if (mode == IPromotion.OFFER_TYPE_MONEY) {
                 if (isFreeOrder) {
                     promotion.setOffer_value(0);
                 } else {
@@ -143,11 +148,17 @@ public class ActivitiesUtils {
 
 
     }
-    /**取消指定商品临时促销*/
+
+    /**
+     * 取消指定商品临时促销
+     */
     public void cancelTempGoodsPromotion(String key) {
         barcode2TempMap.remove(key);
     }
-    /**取消所有商品临时促销*/
+
+    /**
+     * 取消所有商品临时促销
+     */
     public void clearTempPromotion() {
         barcode2TempMap.clear();
         hasTempGoodsPromotion = false;
@@ -155,6 +166,7 @@ public class ActivitiesUtils {
 
     /**
      * 创建临时整单临时促销
+     *
      * @param mode
      * @param isFreeOrder
      * @param value
@@ -166,13 +178,13 @@ public class ActivitiesUtils {
         promotion.setType(IPromotion.TYPE_TEMP);
         promotion.setWith_coupon(1);
         promotion.setOffer_type(mode);
-        if(mode == IPromotion.OFFER_TYPE_RATIO) {
+        if (mode == IPromotion.OFFER_TYPE_RATIO) {
             if (isFreeOrder) {
                 promotion.setOffer_value(0);
             } else {
                 promotion.setOffer_value(value);
             }
-        } else if(mode == IPromotion.OFFER_TYPE_MONEY) {
+        } else if (mode == IPromotion.OFFER_TYPE_MONEY) {
             if (isFreeOrder) {
                 promotion.setOffer_value(0);
             } else {
@@ -192,13 +204,13 @@ public class ActivitiesUtils {
      * 获取临时整单促销的促销金额
      */
     public float getTempOrderPromotionMoney(List<GoodsEntity<GoodsResponse>> data, float money) {
-        if(currentTempOrderPromotion == null) {
+        if (currentTempOrderPromotion == null) {
             return 0f;
         }
 
         float promotionMoney = currentTempOrderPromotion.getPromotionMoney(money);
 
-        if(promotionMoney > 0) {
+        if (promotionMoney > 0) {
             Log.i(TAG, "promotion: " + currentTempOrderPromotion.getName() + ", 促销金额： " + promotionMoney);
             //记录临时整单促销金额
             mTempOrderPromotionMoney = promotionMoney;
@@ -206,7 +218,7 @@ public class ActivitiesUtils {
         }
 
         //有临时整单促销时
-        if(currentTempOrderPromotion != null && mTempOrderPromotionMoney != 0) {
+        if (currentTempOrderPromotion != null && mTempOrderPromotionMoney != 0) {
             int data_size = data.size();
             float temp_order_discount;
             float subtotal;
@@ -217,7 +229,7 @@ public class ActivitiesUtils {
                 subtotal = Float.parseFloat(good.getPrice()) * goodsEntity.getCount()
                         - Float.parseFloat(good.getDiscount_price());
                 temp_order_discount = BigDecimalUtils.round(mTempOrderPromotionMoney * (subtotal / money)).floatValue();
-                if(i == data_size - 1) {
+                if (i == data_size - 1) {
                     temp_order_discount = mTempOrderPromotionMoney - sum_temp_order_discount;
                 } else {
                     sum_temp_order_discount += temp_order_discount;
@@ -232,10 +244,9 @@ public class ActivitiesUtils {
     }
 
 
-
-
     /**
      * 根据商品促销返回体，解析出促销对象并保存
+     *
      * @param response
      */
     public void parseGoods(GoodsActivityResponse response) {
@@ -248,7 +259,7 @@ public class ActivitiesUtils {
 
         List<GoodsActivityResponse.ActivitiesBean> activities = response.getActivities();
         int size = activities.size();
-        if(size == 0) {
+        if (size == 0) {
             Log.i(TAG, "parseGoods: 没有促销活动");
             barcode2IdMap = null;
             id2PromotionMap.clear();
@@ -346,7 +357,7 @@ public class ActivitiesUtils {
             goodsEntity.setPromotion(null);
         }
 
-        if(barcode2TempMap.isEmpty()) {
+        if (barcode2TempMap.isEmpty()) {
 
             if (barcode2IdMap == null) {
                 return;
@@ -378,10 +389,10 @@ public class ActivitiesUtils {
             BaseGoodsPromotion promotion = null;
             if (!barcode2TempMap.isEmpty()) {//有临时促销
                 promotion = barcode2TempMap.get(barcode + "_" + goodsEntity.getData().getPrice());
-                actvitity_id = promotion == null? -1: promotion.getId();
+                actvitity_id = promotion == null ? -1 : promotion.getId();
 
             }
-            if(promotion == null && barcode2IdMap == null) {//没有临时商品促销 也没有商品促销时
+            if (promotion == null && barcode2IdMap == null) {//没有临时商品促销 也没有商品促销时
                 continue;
             }
 
@@ -398,21 +409,21 @@ public class ActivitiesUtils {
                 promotion = id2PromotionMap.get(actvitity_id);
             }
 
-            if(promotion == null) {
+            if (promotion == null) {
                 continue;
             }
 
             List<GoodsActivityResponse.ActivitiesBean.GoodsBean> goodsBeans = promotion.getGoodsBeans();
             int goods_size = goodsBeans.size();
             PromotionGoods promotionGoods = promotion.getPromotionGoods();
-            if(promotionGoods == null) {
+            if (promotionGoods == null) {
                 promotionGoods = new PromotionGoods();
             }
             //  4、遍历活动中参与促销的商品 找到各有多少件、小计等相关数据
             for (int j = 0; j < goods_size; j++) {
                 GoodsActivityResponse.ActivitiesBean.GoodsBean goodsBean = goodsBeans.get(j);
                 //判断 比对成功
-                if(barcode.equals(goodsBean.getBarcode())) {
+                if (barcode.equals(goodsBean.getBarcode())) {
 
                     boolean weight = goodsEntity.getItemType() == GoodsEntity.TYPE_WEIGHT
                             || goodsEntity.getItemType() == GoodsEntity.TYPE_PROCESSING;
@@ -433,7 +444,7 @@ public class ActivitiesUtils {
             }
 
 
-            if(promotionGoods != null) {
+            if (promotionGoods != null) {
                 List<PromotionGoods.GoodsBean> list = promotionGoods.getGoodsBeans();
                 Collections.sort(list);
                 //将商品按照价格 从高到底排序
@@ -442,7 +453,7 @@ public class ActivitiesUtils {
                 promotion.setPromotionGoods(promotionGoods);
 
                 //  5、判断 添加到 needComputeMap
-                if(needComputeMap.get(actvitity_id) == null) {
+                if (needComputeMap.get(actvitity_id) == null) {
                     needComputeMap.put(actvitity_id, promotion);
                 }
             }
@@ -476,6 +487,7 @@ public class ActivitiesUtils {
 
     /**
      * 根据店铺促销返回体，解析出促销对象并保存
+     *
      * @param response
      */
     public void parseShop(ShopActivityResponse response) {
@@ -486,7 +498,7 @@ public class ActivitiesUtils {
 
         List<ShopActivityResponse.ListBean> list = response.getList();
         //保存店铺促销需要排除的商品条码
-        if(list != null && list.size() > 0) {
+        if (list != null && list.size() > 0) {
             List<ShopActivityResponse.ListBean.ExcludeListBean> exclude_list = list.get(0).getExclude_list();
             if (exclude_list != null) {
                 int exclude_list_size = exclude_list.size();
@@ -529,11 +541,12 @@ public class ActivitiesUtils {
 
     /**
      * 计算店铺促销
+     *
      * @param total_money 订单总额
      */
-    public float promotion(float total_money)  {
+    public float promotion(float total_money) {
         int size = shopList.size();
-        if(size == 0) {
+        if (size == 0) {
             return 0f;
         }
 
@@ -546,7 +559,7 @@ public class ActivitiesUtils {
             BaseShopPromotion baseShopPromotion = shopList.get(i);
             float promotionMoney = baseShopPromotion.getPromotionMoney(total_money);
 
-            if(promotionMoney > 0) {
+            if (promotionMoney > 0) {
                 Log.i(TAG, "promotion: " + baseShopPromotion.getName() + ", 促销金额： " + promotionMoney);
                 currentShopPromotion = baseShopPromotion;
                 //记录店铺促销金额
@@ -562,12 +575,13 @@ public class ActivitiesUtils {
 
     /**
      * 计算店铺促销, 并分摊优惠金额
+     *
      * @param total_money 订单总额
      * @return 店铺促销优惠总金额
      */
     public float promotion(List<GoodsEntity<GoodsResponse>> data, float total_money) {
         int size = shopList.size();
-        if(size == 0) {
+        if (size == 0) {
             return 0f;
         }
         currentShopPromotion = null;
@@ -579,7 +593,7 @@ public class ActivitiesUtils {
             BaseShopPromotion baseShopPromotion = shopList.get(i);
             float promotionMoney = baseShopPromotion.getPromotionMoney(total_money);
 
-            if(promotionMoney > 0) {
+            if (promotionMoney > 0) {
                 Log.i(TAG, "promotion: " + baseShopPromotion.getName() + ", 促销金额： " + promotionMoney);
                 currentShopPromotion = baseShopPromotion;
                 //记录店铺促销金额
@@ -590,7 +604,7 @@ public class ActivitiesUtils {
         }
 
         //有店铺促销时
-        if(currentShopPromotion != null && mShopPromotionMoney != 0) {
+        if (currentShopPromotion != null && mShopPromotionMoney != 0) {
             int data_size = data.size();
             float discount_price = 0f;
             float goods_discount;
@@ -607,10 +621,10 @@ public class ActivitiesUtils {
                 temp_goods_discount = good.getTemp_goods_discount();
                 goods_discount = good.getGoods_activity_discount();
                 member_discount = good.getMember_discount();
-                if(temp_goods_discount != 0 || goods_discount != 0 || member_discount != 0) {
+                if (temp_goods_discount != 0 || goods_discount != 0 || member_discount != 0) {
                     continue;
                 }
-                if(goodsEntity.isExcludeInShopActivity()) {
+                if (goodsEntity.isExcludeInShopActivity()) {
                     continue;
                 }
                 subtotal = Float.parseFloat(good.getPrice()) * goodsEntity.getCount();
@@ -620,7 +634,7 @@ public class ActivitiesUtils {
                 sum_discount += discount_price;
                 good.setShop_activity_discount(discount_price);
             }
-            if(good != null) {
+            if (good != null) {
                 if (sum_discount != mShopPromotionMoney) {
                     // 最后一个商品的分摊金额需要重新计算
                     good.setShop_activity_discount(mShopPromotionMoney - (sum_discount - discount_price));
@@ -650,21 +664,21 @@ public class ActivitiesUtils {
         for (int i = 0; i < size; i++) {
 
             promotion = data.get(i).getPromotion();
-            if(promotion != null) {
+            if (promotion != null) {
                 //添加到正在参与的商品促销集合中
                 currentGoodsPromotions.add(promotion);
                 //累加商品促销金额
                 temp_goods_discount = data.get(i).getData().getTemp_goods_discount();
                 mTempGoodsPromotionMoney += temp_goods_discount;
-                if(temp_goods_discount != 0) {
+                if (temp_goods_discount != 0) {
                     mGoodsPromotionMoney += temp_goods_discount;
                 } else {
                     mGoodsPromotionMoney += data.get(i).getData().getGoods_activity_discount();
                 }
-                if(promotion.getWith_coupon() == 0) {
+                if (promotion.getWith_coupon() == 0) {
                     goods_with_coupon = false;
                 }
-                if(promotion.isTempGoodsPromotion()) {
+                if (promotion.isTempGoodsPromotion()) {
                     hasTempGoodsPromotion = true;
                 }
             }
@@ -680,12 +694,15 @@ public class ActivitiesUtils {
     public boolean hasGoodsPromotion() {
         return currentGoodsPromotions != null && currentGoodsPromotions.size() != 0;
     }
+
     public boolean hasShopPromotion() {
         return currentShopPromotion != null;
     }
+
     public boolean hasTempGoodsPromotion() {
         return hasTempGoodsPromotion;
     }
+
     public boolean hasTempOrderPromotion() {
         return currentTempOrderPromotion != null;
     }
@@ -716,20 +733,20 @@ public class ActivitiesUtils {
     }
 
     public List<String> getCurrentPromotionNames() {
-        if(currentPromotionNames == null) {
+        if (currentPromotionNames == null) {
             currentPromotionNames = new ArrayList<>();
         } else {
             currentPromotionNames.clear();
         }
 
         //商品促销
-        if(currentGoodsPromotions != null && currentGoodsPromotions.size() != 0) {
+        if (currentGoodsPromotions != null && currentGoodsPromotions.size() != 0) {
             int size = currentGoodsPromotions.size();
             for (int i = 0; i < size; i++) {
                 BaseGoodsPromotion promotion = currentGoodsPromotions.get(i);
                 String name = promotion.getName();
 
-                if(currentPromotionNames.contains(name)) {
+                if (currentPromotionNames.contains(name)) {
                     continue;
                 }
                 currentPromotionNames.add(name);
@@ -737,7 +754,7 @@ public class ActivitiesUtils {
             }
         }
         //店铺促销
-        else if(currentShopPromotion != null){
+        else if (currentShopPromotion != null) {
             currentPromotionNames.add((currentShopPromotion.getName()));
         }
 
@@ -749,16 +766,16 @@ public class ActivitiesUtils {
         boolean has_goods = hasGoodsPromotion();
         boolean has_shop = hasShopPromotion();
 
-        if(has_goods) {
+        if (has_goods) {
             //有商品促销
-            if(has_shop) {//有店铺促销
+            if (has_shop) {//有店铺促销
                 return goods_with_coupon && shop_with_coupon;
             } else {//没有店铺促销
                 return goods_with_coupon;
             }
         }
         //只有店铺促销
-        else if(has_shop) {
+        else if (has_shop) {
             return shop_with_coupon;
         }
         //没有任何促销
@@ -781,8 +798,8 @@ public class ActivitiesUtils {
         hasTempGoodsPromotion = false;
 
         //清除临时商品促销
-       clearTempPromotion();
+        clearTempPromotion();
         //清除临时整单促销
-       clearTempOrderPromotion();
+        clearTempOrderPromotion();
     }
 }

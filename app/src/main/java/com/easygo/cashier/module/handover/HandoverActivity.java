@@ -104,7 +104,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
 
         handoverPermission();
 
-        clTitle.setCashierAccount(admin_name);
+        clTitle.setCashierAccount(String.valueOf(Configs.cashier_id));
 
         if (mHandoverView == null) {
             mHandoverView = HandoverView.create(this);
@@ -157,7 +157,10 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
 
     @Override
     public void loginoutSuccess(String result) {
-
+        if (cbPrint.isChecked()) {
+            printHandoverInfo();
+            printHandoverInfoLocal();
+        }
         //弹出钱箱
         mPresenter.print_info(Configs.shop_sn, Configs.printer_sn, PrintHelper.pop_till);
         PrinterUtils.getInstance().popTill();
@@ -240,15 +243,8 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_handover:
-
-                if (cbPrint.isChecked()) {
-                    printHandoverInfo();
-                    printHandoverInfoLocal();
-                }
                 during_handover = true;
                 mPresenter.loginout(handover_id);
-
-
                 break;
             case R.id.btn_sales_list:
                 if (mHandoverSaleListView == null) {
@@ -358,11 +354,11 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
         handoverInfoPrintObj.change = mHandoverView.tvChange.getText().toString();
         handoverInfoPrintObj.cash_refund = mHandoverView.tvCashRefund.getText().toString();
 
-        PrinterUtils.getInstance().print(PrinterHelpter.handoverInfoDatas(handoverInfoPrintObj));
+        PrinterUtils.getInstance().print(PrinterHelpter.handoverInfoDatas(this, handoverInfoPrintObj));
         if (printHandover == null) {
             printHandover = new PrintHandover();
         }
-        printHandover.printInfo(handoverInfoPrintObj);
+        printHandover.printInfo(this, handoverInfoPrintObj);
     }
 
 
@@ -434,11 +430,11 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
         obj.time = sdf.format(new Date());
         obj.data = data;
 
-        PrinterUtils.getInstance().print(PrinterHelpter.handoverSaleListDatas(obj));
-        if (printHandover == null){
+        PrinterUtils.getInstance().print(PrinterHelpter.handoverSaleListDatas(this, obj));
+        if (printHandover == null) {
             printHandover = new PrintHandover();
         }
-        printHandover.printSaleList(obj);
+        printHandover.printSaleList(this, obj);
     }
 
 
@@ -476,6 +472,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
                 btnHandover.setVisibility(View.VISIBLE);
                 tvTextLoginTime.setVisibility(View.VISIBLE);
                 tvLoginTime.setVisibility(View.VISIBLE);
+                cbPrint.setVisibility(View.VISIBLE);
                 btnPrint.setVisibility(View.GONE);
                 break;
             case 2:
@@ -483,6 +480,7 @@ public class HandoverActivity extends BaseAppMvpActivity<HandoverContract.IView,
                 btnHandover.setVisibility(View.GONE);
                 tvTextLoginTime.setVisibility(View.GONE);
                 tvLoginTime.setVisibility(View.GONE);
+                cbPrint.setVisibility(View.GONE);
                 btnPrint.setVisibility(View.VISIBLE);
                 break;
         }

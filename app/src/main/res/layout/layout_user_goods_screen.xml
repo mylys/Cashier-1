@@ -25,8 +25,7 @@
         app:layout_constraintBottom_toTopOf="@id/cl_goods_title"
         app:layout_constraintStart_toStartOf="@id/cl_goods_title"
         app:layout_constraintEnd_toEndOf="@id/cl_goods_title"
-        app:layout_constraintTop_toBottomOf="@id/title_bar"
-        />
+        app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
     <include
         layout="@layout/include_secondary_screen_layout"

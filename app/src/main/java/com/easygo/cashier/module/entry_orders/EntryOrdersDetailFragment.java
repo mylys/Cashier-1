@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.easygo.cashier.Events;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.EntryOrdersGoodsAdapter;
 import com.easygo.cashier.bean.EntryOrders;
@@ -98,7 +99,11 @@ public class EntryOrdersDetailFragment extends BaseFragment {
     public void showEntryOrders(EntryOrders orders) {
         tvNote.setText(getActivity().getResources().getString(R.string.text_note) + orders.getEntry_orders_note());
         tvEntryOrdersTime.setText(orders.getEntry_orders_time());
-        tvGoodsCount.setText(getString(R.string.text_total_gong) + orders.getEntry_orders_total_number() + getString(R.string.text_piece));
+        if (Events.LANGUAGE.equals("en")){
+            tvGoodsCount.setText(orders.getEntry_orders_total_number() + " In Piece");
+        }else {
+            tvGoodsCount.setText(getString(R.string.text_total_gong) + orders.getEntry_orders_total_number() + getString(R.string.text_piece));
+        }
         tvTotalPrice.setText(getString(R.string.text_total_money) + "：" + df.format(Float.valueOf(orders.getEntry_orders_total_price())));
 
         if (adapter != null) {

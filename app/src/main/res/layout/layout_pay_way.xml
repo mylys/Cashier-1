@@ -32,6 +32,7 @@
         android:layout_height="@dimen/pay_btn_height"
         android:background="@drawable/bg_pay_way_button"
         android:text="@string/text_alipay"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="@id/btn_cash"
         app:layout_constraintStart_toEndOf="@id/cb_combine_payment"
         app:layout_constraintTop_toTopOf="@id/btn_cash" />
@@ -44,6 +45,7 @@
         android:layout_height="@dimen/pay_btn_height"
         android:background="@drawable/bg_pay_way_button"
         android:text="@string/text_wechat"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="@id/btn_cash"
         app:layout_constraintStart_toEndOf="@id/btn_alipay"
         app:layout_constraintTop_toTopOf="@id/btn_cash" />
@@ -55,6 +57,7 @@
         android:layout_height="@dimen/pay_btn_height"
         android:background="@drawable/bg_pay_way_button"
         android:text="@string/text_member_package"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="@id/btn_cash"
         app:layout_constraintStart_toEndOf="@id/btn_wechat"
         app:layout_constraintTop_toTopOf="@id/btn_cash" />
@@ -67,6 +70,7 @@
         android:layout_height="@dimen/pay_btn_height"
         android:background="@drawable/bg_pay_way_button"
         android:text="@string/text_cash"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/btn_member"
         app:layout_constraintTop_toTopOf="parent" />
@@ -79,6 +83,7 @@
         android:layout_height="@dimen/pay_btn_height"
         android:background="@drawable/bg_pay_way_button"
         android:text="@string/text_bank_card"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="@id/btn_cash"
         app:layout_constraintStart_toEndOf="@id/btn_cash"
         app:layout_constraintTop_toTopOf="@id/btn_cash" />
@@ -92,6 +97,7 @@
         android:layout_height="@dimen/pay_btn_height"
         android:background="@drawable/bg_pay_way_button"
         android:text="@string/text_gift_card"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="@id/btn_cash"
         app:layout_constraintStart_toEndOf="@id/btn_bank_card"
         app:layout_constraintTop_toTopOf="@id/btn_cash" />

@@ -60,7 +60,7 @@
         android:id="@+id/cb_local_order"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="只看本机历史订单"
+        android:text="@string/text_check_this_machine_order"
         android:textColor="@color/color_505050"
         android:textSize="@dimen/text_size_29"
         android:paddingStart="@dimen/x41"

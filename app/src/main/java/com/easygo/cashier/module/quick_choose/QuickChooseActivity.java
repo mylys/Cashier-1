@@ -151,7 +151,7 @@ public class QuickChooseActivity extends BaseAppMvpActivity<QuickChooseContract.
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
         TextView textView = emptyView.findViewById(R.id.text);
-        textView.setText("请到店铺后台设置商品");
+        textView.setText(getString(R.string.text_setting_quick_goods));
         goodsAdapter.setEmptyView(emptyView);
     }
 
@@ -190,7 +190,7 @@ public class QuickChooseActivity extends BaseAppMvpActivity<QuickChooseContract.
         switch (view.getId()) {
             case R.id.btn_sure:
                 if (selectBean.size() == 0) {
-                    showToast("请选择商品");
+                    showToast(getString(R.string.text_choose_goods));
                     return;
                 }
                 EventUtils.post(Events.QUICK_CHOOSE, selectBean);

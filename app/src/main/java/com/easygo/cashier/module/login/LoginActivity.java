@@ -340,7 +340,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
         String secret = sp.getString(BaseConstants.KEY_SECRET, "");
 
         if (TextUtils.isEmpty(appkey) || TextUtils.isEmpty(secret)) {
-            showToast("请先配置id、secret");
+            showToast(getString(R.string.text_configuration));
             return;
         }
 

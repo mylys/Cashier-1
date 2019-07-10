@@ -196,6 +196,7 @@
         android:paddingStart="@dimen/x40"
         android:paddingEnd="@dimen/x40"
         android:text="@string/text_sure"
+        android:textAllCaps="false"
         android:textColor="@color/color_text_white"
         android:textSize="@dimen/text_size_38"
         android:textStyle="bold"

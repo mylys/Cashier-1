@@ -67,10 +67,10 @@
         android:layout_width="@dimen/x45"
         android:layout_height="@dimen/y45"
         android:src="@drawable/icon_cancel"
-        app:layout_constraintStart_toStartOf="@id/btn_delete"
+        app:layout_constraintBottom_toBottomOf="@id/btn_delete"
         app:layout_constraintEnd_toEndOf="@id/btn_delete"
-        app:layout_constraintTop_toTopOf="@id/btn_delete"
-        app:layout_constraintBottom_toBottomOf="@id/btn_delete" />
+        app:layout_constraintStart_toStartOf="@id/btn_delete"
+        app:layout_constraintTop_toTopOf="@id/btn_delete" />
 
     <EditText
         android:id="@+id/et_money"
@@ -78,7 +78,7 @@
         android:layout_height="@dimen/y110"
         android:layout_marginEnd="@dimen/keyboard_key_margin"
         android:background="@drawable/bg_input"
-        android:hint="请输入实付金额"
+        android:hint="@string/input_amount_actually_paid"
         android:paddingStart="@dimen/x31"
         android:textColorHint="@color/color_d4d3d3"
         android:textSize="@dimen/text_size_29"
@@ -101,59 +101,63 @@
 
     <Button
         android:id="@+id/btn_cancel_coupon"
+        style="@style/DetailTextStyle"
         android:layout_width="@dimen/x170"
         android:layout_height="@dimen/y110"
-        android:text="@string/text_cancel_coupon"
-        style="@style/DetailTextStyle"
         android:background="@drawable/bg_keyboard_key"
+        android:text="@string/text_cancel_coupon"
+        android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="@id/btn_delete"
-        app:layout_constraintTop_toTopOf="@id/kb"/>
+        app:layout_constraintTop_toTopOf="@id/kb" />
 
     <Button
         android:id="@+id/btn_cancel_temp_promotion"
+        style="@style/DetailTextStyle"
         android:layout_width="@dimen/x170"
         android:layout_height="@dimen/y110"
-        android:text="@string/text_cancel_promotion"
-        style="@style/DetailTextStyle"
         android:layout_marginTop="@dimen/keyboard_key_margin"
         android:background="@drawable/bg_keyboard_key"
+        android:text="@string/text_cancel_promotion"
+        android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="@id/btn_delete"
-        app:layout_constraintTop_toBottomOf="@id/btn_cancel_coupon"/>
+        app:layout_constraintTop_toBottomOf="@id/btn_cancel_coupon" />
 
     <Button
         android:id="@+id/btn_cancel_gift_card"
+        style="@style/DetailTextStyle"
         android:layout_width="@dimen/x170"
         android:layout_height="@dimen/y110"
-        android:text="@string/text_cancel_gift_card"
-        style="@style/DetailTextStyle"
         android:layout_marginTop="@dimen/keyboard_key_margin"
         android:background="@drawable/bg_keyboard_key"
+        android:text="@string/text_cancel_gift_card"
+        android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="@id/btn_delete"
-        app:layout_constraintTop_toBottomOf="@id/btn_cancel_temp_promotion"/>
+        app:layout_constraintTop_toBottomOf="@id/btn_cancel_temp_promotion" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_confirm_commit"
         android:layout_width="@dimen/x170"
         android:layout_height="0dp"
-        android:background="@drawable/bg_ripple_commit_btn"
         android:layout_marginTop="@dimen/keyboard_key_margin"
+        android:background="@drawable/bg_ripple_commit_btn"
+        app:layout_constraintBottom_toBottomOf="@id/kb"
         app:layout_constraintStart_toStartOf="@id/btn_delete"
-        app:layout_constraintTop_toBottomOf="@id/btn_cancel_gift_card"
-        app:layout_constraintBottom_toBottomOf="@id/kb">
+        app:layout_constraintTop_toBottomOf="@id/btn_cancel_gift_card">
 
         <TextView
+            android:id="@+id/tv_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="1"
-            android:text="确定提交"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size_33"
-            android:textColor="@color/color_text_white"
             android:gravity="center"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/text_submit"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/text_size_33"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -164,30 +168,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/y70"
+        android:background="@drawable/bg_promotion"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line1">
 
-        <ImageView
-            android:layout_width="@dimen/x96"
-            android:layout_height="@dimen/y120"
-            android:src="@drawable/bg_promotion"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
         <TextView
+            android:id="@+id/tv_coupon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_coupon_coupon"
-            android:ems="1"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size_26"
-            android:textColor="@color/color_text_white"
             android:layout_marginStart="@dimen/x28"
+            android:layout_marginTop="@dimen/x16"
+            android:layout_marginEnd="@dimen/x40"
+            android:layout_marginBottom="@dimen/x16"
+            android:ems="1"
+            android:text="@string/text_coupon_coupon"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/text_size_26"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -197,30 +198,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/y20"
+        android:background="@drawable/bg_promotion"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_coupon">
 
-        <ImageView
-            android:layout_width="@dimen/x96"
-            android:layout_height="@dimen/y120"
-            android:src="@drawable/bg_promotion"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
         <TextView
+            android:id="@+id/tv_discount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_discount"
-            android:ems="1"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size_26"
-            android:textColor="@color/color_text_white"
             android:layout_marginStart="@dimen/x28"
+            android:layout_marginTop="@dimen/x16"
+            android:layout_marginEnd="@dimen/x40"
+            android:layout_marginBottom="@dimen/x16"
+            android:ems="1"
+            android:text="@string/text_discount"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/text_size_26"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -230,30 +228,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/y20"
+        android:background="@drawable/bg_promotion"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_temp_promotion">
 
-        <ImageView
-            android:layout_width="@dimen/x96"
-            android:layout_height="@dimen/y120"
-            android:src="@drawable/bg_promotion"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
         <TextView
+            android:id="@+id/tv_gift_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_gift_card"
-            android:ems="1"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size_26"
-            android:textColor="@color/color_text_white"
             android:layout_marginStart="@dimen/x28"
+            android:layout_marginTop="@dimen/x16"
+            android:layout_marginEnd="@dimen/x40"
+            android:layout_marginBottom="@dimen/x16"
+            android:ems="1"
+            android:text="@string/text_gift_card"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/text_size_26"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -271,23 +266,23 @@
             android:layout_width="@dimen/x96"
             android:layout_height="@dimen/y120"
             android:src="@drawable/bg_promotion"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="创建订单"
-            android:ems="1"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size_26"
-            android:textColor="@color/color_text_white"
             android:layout_marginStart="@dimen/x28"
+            android:ems="1"
+            android:text="创建订单"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/text_size_26"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

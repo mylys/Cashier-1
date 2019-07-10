@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.ActivitiesAdapter;
@@ -21,7 +22,7 @@ public class ActivitiesView extends ConstraintLayout {
     private RecyclerView mRv;
     private ActivitiesAdapter mAdapter;
     private Button mCancelTempPromotion;
-
+    private TextView mText;
 
     public ActivitiesView(Context context) {
         super(context);
@@ -56,6 +57,7 @@ public class ActivitiesView extends ConstraintLayout {
     private void initView(Context context) {
         mView = LayoutInflater.from(context).inflate(R.layout.layout_activities_view, this, true);
         mRv = mView.findViewById(R.id.rv);
+        mText = mView.findViewById(R.id.tv_text_current_activities);
         mCancelTempPromotion = mView.findViewById(R.id.btn_cancel_temp_promotion);
     }
 
@@ -86,4 +88,8 @@ public class ActivitiesView extends ConstraintLayout {
     }
 
 
+    public void language(String btn,String text) {
+        mCancelTempPromotion.setText(btn);
+        mText.setText(text);
+    }
 }

@@ -142,7 +142,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         if (!Configs.isOnlineMode()) {
             myTitleBar.setOfflineModeVisibility(true);
         }
-        tvCashierAcount.setText(getString(R.string.text_cashier) + admin_name);
+        tvCashierAcount.setText(getString(R.string.text_cashier) + Configs.cashier_id);
 
         mPresenter.printerStatus(Configs.shop_sn, Configs.printer_sn);
 
@@ -319,7 +319,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
             goodsFragment = (GoodsFragment) fragment;
         } else {
             Bundle bundle = new Bundle();
-            bundle.putString(Constants.KEY_ADMIN_NAME, admin_name);
+            bundle.putString(Constants.KEY_ADMIN_NAME, String.valueOf(Configs.cashier_id));
             goodsFragment = GoodsFragment.newInstance(bundle);
 
             transaction.replace(R.id.framelayout, goodsFragment, TAG_MAIN);
@@ -442,7 +442,8 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                 case "zh":
                     name = getResources().getString(R.string.text_simplified);
                     break;
-                case "11":
+                case "zh-tw":
+                    name = getResources().getString(R.string.text_traditional);
                     break;
                 case "en":
                     name = getResources().getString(R.string.text_english);
@@ -462,9 +463,6 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                         case 2:
                             refresh("en");
                             break;
-                    }
-                    if (goodsFragment != null) {
-                        goodsFragment.recreate();
                     }
                 }
             });

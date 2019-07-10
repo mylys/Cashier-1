@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import com.easygo.cashier.R;
 import com.easygo.cashier.module.login.LoginActivity;
 import com.niubility.library.base.BaseActivity;
 
@@ -68,7 +69,7 @@ public class PermissionActivity extends BaseActivity {
                     //已获得读写权限
                     checkAlertPermission();
                 } else {
-                    showToast("未获得读写文件权限，即将退出！");
+                    showToast(getString(R.string.text_permission_white_of_read));
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -92,7 +93,7 @@ public class PermissionActivity extends BaseActivity {
                             //已获得悬浮窗权限
                             toLogin();
                         } else {
-                            showToast("未获得副屏显示权限，即将退出！");
+                            showToast(getString(R.string.text_permission_vice_screen));
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {

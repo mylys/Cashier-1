@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/x30"
-            android:text="@string/no_goods_text"
+            android:text="@string/text_no_barcode_goods"
             android:textColor="@color/color_text"
             android:textSize="@dimen/x20" />
 

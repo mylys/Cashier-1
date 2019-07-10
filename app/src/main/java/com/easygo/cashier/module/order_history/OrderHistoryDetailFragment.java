@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.easygo.cashier.Configs;
+import com.easygo.cashier.Events;
+import com.easygo.cashier.MyApplication;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.OrderHistoryGoodsAdapter;
 import com.easygo.cashier.bean.OrderHistorysInfo;
@@ -136,16 +138,16 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.btn_refund:
                 if (orderHistoryGoodsAdapter.getItemCount() == 0) {
-                    showToast("订单没有商品");
+                    showToast(getResources().getString(R.string.text_no_goods_into_order));
                     return;
                 } else if (mOrderHistorysInfo.getRefund_status() == 1
                         && mOrderHistorysInfo.getHave_refund() == 0) {//订单有退过款，商品没有退过款
                     //无退货 退过款
-                    showToast("此订单已退过款");
+                    showToast(getResources().getString(R.string.text_already_refund));
                     return;
                 } else if (orderHistoryGoodsAdapter.getRefundSize() == orderHistoryGoodsAdapter.getItemCount()) {
                     //所有商品都退过款
-                    showToast("此订单中所有商品已退过款");
+                    showToast(getResources().getString(R.string.text_all_goods_refund));
                     return;
                 }
 
@@ -259,11 +261,11 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         obj.data = mOrderHistorysInfo;
         obj.pay_type = payType;
 
-        PrinterUtils.getInstance().print(PrinterHelpter.orderHistroyGoodsList(obj));
+        PrinterUtils.getInstance().print(PrinterHelpter.orderHistroyGoodsList(getActivity(), obj));
         if (printHistory == null) {
             printHistory = new PrintHistory();
         }
-        printHistory.print(obj);
+        printHistory.print(getActivity(), obj);
     }
 
     public void showOrderHistory(OrderHistorysInfo orderHistoryInfo) {
@@ -282,10 +284,14 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         for (int i = 0; i < size; i++) {
             count += orderHistoryInfo.getList().get(i).getQuantity();
         }
-        tvGoodsCount.setText("共" + count + "件");
-        tvReceipts.setText("实付：￥" + orderHistoryInfo.getBuyer_pay());
+        if (Events.LANGUAGE.equals("en")) {
+            tvGoodsCount.setText(count + " In Total");
+        } else {
+            tvGoodsCount.setText(getString(R.string.text_total_gong) + count + getString(R.string.text_piece));
+        }
+        tvReceipts.setText(getString(R.string.text_real_pay) + getString(R.string.text_genera_money) + orderHistoryInfo.getBuyer_pay());
 
-        tvReceivable.setText("应收：￥" + orderHistoryInfo.getReal_pay());
+        tvReceivable.setText(getString(R.string.text_receivable_colon) + getString(R.string.text_genera_money) + orderHistoryInfo.getReal_pay());
 
         //临时整单促销
         String cashier_discount = mOrderHistorysInfo.getCashier_discount();
@@ -296,8 +302,8 @@ public class OrderHistoryDetailFragment extends BaseFragment {
 
         float allDiscount = getAllDiscount();
         if (allDiscount > 0) {
-            tvReceivableText.setText("总额：￥" + orderHistoryInfo.getTotal_money()
-                    + " - 优惠：￥" + df.format(allDiscount) + " = ");
+            tvReceivableText.setText(getString(R.string.text_total_money_1) + orderHistoryInfo.getTotal_money()
+                    + getString(R.string.text_symbol1) + getString(R.string.text_coupon_1) + df.format(allDiscount) + " = ");
         } else {
             tvReceivableText.setText("");
         }
@@ -374,9 +380,10 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         }
 
         if (gift_card_pay > 0) {
-            tvReceiptsText.setText(pay_text + " - 找零：￥" + change_price + " = ");
+            tvReceiptsText.setText(pay_text + getString(R.string.text_symbol1) + getString(R.string.text_change_colon) + getString(R.string.text_genera_money) + change_price + " = ");
         } else {
-            tvReceiptsText.setText(payType + "：￥" + total_buyer_price + " - 找零：￥" + change_price + " = ");
+            tvReceiptsText.setText(payType + "：￥" + total_buyer_price + getString(R.string.text_symbol1) +
+                    getString(R.string.text_change_colon) + getString(R.string.text_genera_money) + change_price + " = ");
         }
 
         /*付款*/
@@ -417,8 +424,12 @@ public class OrderHistoryDetailFragment extends BaseFragment {
         tvRefund.setVisibility(View.VISIBLE);
         line3.setVisibility(View.VISIBLE);
 
-        tvRefund.setText("退款：￥" + orderHistoryInfo.getRefund_fee());
-        tvReturnOfGoodsCount.setText("共退款" + orderHistoryGoodsAdapter.getRefundSize() + "件");
+        tvRefund.setText(getString(R.string.text_refund_1) + orderHistoryInfo.getRefund_fee());
+        if (Events.LANGUAGE.equals("en")) {
+            tvReturnOfGoodsCount.setText(getString(R.string.text_total_refund) + orderHistoryGoodsAdapter.getRefundSize());
+        } else {
+            tvReturnOfGoodsCount.setText(getString(R.string.text_total_refund) + orderHistoryGoodsAdapter.getRefundSize() + getString(R.string.text_piece));
+        }
     }
 
     /**

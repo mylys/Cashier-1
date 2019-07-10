@@ -17,24 +17,24 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="@dimen/x60"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/text_refund"
                 style="@style/RefundList"
-                android:layout_marginStart="@dimen/x39"/>
-
-            <TextView
-                android:layout_width="@dimen/x60"
+                android:layout_width="@dimen/x92"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/x39"
                 android:gravity="center"
-                android:text="@string/text_return_of_goods"
-                style="@style/RefundList"
-                android:layout_marginStart="@dimen/x30"/>
+                android:text="@string/text_refund" />
 
             <TextView
                 style="@style/RefundList"
-                android:layout_width="@dimen/x428"
+                android:layout_width="@dimen/x90"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/x30"
+                android:gravity="center"
+                android:text="@string/text_return_of_goods" />
+
+            <TextView
+                style="@style/RefundList"
+                android:layout_width="@dimen/x350"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/x39"
                 android:text="@string/text_goods_name" />
@@ -70,7 +70,7 @@
                 android:text="@string/text_refund_num"
                 android:textColor="@color/color_333333"
                 android:textSize="@dimen/x28"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"

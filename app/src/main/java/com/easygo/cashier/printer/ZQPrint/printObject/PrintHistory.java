@@ -1,8 +1,11 @@
 package com.easygo.cashier.printer.ZQPrint.printObject;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 
+import com.easygo.cashier.Events;
+import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.GoodsResponse;
@@ -32,22 +35,23 @@ public class PrintHistory {
     private final int LEFT = PrinterConst.Alignment.LEFT;
     private final int CENTER = PrinterConst.Alignment.CENTER;
 
-    public void print(OrderHistoryGoodsListPrintObj obj) {
+    public void print(Activity activity, OrderHistoryGoodsListPrintObj obj) {
         if (prn != null) {
             DecimalFormat df = new DecimalFormat("#0.00");
             DecimalFormat df_weight = new DecimalFormat("#0.000");
+            boolean en = Events.LANGUAGE.equals("en");
 
             prn.Prn_PrintText(obj.shop_name, CENTER, mode, PrinterConst.WidthSize.SIZE1 | PrinterConst.HeightSize.SIZE1);
             prn.Prn_LineFeed(2);
-            printText("订单号：" + obj.order_no);
+            printText(activity.getString(R.string.print_order_number) + obj.order_no);
             prn.Prn_LineFeed(1);
-            printText("时间：" + obj.time);
+            printText(activity.getString(R.string.print_time) + obj.time);
             prn.Prn_LineFeed(1);
-            printText("收银员：" + obj.admin_name);
+            printText(activity.getString(R.string.print_cashier) + obj.admin_name);
             prn.Prn_LineFeed(1);
             printText("--------------------------------");
             prn.Prn_LineFeed(1);
-            printText("品名  单价  优惠  数量/重量  小计");
+            printText(activity.getString(R.string.print_list_title));
             prn.Prn_LineFeed(1);
 
             OrderHistorysInfo info = obj.data;
@@ -75,41 +79,42 @@ public class PrintHistory {
             }
             printText("--------------------------------");
             prn.Prn_LineFeed(1);
-            printText("总数量：" + count);
+            printText(activity.getString(R.string.print_total_number) + count);
             prn.Prn_LineFeed(1);
-            printText("原价：" + info.getTotal_money() + "元");
+            printText(activity.getString(R.string.print_original_money) + info.getTotal_money() + (en ? "" : "元"));
             prn.Prn_LineFeed(1);
-            printText("优惠：" + df.format(total_discount) + "元");
+            printText(activity.getString(R.string.print_total_offer) + df.format(total_discount) + (en ? "" : "元"));
             prn.Prn_LineFeed(1);
-            printText("总金额：" + info.getReal_pay() + "元");
+            printText(activity.getString(R.string.print_total_money) + info.getReal_pay() + (en ? "" : "元"));
             prn.Prn_LineFeed(1);
-            printText("支付方式：" + obj.pay_type);
+            printText(activity.getString(R.string.print_pay_type) + obj.pay_type);
             prn.Prn_LineFeed(1);
-            printText("实收：" + info.getBuyer_pay() + "元");
+            printText(activity.getString(R.string.print_paid_amount) + info.getBuyer_pay() + (en ? "" : "元"));
             prn.Prn_LineFeed(1);
-            printText("找零：" + info.getChange_money() + "元");
+            printText(activity.getString(R.string.print_change) + info.getChange_money() + (en ? "" : "元"));
             prn.Prn_LineFeed(1);
-            String text = info.getRefund_fee() != null ? info.getRefund_fee() + "元" : "0.00" + "元";
-            printText("退款：" + text);
+            String text = info.getRefund_fee() != null ? info.getRefund_fee() + (en ? "" : "元") : "0.00" + (en ? "" : "元");
+            printText(activity.getString(R.string.print_refund) + text);
             ZQPrinterUtil.getInstance().spaceLine();
         }
     }
 
-    public void printRefund(OrderHistoryRefundPrintObj obj) {
+    public void printRefund(Activity activity, OrderHistoryRefundPrintObj obj) {
         if (prn != null) {
             DecimalFormat df_weight = new DecimalFormat("#0.000");
+            boolean en = Events.LANGUAGE.equals("en");
 
-            prn.Prn_PrintText("退款单", CENTER, mode, PrinterConst.WidthSize.SIZE1 | PrinterConst.HeightSize.SIZE1);
+            prn.Prn_PrintText(activity.getString(R.string.print_refund_order), CENTER, mode, PrinterConst.WidthSize.SIZE1 | PrinterConst.HeightSize.SIZE1);
             prn.Prn_LineFeed(2);
-            printText("订单号：" + obj.order_no);
+            printText(activity.getString(R.string.print_order_number) + obj.order_no);
             prn.Prn_LineFeed(1);
-            printText("时间：" + obj.time);
+            printText(activity.getString(R.string.print_cashier) + obj.admin_name);
             prn.Prn_LineFeed(1);
-            printText("收银员：" + obj.admin_name);
+            printText(activity.getString(R.string.print_time) + obj.time);
             prn.Prn_LineFeed(1);
             printText("--------------------------------");
             prn.Prn_LineFeed(1);
-            printText("品名  单价  优惠  数量/重量  小计");
+            printText(activity.getString(R.string.print_list_title));
             prn.Prn_LineFeed(1);
 
             ArrayList<GoodsRefundInfo> info = obj.data;
@@ -134,17 +139,17 @@ public class PrintHistory {
             }
             printText("--------------------------------");
             prn.Prn_LineFeed(1);
-            printText("总数量：" + obj.count);
+            printText(activity.getString(R.string.print_total_number) + obj.count);
             prn.Prn_LineFeed(1);
-            printText("原价：" + obj.total_price + "元");
+            printText(activity.getString(R.string.print_original_money) + obj.total_price + (en ? "" : "元"));
             prn.Prn_LineFeed(1);
-            printText("优惠：" + obj.discount + "元");
+            printText(activity.getString(R.string.print_total_offer) + obj.discount + (en ? "" : "元"));
             prn.Prn_LineFeed(1);
-            printText("总金额：" + obj.real_pay + "元");
+            printText(activity.getString(R.string.print_total_money) + obj.real_pay + (en ? "" : "元"));
             prn.Prn_LineFeed(1);
-            printText("退款方式：" + obj.pay_type);
+            printText(activity.getString(R.string.print_refund_type) + obj.pay_type);
             prn.Prn_LineFeed(1);
-            printText("退款金额：" + obj.refund + "元");
+            printText(activity.getString(R.string.print_refund_money) + obj.refund + (en ? "" : "元"));
             ZQPrinterUtil.getInstance().spaceLine();
         }
     }

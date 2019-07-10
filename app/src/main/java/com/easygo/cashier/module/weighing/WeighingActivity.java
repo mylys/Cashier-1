@@ -340,8 +340,8 @@ public class WeighingActivity extends BaseAppMvpActivity<WeighingContract.View, 
                 list.add(0, info);
                 if (qitaClassify) {
                     info = new ClassifyInfo(0, "其他", false);
+                    list.add(info);
                 }
-                list.add(info);
                 adapter.setNewData(list);
                 rvClassifyList.setVisibility(View.VISIBLE);
             } else {

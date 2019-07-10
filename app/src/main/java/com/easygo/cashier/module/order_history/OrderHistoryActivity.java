@@ -1,5 +1,6 @@
 package com.easygo.cashier.module.order_history;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,12 +12,17 @@ import android.widget.FrameLayout;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.easygo.cashier.Configs;
+import com.easygo.cashier.Events;
 import com.easygo.cashier.ModulePath;
+import com.easygo.cashier.MyConextWrapper;
 import com.easygo.cashier.R;
 import com.easygo.cashier.utils.SoftKeyboardUtil;
 import com.easygo.cashier.module.order_history.order_history_refund.OrderHistoryRefundFragment;
 import com.easygo.cashier.widget.view.MyTitleBar;
 import com.niubility.library.utils.ScreenUtils;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +56,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
     }
 
     private void init() {
-        clTitle.setCashierAccount(admin_name);
+        clTitle.setCashierAccount(String.valueOf(Configs.cashier_id));
 
         fragment = getSupportFragmentManager().findFragmentByTag(TAG_ORDER_HISTORY);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -87,7 +93,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
     }
 
     public void toRefresh() {
-        if (orderHistoryFragment != null){
+        if (orderHistoryFragment != null) {
             orderHistoryFragment.toRefresh();
         }
     }
@@ -115,5 +121,22 @@ public class OrderHistoryActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
 
         ScreenUtils.hideNavigationBar(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        Context context = null;
+        switch (Events.LANGUAGE) {
+            case "zh":
+                context = MyConextWrapper.wrapper(newBase, Locale.SIMPLIFIED_CHINESE);
+                break;
+            case "zh-tw":
+                context = MyConextWrapper.wrapper(newBase, Locale.TAIWAN);
+                break;
+            case "en":
+                context = MyConextWrapper.wrapper(newBase, Locale.US);
+                break;
+        }
+        super.attachBaseContext(context);
     }
 }

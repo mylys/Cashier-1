@@ -59,6 +59,7 @@
             android:layout_marginEnd="@dimen/x43"
             android:background="@drawable/bg_pay_button_selected"
             android:text="@string/text_dialog_submit"
+            android:textAllCaps="false"
             android:textColor="@color/color_text_white"
             android:textSize="@dimen/x36"
             app:layout_constraintBottom_toBottomOf="parent"

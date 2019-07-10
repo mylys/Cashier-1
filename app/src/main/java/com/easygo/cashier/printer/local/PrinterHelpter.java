@@ -1,5 +1,9 @@
 package com.easygo.cashier.printer.local;
 
+import android.app.Activity;
+
+import com.easygo.cashier.Events;
+import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.GoodsResponse;
@@ -29,7 +33,7 @@ public class PrinterHelpter {
     /**
      * 收银、弹钱箱
      */
-    public static Vector<Byte> cashier(CashierPrintObj obj) {
+    public static Vector<Byte> cashier(Activity activity, CashierPrintObj obj) {
         EscCommand esc = new EscCommand();
         esc.addInitializePrinter();
         esc.addPrintAndFeedLines((byte) 2);
@@ -48,14 +52,14 @@ public class PrinterHelpter {
         esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);
 
         // 打印文字
-        esc.addText("订单号:");
+        esc.addText(activity.getString(R.string.print_order_number));
         esc.addText(obj.trade_no + "\n");
-        esc.addText("时间:");
+        esc.addText(activity.getString(R.string.print_time));
         esc.addText(obj.time + "\n");
-        esc.addText("收银员：");
+        esc.addText(activity.getString(R.string.print_cashier));
         esc.addText(obj.admin_name + "\n");
         esc.addText("--------------------------------\n");
-        esc.addText(" 品名  单价  优惠  数量  小计  \n");
+        esc.addText(activity.getString(R.string.print_list_title) + "\n");
 
         List<GoodsEntity<GoodsResponse>> goodsData = obj.data;
 
@@ -131,24 +135,24 @@ public class PrinterHelpter {
                 }
             }
         }
-
+        boolean en = Events.LANGUAGE.equals("en");
         esc.addText("--------------------------------\n");
-        esc.addText("总数量：");
+        esc.addText(activity.getString(R.string.print_total_number));
         esc.addText(obj.count + "\n");
-        esc.addText("原价：");
-        esc.addText(df.format(obj.total_money) + "元\n");
-        esc.addText("优惠：");
-        esc.addText(df.format(obj.discount) + "元\n");
-        esc.addText("总金额：");
-        esc.addText(df.format(obj.real_pay) + "元\n");
-        esc.addText("支付方式：");
+        esc.addText(activity.getString(R.string.print_original_money));
+        esc.addText(df.format(obj.total_money) + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_total_offer));
+        esc.addText(df.format(obj.discount) + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_total_money));
+        esc.addText(df.format(obj.real_pay) + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_pay_type));
         esc.addText(obj.pay_type + "\n");
-        esc.addText("礼品卡：");
-        esc.addText(df.format(obj.gift_card_money) + "元\n");
-        esc.addText("实收：");
-        esc.addText(df.format(obj.real_pay + obj.change) + "元\n");
-        esc.addText("找零：");
-        esc.addText(df.format(obj.change) + "元\n");
+        esc.addText(activity.getString(R.string.print_gift_card));
+        esc.addText(df.format(obj.gift_card_money) + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_paid_amount));
+        esc.addText(df.format(obj.real_pay + obj.change) + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_change));
+        esc.addText(df.format(obj.change) + (en ? "\n" : "元\n"));
 
         esc.addPrintAndFeedLines((byte) 2);
 
@@ -163,24 +167,26 @@ public class PrinterHelpter {
         esc.addCODE128(esc.genCodeB(obj.trade_no));
         esc.addPrintAndFeedLines((byte) 2);
 
-        // 设置打印居中
-        esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER);
-        //发票QRcode
-        esc.addText("--扫码开具发票--");
-        esc.addPrintAndLineFeed();
-        esc.addPrintAndLineFeed();
-        // 设置纠错等级
-        esc.addSelectErrorCorrectionLevelForQRCode((byte) 0x31);
-        // 设置qrcode模块大小
-        esc.addSelectSizeOfModuleForQRCode((byte) 10);
-        // 设置qrcode内容
-        String content = "https://h5.esgao.cn/easygo-pos-invoice?trade_no=" + obj.trade_no;
-        if (BaseConfig.environment_index != 0) {
-            content = "http://test.h5.esgao.cn/easygo-pos-invoice?trade_no=" + obj.trade_no;
+        if (!obj.pay_type.equals(activity.getString(R.string.print_member_wallet_pay))) {
+            // 设置打印居中
+            esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER);
+            //发票QRcode
+            esc.addText(activity.getString(R.string.print_scan_code_invoice));
+            esc.addPrintAndLineFeed();
+            esc.addPrintAndLineFeed();
+            // 设置纠错等级
+            esc.addSelectErrorCorrectionLevelForQRCode((byte) 0x31);
+            // 设置qrcode模块大小
+            esc.addSelectSizeOfModuleForQRCode((byte) 10);
+            // 设置qrcode内容
+            String content = "https://h5.esgao.cn/easygo-pos-invoice?trade_no=" + obj.trade_no;
+            if (BaseConfig.environment_index != 0) {
+                content = "http://test.h5.esgao.cn/easygo-pos-invoice?trade_no=" + obj.trade_no;
+            }
+            esc.addStoreQRCodeData(content);
+            esc.addPrintQRCode();// 打印QRCode
+            esc.addPrintAndLineFeed();
         }
-        esc.addStoreQRCodeData(content);
-        esc.addPrintQRCode();// 打印QRCode
-        esc.addPrintAndLineFeed();
 
         esc.addPrintAndFeedLines((byte) 4);
 
@@ -198,7 +204,7 @@ public class PrinterHelpter {
     /**
      * 历史订单列表
      */
-    public static Vector<Byte> orderHistroyGoodsList(OrderHistoryGoodsListPrintObj obj) {
+    public static Vector<Byte> orderHistroyGoodsList(Activity activity, OrderHistoryGoodsListPrintObj obj) {
         EscCommand esc = new EscCommand();
         esc.addInitializePrinter();
         esc.addPrintAndFeedLines((byte) 2);
@@ -217,20 +223,21 @@ public class PrinterHelpter {
         esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);
 
         // 打印文字
-        esc.addText("订单号:");
+        esc.addText(activity.getString(R.string.print_order_number));
         esc.addText(obj.order_no + "\n");
-        esc.addText("时间:");
+        esc.addText(activity.getString(R.string.print_time));
         esc.addText(obj.time + "\n");
-        esc.addText("收银员：");
+        esc.addText(activity.getString(R.string.print_cashier));
         esc.addText(obj.admin_name + "\n");
         esc.addText("--------------------------------\n");
-        esc.addText("品名  单价  优惠  数量/重量  小计  \n");
+        esc.addText(activity.getString(R.string.print_list_title) + "\n");
 
         OrderHistorysInfo info = obj.data;
         List<OrderHistorysInfo.ListBean> list = info.getList();
 
         DecimalFormat df = new DecimalFormat("0.00");
         DecimalFormat df_weight = new DecimalFormat("#0.000");
+        boolean en = Events.LANGUAGE.equals("en");
 
         int size = list.size();
         int count = 0;
@@ -259,23 +266,23 @@ public class PrinterHelpter {
         }
 
         esc.addText("--------------------------------\n");
-        esc.addText("总数量：");
+        esc.addText(activity.getString(R.string.print_total_number));
         esc.addText(String.valueOf(count) + "\n");
-        esc.addText("原价：");
-        esc.addText(info.getTotal_money() + "元\n");
-        esc.addText("优惠：");
-        esc.addText(df.format(total_discount) + "元\n");
-        esc.addText("总金额：");
-        esc.addText(info.getReal_pay() + "元\n");
-        esc.addText("支付方式：");
+        esc.addText(activity.getString(R.string.print_original_money));
+        esc.addText(info.getTotal_money() + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_total_offer));
+        esc.addText(df.format(total_discount) + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_total_money));
+        esc.addText(info.getReal_pay() + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_pay_type));
         esc.addText(obj.pay_type + "\n");
-        esc.addText("实收：");
-        esc.addText(info.getBuyer_pay() + "元\n");
-        esc.addText("找零：");
-        esc.addText(info.getChange_money() + "元\n");
-        esc.addText("退款：");
+        esc.addText(activity.getString(R.string.print_paid_amount));
+        esc.addText(info.getBuyer_pay() + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_change));
+        esc.addText(info.getChange_money() + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_refund));
         esc.addText(info.getRefund_fee() != null ?
-                info.getRefund_fee() + "元\n" : "0.00" + "元\n");
+                info.getRefund_fee() + (en ? "\n" : "元\n") : "0.00" + (en ? "\n" : "元\n"));
 
         esc.addPrintAndFeedLines((byte) 5);
 
@@ -285,7 +292,7 @@ public class PrinterHelpter {
     /**
      * 历史订单退款
      */
-    public static Vector<Byte> orderHistroyRefund(OrderHistoryRefundPrintObj obj) {
+    public static Vector<Byte> orderHistroyRefund(Activity activity, OrderHistoryRefundPrintObj obj) {
         EscCommand esc = new EscCommand();
         esc.addInitializePrinter();
         esc.addPrintAndFeedLines((byte) 2);
@@ -294,7 +301,7 @@ public class PrinterHelpter {
         // 设置为倍高倍宽
         esc.addSelectPrintModes(EscCommand.FONT.FONTA, EscCommand.ENABLE.OFF, EscCommand.ENABLE.ON, EscCommand.ENABLE.ON, EscCommand.ENABLE.OFF);
         // 打印文字
-        esc.addText("退款单\n");
+        esc.addText(activity.getString(R.string.print_refund_order) + "\n");
         esc.addPrintAndLineFeed();
 
         /* 打印文字 */
@@ -304,16 +311,17 @@ public class PrinterHelpter {
         esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);
 
         // 打印文字
-        esc.addText("订单号:");
+        esc.addText(activity.getString(R.string.print_order_number));
         esc.addText(obj.order_no + "\n");
-        esc.addText("收银员：");
+        esc.addText(activity.getString(R.string.print_cashier));
         esc.addText(obj.admin_name + "\n");
-        esc.addText("时间:");
+        esc.addText(activity.getString(R.string.print_time));
         esc.addText(obj.time + "\n");
         esc.addText("--------------------------------\n");
-        esc.addText("品名  单价  优惠  数量/重量  小计  \n");
+        esc.addText(activity.getString(R.string.print_list_title) + "\n");
 
         DecimalFormat df_weight = new DecimalFormat("#0.000");
+        boolean en = Events.LANGUAGE.equals("en");
 
         ArrayList<GoodsRefundInfo> info = obj.data;
         int size = info.size();
@@ -340,18 +348,18 @@ public class PrinterHelpter {
             esc.addText(data.getRefund_subtotal());
             esc.addText("  \n");
         }
-        esc.addText("总数量：");
+        esc.addText(activity.getString(R.string.print_total_number));
         esc.addText(obj.count + "\n");
-        esc.addText("原价：");
-        esc.addText(obj.total_price + "元\n");
-        esc.addText("优惠：");
-        esc.addText(obj.discount + "元\n");
-        esc.addText("总金额：");
-        esc.addText(obj.real_pay + "元\n");
-        esc.addText("退款方式：");
+        esc.addText(activity.getString(R.string.print_original_money));
+        esc.addText(obj.total_price + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_total_offer));
+        esc.addText(obj.discount + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_total_money));
+        esc.addText(obj.real_pay + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_refund_type));
         esc.addText(obj.pay_type + "\n");
-        esc.addText("退款金额：");
-        esc.addText(obj.refund + "元\n");
+        esc.addText(activity.getString(R.string.print_refund_money));
+        esc.addText(obj.refund + (en ? "\n" : "元\n"));
 
         esc.addPrintAndFeedLines((byte) 4);
 
@@ -368,7 +376,7 @@ public class PrinterHelpter {
     /**
      * 交接班信息
      */
-    public static Vector<Byte> handoverInfoDatas(HandoverInfoPrintObj obj) {
+    public static Vector<Byte> handoverInfoDatas(Activity activity, HandoverInfoPrintObj obj) {
         EscCommand esc = new EscCommand();
         esc.addInitializePrinter();
         esc.addPrintAndFeedLines((byte) 2);
@@ -377,7 +385,7 @@ public class PrinterHelpter {
         // 设置为倍高倍宽
         esc.addSelectPrintModes(EscCommand.FONT.FONTA, EscCommand.ENABLE.OFF, EscCommand.ENABLE.ON, EscCommand.ENABLE.ON, EscCommand.ENABLE.OFF);
         // 打印文字
-        esc.addText("交接班单据\n");
+        esc.addText(activity.getString(R.string.print_handover) + "\n");
         esc.addPrintAndLineFeed();
 
         /* 打印文字 */
@@ -387,47 +395,48 @@ public class PrinterHelpter {
         esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);
 
         // 打印文字
-        esc.addText("收银员：");
+        boolean en = Events.LANGUAGE.equals("en");
+        esc.addText(activity.getString(R.string.print_cashier));
         esc.addText(obj.admin_name + "\n");
-        esc.addText("登录时间:");
+        esc.addText(activity.getString(R.string.print_login_time));
         esc.addText(obj.login_time + "\n");
-        esc.addText("登出时间:");
+        esc.addText(activity.getString(R.string.print_login_out_time));
         esc.addText(obj.loginout_time + "\n");
         esc.addText("--------------------------------\n");
-        esc.addText("总单据数：");
+        esc.addText(activity.getString(R.string.print_total_document));
         esc.addText(obj.total_order_count + "\n");
-        esc.addText("销售单：");
+        esc.addText(activity.getString(R.string.print_sale_order));
         esc.addText(obj.sale_count + "\n");
-        esc.addText("退货单：");
+        esc.addText(activity.getString(R.string.print_return_order));
         esc.addText(obj.refund_count + "\n");
         esc.addText("--------------------------------\n");
-        esc.addText("总销售额：");
-        esc.addText(obj.total_sales + "元\n");
-        esc.addText("现金：");
-        esc.addText(obj.cash + "元\n");
-        esc.addText("支付宝：");
-        esc.addText(obj.alipay + "元\n");
-        esc.addText("微信：");
-        esc.addText(obj.wechat + "元\n");
-        esc.addText("会员钱包：");
-        esc.addText(obj.member + "元\n");
-        esc.addText("银联：");
-        esc.addText(obj.bank_card + "元\n");
-        esc.addText("礼品卡：");
-        esc.addText(obj.gift_card + "元\n");
-        esc.addText("总退款金额：");
-        esc.addText(obj.all_refund + "元\n");
+        esc.addText(activity.getString(R.string.print_total_sale));
+        esc.addText(obj.total_sales + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_cash));
+        esc.addText(obj.cash + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_alipay));
+        esc.addText(obj.alipay + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_wechat));
+        esc.addText(obj.wechat + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_member_wallet));
+        esc.addText(obj.member + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_unionpay));
+        esc.addText(obj.bank_card + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_gift_card));
+        esc.addText(obj.gift_card + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_total_refund));
+        esc.addText(obj.all_refund + (en ? "\n" : "元\n"));
         esc.addText("--------------------------------\n");
-        esc.addText("总现金数：");
-        esc.addText(obj.total_cash + "元\n");
-        esc.addText("现金收入：");
-        esc.addText(obj.cash_income + "元\n");
-        esc.addText("实收金额：");
-        esc.addText(obj.receipts + "元\n");
-        esc.addText("找零金额：");
-        esc.addText(obj.change + "元\n");
-        esc.addText("退款现金：");
-        esc.addText(obj.cash_refund + "元\n");
+        esc.addText(activity.getString(R.string.print_total_cash));
+        esc.addText(obj.total_cash + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_cash_income));
+        esc.addText(obj.cash_income + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_paid_amount_money));
+        esc.addText(obj.receipts + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_change_money));
+        esc.addText(obj.change + (en ? "\n" : "元\n"));
+        esc.addText(activity.getString(R.string.print_refund_cash));
+        esc.addText(obj.cash_refund + (en ? "\n" : "元\n"));
         esc.addPrintAndFeedLines((byte) 4);
 
         return esc.getCommand();
@@ -436,7 +445,7 @@ public class PrinterHelpter {
     /**
      * 交接班销售列表
      */
-    public static Vector<Byte> handoverSaleListDatas(HandoverSaleListPrintObj obj) {
+    public static Vector<Byte> handoverSaleListDatas(Activity activity, HandoverSaleListPrintObj obj) {
         EscCommand esc = new EscCommand();
         esc.addInitializePrinter();
         esc.addPrintAndFeedLines((byte) 2);
@@ -455,19 +464,19 @@ public class PrinterHelpter {
         esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT);
 
         // 打印文字
-        esc.addText("时间:");
+        esc.addText(activity.getString(R.string.print_time));
         esc.addText(obj.time + "\n");
-        esc.addText("收银员：");
+        esc.addText(activity.getString(R.string.print_cashier));
         esc.addText(obj.admin_name + "\n");
         esc.addText("--------------------------------\n");
-        esc.addText("品名  分类  单价  数量/重量  小计  \n");
-
+        esc.addText(activity.getString(R.string.print_list_title) + "\n");
 
         DecimalFormat df = new DecimalFormat("0.00");
         DecimalFormat df_weight = new DecimalFormat("0.000");
         int size = obj.data.size();
         int count = 0;
         float total_money = 0;
+        boolean en = Events.LANGUAGE.equals("en");
         for (int i = 0; i < size; i++) {
             HandoverSaleResponse saleResponse = obj.data.get(i);
             count += saleResponse.getQuantity();
@@ -490,10 +499,10 @@ public class PrinterHelpter {
 
         }
         esc.addText("--------------------------------\n");
-        esc.addText("总数量：");
+        esc.addText(activity.getString(R.string.print_total_number));
         esc.addText(String.valueOf(count) + "\n");
-        esc.addText("总金额：");
-        esc.addText(df.format(total_money) + "元\n");
+        esc.addText(activity.getString(R.string.print_total_money));
+        esc.addText(df.format(total_money) + (en ? "\n" : "元\n"));
 
         esc.addPrintAndFeedLines((byte) 4);
 

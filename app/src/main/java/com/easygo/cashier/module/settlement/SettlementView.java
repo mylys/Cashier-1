@@ -130,7 +130,7 @@ public class SettlementView extends FrameLayout {
         btnCancelCoupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mListener != null) {
+                if (mListener != null) {
                     mListener.onCancelCoupon();
                 }
             }
@@ -138,7 +138,7 @@ public class SettlementView extends FrameLayout {
         btnCancelTempPromotion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mListener != null) {
+                if (mListener != null) {
                     mListener.onCancelTempPromotion();
                 }
             }
@@ -146,7 +146,7 @@ public class SettlementView extends FrameLayout {
         btnCancelGiftCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mListener != null) {
+                if (mListener != null) {
                     mListener.onCancelGiftCard();
                 }
             }
@@ -273,7 +273,7 @@ public class SettlementView extends FrameLayout {
         tvCouponColonPrice.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
         line3.setVisibility(isCoupon ? View.VISIBLE : View.GONE);
 
-        if(payType == PayWayView.WAY_MEMBER && isCoupon && isGiftCard) {
+        if (payType == PayWayView.WAY_MEMBER && isCoupon && isGiftCard) {
             updateLineMargin(payType);
         }
     }
@@ -284,7 +284,7 @@ public class SettlementView extends FrameLayout {
         tvGiftCardPrice.setVisibility(isGiftCard ? View.VISIBLE : View.GONE);
         line4.setVisibility(isGiftCard ? View.VISIBLE : View.GONE);
 
-        if(payType == PayWayView.WAY_MEMBER && isCoupon && isGiftCard) {
+        if (payType == PayWayView.WAY_MEMBER && isCoupon && isGiftCard) {
             updateLineMargin(payType);
         }
     }
@@ -317,13 +317,13 @@ public class SettlementView extends FrameLayout {
     }
 
 
-    public void setData(float receivable, float coupon, float receipts, float change,String balance) {
-        setData(receivable, coupon, 0, 0, 0,receipts, change, balance);
+    public void setData(float receivable, float coupon, float receipts, float change, String balance) {
+        setData(receivable, coupon, 0, 0, 0, receipts, change, balance);
     }
 
     public void setData(float receivable, float coupon, float couponMoney,
                         float giftCardMoney, float tempOrderPromotionMoney,
-                        float receipts, float change,String balance) {
+                        float receipts, float change, String balance) {
         mReceivable = receivable;
         mCoupon = coupon;
         mReceipts = receipts;
@@ -334,10 +334,10 @@ public class SettlementView extends FrameLayout {
 
         String sign = "￥";
 
-        String after = sign + df.format(receivable-coupon-couponMoney-giftCardMoney-tempOrderPromotionMoney);
+        String after = sign + df.format(receivable - coupon - couponMoney - giftCardMoney - tempOrderPromotionMoney);
         String before = sign + df.format(receivable);
 
-        if(coupon == 0 && couponMoney == 0 && giftCardMoney  == 0 && tempOrderPromotionMoney == 0) {
+        if (coupon == 0 && couponMoney == 0 && giftCardMoney == 0 && tempOrderPromotionMoney == 0) {
             tvRealReceivable.setVisibility(GONE);
             tvReceivable.setText(sign + df.format(mReceivable));
         } else {
@@ -364,6 +364,7 @@ public class SettlementView extends FrameLayout {
 
     /**
      * 更新 线之间的间距
+     *
      * @param payType 支付方式
      */
     public void updateLineMargin(int payType) {
@@ -377,7 +378,7 @@ public class SettlementView extends FrameLayout {
 //                dimen = getResources().getDimensionPixelSize(R.dimen.y120);
                 break;
             case PayWayView.WAY_MEMBER:
-                if(isCoupon && isGiftCard) {
+                if (isCoupon && isGiftCard) {
                     line1_dimen = getResources().getDimensionPixelSize(R.dimen.y33);
                     dimen = getResources().getDimensionPixelSize(R.dimen.y99);
                 }
@@ -418,20 +419,19 @@ public class SettlementView extends FrameLayout {
      * 设置优惠券信息
      */
     public void setCouponInfo(String name, float coupon_discount) {
-        tvTextCouponColon.setText("优惠券：(" + name + ")");
+        tvTextCouponColon.setText(getResources().getString(R.string.text_coupon_coupon_colon) + "(" + name + ")");
         DecimalFormat df = new DecimalFormat("0.00");
-        tvCouponColonPrice.setText("-￥" + df.format(coupon_discount));
+        tvCouponColonPrice.setText(getResources().getString(R.string.text_symbol3) + df.format(coupon_discount));
     }
 
     /**
      * 设置礼品卡信息
      */
     public void setGiftCardInfo(String name, float price) {
-        tvTextGiftCardColon.setText("礼品卡：(" + name + ")");
+        tvTextGiftCardColon.setText(getResources().getString(R.string.text_gift_card_colon) + "(" + name + ")");
         DecimalFormat df = new DecimalFormat("0.00");
-        tvGiftCardPrice.setText("-￥" + df.format(price));
+        tvGiftCardPrice.setText(getResources().getString(R.string.text_symbol3) + df.format(price));
     }
-
 
 
     private OnClickListener mListener;
@@ -444,26 +444,28 @@ public class SettlementView extends FrameLayout {
     public void setBottomButtonVisibility(boolean needShowKeyboard) {
 
 //        cbPrint.setVisibility(needShowKeyboard? GONE: VISIBLE);
-        btnCommit.setVisibility(needShowKeyboard? GONE: VISIBLE);
+        btnCommit.setVisibility(needShowKeyboard ? GONE : VISIBLE);
     }
 
     public void setCancleCouponVisibility(boolean visibility) {
-        btnCancelCoupon.setVisibility(visibility? VISIBLE: GONE);
+        btnCancelCoupon.setVisibility(visibility ? VISIBLE : GONE);
     }
 
     public void setCancleTempPromotionVisibility(boolean visibility) {
-        btnCancelTempPromotion.setVisibility(visibility? VISIBLE: GONE);
+        btnCancelTempPromotion.setVisibility(visibility ? VISIBLE : GONE);
     }
 
     public void setCancleGiftCardVisibility(boolean visibility) {
-        btnCancelGiftCard.setVisibility(visibility? VISIBLE: GONE);
+        btnCancelGiftCard.setVisibility(visibility ? VISIBLE : GONE);
     }
 
     public interface OnClickListener {
         void onCommitOrderClicked();
 
         void onCancelCoupon();
+
         void onCancelTempPromotion();
+
         void onCancelGiftCard();
     }
 

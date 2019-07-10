@@ -1,8 +1,11 @@
 package com.easygo.cashier.printer.ZQPrint.printObject;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 
+import com.easygo.cashier.Events;
+import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.printer.ZQPrint.ZQPrinterUtil;
@@ -28,22 +31,22 @@ public class PrintCashier {
     private final int LEFT = PrinterConst.Alignment.LEFT;
     private final int CENTER = PrinterConst.Alignment.CENTER;
 
-    public void print(CashierPrintObj obj) {
+    public void print(Activity activity, CashierPrintObj obj) {
         if (prn != null) {
             DecimalFormat df = new DecimalFormat("#0.00");
             DecimalFormat df_weight = new DecimalFormat("#0.000");
 
             prn.Prn_PrintText(obj.shop_name, CENTER, mode, PrinterConst.WidthSize.SIZE1 | PrinterConst.HeightSize.SIZE1);
             prn.Prn_LineFeed(2);
-            printText("订单号：" + obj.trade_no);
+            printText(activity.getResources().getString(R.string.print_order_number) + obj.trade_no);
             prn.Prn_LineFeed(1);
-            printText("时间：" + obj.time);
+            printText(activity.getString(R.string.print_time) + obj.time);
             prn.Prn_LineFeed(1);
-            printText("收银员：" + obj.admin_name);
+            printText(activity.getString(R.string.print_cashier) + obj.admin_name);
             prn.Prn_LineFeed(1);
             printText("--------------------------------");
             prn.Prn_LineFeed(1);
-            printText("  品名  单价  优惠  数量  小计  ");
+            printText(activity.getString(R.string.print_list_title));
             prn.Prn_LineFeed(1);
             for (int i = 0; i < obj.data.size(); i++) {
                 GoodsResponse item = obj.data.get(i).getData();
@@ -79,35 +82,38 @@ public class PrintCashier {
                 printText("  " + subtotal);
                 prn.Prn_LineFeed(1);
             }
+            boolean en = Events.LANGUAGE.equals("en");
             printText("--------------------------------");
             prn.Prn_LineFeed(1);
-            printText("总数量：" + obj.count);
+            printText(activity.getString(R.string.print_total_number) + obj.count);
             prn.Prn_LineFeed(1);
-            printText("原价：" + df.format(obj.total_money) + "元");
+            printText(activity.getString(R.string.print_original_money) + df.format(obj.total_money) + (en ? "" : "元"));
             prn.Prn_LineFeed(1);
-            printText("优惠：" + df.format(obj.discount) + "元");
+            printText(activity.getString(R.string.print_total_offer) + df.format(obj.discount) + (en ? "" : "元"));
             prn.Prn_LineFeed(1);
-            printText("总金额：" + df.format(obj.real_pay) + "元");
+            printText(activity.getString(R.string.print_total_money) + df.format(obj.real_pay) + (en ? "" : "元"));
             prn.Prn_LineFeed(1);
-            printText("支付方式：" + obj.pay_type);
+            printText(activity.getString(R.string.print_pay_type) + obj.pay_type);
             prn.Prn_LineFeed(1);
-            printText("礼品卡：" + df.format(obj.gift_card_money) + "元");
+            printText(activity.getString(R.string.print_gift_card) + df.format(obj.gift_card_money) + (en ? "" : "元"));
             prn.Prn_LineFeed(1);
-            printText("实收：" + df.format(obj.real_pay + obj.change) + "元");
+            printText(activity.getString(R.string.print_paid_amount) + df.format(obj.real_pay + obj.change) + (en ? "" : "元"));
             prn.Prn_LineFeed(1);
-            printText("找零：" + df.format(obj.change) + "元");
+            printText(activity.getString(R.string.print_change) + df.format(obj.change) + (en ? "" : "元"));
             prn.Prn_LineFeed(2);
             ZQPrinterUtil.getInstance().printBarcode(obj.trade_no, 80, 3);
             prn.Prn_PrintText(obj.trade_no, CENTER, mode, PrinterConst.WidthSize.SIZE0);
-            prn.Prn_LineFeed(2);
-            prn.Prn_PrintText("--扫码开具发票--", CENTER, mode, PrinterConst.WidthSize.SIZE0);
-            prn.Prn_LineFeed(2);
-            String content = "https://h5.esgao.cn/easygo-pos-invoice?trade_no=" + obj.trade_no;
-            if (BaseConfig.environment_index != 0) {
-                content = "http://test.h5.esgao.cn/easygo-pos-invoice?trade_no=" + obj.trade_no;
+            if (!obj.pay_type.equals(activity.getString(R.string.print_member_wallet_pay))) {
+                prn.Prn_LineFeed(2);
+                prn.Prn_PrintText(activity.getString(R.string.print_scan_code_invoice), CENTER, mode, PrinterConst.WidthSize.SIZE0);
+                prn.Prn_LineFeed(2);
+                String content = "https://h5.esgao.cn/easygo-pos-invoice?trade_no=" + obj.trade_no;
+                if (BaseConfig.environment_index != 0) {
+                    content = "http://test.h5.esgao.cn/easygo-pos-invoice?trade_no=" + obj.trade_no;
+                }
+                Bitmap image = CodeUtils.createImage(content, 150, 150, null);
+                ZQPrinterUtil.getInstance().printBitmap(image);
             }
-            Bitmap image = CodeUtils.createImage(content, 150, 150, null);
-            ZQPrinterUtil.getInstance().printBitmap(image);
             ZQPrinterUtil.getInstance().spaceLine();
         }
     }

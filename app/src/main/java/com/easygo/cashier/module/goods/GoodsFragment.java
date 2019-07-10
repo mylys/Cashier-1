@@ -705,12 +705,6 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
         }
     }
 
-    public void recreate() {
-        if (mUserGoodsScreen != null) {
-//            mUserGoodsScreen
-        }
-    }
-
     public void getPromotion() {
         goods_promotion_success = false;
         shop_promotion_success = false;
@@ -843,7 +837,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                         dialog.dismiss();
 
                         //添加无码商品
-                        mGoodsMultiItemAdapter.addNoCodeItem(price);
+                        mGoodsMultiItemAdapter.addNoCodeItem(getActivity(),price);
                         rvGoods.smoothScrollToPosition(mGoodsMultiItemAdapter.getData().size() - 1);
                     }
                 });
@@ -974,7 +968,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                             cancelGiftCard();
                         }
 
-                        ActivitiesUtils.getInstance().createTempGoodsPromotion(selectGoods, mode, isFreeOrder, value);
+                        ActivitiesUtils.getInstance().createTempGoodsPromotion(getActivity(),selectGoods, mode, isFreeOrder, value);
 
                         mGoodsMultiItemAdapter.cancelAllSelected();
 
@@ -1047,7 +1041,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                         } else if (content.length() == 11 && TextUtils.isDigitsOnly(content)) {
                             mPresenter.getMember(content, null);
                         } else {
-                            showToast("请输入正确的手机号/会员卡号");
+                            showToast(getString(R.string.text_input_phone_number));
                         }
 
                     }

@@ -7,6 +7,7 @@ import android.widget.CompoundButton;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.easygo.cashier.Events;
 import com.easygo.cashier.R;
 import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.GoodsResponse;
@@ -87,9 +88,14 @@ public class OrderHistoryRefundAdapter extends BaseQuickAdapter<GoodsRefundInfo,
                 .setText(R.id.tv_refund_num_no, type == 1 ? item.getProduct_num() + "" : df_int.format(item.getProduct_num()));
 
         if (type == 1) {
-            helper.setText(R.id.tv_refund, "全退");
+            helper.setText(R.id.tv_refund,  mContext.getString(R.string.text_full_retreat));
         } else {
-            helper.setText(R.id.tv_refund, item.getRefund() == item.getProduct_num() ? "全退" : "退" + item.getRefund() + "件");
+            if (Events.LANGUAGE.equals("en")) {
+                helper.setText(R.id.tv_refund, item.getRefund() == item.getCount() ? mContext.getString(R.string.text_full_retreat) :
+                        (item.getRefund() + " Pieces Back"));
+            } else {
+                helper.setText(R.id.tv_refund, item.getRefund() == item.getCount() ? mContext.getString(R.string.text_full_retreat) : "退" + item.getRefund() + "件");
+            }
         }
 
         countTextView.setCount(item.getRefund_num());

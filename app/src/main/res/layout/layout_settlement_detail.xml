@@ -121,13 +121,13 @@
         android:layout_marginStart="@dimen/x39"
         android:background="@drawable/bg_cancel_discount"
         android:gravity="center"
-        android:text="取消折扣"
+        android:text="@string/text_cancel_promotion"
         android:textColor="@color/color_505050"
         android:textSize="@dimen/text_size_25"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@id/tv_receivable"
         app:layout_constraintBottom_toBottomOf="@id/tv_receivable"
-        app:layout_constraintStart_toEndOf="@id/tv_receivable" />
+        app:layout_constraintStart_toEndOf="@id/tv_receivable"
+        app:layout_constraintTop_toTopOf="@id/tv_receivable" />
 
 
     <!--优惠-->
@@ -136,7 +136,7 @@
         style="@style/SettlementDetailTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="优惠："
+        android:text="@string/text_coupon_2"
         app:layout_constraintBottom_toTopOf="@id/line2"
         app:layout_constraintStart_toStartOf="@id/tv_text_receivable"
         app:layout_constraintTop_toBottomOf="@id/line1" />
@@ -197,20 +197,20 @@
         android:textColor="@color/color_505050"
         android:textSize="@dimen/text_size_38"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@id/tv_text_gift_card_colon"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_gift_card_colon"
         app:layout_constraintEnd_toEndOf="@id/tv_receivable"
-        app:layout_constraintBottom_toBottomOf="@id/tv_text_gift_card_colon" />
+        app:layout_constraintTop_toTopOf="@id/tv_text_gift_card_colon" />
 
     <!--<ImageView-->
-        <!--android:id="@+id/image_clear"-->
-        <!--android:layout_width="@dimen/x42"-->
-        <!--android:layout_height="@dimen/y42"-->
-        <!--android:layout_marginStart="@dimen/x39"-->
-        <!--android:gravity="center"-->
-        <!--android:src="@drawable/ic_clear"-->
-        <!--app:layout_constraintBottom_toTopOf="@id/line3"-->
-        <!--app:layout_constraintStart_toEndOf="@id/line2"-->
-        <!--app:layout_constraintTop_toBottomOf="@id/line2" />-->
+    <!--android:id="@+id/image_clear"-->
+    <!--android:layout_width="@dimen/x42"-->
+    <!--android:layout_height="@dimen/y42"-->
+    <!--android:layout_marginStart="@dimen/x39"-->
+    <!--android:gravity="center"-->
+    <!--android:src="@drawable/ic_clear"-->
+    <!--app:layout_constraintBottom_toTopOf="@id/line3"-->
+    <!--app:layout_constraintStart_toEndOf="@id/line2"-->
+    <!--app:layout_constraintTop_toBottomOf="@id/line2" />-->
 
 
     <!--实收-->
@@ -268,9 +268,9 @@
         android:textColor="@color/color_505050"
         android:textSize="@dimen/text_size_38"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@id/tv_text_receipts"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_receipts"
         app:layout_constraintEnd_toEndOf="@id/tv_receivable"
-        app:layout_constraintBottom_toBottomOf="@id/tv_text_receipts" />
+        app:layout_constraintTop_toTopOf="@id/tv_text_receipts" />
 
 
     <!--找零-->
@@ -320,7 +320,6 @@
         app:layout_constraintTop_toBottomOf="@id/line6" />
 
     <CheckBox
-        android:visibility="gone"
         android:id="@+id/cb_integral"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -333,10 +332,9 @@
         android:text="@string/text_integral_exchange"
         android:textColor="@color/color_555555"
         android:textSize="@dimen/text_size_38"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/tv_text_receivable"
         app:layout_constraintTop_toBottomOf="@+id/view1" />
-
-
 
     <TextView
         android:id="@+id/tv_already_settlement"
@@ -349,63 +347,67 @@
         android:textColor="@color/color_7e7e7e"
         android:textSize="@dimen/text_size_25"
         android:visibility="visible"
-        app:layout_constraintTop_toTopOf="@id/tv_text_receipts"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_receipts"
         app:layout_constraintStart_toEndOf="@id/line2"
-        app:layout_constraintBottom_toBottomOf="@id/tv_text_receipts" />
+        app:layout_constraintTop_toTopOf="@id/tv_text_receipts" />
 
     <Button
         android:id="@+id/btn_cancel_gift_card"
+        style="@style/DetailTextStyle"
         android:layout_width="@dimen/x170"
         android:layout_height="@dimen/y92"
-        android:text="@string/text_cancel_gift_card"
-        style="@style/DetailTextStyle"
         android:layout_marginBottom="@dimen/y40"
         android:background="@drawable/bg_keyboard_key"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        android:text="@string/text_cancel_gift_card"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_cancel_coupon"/>
+        app:layout_constraintEnd_toStartOf="@id/btn_cancel_coupon"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_cancel_coupon"
+        style="@style/DetailTextStyle"
         android:layout_width="@dimen/x170"
         android:layout_height="@dimen/y92"
-        android:text="@string/text_cancel_coupon"
-        style="@style/DetailTextStyle"
         android:layout_marginStart="@dimen/x42"
         android:layout_marginBottom="@dimen/y40"
         android:background="@drawable/bg_keyboard_key"
+        android:text="@string/text_cancel_coupon"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn_cancel_gift_card"
-        app:layout_constraintEnd_toStartOf="@id/btn_cancel_temp_promotion"/>
+        app:layout_constraintEnd_toStartOf="@id/btn_cancel_temp_promotion"
+        app:layout_constraintStart_toEndOf="@id/btn_cancel_gift_card" />
 
     <Button
         android:id="@+id/btn_cancel_temp_promotion"
+        style="@style/DetailTextStyle"
         android:layout_width="@dimen/x170"
         android:layout_height="@dimen/y92"
-        android:text="@string/text_cancel_promotion"
-        style="@style/DetailTextStyle"
-        android:background="@drawable/bg_keyboard_key"
         android:layout_marginStart="@dimen/x30"
-        app:layout_constraintStart_toEndOf="@id/btn_cancel_coupon"
-        app:layout_constraintTop_toTopOf="@id/btn_cancel_coupon"
+        android:background="@drawable/bg_keyboard_key"
+        android:text="@string/text_cancel_promotion"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="@id/btn_cancel_coupon"
-        app:layout_constraintEnd_toStartOf="@id/btn_commit"/>
+        app:layout_constraintEnd_toStartOf="@id/btn_commit"
+        app:layout_constraintStart_toEndOf="@id/btn_cancel_coupon"
+        app:layout_constraintTop_toTopOf="@id/btn_cancel_coupon" />
 
     <Button
         android:id="@+id/btn_commit"
         android:layout_width="@dimen/x280"
         android:layout_height="@dimen/y92"
+        android:layout_marginStart="@dimen/x30"
         android:background="@drawable/bg_ripple_commit_btn"
         android:text="@string/text_commit_order"
+        android:textAllCaps="false"
         android:textColor="@color/color_text_white"
         android:textSize="@dimen/text_size_29"
         android:textStyle="bold"
-        android:layout_marginStart="@dimen/x30"
-        app:layout_constraintTop_toTopOf="@id/btn_cancel_coupon"
         app:layout_constraintBottom_toBottomOf="@id/btn_cancel_coupon"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btn_cancel_temp_promotion"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/btn_cancel_coupon" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

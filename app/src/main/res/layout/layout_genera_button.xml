@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/y20"
         android:gravity="center"
-        android:text="@string/no_goods_text"
+        android:text="@string/text_no_barcode_goods"
         android:textColor="@color/color_505050"
         android:textSize="@dimen/text_size_26"
         android:textStyle="bold"

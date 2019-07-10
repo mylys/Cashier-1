@@ -10,7 +10,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.easygo.cashier.Events;
 import com.easygo.cashier.R;
+import com.niubility.library.utils.EventUtils;
 import com.niubility.library.utils.ScreenUtils;
 import com.niubility.library.utils.ToastUtils;
 
@@ -33,7 +35,7 @@ public class DialogKeyboard extends ConstraintLayout {
     private TextView mTv0;
     private TextView mTv00;
     private TextView mTvPoint;
-    private TextView mTvSure;
+    private ConstraintLayout mTvSure;
     private LinearLayout mTvBack;
 
     private TextView[] mTvs;
@@ -54,7 +56,7 @@ public class DialogKeyboard extends ConstraintLayout {
     }
 
     private void initView(final Context context) {
-        mView = LayoutInflater.from(context).inflate(R.layout.layout_dialog_keyboard_view, this, true);
+        mView = LayoutInflater.from(context).inflate((Events.LANGUAGE.equals("en") ? R.layout.layout_dialog_keyboard_view_en : R.layout.layout_dialog_keyboard_view), this, true);
         mTv1 = mView.findViewById(R.id.tv_1);
         mTv2 = mView.findViewById(R.id.tv_2);
         mTv3 = mView.findViewById(R.id.tv_3);

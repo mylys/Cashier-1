@@ -40,7 +40,7 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
     CheckBox cbLocalOrder;
 
     private OrderHistoryDetailFragment orderHistoryDetailFragment;
-    private OrderHistoryAdapter adapter = new OrderHistoryAdapter();
+    private OrderHistoryAdapter adapter;
     private SharedPreferences sp;
     int handover_id = -1;
 
@@ -79,6 +79,7 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
         sp = SharedPreferencesUtils.getInstance().getSharedPreferences(getActivity());
         handover_id = sp.getInt(Constants.KEY_HANDOVER_ID, -1);
 
+        adapter = new OrderHistoryAdapter();
         rvOrderHistory.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvOrderHistory.setAdapter(adapter);
 
@@ -96,7 +97,7 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
         cbLocalOrder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                is_local_order = isChecked? 1: 0;
+                is_local_order = isChecked ? 1 : 0;
                 toRefresh();
             }
         });
@@ -116,10 +117,17 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
             }
         });
 
-        adapter.setOnItemClickListener(new OrderHistoryAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClck(int position) {
-                orderHistoryDetailFragment.showOrderHistory(adapter.getData().get(position));
+            public void onItemClick(BaseQuickAdapter quickAdapter, View view, int position) {
+                if (!adapter.getData().get(position).isSelect()) {
+                    for (OrderHistorysInfo info : adapter.getData()) {
+                        info.setSelect(false);
+                    }
+                    adapter.getData().get(position).setSelect(true);
+                    adapter.notifyDataSetChanged();
+                    orderHistoryDetailFragment.showOrderHistory(adapter.getData().get(position));
+                }
             }
         });
 
@@ -128,7 +136,7 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
             public void onSearch(String content) {
                 page = 1;
                 isSearch = content.length() != 0;
-                if(isSearch) {
+                if (isSearch) {
                     clSearch.startLoading();
                 }
                 mPresenter.post(handover_id, content.length() == 0 ? null : content, page, pageCount, is_local_order);
@@ -172,7 +180,7 @@ public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContrac
                         orderHistoryDetailFragment.showOrderHistory(orderHistorysInfo.get(0));
                     }
                 }
-                if (isSearch){
+                if (isSearch) {
                     adapter.loadMoreEnd();
                     clSearch.stopLoading();
                 }

@@ -11,6 +11,8 @@ import android.view.Display;
 import android.view.View;
 import android.widget.TextView;
 
+import com.easygo.cashier.Configs;
+import com.easygo.cashier.Events;
 import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.adapter.UserGoodsAdapter;
@@ -50,6 +52,26 @@ public class UserGoodsScreen extends Presentation {
     TextView tvTextMember;
     @BindView(R.id.cl_pay_successful)
     ConstraintLayout clPaySuccessful;
+    @BindView(R.id.tv_text_goods_name)
+    TextView tvTextGoodsName;
+    @BindView(R.id.tv_text_price)
+    TextView tvTextPrice;
+    @BindView(R.id.tv_text_coupon)
+    TextView tvTextCoupon;
+    @BindView(R.id.tv_text_subtotal)
+    TextView tvTextSubtotal;
+    @BindView(R.id.tv_text_goods_count)
+    TextView tvTextGoodsCount;
+    @BindView(R.id.tv_description)
+    TextView tvDescription;
+    @BindView(R.id.tv_num)
+    TextView tvNum;
+    @BindView(R.id.tv_total_cash)
+    TextView tvTotalCash;
+    @BindView(R.id.tv_coupon)
+    TextView tvCoupon;
+    @BindView(R.id.tv_total_num)
+    TextView tvTotalNum;
     private UserGoodsAdapter mUserGoodsAdapter;
     private String admin_name;
 
@@ -69,7 +91,7 @@ public class UserGoodsScreen extends Presentation {
     }
 
     private void init() {
-        titleBar.setCashierAccount(admin_name);
+        titleBar.setCashierAccount(String.valueOf(Configs.cashier_id));
 
         ObjectAnimator.ofFloat(clPaySuccessful, "alpha", 0f)
                 .setDuration(0)
@@ -87,6 +109,7 @@ public class UserGoodsScreen extends Presentation {
         verticalDecoration.setDrawable(getResources().getDrawable(R.drawable.bg_item_decoration_vertical));
         recyclerView.addItemDecoration(verticalDecoration);
 
+        setLanguage();
     }
 
     public void refreshPrice(int goods_count, float total_money, float coupon, float real_pay) {
@@ -101,30 +124,30 @@ public class UserGoodsScreen extends Presentation {
     }
 
     public void clear() {
-        if(mUserGoodsAdapter != null)
+        if (mUserGoodsAdapter != null)
             mUserGoodsAdapter.clear();
     }
 
     //更新位置到最后
     public void toPosition() {
-        if(recyclerView != null && mUserGoodsAdapter != null)
-            recyclerView.smoothScrollToPosition(mUserGoodsAdapter.getData().size()-1);
+        if (recyclerView != null && mUserGoodsAdapter != null)
+            recyclerView.smoothScrollToPosition(mUserGoodsAdapter.getData().size() - 1);
     }
 
     public void notifyAdapter() {
         mUserGoodsAdapter.notifyDataSetChanged();
     }
 
-    public void setMemberVisiable(boolean visiable){
+    public void setMemberVisiable(boolean visiable) {
         tvTextMember.setVisibility(visiable ? View.VISIBLE : View.GONE);
     }
 
-    public void setCoupon(String coupon){
+    public void setCoupon(String coupon) {
         tvProductPreferential.setText("￥" + coupon);
     }
 
     public void showCurrentActivities(List<String> data) {
-        activitiesView.setVisibility(data != null && data.size() > 0 ? View.VISIBLE: View.GONE);
+        activitiesView.setVisibility(data != null && data.size() > 0 ? View.VISIBLE : View.GONE);
         activitiesView.setData(data);
     }
 
@@ -137,5 +160,29 @@ public class UserGoodsScreen extends Presentation {
         ObjectAnimator.ofFloat(clPaySuccessful, "alpha", 0f, 1f, 1f, 1f, 0f)
                 .setDuration(2500)
                 .start();
+    }
+
+    private void setLanguage() {
+        String language = Events.LANGUAGE;
+        tvBarcode.setText(language.equals("zh-tw") ? "條碼" : language.equals("en") ? "Barcode" : "条码");
+        tvTextGoodsName.setText(language.equals("zh-tw") ? "品名" : language.equals("en") ? "Product Name" : "品名");
+        tvTextPrice.setText(language.equals("zh-tw") ? "單價" : language.equals("en") ? "Unit Price" : "单价");
+        tvTextMember.setText(language.equals("zh-tw") ? "會員價" : language.equals("en") ? "Member price" : "会员价");
+        tvTextCoupon.setText(language.equals("zh-tw") ? "優惠" : language.equals("en") ? "Offer" : "优惠");
+        tvTextSubtotal.setText(language.equals("zh-tw") ? "小計" : language.equals("en") ? "Subtotal" : "小计");
+        tvTextGoodsCount.setText(language.equals("zh-tw") ? "數量/重量" : language.equals("en") ? "Quantity" : "数量/重量");
+        tvDescription.setText(language.equals("zh-tw") ? "支付成功" : language.equals("en") ? "Pay Success" : "支付成功");
+        tvNum.setText(language.equals("zh-tw") ? "件數" : language.equals("en") ? "Number" : "件数");
+        tvTotalCash.setText(language.equals("zh-tw") ? "總額" : language.equals("en") ? "Lump Sum" : "总额");
+        tvCoupon.setText(language.equals("zh-tw") ? "優惠" : language.equals("en") ? "Offer" : "优惠");
+        tvTotalNum.setText(language.equals("zh-tw") ? "合計：" : language.equals("en") ? "Total：" : "合计：");
+        switch (language) {
+            case "zh-tw":
+                activitiesView.language("取消臨時折扣", "正在參與活動：");
+                break;
+            case "en":
+                activitiesView.language("Cancel temporary discount", "Participating in the event：");
+                break;
+        }
     }
 }

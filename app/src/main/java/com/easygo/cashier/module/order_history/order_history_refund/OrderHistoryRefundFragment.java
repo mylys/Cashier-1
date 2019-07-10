@@ -25,6 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.easygo.cashier.Configs;
+import com.easygo.cashier.Events;
+import com.easygo.cashier.MyApplication;
 import com.easygo.cashier.R;
 import com.easygo.cashier.TestUtils;
 import com.easygo.cashier.adapter.OrderHistoryRefundAdapter;
@@ -231,7 +233,11 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
             btnRefund.setBackgroundResource(R.drawable.bg_btn_enable_commit);
             tvRefundcashPrice.setInputType(InputType.TYPE_NULL);
         }
-        tvRefundcashNum.setText("共退货" + adapter.getTotalNum() + "件，退款金额：￥");
+        if (Events.LANGUAGE.equals("en")) {
+            tvRefundcashNum.setText(adapter.getTotalNum() + " In " + getString(R.string.text_total_refund_price));
+        } else {
+            tvRefundcashNum.setText(getString(R.string.text_total_refund_product) + adapter.getTotalNum() + getString(R.string.text_total_refund_price));
+        }
         setListener();
 
         recyclerView.post(new Runnable() {
@@ -256,7 +262,11 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
 
             @Override
             public void onListener() {
-                tvRefundcashNum.setText(getResources().getString(R.string.text_total_refund_product) + adapter.getTotalNum() + getResources().getString(R.string.text_total_refund_price));
+                if (Events.LANGUAGE.equals("en")) {
+                    tvRefundcashNum.setText(adapter.getTotalNum() + " In " + getString(R.string.text_total_refund_price));
+                } else {
+                    tvRefundcashNum.setText(getString(R.string.text_total_refund_product) + adapter.getTotalNum() + getString(R.string.text_total_refund_price));
+                }
                 tvRefundcashPrice.setText(adapter.getTotalPrice());
 
                 float refund = adapter.getRatioRefund(real_pay);
@@ -354,7 +364,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
     public void onViewClicked() {
         if (refund_status == 1 && have_refund == 0) {//订单有退过款，商品没有退过款
             //无退货 退过款
-            showToast("此订单已退过款");
+            showToast(getString(R.string.text_already_refund));
             return;
         }
 
@@ -363,16 +373,16 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         }
         float price = Float.parseFloat(tvRefundcashPrice.getText().toString());
         if (price == 0) {
-            showToast("退款金额不能为0");
+            showToast(getString(R.string.text_refund_money_not_zero));
             return;
         }
         float edit_price = Float.valueOf(tvRefundcashPrice.getText().toString().trim());
 
         if (edit_price > real_pay) {
-            showToast("输入金额不能大于订单实收金额");
+            showToast(getString(R.string.text_money_connot_greate_than_received_amount));
             return;
         } else if (edit_price > Float.valueOf(adapter.getTotalPrice())) {
-            showToast("输入金额不能大于所选商品总额");
+            showToast(getString(R.string.text_money_connot_select_goods_amount));
             return;
         }
         Bundle bundle = ConfirmDialog.getDataBundle(adapter.getTotalNum() + "", price, pay_type, false, "退货：", "实退：");
@@ -522,11 +532,11 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
         obj.refund = tvRefundcashPrice.getText().toString();
         obj.pop_till = pay_type.equals(getString(R.string.pay_cash));
 
-        PrinterUtils.getInstance().print(PrinterHelpter.orderHistroyRefund(obj));
+        PrinterUtils.getInstance().print(PrinterHelpter.orderHistroyRefund(getActivity(), obj));
         if (printHistory == null) {
             printHistory = new PrintHistory();
         }
-        printHistory.printRefund(obj);
+        printHistory.printRefund(getActivity(), obj);
     }
 
     @Override
@@ -545,7 +555,7 @@ public class OrderHistoryRefundFragment extends BaseAppMvpFragment<OrderHistoryR
 
     @Override
     public void popTillFailed(Map<String, Object> map) {
-        showToast("弹出钱箱失败");
+        showToast(getString(R.string.text_cash_box_failed));
     }
 
     @Override

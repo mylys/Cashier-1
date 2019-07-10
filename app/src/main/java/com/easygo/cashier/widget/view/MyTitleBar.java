@@ -174,8 +174,8 @@ public class MyTitleBar extends ConstraintLayout {
     }
 
     public void setCashierAccount(String account) {
-        mCashierAccount.setText("收银员：" + account);
-        mCashierAccountRight.setText("收银员：" + account);
+        mCashierAccount.setText(getResources().getString(R.string.text_cashier) + account);
+        mCashierAccountRight.setText(getResources().getString(R.string.text_cashier) + account);
     }
 
     public void showRightAccount(boolean isShow) {

@@ -2,18 +2,29 @@
     <string name="app_name">EG收银系统</string>
 
     <string name="text_login">登录</string>
+    <string name="text_app_name">收银系统</string>
 
-    <!--主页面-->
-    <string name="text_no_barcode_goods">无码商品</string>
+    <!-- loading -->
+    <string name="text_handovering">交接中...</string>
+    <string name="text_loading">加载中...</string>
 
     <!-- 备用金 -->
     <string name="text_petty_cash">备用金</string>
     <string name="hint_petty_cash">请输入备用金金额</string>
 
+    <!--语言设置-->
+    <string name="text_simplified">简体中文</string>
+    <string name="text_traditional">繁体中文</string>
+    <string name="text_english">English</string>
+
+    <string name="text_no_barcode_goods">无码商品</string>
+    <string name="text_no_barcode_good">无码商品</string>
     <string name="text_barcode">条码</string>
     <string name="text_goods_name">品名</string>
     <string name="text_price">单价</string>
     <string name="text_coupon">优惠</string>
+    <string name="text_coupon_1">优惠：￥</string>
+    <string name="text_coupon_2">优惠：</string>
     <string name="text_subtotal">小计</string>
     <string name="text_count">数量</string>
     <string name="text_count_weight">数量/重量</string>
@@ -22,9 +33,11 @@
     <string name="text_total">合计: </string>
     <string name="text_goods_count">件数</string>
     <string name="text_total_money">总额</string>
+    <string name="text_total_money_1">总额：￥</string>
     <string name="text_clear">清空</string>
     <string name="text_settlement">收银</string>
     <string name="text_refund">退款</string>
+    <string name="text_refund_1">退款：￥</string>
     <string name="text_return_of_goods">退货</string>
     <string name="text_cancel">取消</string>
     <string name="text_confirm">确认</string>
@@ -42,7 +55,6 @@
     <string name="hint_change_price">请输入更改价格</string>
     <string name="text_free_order">免单</string>
     <string name="text_cancel_temp_promotion">取消临时折扣</string>
-
 
     <!--会员-->
     <string name="text_member">会员</string>
@@ -93,7 +105,6 @@
     <string name="text_receipts_colon">实收：</string>
     <string name="text_refund_orders">退款</string>
 
-
     <string name="text_scan_code">请扫描收款码</string>
     <string name="text_scanning_code">正在识别二维码</string>
     <string name="text_successful_receipt">收款成功</string>
@@ -127,6 +138,7 @@
 
     <!-- 退款 -->
     <string name="text_total_refund_product">共退货</string>
+    <string name="text_total_refund">共退款：</string>
     <string name="text_total_refund_price">件，退款金额：￥ </string>
 
     <!--搜索框-->
@@ -138,7 +150,6 @@
     <string name="search_null">搜索不到该商品</string>
 
     <!-- dialog -->
-    <string name="no_goods_text">无码商品</string>
     <string name="input_price">请输入商品金额</string>
 
     <string name="text_confirm_commit_order">确认提交交易?</string>
@@ -202,7 +213,6 @@
     <string name="text_dialog_cancel">取消</string>
     <string name="text_dialog_submit">确定</string>
 
-    <!-- 通用列表dialog -->
     <!-- 货币符号item-->
     <string name="text_genera_list_follow_system">跟随系统</string>
     <string name="text_genera_money">￥</string>
@@ -267,9 +277,6 @@
     <string name="text_choose_goods">请选择商品</string>
     <string name="text_weight_smaller_zero">重量不能小于0</string>
     <string name="text_no_stable">称重数值不稳定</string>
-    <string name="text_simplified">简体中文</string>
-    <string name="text_traditional">繁体中文</string>
-    <string name="text_english">English</string>
     <string name="text_clear_goods">请先清除商品</string>
     <string name="text_password_error">密码不正确!</string>
     <string name="text_cannot_empty">账号密码不能为空</string>
@@ -329,11 +336,80 @@
     <string name="text_total_gong">共</string>
     <string name="text_piece">件</string>
     <string name="text_handover_success">交接成功</string>
-    <string name="text_handovering">交接中...</string>
     <string name="text_login_offline">登录（离线）</string>
     <string name="text_login_success">登录成功：</string>
     <string name="text_login_offline_mode">登录离线模式？</string>
     <string name="text_username_empty">账号不能为空！</string>
     <string name="text_password_empty">密码不能为空！</string>
+    <string name="text_no_goods_into_order">订单没有商品</string>
+    <string name="text_already_refund">此订单已退过款</string>
+    <string name="text_all_goods_refund">此订单中所有商品已退过款</string>
+    <string name="text_real_pay">实付：</string>
+
+    <!--符号-->
+    <string name="text_symbol1"> - </string>
+    <string name="text_symbol2">：</string>
+    <string name="text_symbol3">-￥</string>
+
+    <string name="text_check_this_machine_order">只看本机历史订单</string>
+    <string name="text_refund_money_not_zero">退款金额不能为0</string>
+    <string name="text_money_connot_greate_than_received_amount">输入金额不能大于订单实收金额</string>
+    <string name="text_money_connot_select_goods_amount">输入金额不能大于所选商品总额</string>
+    <string name="text_cash_box_failed">弹出钱箱失败</string>
+    <string name="text_full_retreat">全退</string>
+    <string name="text_submit">确定提交</string>
+    <string name="input_amount_actually_paid">请输入实付金额</string>
+    <string name="text_9">9折</string>
+    <string name="text_8">8折</string>
+    <string name="text_7">7折</string>
+    <string name="text_6">6折</string>
+    <string name="text_setting_quick_goods">请到店铺后台设置商品</string>
+    <string name="text_permission_white_of_read">未获得读写文件权限，即将退出！</string>
+    <string name="text_permission_vice_screen">未获得副屏显示权限，即将退出！</string>
+    <string name="text_input_phone_number">请输入正确的手机号/会员卡号</string>
+    <string name="text_configuration">请先配置id、secret</string>
+    <string name="text_input_username">输入你的账号</string>
+    <string name="text_input_password">输入你的密码</string>
+    <string name="text_temporary_promotion">临时商品促销</string>
+
+    <!--打印-->
+    <string name="print_order_number">订单号：</string>
+    <string name="print_time">时间：</string>
+    <string name="print_cashier">收银员：</string>
+    <string name="print_list_title">品名  单价  优惠  数量  小计</string>
+    <string name="print_total_number">总数量：</string>
+    <string name="print_original_money">原价：</string>
+    <string name="print_total_offer">优惠：</string>
+    <string name="print_total_money">总金额：</string>
+    <string name="print_pay_type">支付方式：</string>
+    <string name="print_gift_card">礼品卡：</string>
+    <string name="print_paid_amount">实收：</string>
+    <string name="print_change">找零：</string>
+    <string name="print_member_wallet_pay">会员钱包支付</string>
+    <string name="text_gift_card_pay">礼品卡支付</string>
+    <string name="text_pay">支付</string>
+    <string name="print_scan_code_invoice">--扫码开具发票--</string>
+    <string name="print_handover">交接班单据</string>
+    <string name="print_login_time">登录时间：</string>
+    <string name="print_login_out_time">登出时间：</string>
+    <string name="print_total_document">总单据数：</string>
+    <string name="print_sale_order">销售单：</string>
+    <string name="print_return_order">退货单：</string>
+    <string name="print_total_sale">总销售额：</string>
+    <string name="print_cash">现金：</string>
+    <string name="print_alipay">支付宝：</string>
+    <string name="print_wechat">微信：</string>
+    <string name="print_member_wallet">会员钱包：</string>
+    <string name="print_unionpay">银联：</string>
+    <string name="print_total_refund">总退款金额：</string>
+    <string name="print_total_cash">总现金数：</string>
+    <string name="print_cash_income">现金收入：</string>
+    <string name="print_paid_amount_money">实收金额：</string>
+    <string name="print_change_money">找零金额：</string>
+    <string name="print_refund_cash">退款现金：</string>
+    <string name="print_refund">退款：</string>
+    <string name="print_refund_order">退款单</string>
+    <string name="print_refund_type">退款方式：</string>
+    <string name="print_refund_money">退款金额：</string>
 
 </resources>
