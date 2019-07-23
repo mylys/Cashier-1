@@ -14,8 +14,8 @@ android {
         applicationId "com.easygo.cashier"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 23
-        versionName "1.3.7"
+        versionCode 24
+        versionName "1.3.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -32,20 +32,20 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             //Zipalign优化
-            zipAlignEnabled true
+            zipAlignEnabled false
             // 移除无用的resource文件
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'D:/_Android/WorkSpace/BaseLibrary/niubilitylibrary/proguard-rules-common.pro'
         }
         debug {
-            minifyEnabled true
+            minifyEnabled false
             //Zipalign优化
-            zipAlignEnabled true
+            zipAlignEnabled false
             // 移除无用的resource文件
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'D:/_Android/WorkSpace/BaseLibrary/niubilitylibrary/proguard-rules-common.pro'
+            shrinkResources false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'D:/_Android/WorkSpace/BaseLibrary/niubilitylibrary/proguard-rules-common.pro'
             signingConfig signingConfigs.config
         }
     }

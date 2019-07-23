@@ -22,7 +22,7 @@ public class TestUtils {
         int lastHeight = 0;
         int lastBottom = -1;
 
-        SoftKeyBoardListener(View r,View v) {
+        SoftKeyBoardListener(View r, View v) {
             root = r;
             view = v;
         }
@@ -46,8 +46,7 @@ public class TestUtils {
                 int scrollHeight = (location[1] + view.getHeight()) - nb;
                 root.scrollTo(0, scrollHeight);
                 lastHeight = scrollHeight;
-            }
-            else if (nb > ob) {
+            } else if (nb > ob) {
                 // 键盘隐藏了, 滑下来
                 root.scrollTo(0, 0);
             }
@@ -58,8 +57,8 @@ public class TestUtils {
         }
     }
 
-    public void removeSoftKeyBoardListener(@NonNull View root) {
-        if(mSoftKeyBoardListener != null){
+    public void removeSoftKeyBoardListener(View root) {
+        if (mSoftKeyBoardListener != null && root != null) {
             root.getViewTreeObserver().removeOnGlobalLayoutListener(mSoftKeyBoardListener);
         }
     }

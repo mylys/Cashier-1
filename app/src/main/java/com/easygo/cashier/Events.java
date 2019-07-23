@@ -10,4 +10,12 @@ public class Events {
     public static final String MEMBER_INFO = "MEMBER_INFO";
     public static final String QUICK_CHOOSE = "QUICK_CHOOSE";
     public static final String REFRESH_DATA = "REFRESH_DATA";
+
+    public static final String SUCCESS = "SUCCESS";
+    public static final String FAIL = "FAIL";
+    public static final String QUERY_FAIL = "query_fail";
+    public static final String PAY_FAIL = "pay_fail";
+    public static final String ORDER_NO_EXIST = "order no exist";
+    public static final String ORDER_PAID_OR_CLOSE = "order paid or closed";
+    public static final String INVALID_CODE = "invalid payment code";
 }

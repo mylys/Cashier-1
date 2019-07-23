@@ -17,6 +17,7 @@ import com.easygo.cashier.bean.OrderHistorysInfo;
 import com.easygo.cashier.bean.PrinterStatusResponse;
 import com.easygo.cashier.bean.QuickInfo;
 import com.easygo.cashier.bean.ShopActivityResponse;
+import com.easygo.cashier.bean.WxPayResult;
 import com.niubility.library.http.result.HttpResult;
 
 import java.util.List;
@@ -112,7 +113,7 @@ public interface HttpService {
      */
     @FormUrlEncoded
     @POST("api/v1/cashier/pay/wechat")
-    Observable<HttpResult<String>> wechatPay(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
+    Observable<HttpResult<WxPayResult>> wechatPay(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
 
     /**
      * 检测微信支付状态
@@ -120,7 +121,7 @@ public interface HttpService {
      */
     @FormUrlEncoded
     @POST("api/v1/cashier/pay/wechat")
-    Observable<HttpResult<String>> checkWechatPayStatus(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
+    Observable<HttpResult<WxPayResult>> checkWechatPayStatus(@HeaderMap Map<String, String> header, @FieldMap Map<String, Object> map);
 
 
     /**
