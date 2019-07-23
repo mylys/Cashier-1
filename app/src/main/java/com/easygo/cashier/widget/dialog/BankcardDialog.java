@@ -74,23 +74,18 @@ public class BankcardDialog extends MyBaseDialog implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.cl_close:
+                if (listener != null){
+                    listener.onCancel();
+                }
                 dismiss();
                 break;
-        }
-    }
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
-        if(listener != null) {
-            listener.onClose();
         }
     }
 
     OnDialogClickListener listener;
 
     public interface OnDialogClickListener {
-        void onClose();
+        void onCancel();
     }
 
     public void setOnDialogListener(OnDialogClickListener listener) {

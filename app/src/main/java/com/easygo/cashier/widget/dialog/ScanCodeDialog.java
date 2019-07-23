@@ -52,6 +52,9 @@ public class ScanCodeDialog extends MyBaseDialog {
         mClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mListener != null){
+                    mListener.onCancel();
+                }
                 dismiss();
             }
         });
@@ -207,6 +210,8 @@ public class ScanCodeDialog extends MyBaseDialog {
     }
     public interface OnScanCodeListener {
         void onScanCode(String barcode);
+
+        void onCancel();
     }
 
     public void setStopScan(boolean stopScan) {

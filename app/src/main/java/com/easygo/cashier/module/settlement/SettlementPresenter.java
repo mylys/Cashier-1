@@ -7,6 +7,7 @@ import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GiftCardResponse;
 import com.easygo.cashier.bean.InitResponse;
+import com.easygo.cashier.bean.WxPayResult;
 import com.easygo.cashier.http.HttpAPI;
 import com.easygo.cashier.printer.PrintHelper;
 import com.niubility.library.http.base.HttpClient;
@@ -64,10 +65,10 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
 
         subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().wechatPay(header,  requestMap),
-                new BaseResultObserver<String>() {
+                new BaseResultObserver<WxPayResult>() {
 
                     @Override
-                    protected void onSuccess(String result) {
+                    protected void onSuccess(WxPayResult result) {
                         mView.wechatPaySuccess(result);
                     }
 
@@ -89,10 +90,10 @@ public class SettlementPresenter extends BasePresenter<SettlementContract.IView>
 
         subscribeAsyncToResult(
                 HttpAPI.getInstance().httpService().checkWechatPayStatus(header,  requestMap),
-                new BaseResultObserver<String>() {
+                new BaseResultObserver<WxPayResult>() {
 
                     @Override
-                    protected void onSuccess(String result) {
+                    protected void onSuccess(WxPayResult result) {
                         mView.checkWechatStatusSuccess(result);
                     }
 

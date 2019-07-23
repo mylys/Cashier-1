@@ -4,6 +4,7 @@ import com.easygo.cashier.bean.BankcardStatusResponse;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.CreateOderResponse;
 import com.easygo.cashier.bean.GiftCardResponse;
+import com.easygo.cashier.bean.WxPayResult;
 import com.niubility.library.mvp.BaseContract;
 import com.niubility.library.mvp.BaseView;
 
@@ -50,9 +51,9 @@ public class SettlementContract {
         void checkAlipayStatusSuccess(String result);
         void checkAlipayStatusFailed(Map<String, Object> map);
 
-        void wechatPaySuccess(String result);
+        void wechatPaySuccess(WxPayResult result);
         void wechatPayFailed(Map<String, Object> map);
-        void checkWechatStatusSuccess(String result);
+        void checkWechatStatusSuccess(WxPayResult result);
         void checkWechatStatusFailed(Map<String, Object> map);
 
 

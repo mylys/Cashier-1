@@ -1022,6 +1022,11 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
                             scanCodeDialog.setStopScan(true);
                             mPresenter.gift_card(barcode);
                         }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
                     });
                 }
                 setScanCodeDialogStatus(ScanCodeDialog.STATUS_SCAN_GIFT_CARD);
