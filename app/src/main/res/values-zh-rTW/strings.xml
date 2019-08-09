@@ -358,6 +358,7 @@
     <string name="text_cash_box_failed" >彈出錢箱失敗</string>
     <string name="text_full_retreat">全退</string>
     <string name="text_submit">確定提交</string>
+    <string name="text_determine">確定</string>
     <string name="input_amount_actually_paid">請輸入實付金額</string>
     <string name="text_9">9折</string>
     <string name="text_8">8折</string>

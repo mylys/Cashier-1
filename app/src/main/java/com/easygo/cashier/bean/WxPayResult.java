@@ -13,6 +13,15 @@ public class WxPayResult {
      * order paid or closed订单已支付或者已关单
      */
     private String result_msg;
+    private String result_desc;
+
+    public String getResult_desc() {
+        return result_desc;
+    }
+
+    public void setResult_desc(String result_desc) {
+        this.result_desc = result_desc;
+    }
 
     public String getResult_code() {
         return result_code;

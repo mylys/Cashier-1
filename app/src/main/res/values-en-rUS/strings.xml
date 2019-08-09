@@ -361,6 +361,7 @@
     <string name="text_cash_box_failed">Pop-up cash box failed</string>
     <string name="text_full_retreat">Full retreat</string>
     <string name="text_submit">Submit</string>
+    <string name="text_determine">Submit</string>
     <string name="input_amount_actually_paid">The amount actually paid</string>
     <string name="text_9">90</string>
     <string name="text_8">80</string>
