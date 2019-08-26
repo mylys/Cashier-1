@@ -548,6 +548,7 @@ public class LoginActivity extends BaseAppMvpActivity<LoginContract.IView, Login
     @Override
     public void save(InitResponse result) {
         Configs.shop_sn = result.getShop().getShop_sn();
+        Configs.shop_id = result.getShop().getShop_id();
         Configs.shop_name = result.getShop().getShop_name();
         Configs.is_reserve = result.getShop().getIs_reserve();
         Configs.refund_auth = result.getShop().getRefund_auth();

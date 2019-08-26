@@ -509,7 +509,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(mListener != null) {
-                    return mListener.onPromotionTouch(v, event, final_promotion_name);
+                    return mListener. onPromotionTouch(v, event, final_promotion_name);
                 }
                 return false;
             }

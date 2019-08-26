@@ -40,6 +40,7 @@ import com.easygo.cashier.module.status.StatusContract;
 import com.easygo.cashier.module.status.StatusPresenter;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.printer.local.PrinterUtils;
+import com.easygo.cashier.utils.CouponUtils;
 import com.easygo.cashier.widget.dialog.EquipmentstateDialog;
 import com.easygo.cashier.widget.dialog.FunctionListDialog;
 import com.easygo.cashier.widget.dialog.GeneraDialog;
@@ -541,6 +542,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
         if(connReceiver != null) {
             unregisterReceiver(connReceiver);
         }
+        CouponUtils.getInstance().setAllCoupons(null);
         mHandler.removeCallbacksAndMessages(null);
         PrinterUtils.getInstance().setOnPrinterListener(null);
         PrinterUtils.getInstance().unregisterReceiver(this);

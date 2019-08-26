@@ -33,6 +33,10 @@ public class Configs extends BaseConfig {
      */
     public static String shop_sn;
     /**
+     * 门店id
+     */
+    public static int shop_id;
+    /**
      * 门店名称
      */
     public static String shop_name;

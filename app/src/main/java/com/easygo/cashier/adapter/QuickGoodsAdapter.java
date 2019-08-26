@@ -54,7 +54,7 @@ public class QuickGoodsAdapter extends BaseQuickAdapter<GoodsResponse, BaseViewH
                 if (listener != null){
                     listener.onItemClick(helper.getLayoutPosition());
                 }
-                notifyItemChanged(helper.getLayoutPosition());
+                notifyDataSetChanged();
             }
         });
     }
