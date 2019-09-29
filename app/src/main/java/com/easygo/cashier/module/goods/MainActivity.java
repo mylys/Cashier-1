@@ -9,8 +9,8 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +41,7 @@ import com.easygo.cashier.module.status.StatusPresenter;
 import com.easygo.cashier.printer.PrintHelper;
 import com.easygo.cashier.printer.local.PrinterUtils;
 import com.easygo.cashier.utils.CouponUtils;
+import com.easygo.cashier.utils.MemberUtils;
 import com.easygo.cashier.widget.dialog.EquipmentstateDialog;
 import com.easygo.cashier.widget.dialog.FunctionListDialog;
 import com.easygo.cashier.widget.dialog.GeneraDialog;
@@ -568,6 +569,7 @@ public class MainActivity extends BaseAppMvpActivity<StatusContract.IView, Statu
                 break;
             case Events.MEMBER_INFO://设置会员信息
                 MemberInfo info = (MemberInfo) event.getObject();
+                MemberUtils.isSuperMember = info.getLevel().equals("super_vip");
                 goodsFragment.updateMemberInfo(info);
                 break;
             case Events.QUICK_CHOOSE://快速选择

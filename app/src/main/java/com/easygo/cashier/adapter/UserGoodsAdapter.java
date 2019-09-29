@@ -48,7 +48,7 @@ public class UserGoodsAdapter extends GoodsMultiItemAdapter {
             subtotal = 0;
         }
 
-        helper.getView(R.id.tv_member_price).setVisibility(MemberUtils.isMember ? View.VISIBLE : View.GONE);
+        helper.getView(R.id.tv_member_price).setVisibility(MemberUtils.isMember && MemberUtils.isSuperMember ? View.VISIBLE : View.GONE);
         helper.setText(R.id.tv_barcode, barcode)
                 .setText(R.id.tv_goods_name, good.getG_sku_name())
                 .setText(R.id.tv_price, String.valueOf(price))

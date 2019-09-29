@@ -274,7 +274,7 @@
 
 
     <!--历史订单商品详情-->
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_goods"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -289,6 +289,6 @@
         app:layout_constraintVertical_bias="1.0"
         tools:listitem="@layout/recycler_view_item">
 
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,14 +1,11 @@
 package com.easygo.cashier.widget.dialog;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
-import com.niubility.library.base.BaseDialog;
 
 /**
  * @Describe：

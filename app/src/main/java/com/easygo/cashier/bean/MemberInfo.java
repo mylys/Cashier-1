@@ -41,8 +41,17 @@ public class MemberInfo {
     private String union_id;
     private String phone;
     private String nick_name;
+    private String level;
     private int is_member;
     private List<CouponResponse> coupons;
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
 
     public int getMember_id() {
         return member_id;

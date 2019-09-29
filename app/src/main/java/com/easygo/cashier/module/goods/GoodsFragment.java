@@ -7,19 +7,19 @@ import android.graphics.drawable.ColorDrawable;
 import android.hardware.display.DisplayManager;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -570,8 +570,9 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
 
             with_coupon = ActivitiesUtils.getInstance().isWith_coupon();
         }
-        //判断是否有会员
-        if (MemberUtils.isMember) {
+        //TODO:新逻辑---判断是否为超级会员 才可以使用会员价等一系列优惠
+        // 判断是否有会员
+        if (MemberUtils.isMember && MemberUtils.isSuperMember) {
 
             //计算会员价、日、折扣
             MemberUtils.computeMember(mData);
@@ -1401,6 +1402,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
             membersDialog.setNewData(infos);
         } else {
             MemberUtils.memberInfo = memberInfo;
+            MemberUtils.isSuperMember = memberInfo.getLevel().equals("super_vip");
             updateMemberInfo(memberInfo);
         }
 
@@ -1590,6 +1592,9 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
     }
 
     public void updateMemberInfo(MemberInfo info) {
+        if (info == null){
+            MemberUtils.isSuperMember = false;
+        }
         setMemberVisiable(info != null);
         clExtraInfo.setMemberData(info);
 
@@ -1608,7 +1613,7 @@ public class GoodsFragment extends BaseAppMvpFragment<GoodsContract.IView, Goods
      * @param visiable
      */
     public void setMemberVisiable(boolean visiable) {
-        tvMemberText.setVisibility(visiable ? View.VISIBLE : View.GONE);
+        tvMemberText.setVisibility(visiable && MemberUtils.isSuperMember ? View.VISIBLE : View.GONE);
         if (mUserGoodsScreen != null) {
             mUserGoodsScreen.setMemberVisiable(visiable);
         }

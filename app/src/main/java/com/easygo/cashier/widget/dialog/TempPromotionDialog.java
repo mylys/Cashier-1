@@ -1,13 +1,10 @@
 package com.easygo.cashier.widget.dialog;
 
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
@@ -15,7 +12,6 @@ import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.module.promotion.base.IPromotion;
 import com.easygo.cashier.widget.view.DialogKeyboard;
-import com.niubility.library.base.BaseDialog;
 import com.niubility.library.utils.ToastUtils;
 
 import java.util.List;

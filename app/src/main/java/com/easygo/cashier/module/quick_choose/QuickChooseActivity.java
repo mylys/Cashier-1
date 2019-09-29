@@ -1,10 +1,10 @@
 package com.easygo.cashier.module.quick_choose;
 
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -190,6 +190,10 @@ public class QuickChooseActivity extends BaseAppMvpActivity<QuickChooseContract.
                 if (selectBean.size() == 0) {
                     showToast("请选择商品");
                     return;
+                }
+                //TODO:之前后端在快捷商品这一块有返回is_use_member_discount == 1，不知为什么就没返回了，导致快捷商品都无法享受会员固定折扣，前端手动添加
+                for (GoodsResponse item : selectBean){
+                    item.setIs_use_member_discount(1);
                 }
                 EventUtils.post(Events.QUICK_CHOOSE, selectBean);
                 finish();

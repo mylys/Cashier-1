@@ -84,7 +84,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cb_local_order" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -94,15 +94,15 @@
         app:layout_constraintTop_toBottomOf="@id/line2">
 
         <!--历史订单列表-->
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_order_history"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
     <!--历史订单详情-->

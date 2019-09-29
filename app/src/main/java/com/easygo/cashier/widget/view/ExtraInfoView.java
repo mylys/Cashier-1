@@ -142,7 +142,6 @@ public class ExtraInfoView extends ConstraintLayout {
             setHide(clMember);
         } else {
             MemberUtils.isMember = true;
-
             setShow(clMember);
             tvMember.setText(info.getNick_name());
             tvBalance.setText("￥" + df.format(info.getWallet()));

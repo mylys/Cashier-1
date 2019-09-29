@@ -1,15 +1,12 @@
 package com.easygo.cashier.widget.dialog;
 
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -20,7 +17,6 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.utils.SoftKeyboardUtil;
 import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.widget.view.DialogSearchView;
-import com.niubility.library.base.BaseDialog;
 import com.niubility.library.utils.EventUtils;
 
 import java.text.DecimalFormat;
@@ -81,7 +77,7 @@ public class ChooseMembersDialog extends MyBaseDialog {
             dialog_title.setText(title);
         }
 
-//        searchView.setContent("13662358320");
+//        searchView.setContent("13048061473");
 
         DividerItemDecoration verticalDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         verticalDecoration.setDrawable(getResources().getDrawable(R.drawable.bg_item_decoration_vertical));

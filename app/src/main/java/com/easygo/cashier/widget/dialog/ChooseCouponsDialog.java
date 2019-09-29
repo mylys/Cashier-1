@@ -1,8 +1,8 @@
 package com.easygo.cashier.widget.dialog;
 
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -11,15 +11,12 @@ import android.text.style.SubscriptSpan;
 import android.text.style.SuperscriptSpan;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.easygo.cashier.Configs;
 import com.easygo.cashier.adapter.GoodsEntity;
-import com.easygo.cashier.bean.GoodsRefundInfo;
 import com.easygo.cashier.bean.GoodsResponse;
 import com.easygo.cashier.utils.CouponUtils;
 import com.easygo.cashier.utils.MemberUtils;
@@ -27,12 +24,10 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.utils.SoftKeyboardUtil;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.widget.view.DialogSearchView;
-import com.niubility.library.base.BaseDialog;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 

@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--挂单列表-->
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_entry_orders"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -29,7 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 
     <!--挂单订单详情-->

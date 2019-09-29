@@ -1,17 +1,15 @@
 package com.easygo.cashier.widget.dialog;
 
 import android.content.DialogInterface;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.easygo.cashier.R;
 import com.easygo.cashier.utils.SoftKeyboardUtil;
-import com.niubility.library.base.BaseDialog;
 import com.niubility.library.utils.ToastUtils;
 
 import androidx.constraintlayout.widget.ConstraintLayout;

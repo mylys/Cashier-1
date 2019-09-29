@@ -1,6 +1,6 @@
 package com.easygo.cashier.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -9,11 +9,9 @@ import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.bean.Counpons;
 import com.easygo.cashier.bean.CouponResponse;
 import com.easygo.cashier.bean.GoodsResponse;
-import com.easygo.cashier.bean.MemberInfo;
 import com.easygo.cashier.module.promotion.base.PromotionGoods;
 import com.niubility.library.utils.GsonUtils;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

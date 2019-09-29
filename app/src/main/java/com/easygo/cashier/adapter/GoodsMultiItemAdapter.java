@@ -1,6 +1,6 @@
 package com.easygo.cashier.adapter;
 
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
@@ -333,7 +333,7 @@ public class GoodsMultiItemAdapter extends BaseMultiItemQuickAdapter<GoodsEntity
 
         BaseGoodsPromotion promotion = item.getPromotion();
 
-        helper.getView(R.id.tv_member_price).setVisibility(MemberUtils.isMember ? View.VISIBLE : View.GONE);
+        helper.getView(R.id.tv_member_price).setVisibility(MemberUtils.isMember && MemberUtils.isSuperMember ? View.VISIBLE : View.GONE);
         helper.setText(R.id.tv_barcode, barcode)
                 .setText(R.id.tv_goods_name, good.getG_sku_name())
                 .setText(R.id.tv_price, String.valueOf(price))

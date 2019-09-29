@@ -4,9 +4,9 @@ import android.animation.ObjectAnimator;
 import android.app.Presentation;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.Display;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +15,7 @@ import com.easygo.cashier.R;
 import com.easygo.cashier.adapter.GoodsEntity;
 import com.easygo.cashier.adapter.UserGoodsAdapter;
 import com.easygo.cashier.bean.GoodsResponse;
+import com.easygo.cashier.utils.MemberUtils;
 import com.easygo.cashier.widget.view.ActivitiesView;
 import com.easygo.cashier.widget.view.MyTitleBar;
 
@@ -116,7 +117,7 @@ public class UserGoodsScreen extends Presentation {
     }
 
     public void setMemberVisiable(boolean visiable){
-        tvTextMember.setVisibility(visiable ? View.VISIBLE : View.GONE);
+        tvTextMember.setVisibility(visiable && MemberUtils.isSuperMember ? View.VISIBLE : View.GONE);
     }
 
     public void setCoupon(String coupon){

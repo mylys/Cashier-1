@@ -1,11 +1,7 @@
 package com.easygo.cashier.module.order_history;
 
 import android.content.SharedPreferences;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -26,6 +22,10 @@ import com.niubility.library.utils.SharedPreferencesUtils;
 import java.util.List;
 import java.util.Map;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 
 public class OrderHistoryFragment extends BaseAppMvpFragment<OrderHistoryContract.IView, OrderHistoryPresenter> implements OrderHistoryContract.IView {

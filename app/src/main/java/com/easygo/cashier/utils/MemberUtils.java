@@ -57,6 +57,8 @@ public class MemberUtils {
     /* 会员固定折扣 活动id*/
     public static int discount_rc_id;
 
+    public static boolean isSuperMember = false;
+
     /**正在参与会员活动*/
     public static List<String> currentNames = new ArrayList<>();
 
@@ -206,6 +208,7 @@ public class MemberUtils {
 
     public static void reset() {
         isMember = false;
+        isSuperMember = false;
         isMemberDay = false;
         isMemberDiscount = false;
     }

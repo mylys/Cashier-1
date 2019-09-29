@@ -1,7 +1,6 @@
 package com.easygo.cashier;
 
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewTreeObserver;
 

@@ -19,7 +19,7 @@
 
     </com.easygo.cashier.widget.view.MyTitleBar>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_classify_list"
         android:layout_width="@dimen/x315"
         android:layout_height="0dp"
@@ -29,7 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cl_title" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_goods_list"
         android:layout_width="0dp"
         android:layout_height="0dp"

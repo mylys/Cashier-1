@@ -1,6 +1,6 @@
 package com.easygo.cashier.printer.local;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.concurrent.ThreadFactory;
 
