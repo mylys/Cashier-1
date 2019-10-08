@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_processing_goods_height"
+    android:background="@drawable/bg_goods">
+
+    <TextView
+        android:id="@+id/tv_barcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1234567890123"
+        style="@style/GoodsListStyle"
+        android:layout_marginStart="@dimen/margin_57"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/line" />
+
+    <TextView
+        android:id="@+id/tv_goods_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="农夫山泉"
+        style="@style/GoodsListStyle"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginStart="@dimen/margin_349"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_price"
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode"/>
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥6.00"
+        style="@style/GoodsListStyle"
+        android:layout_marginStart="@dimen/margin_830"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_member_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/GoodsListStyle"
+        android:layout_marginStart="@dimen/margin_1025"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
+
+    <TextView
+        android:id="@+id/tv_coupon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥0.00"
+        style="@style/GoodsListStyle"
+        android:layout_marginStart="@dimen/margin_1216"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
+
+    <TextView
+        android:id="@+id/tv_subtotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥6.00"
+        style="@style/GoodsListStyle"
+        android:layout_marginStart="@dimen/margin_1392"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/margin_1645"
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
+
+    <!--商品数量 可加减-->
+
+    <TextView
+        android:id="@+id/tv_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        style="@style/GoodsListStyle"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" />
+
+
+    <!--分割线-->
+    <View
+        android:id="@+id/line"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintStart_toStartOf="@id/tv_barcode"
+        app:layout_constraintEnd_toEndOf="@id/count_view"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+    <!--加工方式-->
+    <CheckBox
+        android:id="@+id/cb_processing"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="@string/text_is_processing"
+        style="@style/GoodsListStyle"
+        android:gravity="center_vertical"
+        android:button="@null"
+        android:drawableStart="@drawable/check_box"
+        android:drawablePadding="@dimen/x21"
+        android:paddingEnd="@dimen/x31"
+        app:layout_constraintStart_toStartOf="@id/line"
+        app:layout_constraintTop_toBottomOf="@id/line"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_processing"
+        android:layout_width="@dimen/x424"
+        android:layout_height="@dimen/y68"
+        android:visibility="visible"
+        android:background="@drawable/bg_frame_goods_processing"
+        app:layout_constraintTop_toTopOf="@id/cb_processing"
+        app:layout_constraintBottom_toBottomOf="@id/cb_processing"
+        app:layout_constraintStart_toStartOf="@id/tv_goods_name">
+
+        <TextView
+            android:id="@+id/tv_processing_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="龙虾-清蒸"
+            style="@style/GoodsListStyle"
+            android:layout_marginStart="@dimen/x27"
+            android:layout_marginEnd="@dimen/x27"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_more"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="@dimen/x25"
+            android:layout_height="@dimen/x25"
+            android:layout_marginEnd="@dimen/x22"
+            android:src="@drawable/ic_processing_more"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_processing_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥20.00"
+        style="@style/GoodsListStyle"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tv_price"
+        app:layout_constraintTop_toTopOf="@id/cb_processing"
+        app:layout_constraintBottom_toBottomOf="@id/cb_processing" />
+
+    <TextView
+        android:id="@+id/tv_processing_coupon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥0.00"
+        style="@style/GoodsListStyle"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tv_coupon"
+        app:layout_constraintTop_toTopOf="@id/cb_processing"
+        app:layout_constraintBottom_toBottomOf="@id/cb_processing" />
+
+    <TextView
+        android:id="@+id/tv_processing_subtotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥20.00"
+        style="@style/GoodsListStyle"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tv_subtotal"
+        app:layout_constraintTop_toTopOf="@id/cb_processing"
+        app:layout_constraintBottom_toBottomOf="@id/cb_processing" />
+
+    <TextView
+        android:id="@+id/tv_processing_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        style="@style/GoodsListStyle"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="@id/cb_processing"
+        app:layout_constraintBottom_toBottomOf="@id/cb_processing" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_remove"
+        android:layout_width="@dimen/x67"
+        android:layout_height="@dimen/y56"
+        android:layout_marginEnd="@dimen/x60"
+        android:foreground="?android:listChoiceBackgroundIndicator"
+        android:background="@drawable/bg_btn_remove"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_barcode"
+        app:layout_constraintBottom_toBottomOf="@id/tv_barcode" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:gravity="center"
+            style="@style/GoodsSettlementDetailStyle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--促销-->
+    <ImageView
+        android:id="@+id/iv_coupon"
+        android:layout_width="@dimen/coupon_icon_size"
+        android:layout_height="@dimen/coupon_icon_size"
+        android:src="@drawable/ic_promotion"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

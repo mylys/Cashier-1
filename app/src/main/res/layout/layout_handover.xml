@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y826"
+    android:background="@color/color_text_white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <!--总销售额-->
+    <TextView
+        android:id="@+id/tv_text_total_sales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_total_sales"
+        style="@style/HandoverTextStyle"
+        android:layout_marginTop="@dimen/y70"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_total_sales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/HandoverMoneyTextStyle"
+        android:layout_marginTop="@dimen/y45"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_text_total_sales"/>
+    
+    <View
+        android:id="@+id/line1"
+        android:layout_width="@dimen/x472"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y115"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_total_sales" />
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="@dimen/x472"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y70"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintTop_toBottomOf="@id/line1" />
+
+    <View
+        android:id="@+id/line3"
+        android:layout_width="@dimen/x472"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y70"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintTop_toBottomOf="@id/line2" />
+
+    <View
+        android:id="@+id/line4"
+        android:layout_width="@dimen/x472"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y70"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintTop_toBottomOf="@id/line3" />
+
+    <View
+        android:id="@+id/line5"
+        android:layout_width="@dimen/x472"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y70"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintTop_toBottomOf="@id/line4" />
+
+    <View
+        android:id="@+id/line6"
+        android:layout_width="@dimen/x472"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y70"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintTop_toBottomOf="@id/line5" />
+
+
+    <View
+        android:id="@+id/line7"
+        android:layout_width="@dimen/x472"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y70"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintTop_toBottomOf="@id/line6" />
+
+
+
+
+    <!--现金-->
+    <TextView
+        android:id="@+id/tv_text_cash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_cash"
+        style="@style/DetailTextStyle"
+        android:layout_marginStart="@dimen/y13"
+        android:layout_marginBottom="@dimen/y22"
+        app:layout_constraintStart_toStartOf="@id/line1"
+        app:layout_constraintBottom_toTopOf="@id/line1"/>
+
+    <TextView
+        android:id="@+id/tv_cash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/DetailTextStyle"
+        android:layout_marginEnd="@dimen/y13"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintTop_toTopOf="@id/tv_text_cash"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_cash"/>
+
+    <!--支付宝-->
+    <TextView
+        android:id="@+id/tv_text_alipay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_alipay"
+        style="@style/DetailTextStyle"
+        android:layout_marginBottom="@dimen/y22"
+        app:layout_constraintStart_toStartOf="@id/tv_text_cash"
+        app:layout_constraintBottom_toTopOf="@id/line2"/>
+
+    <TextView
+        android:id="@+id/tv_alipay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/DetailTextStyle"
+        app:layout_constraintEnd_toEndOf="@id/tv_cash"
+        app:layout_constraintTop_toTopOf="@id/tv_text_alipay"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_alipay"/>
+
+    <!--微信-->
+    <TextView
+        android:id="@+id/tv_text_wechat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_wechat"
+        style="@style/DetailTextStyle"
+        android:layout_marginBottom="@dimen/y22"
+        app:layout_constraintStart_toStartOf="@id/tv_text_cash"
+        app:layout_constraintBottom_toTopOf="@id/line3"/>
+
+    <TextView
+        android:id="@+id/tv_wechat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/DetailTextStyle"
+        app:layout_constraintEnd_toEndOf="@id/tv_cash"
+        app:layout_constraintTop_toTopOf="@id/tv_text_wechat"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_wechat"/>
+
+    <!--会员钱包-->
+    <TextView
+        android:id="@+id/tv_text_member"
+        style="@style/DetailTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_member_package"
+        android:layout_marginBottom="@dimen/y22"
+        app:layout_constraintStart_toStartOf="@id/tv_text_cash"
+        app:layout_constraintBottom_toTopOf="@id/line4" />
+
+    <TextView
+        android:id="@+id/tv_member"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/DetailTextStyle"
+        app:layout_constraintEnd_toEndOf="@id/tv_cash"
+        app:layout_constraintTop_toTopOf="@id/tv_text_member"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_member"/>
+
+
+
+    <!--银联-->
+    <TextView
+        android:id="@+id/tv_text_bank_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_bank_card"
+        style="@style/DetailTextStyle"
+        android:layout_marginBottom="@dimen/y22"
+        app:layout_constraintStart_toStartOf="@id/tv_text_cash"
+        app:layout_constraintBottom_toTopOf="@id/line5"/>
+
+    <TextView
+        android:id="@+id/tv_bank_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/DetailTextStyle"
+        app:layout_constraintEnd_toEndOf="@id/tv_cash"
+        app:layout_constraintTop_toTopOf="@id/tv_text_bank_card"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_bank_card"/>
+
+    <!--礼品卡-->
+    <TextView
+        android:id="@+id/tv_text_gift_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_gift_card"
+        style="@style/DetailTextStyle"
+        android:layout_marginBottom="@dimen/y22"
+        app:layout_constraintStart_toStartOf="@id/tv_text_cash"
+        app:layout_constraintBottom_toTopOf="@id/line6"/>
+
+    <TextView
+        android:id="@+id/tv_gift_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/DetailTextStyle"
+        app:layout_constraintEnd_toEndOf="@id/tv_cash"
+        app:layout_constraintTop_toTopOf="@id/tv_text_gift_card"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_gift_card"/>
+
+
+
+    <!--总退款金额-->
+    <TextView
+        android:id="@+id/tv_text_all_refund"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_all_refund"
+        style="@style/DetailTextStyle"
+        android:layout_marginBottom="@dimen/y22"
+        app:layout_constraintStart_toStartOf="@id/tv_text_cash"
+        app:layout_constraintBottom_toTopOf="@id/line7"/>
+
+    <TextView
+        android:id="@+id/tv_all_refund"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/DetailTextStyle"
+        app:layout_constraintEnd_toEndOf="@id/tv_cash"
+        app:layout_constraintTop_toTopOf="@id/tv_text_all_refund"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_all_refund"/>
+
+    <!--左分割线-->
+    <View
+        android:id="@+id/left"
+        android:layout_width="@dimen/x1"
+        android:layout_height="@dimen/y617"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/right"/>
+
+    <!--右分割线-->
+    <View
+        android:id="@+id/right"
+        android:layout_width="@dimen/x1"
+        android:layout_height="0dp"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintTop_toTopOf="@id/left"
+        app:layout_constraintBottom_toBottomOf="@id/left"
+        app:layout_constraintStart_toEndOf="@id/left"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!--总单据数-->
+    <TextView
+        android:id="@+id/tv_text_total_order_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_total_order_count"
+        style="@style/HandoverTextStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/left"
+        app:layout_constraintTop_toTopOf="@id/tv_text_total_sales"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_total_sales"/>
+
+    <TextView
+        android:id="@+id/tv_total_order_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        style="@style/HandoverMoneyTextStyle"
+        app:layout_constraintStart_toStartOf="@id/tv_text_total_order_count"
+        app:layout_constraintEnd_toEndOf="@id/tv_text_total_order_count"
+        app:layout_constraintTop_toTopOf="@id/tv_total_sales"
+        app:layout_constraintBottom_toBottomOf="@id/tv_total_sales"/>
+
+    <View
+        android:id="@+id/left_line_1"
+        android:layout_width="@dimen/x472"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintTop_toTopOf="@id/line1"
+        app:layout_constraintBottom_toBottomOf="@id/line1"
+        app:layout_constraintStart_toStartOf="@id/tv_total_order_count"
+        app:layout_constraintEnd_toEndOf="@id/tv_total_order_count" />
+
+    <View
+        android:layout_width="@dimen/x472"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y70"
+        app:layout_constraintTop_toBottomOf="@id/left_line_1"
+        app:layout_constraintStart_toStartOf="@id/left_line_1"
+        app:layout_constraintEnd_toEndOf="@id/left_line_1" />
+
+    <!--销售单-->
+    <TextView
+        android:id="@+id/tv_text_sale_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_sale_count"
+        style="@style/DetailTextStyle"
+        android:layout_marginStart="@dimen/x13"
+        app:layout_constraintStart_toStartOf="@id/left_line_1"
+        app:layout_constraintTop_toTopOf="@id/tv_text_cash"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_cash"/>
+
+    <TextView
+        android:id="@+id/tv_sale_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        style="@style/DetailTextStyle"
+        android:layout_marginEnd="@dimen/x13"
+        app:layout_constraintEnd_toEndOf="@id/left_line_1"
+        app:layout_constraintTop_toTopOf="@id/tv_text_sale_count"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_sale_count"/>
+
+    <!--退货单-->
+    <TextView
+        android:id="@+id/tv_text_refund_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_refund_count"
+        style="@style/DetailTextStyle"
+        app:layout_constraintStart_toStartOf="@id/tv_text_sale_count"
+        app:layout_constraintTop_toTopOf="@id/tv_text_alipay"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_alipay"/>
+
+    <TextView
+        android:id="@+id/tv_refund_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        style="@style/DetailTextStyle"
+        app:layout_constraintEnd_toEndOf="@id/tv_sale_count"
+        app:layout_constraintTop_toTopOf="@id/tv_text_refund_count"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_refund_count"/>
+
+
+
+
+
+    <!--总现金-->
+    <TextView
+        android:id="@+id/tv_text_total_cash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_total_cash"
+        style="@style/HandoverTextStyle"
+        app:layout_constraintStart_toEndOf="@id/right"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_text_total_sales"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_total_sales"/>
+
+    <TextView
+        android:id="@+id/tv_total_cash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/HandoverMoneyTextStyle"
+        app:layout_constraintStart_toStartOf="@id/tv_text_total_cash"
+        app:layout_constraintEnd_toEndOf="@id/tv_text_total_cash"
+        app:layout_constraintTop_toTopOf="@id/tv_total_sales"
+        app:layout_constraintBottom_toBottomOf="@id/tv_total_sales"/>
+
+    <View
+        android:id="@+id/right_line_1"
+        android:layout_width="@dimen/x472"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintTop_toTopOf="@id/line1"
+        app:layout_constraintBottom_toBottomOf="@id/line1"
+        app:layout_constraintStart_toStartOf="@id/tv_text_total_cash"
+        app:layout_constraintEnd_toEndOf="@id/tv_text_total_cash" />
+
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintTop_toTopOf="@id/line2"
+        app:layout_constraintBottom_toBottomOf="@id/line2"
+        app:layout_constraintStart_toStartOf="@id/right_line_1"
+        app:layout_constraintEnd_toEndOf="@id/right_line_1" />
+
+    <View
+        android:id="@+id/right_line_3"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintTop_toTopOf="@id/line3"
+        app:layout_constraintBottom_toBottomOf="@id/line3"
+        app:layout_constraintStart_toStartOf="@id/right_line_1"
+        app:layout_constraintEnd_toEndOf="@id/right_line_1" />
+
+    <View
+        android:id="@+id/right_line_4"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y70"
+        app:layout_constraintStart_toStartOf="@id/right_line_1"
+        app:layout_constraintEnd_toEndOf="@id/right_line_1"
+        app:layout_constraintTop_toBottomOf="@id/right_line_3" />
+
+    <View
+        android:id="@+id/right_line_5"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        android:layout_marginTop="@dimen/y70"
+        app:layout_constraintStart_toStartOf="@id/right_line_1"
+        app:layout_constraintEnd_toEndOf="@id/right_line_1"
+        app:layout_constraintTop_toBottomOf="@id/right_line_4" />
+
+
+
+
+    <!--备用金-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_reserver"
+        style="@style/DetailTextStyle"
+        android:layout_marginStart="@dimen/x13"
+        app:layout_constraintStart_toStartOf="@id/right_line_1"
+        app:layout_constraintTop_toTopOf="@id/tv_text_cash"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_cash"/>
+
+    <TextView
+        android:id="@+id/tv_reserver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/DetailTextStyle"
+        android:layout_marginEnd="@dimen/x13"
+        app:layout_constraintEnd_toEndOf="@id/right_line_1"
+        app:layout_constraintTop_toTopOf="@id/tv_text_cash"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_cash"/>
+
+    <!--实收金额-->
+    <TextView
+        android:id="@+id/tv_text_receipts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_receipts_money"
+        style="@style/DetailTextStyle"
+        android:layout_marginStart="@dimen/x13"
+        app:layout_constraintStart_toStartOf="@id/right_line_1"
+        app:layout_constraintTop_toTopOf="@id/tv_text_alipay"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_alipay"/>
+
+    <TextView
+        android:id="@+id/tv_receipts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/DetailTextStyle"
+        android:layout_marginEnd="@dimen/x13"
+        app:layout_constraintEnd_toEndOf="@id/right_line_1"
+        app:layout_constraintTop_toTopOf="@id/tv_text_receipts"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_receipts"/>
+
+    <!--找零金额-->
+    <TextView
+        android:id="@+id/tv_text_change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_cash_change"
+        style="@style/DetailTextStyle"
+        android:layout_marginStart="@dimen/x13"
+        app:layout_constraintStart_toStartOf="@id/right_line_1"
+        app:layout_constraintTop_toTopOf="@id/tv_text_wechat"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_wechat"/>
+
+    <TextView
+        android:id="@+id/tv_change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/DetailTextStyle"
+        android:layout_marginEnd="@dimen/x13"
+        app:layout_constraintEnd_toEndOf="@id/right_line_1"
+        app:layout_constraintTop_toTopOf="@id/tv_text_wechat"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_wechat"/>
+
+    <!--现金收入-->
+    <TextView
+        android:id="@+id/tv_text_cash_income"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_cash_income"
+        style="@style/DetailTextStyle"
+        android:layout_marginStart="@dimen/x13"
+        android:layout_marginBottom="@dimen/y22"
+        app:layout_constraintStart_toStartOf="@id/right_line_1"
+        app:layout_constraintBottom_toTopOf="@id/right_line_4"/>
+
+    <TextView
+        android:id="@+id/tv_cash_income"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/DetailTextStyle"
+        android:layout_marginEnd="@dimen/x13"
+        app:layout_constraintEnd_toEndOf="@id/right_line_1"
+        app:layout_constraintTop_toTopOf="@id/tv_text_cash_income"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_cash_income"/>
+
+    <!--退款现金-->
+    <TextView
+        android:id="@+id/tv_text_cash_refund"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_cash_refund"
+        style="@style/DetailTextStyle"
+        android:layout_marginStart="@dimen/x13"
+        android:layout_marginBottom="@dimen/y22"
+        app:layout_constraintStart_toStartOf="@id/right_line_1"
+        app:layout_constraintBottom_toTopOf="@id/right_line_5"/>
+
+    <TextView
+        android:id="@+id/tv_cash_refund"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00"
+        style="@style/DetailTextStyle"
+        android:layout_marginEnd="@dimen/x13"
+        app:layout_constraintEnd_toEndOf="@id/right_line_1"
+        app:layout_constraintTop_toTopOf="@id/tv_text_cash_refund"
+        app:layout_constraintBottom_toBottomOf="@id/tv_text_cash_refund"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

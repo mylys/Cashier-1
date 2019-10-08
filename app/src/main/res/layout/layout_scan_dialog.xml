@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/scan_dialog_width"
+    android:layout_height="@dimen/scan_dialog_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_scan_dialog">
+
+    <!--获取扫码机条码-->
+    <View
+        android:id="@+id/et_barcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:inputType="none"
+        android:textColor="#00ffffff"
+        android:cursorVisible="false"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_marginStart="@dimen/x10"
+        android:layout_marginTop="@dimen/y10"
+        android:visibility="visible"
+        android:background="#00FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="@dimen/x150"
+        android:layout_height="@dimen/y150"
+        android:layout_marginTop="@dimen/y78"
+        android:src="@drawable/dialog_scan"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="@dimen/x104"
+        android:layout_height="@dimen/y104"
+        android:layout_marginTop="@dimen/y90"
+        android:visibility="gone"
+        android:indeterminateDrawable="@drawable/bg_scan_loading"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_scan_code"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_33"
+        android:textColor="@color/color_text_white"
+        android:layout_marginBottom="@dimen/y54"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_close"
+        android:layout_width="@dimen/x81"
+        android:layout_height="@dimen/y81"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="@dimen/x33"
+            android:layout_height="@dimen/y33"
+            android:src="@drawable/ic_close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

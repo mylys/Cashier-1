@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f5f7fa">
+
+    <!--标题栏-->
+    <com.easygo.cashier.widget.view.MyTitleBar
+        android:id="@+id/cl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:show_right_account="false"
+        app:show_title="true"
+        app:title_text="@string/text_quick_choose">
+
+    </com.easygo.cashier.widget.view.MyTitleBar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_classify_list"
+        android:layout_width="@dimen/x315"
+        android:layout_height="0dp"
+        android:background="@color/color_text_white"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_title" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_goods_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/x14"
+        android:layout_marginEnd="@dimen/x14"
+        android:background="@color/color_f5f7fa"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toTopOf="@+id/view1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/cl_title" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y154"
+        android:background="@color/color_text_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view">
+
+        <Button
+            android:id="@+id/btn_sure"
+            android:layout_width="@dimen/x230"
+            android:layout_height="@dimen/y98"
+            android:layout_marginEnd="@dimen/x43"
+            android:background="@drawable/bg_pay_button_selected"
+            android:text="@string/text_dialog_submit"
+            android:textColor="@color/color_text_white"
+            android:textSize="@dimen/x36"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="@dimen/x1"
+        android:layout_height="0dp"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rv_classify_list"
+        app:layout_constraintTop_toBottomOf="@+id/cl_title" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintBottom_toTopOf="@+id/constraint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/rv_goods_list" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

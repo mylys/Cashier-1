@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_text_white">
+
+
+    <!--标题栏-->
+    <com.easygo.cashier.widget.view.MyTitleBar
+        android:id="@+id/cl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:show_right_account="true"
+        app:show_title="true"
+        app:title_text="@string/text_settlement">
+
+    </com.easygo.cashier.widget.view.MyTitleBar>
+
+    <!--支付方式选择-->
+    <com.easygo.cashier.widget.view.PayWayView
+        android:id="@+id/pay_way_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y135"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_title">
+
+    </com.easygo.cashier.widget.view.PayWayView>
+
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y21"
+        android:background="@color/color_f0f3f7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pay_way_view" />
+
+    <FrameLayout
+        android:id="@+id/framelayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/kb"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line1">
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="@dimen/x170"
+        android:layout_height="@dimen/y110"
+        android:layout_marginTop="@dimen/y50"
+        android:layout_marginEnd="@dimen/x50"
+        android:background="@drawable/bg_keyboard_key"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line1" />
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="@dimen/x45"
+        android:layout_height="@dimen/y45"
+        android:src="@drawable/icon_cancel"
+        app:layout_constraintStart_toStartOf="@id/btn_delete"
+        app:layout_constraintEnd_toEndOf="@id/btn_delete"
+        app:layout_constraintTop_toTopOf="@id/btn_delete"
+        app:layout_constraintBottom_toBottomOf="@id/btn_delete" />
+
+    <EditText
+        android:id="@+id/et_money"
+        android:layout_width="@dimen/x533"
+        android:layout_height="@dimen/y110"
+        android:layout_marginEnd="@dimen/keyboard_key_margin"
+        android:background="@drawable/bg_input"
+        android:hint="请输入实付金额"
+        android:paddingStart="@dimen/x31"
+        android:textColorHint="@color/color_d4d3d3"
+        android:textSize="@dimen/text_size_29"
+        app:layout_constraintBottom_toBottomOf="@id/btn_delete"
+        app:layout_constraintEnd_toStartOf="@id/btn_delete"
+        app:layout_constraintTop_toTopOf="@id/btn_delete" />
+
+    <com.easygo.cashier.widget.view.Keyboard
+        android:id="@+id/kb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
+        android:background="@null"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_constraintStart_toStartOf="@id/et_money"
+        app:layout_constraintTop_toBottomOf="@id/btn_delete">
+
+    </com.easygo.cashier.widget.view.Keyboard>
+
+    <Button
+        android:id="@+id/btn_cancel_coupon"
+        android:layout_width="@dimen/x170"
+        android:layout_height="@dimen/y110"
+        android:text="@string/text_cancel_coupon"
+        style="@style/DetailTextStyle"
+        android:background="@drawable/bg_keyboard_key"
+        app:layout_constraintStart_toStartOf="@id/btn_delete"
+        app:layout_constraintTop_toTopOf="@id/kb"/>
+
+    <Button
+        android:id="@+id/btn_cancel_temp_promotion"
+        android:layout_width="@dimen/x170"
+        android:layout_height="@dimen/y110"
+        android:text="@string/text_cancel_promotion"
+        style="@style/DetailTextStyle"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
+        android:background="@drawable/bg_keyboard_key"
+        app:layout_constraintStart_toStartOf="@id/btn_delete"
+        app:layout_constraintTop_toBottomOf="@id/btn_cancel_coupon"/>
+
+    <Button
+        android:id="@+id/btn_cancel_gift_card"
+        android:layout_width="@dimen/x170"
+        android:layout_height="@dimen/y110"
+        android:text="@string/text_cancel_gift_card"
+        style="@style/DetailTextStyle"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
+        android:background="@drawable/bg_keyboard_key"
+        app:layout_constraintStart_toStartOf="@id/btn_delete"
+        app:layout_constraintTop_toBottomOf="@id/btn_cancel_temp_promotion"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_confirm_commit"
+        android:layout_width="@dimen/x170"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_ripple_commit_btn"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
+        app:layout_constraintStart_toStartOf="@id/btn_delete"
+        app:layout_constraintTop_toBottomOf="@id/btn_cancel_gift_card"
+        app:layout_constraintBottom_toBottomOf="@id/kb">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="1"
+            android:text="确定提交"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_33"
+            android:textColor="@color/color_text_white"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--优惠券-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btn_coupon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y70"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line1">
+
+        <ImageView
+            android:layout_width="@dimen/x96"
+            android:layout_height="@dimen/y120"
+            android:src="@drawable/bg_promotion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_coupon_coupon"
+            android:ems="1"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_26"
+            android:textColor="@color/color_text_white"
+            android:layout_marginStart="@dimen/x28"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--临时折扣-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btn_temp_promotion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_coupon">
+
+        <ImageView
+            android:layout_width="@dimen/x96"
+            android:layout_height="@dimen/y120"
+            android:src="@drawable/bg_promotion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_discount"
+            android:ems="1"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_26"
+            android:textColor="@color/color_text_white"
+            android:layout_marginStart="@dimen/x28"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--礼品卡-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btn_search_gift_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_temp_promotion">
+
+        <ImageView
+            android:layout_width="@dimen/x96"
+            android:layout_height="@dimen/y120"
+            android:src="@drawable/bg_promotion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_gift_card"
+            android:ems="1"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_26"
+            android:textColor="@color/color_text_white"
+            android:layout_marginStart="@dimen/x28"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--测试-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btn_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y20"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_search_gift_card">
+
+        <ImageView
+            android:layout_width="@dimen/x96"
+            android:layout_height="@dimen/y120"
+            android:src="@drawable/bg_promotion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="创建订单"
+            android:ems="1"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_26"
+            android:textColor="@color/color_text_white"
+            android:layout_marginStart="@dimen/x28"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

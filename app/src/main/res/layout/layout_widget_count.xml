@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/root"
+    android:background="@drawable/bg_frame"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_subtract"-->
+        <!--android:layout_width="@dimen/x70"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:text="-"-->
+        <!--android:textSize="@dimen/text_size_29"-->
+        <!--android:textColor="@color/color_505050"-->
+        <!--android:background="@drawable/bg_ripple_btn_subtract"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btn_subtract"
+        android:layout_width="@dimen/x70"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_ripple_btn_subtract"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        
+        <ImageView
+            android:layout_width="@dimen/x22"
+            android:layout_height="@dimen/y22"
+            android:src="@drawable/ic_count_subtract"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    
+
+    <TextView
+        android:id="@+id/tv_goods_count"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:text="1"
+        android:textSize="@dimen/text_size_29"
+        android:textColor="@color/color_505050"
+        android:background="@null"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@id/btn_subtract"
+        app:layout_constraintEnd_toStartOf="@id/btn_add"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <!--<Button-->
+        <!--android:id="@+id/btn_add"-->
+        <!--android:layout_width="@dimen/x68"-->
+        <!--android:layout_height="@dimen/y56"-->
+        <!--android:text="+"-->
+        <!--android:textSize="@dimen/text_size_29"-->
+        <!--android:textColor="@color/color_e84525"-->
+        <!--android:background="@drawable/bg_ripple_btn_add"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btn_add"
+        android:layout_width="@dimen/x70"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_ripple_btn_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:layout_width="@dimen/x22"
+            android:layout_height="@dimen/y22"
+            android:src="@drawable/ic_count_add"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

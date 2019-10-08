@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#7f000000"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/x600"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_login_frame"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:tag="beta_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="beta_title"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_size_35"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/line1" />
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y1"
+            android:layout_marginTop="@dimen/y80"
+            android:background="#d3d3d3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_upgrade_info"
+            android:tag="beta_upgrade_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="beta_upgrade_info"
+            android:textSize="@dimen/text_size_26"
+            android:textColor="#505050"
+            android:layout_marginTop="@dimen/y30"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintEnd_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toTopOf="@id/line1" />
+
+        <TextView
+            android:id="@+id/tv_text_upgrade_feature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:text="更新说明："
+            android:textColor="#101010"
+            android:textSize="@dimen/text_size_30"
+            app:layout_constraintStart_toStartOf="@id/tv_upgrade_info"
+            app:layout_constraintTop_toBottomOf="@id/tv_upgrade_info" />
+
+        <TextView
+            android:id="@+id/tv_upgrade_feature"
+            android:tag="beta_upgrade_feature"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y10"
+            android:text="beta_upgrade_feature"
+            android:textColor="#101010"
+            android:textSize="@dimen/text_size_26"
+            app:layout_constraintStart_toStartOf="@id/tv_upgrade_info"
+            app:layout_constraintEnd_toStartOf="@id/guideline2"
+            app:layout_constraintTop_toBottomOf="@id/tv_text_upgrade_feature" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="@dimen/x1"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/x40"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="@dimen/x1"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/x40"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y1"
+            android:background="#d3d3d3"
+            android:layout_marginTop="@dimen/y30"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_upgrade_feature"/>
+
+        <!--<View-->
+            <!--android:id="@+id/line3"-->
+            <!--android:layout_width="@dimen/x1"-->
+            <!--android:layout_height="@dimen/y80"-->
+            <!--android:background="#d3d3d3"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@id/line2"/>-->
+
+        <TextView
+            android:id="@+id/beta_cancel_button"
+            android:tag="beta_cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y80"
+            android:gravity="center"
+            android:text="下次再说"
+            android:textColor="@color/color_505050"
+            android:textSize="@dimen/x30"
+            android:visibility="visible"
+            android:background="@drawable/bg_ripple_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/beta_confirm_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line2"/>
+
+        <TextView
+            android:id="@+id/beta_confirm_button"
+            android:tag="beta_confirm_button"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y80"
+            android:gravity="center"
+            android:text="立即更新"
+            android:textColor="@color/color_4cbbac"
+            android:textSize="@dimen/x30"
+            android:background="@drawable/bg_ripple_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/beta_cancel_button"
+            app:layout_constraintTop_toBottomOf="@+id/line2"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

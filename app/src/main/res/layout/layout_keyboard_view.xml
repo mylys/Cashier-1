@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_text_white">
+
+    <!--Row-->
+    <TextView
+        android:id="@+id/tv_50"
+        style="@style/KeyboardTextStyle"
+        android:text="50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_100"
+        style="@style/KeyboardTextStyle"
+        android:layout_marginStart="@dimen/keyboard_key_margin"
+        android:text="100"
+        app:layout_constraintBottom_toBottomOf="@id/tv_50"
+        app:layout_constraintStart_toEndOf="@id/tv_50"
+        app:layout_constraintTop_toTopOf="@id/tv_50" />
+
+    <TextView
+        android:id="@+id/tv_200"
+        style="@style/KeyboardTextStyle"
+        android:layout_marginStart="@dimen/keyboard_key_margin"
+        android:text="200"
+        app:layout_constraintBottom_toBottomOf="@id/tv_50"
+        app:layout_constraintStart_toEndOf="@id/tv_100"
+        app:layout_constraintTop_toTopOf="@id/tv_50" />
+
+    <!--Row-->
+    <TextView
+        android:id="@+id/tv_1"
+        style="@style/KeyboardTextStyle"
+        android:text="1"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
+        app:layout_constraintStart_toStartOf="@id/tv_50"
+        app:layout_constraintTop_toBottomOf="@id/tv_50"/>
+
+    <TextView
+        android:id="@+id/tv_2"
+        style="@style/KeyboardTextStyle"
+        android:layout_marginStart="@dimen/keyboard_key_margin"
+        android:text="2"
+        app:layout_constraintBottom_toBottomOf="@id/tv_1"
+        app:layout_constraintStart_toEndOf="@id/tv_1"
+        app:layout_constraintTop_toTopOf="@id/tv_1" />
+
+    <TextView
+        android:id="@+id/tv_3"
+        style="@style/KeyboardTextStyle"
+        android:layout_marginStart="@dimen/keyboard_key_margin"
+        android:text="3"
+        app:layout_constraintBottom_toBottomOf="@id/tv_1"
+        app:layout_constraintStart_toEndOf="@id/tv_2"
+        app:layout_constraintTop_toTopOf="@id/tv_1" />
+
+    <!--Row-->
+    <TextView
+        android:id="@+id/tv_4"
+        style="@style/KeyboardTextStyle"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
+        android:text="4"
+        app:layout_constraintStart_toStartOf="@id/tv_1"
+        app:layout_constraintTop_toBottomOf="@id/tv_1" />
+
+    <TextView
+        android:id="@+id/tv_5"
+        style="@style/KeyboardTextStyle"
+        android:text="5"
+        app:layout_constraintBottom_toBottomOf="@id/tv_4"
+        app:layout_constraintStart_toStartOf="@id/tv_2"
+        app:layout_constraintTop_toTopOf="@id/tv_4" />
+
+    <TextView
+        android:id="@+id/tv_6"
+        style="@style/KeyboardTextStyle"
+        android:text="6"
+        app:layout_constraintBottom_toBottomOf="@id/tv_4"
+        app:layout_constraintStart_toStartOf="@id/tv_3"
+        app:layout_constraintTop_toTopOf="@id/tv_4" />
+
+    <!--Row-->
+    <TextView
+        android:id="@+id/tv_7"
+        style="@style/KeyboardTextStyle"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
+        android:text="7"
+        app:layout_constraintStart_toStartOf="@id/tv_1"
+        app:layout_constraintTop_toBottomOf="@id/tv_4" />
+
+    <TextView
+        android:id="@+id/tv_8"
+        style="@style/KeyboardTextStyle"
+        android:text="8"
+        app:layout_constraintBottom_toBottomOf="@id/tv_7"
+        app:layout_constraintStart_toStartOf="@id/tv_2"
+        app:layout_constraintTop_toTopOf="@id/tv_7" />
+
+    <TextView
+        android:id="@+id/tv_9"
+        style="@style/KeyboardTextStyle"
+        android:text="9"
+        app:layout_constraintBottom_toBottomOf="@id/tv_7"
+        app:layout_constraintStart_toStartOf="@id/tv_3"
+        app:layout_constraintTop_toTopOf="@id/tv_7" />
+
+    <!--Row-->
+    <TextView
+        android:id="@+id/tv_point"
+        style="@style/KeyboardTextStyle"
+        android:layout_marginTop="@dimen/keyboard_key_margin"
+        android:text="."
+        app:layout_constraintStart_toStartOf="@id/tv_1"
+        app:layout_constraintTop_toBottomOf="@id/tv_7" />
+
+    <TextView
+        android:id="@+id/tv_0"
+        style="@style/KeyboardTextStyle"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@id/tv_point"
+        app:layout_constraintStart_toStartOf="@id/tv_2"
+        app:layout_constraintTop_toTopOf="@id/tv_point" />
+
+    <TextView
+        android:id="@+id/tv_00"
+        style="@style/KeyboardTextStyle"
+        android:text="00"
+        app:layout_constraintBottom_toBottomOf="@id/tv_point"
+        app:layout_constraintStart_toStartOf="@id/tv_3"
+        app:layout_constraintTop_toTopOf="@id/tv_point" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

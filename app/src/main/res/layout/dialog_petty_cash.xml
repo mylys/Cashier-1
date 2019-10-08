@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/title"
+        android:layout_width="@dimen/x633"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/GoodsListStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x44"
+            android:layout_marginTop="@dimen/y29"
+            android:layout_marginBottom="@dimen/y23"
+            android:text="@string/text_petty_cash"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_cancel"
+            android:layout_width="@dimen/x84"
+            android:layout_height="@dimen/y84"
+            android:layout_marginEnd="@dimen/x11"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/dialog_cancel"
+                android:layout_width="@dimen/x35"
+                android:layout_height="@dimen/y35"
+                android:src="@drawable/ic_close_function_list"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="@dimen/x633"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <EditText
+        android:id="@+id/edit_input"
+        style="@style/GoodsListStyle"
+        android:layout_width="@dimen/x548"
+        android:layout_height="@dimen/y84"
+        android:layout_marginTop="@dimen/y96"
+        android:background="@drawable/bg_input"
+        android:hint="@string/hint_petty_cash"
+        android:inputType="number|numberDecimal"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <com.easygo.cashier.widget.view.DialogKeyboard
+        android:id="@+id/key_board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y133"
+        android:layout_marginBottom="@dimen/y43"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_input">
+
+    </com.easygo.cashier.widget.view.DialogKeyboard>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

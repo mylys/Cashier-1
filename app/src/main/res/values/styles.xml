@@ -1,0 +1,176 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="MyAppTheme" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:screenOrientation">landscape</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowSoftInputMode">adjustUnspecified|stateHidden</item>
+    </style>
+
+    <!--旧设计稿-->
+    <style name="TextStyle">
+        <item name="android:textColor">@color/color_text</item>
+        <item name="android:textSize">@dimen/text_size_28</item>
+    </style>
+
+    <!--旧设计稿-->
+
+
+    <!--历史订单-->
+    <style name="SmallRedTextStyle" parent="DetailTextStyle">
+        <item name="android:textColor">@color/color_cc565a</item>
+    </style>
+
+    <style name="SmallBlueTextStyle" parent="DetailTextStyle">
+        <item name="android:textColor">@color/color_text_3899d9</item>
+    </style>
+
+    <style name="PayButtonStyle" parent="TextStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginStart">@dimen/x42</item>
+    </style>
+
+    <style name="RefundList">
+        <item name="android:gravity">left|center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@color/color_333333</item>
+        <!--<item name="android:textSize">@dimen/sp_12</item>-->
+        <item name="android:textSize">@dimen/x28</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="RefundGoodsList" parent="GoodsListStyle">
+        <item name="android:gravity">left|center</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="DialogStyle" parent="CustomDialogStyle">
+        <!-- 禁止对话框的背景变暗 -->
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <!--商品标题名称-->
+    <style name="GoodsTitleStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_29</item>
+        <item name="android:textColor">@color/color_goods_title</item>
+    </style>
+    <!--商品标题列表名称-->
+    <!--商品列表-->
+    <style name="GoodsListStyle">
+        <item name="android:textSize">@dimen/text_size_29</item>
+        <item name="android:textColor">@color/color_505050</item>
+    </style>
+
+    <!--会员、优惠券-->
+    <style name="ExtraInfoStyle">
+        <item name="android:textSize">@dimen/text_size_29</item>
+        <item name="android:textColor">@color/color_555555</item>
+    </style>
+
+
+    <!--弹窗文本-->
+    <style name="DialogTextStyle">
+        <item name="android:textSize">@dimen/text_size_37</item>
+        <item name="android:textColor">@color/color_505050</item>
+    </style>
+    <!--商品价格详情-->
+    <style name="GoodsSettlementDetailStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_42</item>
+        <item name="android:textColor">@color/color_505050</item>
+    </style>
+
+    <style name="DetailTextStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_28</item>
+        <item name="android:textColor">@color/color_505050</item>
+    </style>
+
+    <!--结算详情页-->
+    <style name="SettlementDetailTextStyle">
+        <!--<item name="android:textColor">@color/color_7e7e7e</item>-->
+        <!--<item name="android:textSize">@dimen/text_size_34</item>-->
+        <item name="android:textColor">@color/color_555555</item>
+        <item name="android:textSize">@dimen/text_size_38</item>
+    </style>
+
+    <style name="KeyboardTextStyle">
+        <item name="android:layout_width">@dimen/x170</item>
+        <item name="android:layout_height">@dimen/y110</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_505050</item>
+        <item name="android:textSize">@dimen/text_size_33</item>
+        <item name="android:background">@drawable/bg_keyboard_key</item>
+    </style>
+
+    <style name="DialogKeyboardTextStyle">
+        <item name="android:layout_width">@dimen/x98</item>
+        <item name="android:layout_height">@dimen/y98</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_505050</item>
+        <item name="android:textSize">@dimen/text_size_37</item>
+        <item name="android:background">@drawable/bg_keyboard_key</item>
+    </style>
+
+    <style name="SureTextStyle">
+        <item name="android:layout_width">@dimen/x98</item>
+        <item name="android:layout_height">@dimen/y211</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_text_white</item>
+        <item name="android:textSize">@dimen/text_size_37</item>
+        <item name="android:background">@drawable/bg_ripple_btn_frame_green_all</item>
+    </style>
+
+    <!--交接班-->
+    <style name="HandoverTextStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_37</item>
+        <item name="android:textColor">@color/color_505050</item>
+    </style>
+
+    <style name="HandoverMoneyTextStyle" parent="HandoverTextStyle">
+        <item name="android:textSize">@dimen/text_size_84</item>
+        <item name="android:textColor">@color/color_51bfb0</item>
+    </style>
+
+    <!-- 副屏 -->
+    <style name="ViceScreen" parent="GoodsSettlementDetailStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_size_40</item>
+    </style>
+
+    <!-- 通用dialog -->
+    <style name="GeneralList">
+        <item name="android:textSize">@dimen/text_size_37</item>
+        <item name="android:textColor">@color/color_505050</item>
+    </style>
+
+    <!-- 会员 搜索手机号 -->
+    <style name="SearchMebmer">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_505050</item>
+        <item name="android:textSize">@dimen/text_size_26</item>
+    </style>
+
+    <!-- 会员 搜索手机号 -->
+    <style name="SetCount">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_505050</item>
+        <item name="android:textSize">@dimen/text_size_35</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>

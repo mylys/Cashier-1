@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/cl_subtitle">
+
+    <!--会员-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_member"
+        android:layout_width="@dimen/x959"
+        android:layout_height="@dimen/y99"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_text_member"
+            style="@style/ExtraInfoStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x43"
+            android:text="@string/text_current_member"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_member"
+            style="@style/ExtraInfoStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用户昵称"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_text_member"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="@dimen/x1"
+            android:layout_height="@dimen/y27"
+            android:layout_marginStart="@dimen/x12"
+            android:background="@color/color_d3d3d3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_member"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tv_text_balance"
+            style="@style/ExtraInfoStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x12"
+            android:text="@string/text_balance_conlon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/line1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_balance"
+            style="@style/ExtraInfoStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥1000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_text_balance"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="@dimen/x1"
+            android:layout_height="@dimen/y27"
+            android:layout_marginStart="@dimen/x12"
+            android:background="@color/color_d3d3d3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_balance"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <!--会员-->
+        <TextView
+            android:id="@+id/tv_text_integral"
+            style="@style/ExtraInfoStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x12"
+            android:text="@string/text_integral_colon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/line2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_integral"
+            style="@style/ExtraInfoStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="222"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_text_integral"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_cancel_member"
+            android:layout_width="@dimen/x98"
+            android:layout_height="@dimen/y98"
+            android:padding="@dimen/x28"
+            android:src="@drawable/ic_clear"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/center"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/center"
+            android:layout_width="@dimen/x1"
+            android:layout_height="match_parent"
+            android:background="@color/color_d3d3d3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--优惠券-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_coupon"
+        android:layout_width="@dimen/x960"
+        android:layout_height="@dimen/y99"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/cl_member"
+        app:layout_constraintStart_toEndOf="@id/cl_member"
+        app:layout_constraintTop_toTopOf="@id/cl_member">
+
+        <TextView
+            android:id="@+id/tv_text_coupon_no"
+            style="@style/ExtraInfoStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x41"
+            android:text="@string/text_coupon_coupon_colon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_coupon_no"
+            style="@style/ExtraInfoStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1234567890"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_text_coupon_no"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <View
+            android:id="@+id/line3"
+            android:layout_width="@dimen/x1"
+            android:layout_height="@dimen/y27"
+            android:layout_marginStart="@dimen/x30"
+            android:background="@color/color_d3d3d3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_coupon_no"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_coupon_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x30"
+            android:text="-20"
+            android:textColor="@color/color_d64444"
+            android:textSize="@dimen/text_size_29"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/line3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_cancel_coupon"
+            android:layout_width="@dimen/x98"
+            android:layout_height="@dimen/y98"
+            android:padding="@dimen/x28"
+            android:src="@drawable/ic_clear"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/line_coupon"
+            android:layout_width="@dimen/x1"
+            android:layout_height="match_parent"
+            android:background="@color/color_d3d3d3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/line_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y1"
+        android:background="@color/color_d3d3d3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_member" />
+
+    <!--礼品卡-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_gift_card"
+        android:layout_width="@dimen/x960"
+        android:layout_height="@dimen/y99"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_member">
+
+        <TextView
+            android:id="@+id/tv_text_gift_card_no"
+            style="@style/ExtraInfoStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x41"
+            android:text="@string/text_gift_card_colon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_gift_card_no"
+            style="@style/ExtraInfoStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1234567890"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_text_gift_card_no"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <View
+            android:id="@+id/line4"
+            android:layout_width="@dimen/x1"
+            android:layout_height="@dimen/y27"
+            android:layout_marginStart="@dimen/x30"
+            android:background="@color/color_d3d3d3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_gift_card_no"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_gift_card_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x30"
+            android:text="-200"
+            android:textColor="@color/color_d64444"
+            android:textSize="@dimen/text_size_29"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/line4"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_cancel_gift_card"
+            android:layout_width="@dimen/x98"
+            android:layout_height="@dimen/y98"
+            android:padding="@dimen/x28"
+            android:src="@drawable/ic_clear"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/line_gift_card"
+            android:layout_width="@dimen/x1"
+            android:layout_height="match_parent"
+            android:background="@color/color_d3d3d3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

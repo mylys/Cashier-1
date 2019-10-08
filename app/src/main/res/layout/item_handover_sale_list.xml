@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y99"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_goods_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_goods_classification"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_72"
+        android:layout_marginEnd="@dimen/margin_72"
+        android:ellipsize="end"
+        android:text="@string/text_goods_name"
+        style="@style/GoodsListStyle" />
+
+
+    <TextView
+        android:id="@+id/tv_goods_classification"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_661"
+        android:layout_marginEnd="@dimen/x22"
+        android:text="@string/text_classification"
+        android:maxLines="1"
+        android:ellipsize="end"
+        style="@style/GoodsListStyle" />
+
+
+    <TextView
+        android:id="@+id/tv_price"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_1054"
+        android:text="@string/text_price"
+        style="@style/GoodsListStyle" />
+
+
+    <TextView
+        android:id="@+id/tv_goods_count"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_1291"
+        android:text="@string/text_count_weight"
+        style="@style/GoodsListStyle" />
+
+
+    <TextView
+        android:id="@+id/tv_subtotal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_1595"
+        android:text="@string/text_subtotal"
+        style="@style/GoodsListStyle" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,256 @@
+<resources>
+    <string name="app_name">EG收银系统</string>
+
+    <string name="text_login">登录</string>
+
+    <!--主页面-->
+    <string name="text_no_barcode_goods">无码商品</string>
+
+    <!-- 备用金 -->
+    <string name="text_petty_cash">备用金</string>
+    <string name="hint_petty_cash">请输入备用金金额</string>
+
+    <string name="text_barcode">条码</string>
+    <string name="text_goods_name">品名</string>
+    <string name="text_price">单价</string>
+    <string name="text_coupon">优惠</string>
+    <string name="text_subtotal">小计</string>
+    <string name="text_count">数量</string>
+    <string name="text_count_weight">数量/重量</string>
+    <string name="text_refund_num">退货数量</string>
+    <string name="text_refund_subtotal">退货小计</string>
+    <string name="text_total">合计: </string>
+    <string name="text_goods_count">件数</string>
+    <string name="text_total_money">总额</string>
+    <string name="text_clear">清空</string>
+    <string name="text_settlement">收银</string>
+    <string name="text_refund">退款</string>
+    <string name="text_return_of_goods">退货</string>
+    <string name="text_cancel">取消</string>
+    <string name="text_confirm">确认</string>
+    <string name="text_is_processing">是否加工</string>
+    <string name="text_invalid">作废</string>
+    <string name="text_choose">选择</string>
+
+    <!--促销-->
+    <string name="text_current_promotion">正在参与活动：</string>
+
+    <string name="text_promotion_settiong">折扣设置</string>
+    <string name="text_discount">折扣</string>
+    <string name="text_change_price">改价</string>
+    <string name="hint_discount">请输入折扣百分比</string>
+    <string name="hint_change_price">请输入更改价格</string>
+    <string name="text_free_order">免单</string>
+    <string name="text_cancel_temp_promotion">取消临时折扣</string>
+
+
+    <!--会员-->
+    <string name="text_member">会员</string>
+    <string name="text_current_member">当前会员：</string>
+    <string name="text_choose_member">选择会员</string>
+    <string name="text_member_price">会员价</string>
+    <string name="text_balance_conlon">余额：</string>
+    <string name="text_integral_colon">积分：</string>
+    <string name="text_integral_exchange">积分可兑换：</string>
+    <string name="text_member_card">会员卡号</string>
+    <string name="text_package_balance">钱包余额</string>
+    <string name="text_integral_balance">积分余额</string>
+    <string name="text_nick">昵称</string>
+    <string name="text_telphone">手机号</string>
+    <string name="text_process">操作</string>
+    <string name="text_input_member_tel_or_card">请输入会员手机号/会员卡号</string>
+    <string name="text_no_telphone">搜不到该手机号/会员卡号</string>
+    <string name="text_no_member">暂无此会员</string>
+    <string name="text_member_card_wallet">会员卡</string>
+
+    <!--优惠券-->
+    <string name="text_coupon_coupon">优惠券</string>
+    <string name="text_coupon_coupon_colon">优惠券：</string>
+    <string name="text_input_coupon">请输入优惠券号</string>
+    <string name="text_no_search_coupon">搜不到该优惠券</string>
+    <string name="text_no_coupon">暂无此优惠券</string>
+
+    <!--礼品卡-->
+    <string name="text_gift_card">礼品卡</string>
+    <string name="text_gift_card_colon">礼品卡：</string>
+    <string name="text_scan_gift_card_code">请扫描礼品卡二维码</string>
+    <string name="text_no_gift_card">暂无此礼品卡</string>
+
+    <!--结算页面-->
+    <string name="text_combined_payment">组合支付</string>
+    <string name="text_cash">现金</string>
+    <string name="text_wechat">微信</string>
+    <string name="text_alipay">支付宝</string>
+    <string name="text_bank_card">银联</string>
+    <string name="text_print_paper">打印单据</string>
+    <string name="text_print">打印</string>
+    <string name="text_commit_order">提交交易</string>
+    <string name="text_bankcard_pay">银联支付</string>
+    <string name="text_bankcard_scan">请使用银联POS机扫码</string>
+
+    <string name="text_receivable_colon">应收：</string>
+    <string name="text_change_colon">找零：</string>
+    <string name="text_receipts_colon">实收：</string>
+    <string name="text_refund_orders">退款</string>
+
+
+    <string name="text_scan_code">请扫描收款码</string>
+    <string name="text_scanning_code">正在识别二维码</string>
+    <string name="text_successful_receipt">收款成功</string>
+    <string name="text_already_receive">已收款</string>
+    <string name="text_pay_successful">支付成功</string>
+
+    <string name="text_cancel_coupon">取消优惠券</string>
+    <string name="text_cancel_promotion">取消折扣</string>
+    <string name="text_cancel_gift_card">取消礼品卡</string>
+
+    <!--历史订单详情-->
+    <string name="text_order_history">历史订单</string>
+    <string name="text_has_already_refund">已退款</string>
+    <string name="text_order_no">订单单号：</string>
+    <string name="text_cashier">收银员：</string>
+    <string name="text_function_list">功能列表</string>
+    <string name="text_buyer">付款人：</string>
+    <string name="text_pay_type">支付方式：</string>
+    <string name="text_order_number">订单单号：</string>
+    <string name="text_no_order">暂无订单信息</string>
+
+    <!--快速选择-->
+    <string name="text_quick_choose">快速选择</string>
+
+    <!-- 挂单详情 -->
+    <string name="text_entry_orders">挂单</string>
+    <string name="text_entry_orders_list">挂单列表</string>
+    <string name="text_entry_orders_time">挂单时间：</string>
+    <string name="text_note">备注：</string>
+    <string name="hint_entry_orders">请输入挂单备注(非必填)</string>
+
+    <!-- 退款 -->
+    <string name="text_total_refund_product">共退货</string>
+    <string name="text_total_refund_price">件，退款金额：￥ </string>
+
+    <!--搜索框-->
+    <string name="text_digits">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
+    <string name="text_search_hint_barcode">输入条形码或商品名称</string>
+    <string name="text_search_hint_order">输入订单单号</string>
+    <string name="text_search_hint_product_name">输入商品名</string>
+    <string name="text_search">搜索</string>
+    <string name="search_null">搜索不到该商品</string>
+
+    <!-- dialog -->
+    <string name="no_goods_text">无码商品</string>
+    <string name="input_price">请输入商品金额</string>
+
+    <string name="text_confirm_commit_order">确认提交交易?</string>
+    <string name="text_confirm_refund">确认提交退款?</string>
+
+    <!--交接班详情-->
+    <string name="text_handover">交接班</string>
+    <string name="text_login_time">本次登录时间：</string>
+    <string name="text_handover_and_login_out">交接班并登出</string>
+    <string name="text_sales_list">销售列表</string>
+    <string name="text_total_sales">总销售额</string>
+    <string name="text_total_order_count">总单据数</string>
+    <string name="text_total_cash">总现金</string>
+    <string name="text_sale_count">销售单</string>
+    <string name="text_refund_count">退货单</string>
+    <string name="text_cash_income">现金收入</string>
+    <string name="text_member_package">会员钱包</string>
+    <string name="text_all_refund">总退款金额</string>
+    <string name="text_reserver">备用金</string>
+    <string name="text_receipts_money">实收金额</string>
+    <string name="text_cash_change">找零金额</string>
+    <string name="text_cash_refund">退款现金</string>
+    <string name="text_classification">分类</string>
+
+    <!-- 设备状态 -->
+    <string name="device_state">设备状态</string>
+    <string name="the_printer">小票机</string>
+    <string name="local_printer">USB打印机</string>
+    <string name="reconnection">请重新连接</string>
+    <string name="device_normal">正常</string>
+    <string name="device_abnormal">异常</string>
+
+    <!-- 支付方式 -->
+    <string name="pay_alipay">支付宝</string>
+    <string name="pay_wechat">微信</string>
+    <string name="pay_wechat_cash">微信 + 现金</string>
+    <string name="pay_wechat_wallet">微信 + 企业钱包</string>
+    <string name="pay_cash">现金</string>
+    <string name="pay_wallet">企业钱包</string>
+    <string name="pay_bank_card">银联</string>
+    <string name="pay_gift_card">礼品卡</string>
+    <string name="pay_wechat_gift_card">微信 + 礼品卡</string>
+    <string name="pay_alipay_gift_card">支付宝 + 礼品卡</string>
+    <string name="pay_wallet_gift_card">企业钱包 + 礼品卡</string>
+    <string name="pay_cash_gift_card">现金 + 礼品卡</string>
+
+    <!-- 功能列表 -->
+    <string name="text_function_history">历史订单</string>
+    <string name="text_function_handover">交接班</string>
+    <string name="text_function_entry">挂单列表</string>
+    <string name="text_function_language">语言设置</string>
+    <string name="text_function_device">设备状态</string>
+    <string name="text_function_setting">系统设置</string>
+    <string name="text_function_system">进入系统</string>
+    <string name="text_function_lock">锁定收银机</string>
+    <string name="text_switch_mode_offline">切换为离线模式</string>
+    <string name="text_switch_mode_online">切换为在线模式</string>
+
+    <!-- 通用dialog -->
+    <string name="text_dialog_title_clear">确认情况商品？</string>
+    <string name="text_dialog_cancel">取消</string>
+    <string name="text_dialog_submit">确定</string>
+
+    <!-- 通用列表dialog -->
+    <!-- 货币符号item-->
+    <string name="text_genera_list_follow_system">跟随系统</string>
+    <string name="text_genera_money">￥</string>
+    <string name="text_genera_nt">NT$</string>
+    <string name="text_genera_hk">HK$</string>
+    <string name="text_genera_pat">PAT.</string>
+    <!-- 网络类型 -->
+    <string name="text_genera_wifi">WIFI</string>
+    <string name="text_genera_3g_mobile">3G移动</string>
+    <string name="text_genera_3g_unicom_telecom">3G联通/电信</string>
+    <string name="text_genera_4g">4G网络</string>
+    <!-- 图片间隔时间 -->
+    <string name="text_genera_seconds_5">5秒</string>
+    <string name="text_genera_seconds_10">10秒</string>
+    <string name="text_genera_seconds_15">15秒</string>
+    <string name="text_genera_seconds_30">30秒</string>
+    <string name="text_genera_seconds_60">60秒</string>
+    <!-- 打印数量 -->
+    <string name="text_genera_number_1">1</string>
+    <string name="text_genera_number_2">2</string>
+    <string name="text_genera_number_3">3</string>
+    <!-- 打印宽度 -->
+    <string name="text_genera_width_58">58mm</string>
+    <string name="text_genera_width_88">88mm</string>
+    <string name="text_product_name">商品数量：</string>
+
+    <string name="hint_user_account">请输入员工账号</string>
+    <string name="hint_user_password">请输入员工密码</string>
+    <string name="text_cashbox_accredit">弹出钱箱授权</string>
+    <string name="text_refund_accedit">退款授权</string>
+    <string name="text_lock">输入授权密码解锁</string>
+    <string name="text_lock_user">输入账号密码解锁</string>
+
+    <!--打印机-->
+    <string name="str_permission_deny">USB打印机不可用！ 权限被拒绝</string>
+    <string name="str_conn_fail">USB打印机连接失败！请重新拔插USB打印机</string>
+    <string name="str_cann_printer">请先连接USB打印机</string>
+    <string name="str_need_replugged">请插入USB打印机</string>
+
+    <string name="str_printer_conn_normal">打印机连接正常</string>
+    <string name="str_printer_out_of_paper">打印机缺纸</string>
+    <string name="str_printer_open_cover">打印机开盖</string>
+    <string name="str_printer_error">打印机出错</string>
+    <string name="str_state">状态：</string>
+
+    <string name="str_printer_printmode_esc">打印模式:ESC</string>
+    <string name="str_printer_printmode_tsc">打印模式:TSC</string>
+    <string name="str_printer_printmode_cpcl">打印模式:CPCL</string>
+
+
+</resources>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--左右两边分割线-->
+    <View
+        android:id="@+id/line1"
+        android:layout_width="@dimen/x2"
+        android:layout_height="match_parent"
+        android:background="@color/color_line"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.35"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y155"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:background="@color/color_text_white"
+        app:layout_constraintEnd_toStartOf="@id/line1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--搜索框-->
+        <com.easygo.cashier.widget.view.MySearchView
+        android:id="@+id/cl_search"
+        android:layout_width="@dimen/x590"
+        android:layout_height="@dimen/y98"
+        android:background="@drawable/bg_selector_btn_frame_green"
+        app:layout_constraintBottom_toBottomOf="@id/view1"
+        app:layout_constraintEnd_toEndOf="@id/line1"
+        app:layout_constraintStart_toStartOf="@id/view1"
+        app:layout_constraintTop_toTopOf="@id/view1"
+        app:search_btn_height="@dimen/y98"
+        app:search_btn_text_size="@dimen/x28"
+        app:search_btn_width="@dimen/x118"
+        app:search_hint="@string/text_search_hint_order"
+        app:search_text_padding_start="@dimen/x29">
+
+    </com.easygo.cashier.widget.view.MySearchView>
+
+    <View
+        android:id="@+id/line3"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y2"
+        android:background="@color/color_f0f3f7"
+        app:layout_constraintEnd_toStartOf="@id/line1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view1" />
+
+    <CheckBox
+        android:id="@+id/cb_local_order"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="只看本机历史订单"
+        android:textColor="@color/color_505050"
+        android:textSize="@dimen/text_size_29"
+        android:paddingStart="@dimen/x41"
+        android:paddingTop="@dimen/y20"
+        android:paddingBottom="@dimen/y20"
+        android:button="@null"
+        android:background="@color/color_text_white"
+        android:drawableStart="@drawable/check_box"
+        android:drawablePadding="@dimen/x17"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/line1"
+        app:layout_constraintTop_toBottomOf="@id/line3"
+        app:layout_constraintBottom_toTopOf="@id/line2"/>
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y20"
+        android:background="@color/color_f0f3f7"
+        app:layout_constraintEnd_toStartOf="@id/line1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cb_local_order" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/line1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line2">
+
+        <!--历史订单列表-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_order_history"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+    <!--历史订单详情-->
+    <FrameLayout
+        android:id="@+id/framelayout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/line1"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

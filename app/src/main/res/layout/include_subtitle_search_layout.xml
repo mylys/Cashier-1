@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_subtitle"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y119"
+    app:layout_constraintTop_toBottomOf="@+id/cl_title">
+
+    <!--搜索框-->
+    <com.easygo.cashier.widget.view.MySearchView
+        android:id="@+id/cl_search"
+        android:layout_width="@dimen/x600"
+        android:layout_height="@dimen/y80"
+        android:layout_marginStart="@dimen/x42"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+    </com.easygo.cashier.widget.view.MySearchView>
+
+    <!--无码商品-->
+    <com.easygo.cashier.widget.view.GeneraButton
+        android:id="@+id/btn_no_barcode"
+        android:layout_width="@dimen/x160"
+        android:layout_height="@dimen/y118"
+        android:background="@drawable/bg_ripple_btn"
+        app:image="@drawable/ic_main_no_code"
+        app:text="@string/text_no_barcode_goods"
+        app:text_size="@dimen/text_size_23"
+        app:layout_constraintStart_toEndOf="@+id/cl_search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--快速选择-->
+    <com.easygo.cashier.widget.view.GeneraButton
+        android:id="@+id/btn_quick_choose"
+        android:layout_width="@dimen/x160"
+        android:layout_height="@dimen/y118"
+        android:background="@drawable/bg_ripple_btn"
+        app:image="@drawable/ic_main_quick_choose"
+        app:text="@string/text_quick_choose"
+        app:text_size="@dimen/text_size_23"
+        app:layout_constraintStart_toEndOf="@+id/btn_no_barcode"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--优惠券-->
+    <com.easygo.cashier.widget.view.GeneraButton
+        android:id="@+id/btn_gift_card"
+        android:layout_width="@dimen/x160"
+        android:layout_height="@dimen/y118"
+        android:background="@drawable/bg_ripple_btn"
+        app:image="@drawable/ic_main_gift_card"
+        app:text="@string/text_gift_card"
+        app:text_size="@dimen/text_size_23"
+        app:layout_constraintEnd_toStartOf="@id/btn_choose_coupon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--优惠券-->
+    <com.easygo.cashier.widget.view.GeneraButton
+        android:id="@+id/btn_choose_coupon"
+        android:layout_width="@dimen/x160"
+        android:layout_height="@dimen/y118"
+        android:background="@drawable/bg_ripple_btn"
+        app:image="@drawable/ic_main_coupon"
+        app:text="@string/text_coupon_coupon"
+        app:text_size="@dimen/text_size_23"
+        app:layout_constraintEnd_toStartOf="@id/btn_choose_member"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--选择会员-->
+    <com.easygo.cashier.widget.view.GeneraButton
+        android:id="@+id/btn_choose_member"
+        android:layout_width="@dimen/x160"
+        android:layout_height="@dimen/y118"
+        android:background="@drawable/bg_ripple_btn"
+        app:image="@drawable/ic_main_member"
+        app:text="@string/text_member"
+        app:text_size="@dimen/text_size_23"
+        android:layout_marginEnd="@dimen/x20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
