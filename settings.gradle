@@ -1,5 +1,5 @@
 include ':app'
 
-File dir = new File("D:/_Android/WorkSpace/BaseLibrary")
+File dir = new File("E:/AndroidProjects/NiubilityDemo/")
 include ':niubilitylibrary'
 project (':niubilitylibrary').projectDir = new File(dir, 'niubilitylibrary/')
